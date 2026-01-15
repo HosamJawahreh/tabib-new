@@ -65,7 +65,7 @@ class SimpleOrderController extends Controller
             $packingCost = floatval($request->input('packing_cost', 0));
             $tax = floatval($request->input('tax', 0));
             $discount = floatval($request->input('coupon_discount', 0));
-            
+
             // Calculate total
             $totalAmount = $subtotal + $shippingCost + $packingCost + $tax - $discount;
 

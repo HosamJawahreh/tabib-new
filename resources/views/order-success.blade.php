@@ -7,7 +7,7 @@
         padding: 60px 0;
         background: #f8f9fa;
     }
-    
+
     .success-card {
         background: white;
         border-radius: 15px;
@@ -286,7 +286,7 @@
                 </div>
                 <h1 class="success-title">🎉 Order Placed Successfully!</h1>
                 <p class="success-subtitle">Thank you for your order. We'll process it shortly.</p>
-                
+
                 @if($order->shipping_cost > 0)
                 <div style="background: #e7f5ec; border-left: 4px solid #28a745; padding: 15px 20px; border-radius: 8px; margin-top: 20px; text-align: left;">
                     <div style="display: flex; align-items: center; gap: 10px;">
@@ -294,7 +294,7 @@
                         <div>
                             <strong style="color: #28a745; font-size: 15px;">Shipping Information</strong>
                             <p style="margin: 5px 0 0 0; color: #666; font-size: 14px;">
-                                Shipping cost of <strong>{{ $order->currency_sign }}{{ number_format($order->shipping_cost, 2) }}</strong> 
+                                Shipping cost of <strong>{{ $order->currency_sign }}{{ number_format($order->shipping_cost, 2) }}</strong>
                                 has been added to your order total.
                                 @if($order->shipping == 'pickup')
                                     You can pick up your order from the selected location.
@@ -355,7 +355,7 @@
             <!-- Order Items Section -->
             <div class="cart-items-section">
                 <div class="section-title">Order Items</div>
-                
+
                 @php
                     $cartItems = json_decode($order->cart, true);
                 @endphp
@@ -364,8 +364,8 @@
                     @foreach($cartItems as $key => $item)
                     <div class="cart-item">
                         @if(isset($item['item']['photo']))
-                        <img src="{{ asset('assets/images/products/'.$item['item']['photo']) }}" 
-                             alt="{{ $item['item']['name'] ?? 'Product' }}" 
+                        <img src="{{ asset('assets/images/products/'.$item['item']['photo']) }}"
+                             alt="{{ $item['item']['name'] ?? 'Product' }}"
                              class="item-image">
                         @else
                         <div class="item-image" style="background: #f0f0f0; display: flex; align-items: center; justify-content: center;">
@@ -396,7 +396,7 @@
 
             <!-- Order Summary Section -->
             <div class="section-title" style="margin-top: 30px;">Order Summary</div>
-            
+
             <div class="order-details" style="background: white; border: 2px solid #f0f0f0;">
                 @php
                     $cartItems = json_decode($order->cart, true);
@@ -497,10 +497,10 @@
                             📧 Order Confirmation Email
                         </h4>
                         <p style="margin: 0; color: #666; font-size: 14px; line-height: 1.6;">
-                            A confirmation email with your order details has been sent to <strong>{{ $order->customer_email }}</strong>. 
+                            A confirmation email with your order details has been sent to <strong>{{ $order->customer_email }}</strong>.
                             You can track your order status in the "My Orders" section.
                         </p>
-                        
+
                         @if($order->method == 'Cash on Delivery' || $order->method == 'Cash On Delivery')
                         <div style="margin-top: 15px; padding: 12px; background: #fff3cd; border-left: 3px solid #ffc107; border-radius: 5px;">
                             <p style="margin: 0; color: #856404; font-size: 13px;">
