@@ -1,8 +1,8 @@
 /**
  * ============================================
- * RESPONSIVE CART SIDEBAR JAVASCRIPT
+ * CART SIDEBAR JAVASCRIPT - SIMPLIFIED
  * ============================================
- * Handles cart sidebar open/close and scroll behavior
+ * Handles cart behavior without positioning (CSS handles it)
  */
 
 (function($) {
@@ -30,12 +30,6 @@
         // Bind events
         bindEvents: function() {
             const self = this;
-
-            // Open cart
-            this.$cartOpen.on('click', function(e) {
-                e.preventDefault();
-                self.openCart();
-            });
 
             // Close cart
             this.$cartClose.on('click', function(e) {

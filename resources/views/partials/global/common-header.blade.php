@@ -258,6 +258,23 @@
        display: block !important;
        visibility: visible !important;
        opacity: 1 !important;
+       overflow: visible !important;
+   }
+
+   /* Prevent header row from scrolling */
+   .main-nav-row,
+   .container-fluid,
+   .main-nav {
+       overflow: visible !important;
+   }
+
+   /* Ensure body doesn't get horizontal scroll from cart */
+   body {
+       overflow-x: hidden !important;
+   }
+
+   html {
+       overflow-x: hidden !important;
    }
 
    /* Logo Sizing - Desktop 90px (25% smaller), Mobile 50-55px */
@@ -291,6 +308,63 @@
        }
    }
 
+   /* Small Desktop (992px - 1199px) - Show search bar with compact layout */
+   @media (min-width: 992px) and (max-width: 1199px) {
+       .search-col {
+           display: block !important;
+       }
+       
+       .enhanced-search-form {
+           max-width: 100% !important;
+       }
+       
+       .enhanced-search-form .search-field {
+           font-size: 13px !important;
+           padding: 8px 15px !important;
+       }
+       
+       .enhanced-search-form .categori-container select {
+           min-width: 90px !important;
+           font-size: 12px !important;
+           padding: 8px 25px 8px 10px !important;
+       }
+       
+       .col-icons {
+           gap: 6px !important;
+           overflow: visible !important;
+       }
+       
+       .icons-col {
+           overflow: visible !important;
+           padding-right: 18px !important;
+       }
+       
+       .header-icon-enhanced {
+           min-width: 40px;
+           max-width: 40px;
+           padding: 8px !important;
+       }
+       
+       .cart-icon {
+           padding: 8px !important;
+       }
+       
+       .cart-icon i {
+           font-size: 18px !important;
+       }
+       
+       .header-cart-count {
+           top: 2px !important;
+           right: 2px !important;
+       }
+       
+       .language-selector-modern select {
+           font-size: 12px !important;
+           width: 75px !important;
+           max-width: 75px !important;
+       }
+   }
+
    /* Mobile Menu Improvements - Keep items in one line */
    @media (max-width: 991px) {
        img.nav-logo.header-logo-responsive,
@@ -303,8 +377,8 @@
 
        .header-icon-enhanced {
            padding: 5px !important;
-           min-width: 36px;
-           max-width: 36px;
+           min-width: 40px;
+           max-width: 40px;
        }
 
        .header-icon-enhanced i {
@@ -312,9 +386,15 @@
        }
 
        .header-cart-count {
-           font-size: 9px !important;
-           padding: 1px 4px !important;
+           font-size: 8px !important;
+           padding: 2px 4px !important;
            min-width: 16px;
+           top: 0px !important;
+           right: 0px !important;
+       }
+
+       .cart-icon {
+           padding: 5px !important;
        }
 
        .enhanced-search-form {
@@ -346,6 +426,11 @@
            gap: 6px !important;
            align-items: center !important;
            justify-content: flex-end !important;
+           overflow: visible !important;
+       }
+
+       .icons-col {
+           overflow: visible !important;
        }
 
        .col-icons > * {
@@ -364,8 +449,8 @@
 
        .header-icon-enhanced {
            padding: 4px !important;
-           min-width: 32px;
-           max-width: 32px;
+           min-width: 36px;
+           max-width: 36px;
        }
 
        .header-icon-enhanced i {
@@ -375,6 +460,20 @@
        .col-icons {
            gap: 4px !important;
            flex-wrap: nowrap !important;
+           overflow: visible !important;
+       }
+
+       .icons-col {
+           overflow: visible !important;
+           padding-right: 12px !important;
+       }
+
+       .cart-icon {
+           padding: 5px !important;
+       }
+
+       .cart-icon i {
+           font-size: 16px !important;
        }
 
        .language-selector-modern {
@@ -390,7 +489,11 @@
 
        .header-cart-count {
            font-size: 8px !important;
-           padding: 1px 3px !important;
+           padding: 2px 4px !important;
+           top: 0px !important;
+           right: 0px !important;
+           min-width: 16px !important;
+           height: 14px !important;
        }
    }
 
@@ -515,6 +618,9 @@
        margin: 0 2px;
        transition: all 0.3s ease;
        border-radius: 8px;
+       display: flex !important;
+       align-items: center !important;
+       justify-content: center !important;
    }
    .header-icon-enhanced:hover {
        background-color: #f7fafc;
@@ -525,25 +631,142 @@
        color: #4a5568 !important;
    }
 
-   /* Cart icon - always visible */
+   /* Cart icon container - ensure visibility */
+   .header-cart-1 {
+       position: static !important;
+       display: flex !important;
+       align-items: center !important;
+       overflow: visible !important;
+   }
+
+   .header-cart-1 .cart {
+       display: flex !important;
+       align-items: center !important;
+       text-decoration: none !important;
+       position: relative !important;
+   }
+
+   /* Cart icon - always visible with proper spacing */
+   .cart-icon {
+       display: flex !important;
+       align-items: center !important;
+       justify-content: center !important;
+       gap: 4px !important;
+       position: relative !important;
+       padding: 8px !important;
+   }
+
+   .cart-icon i {
+       font-size: 20px !important;
+       color: #4a5568 !important;
+   }
+
+   /* Cart count badge - visible positioning */
    .header-cart-count {
        visibility: visible !important;
        opacity: 1 !important;
-       display: inline-block !important;
+       display: inline-flex !important;
+       align-items: center !important;
+       justify-content: center !important;
        background: #4299e1 !important;
        color: white !important;
-       font-size: 11px !important;
-       padding: 2px 6px !important;
-       border-radius: 10px !important;
-       font-weight: 600 !important;
-       min-width: 18px !important;
+       font-size: 10px !important;
+       padding: 3px 6px !important;
+       border-radius: 12px !important;
+       font-weight: 700 !important;
+       min-width: 20px !important;
+       height: 18px !important;
        text-align: center !important;
+       position: absolute !important;
+       top: 2px !important;
+       right: 2px !important;
+       z-index: 10 !important;
    }
 
-   .cart-icon {
-       display: flex !important;
-       align-items: center;
-       gap: 4px;
+   .cart-wrap {
+       display: none !important;
+   }
+
+   /* Ensure cart icon has enough space for badge */
+   .header-cart-1 .cart-icon i {
+       position: relative;
+       z-index: 1;
+   }
+
+   /* Make sure parent containers don't clip the badge */
+   .header-cart-1,
+   .header-icon-enhanced,
+   .col-icons,
+   .icons-col {
+       overflow: visible !important;
+   }
+
+   /* Add padding to icons column to prevent badge clipping */
+   .icons-col {
+       padding-right: 20px !important;
+   }
+
+   /* Make header icon enhanced have padding for badge space */
+   .header-icon-enhanced {
+       padding: 8px !important;
+   }
+
+   @media (max-width: 767px) {
+       .icons-col {
+           padding-right: 15px !important;
+       }
+       
+       .header-icon-enhanced {
+           padding: 6px !important;
+       }
+       
+       .cart-icon {
+           padding: 6px !important;
+       }
+       
+       .cart-icon i {
+           font-size: 18px !important;
+       }
+       
+       .header-cart-count {
+           font-size: 9px !important;
+           padding: 2px 5px !important;
+           min-width: 18px !important;
+           height: 16px !important;
+       }
+   }
+
+   /* Desktop and large screens - ensure proper spacing */
+   @media (min-width: 1200px) {
+       .icons-col {
+           padding-right: 25px !important;
+       }
+       
+       .col-icons {
+           gap: 10px !important;
+       }
+       
+       .header-icon-enhanced {
+           padding: 10px !important;
+       }
+       
+       .cart-icon {
+           padding: 10px !important;
+       }
+       
+       .cart-icon i {
+           font-size: 22px !important;
+       }
+       
+       .header-cart-count {
+           top: 4px !important;
+           right: 4px !important;
+           font-size: 10px !important;
+           padding: 3px 6px !important;
+           min-width: 20px !important;
+           height: 18px !important;
+       }
+   }
    }
 
    /* Account dropdown */
@@ -563,11 +786,36 @@
    .main-nav {
        padding-top: 8px !important;
        padding-bottom: 8px !important;
+       overflow: visible !important;
+   }
+
+   /* Prevent header from causing page scroll */
+   .ecommerce-header,
+   header,
+   .main-nav,
+   .main-nav-row {
+       overflow: visible !important;
+   }
+
+   /* Icons column should not cause overflow */
+   .icons-col {
+       overflow: visible !important;
+   }
+
+   .col-icons {
+       overflow: visible !important;
+   }
+
+   .header-icon-enhanced,
+   .header-cart-1 {
+       overflow: visible !important;
+       position: static !important;
    }
 
    /* Remove extra margins */
    .main-nav .row {
        margin: 0 !important;
+       overflow: visible !important;
    }
 
    .main-nav .navbar {
