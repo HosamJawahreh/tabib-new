@@ -31,7 +31,7 @@ class SimpleOrderController extends Controller
         Log::info('Request URL: ' . $request->fullUrl());
         Log::info('Request Method: ' . $request->method());
         Log::info('Request Data: ' . json_encode($request->all()));
-        
+
         if (config('app.debug')) {
             file_put_contents($debugLog, "\n\n" . date('Y-m-d H:i:s') . " - NEW ORDER SUBMISSION\n", FILE_APPEND);
             file_put_contents($debugLog, "Request: " . json_encode($request->all()) . "\n", FILE_APPEND);
@@ -46,14 +46,14 @@ class SimpleOrderController extends Controller
 
             if (!$cart) {
                 Log::warning('Cart is empty!');
-                
+
                 if ($request->expectsJson() || $request->ajax()) {
                     return response()->json([
                         'success' => false,
                         'error' => 'Your cart is empty'
                     ], 400);
                 }
-                
+
                 return redirect()->back()->with('error', 'Your cart is empty');
             }
 
@@ -95,7 +95,7 @@ class SimpleOrderController extends Controller
             // Create order in database
             $order = new Order();
             $order->order_number = 'ORD-' . time() . '-' . rand(1000, 9999);
-            
+
             Log::info('Generated Order Number: ' . $order->order_number);
             $order->user_id = auth()->check() ? auth()->id() : null;
             $order->cart = json_encode($cartData);
