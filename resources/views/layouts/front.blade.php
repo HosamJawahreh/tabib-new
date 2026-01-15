@@ -63,6 +63,7 @@
     <link rel="stylesheet" href="{{ asset('assets/front/css/cart-sidebar-responsive.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/front/css/responsive-fixes.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/front/css/header-responsive.css') }}?v={{ time() }}">
+    <link rel="stylesheet" href="{{ asset('assets/front/css/slider-header-fix.css') }}?v={{ time() }}">
 
     <link rel="stylesheet" href="{{ asset('assets/front/css/category/default.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/front/css/toastr.min.css') }}">

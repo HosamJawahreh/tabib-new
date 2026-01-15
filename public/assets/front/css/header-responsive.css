@@ -13,10 +13,50 @@
         position: relative !important;
         top: auto !important;
         z-index: 999 !important;
+        padding: 0 15px !important; /* Minimal padding */
+        margin: 0 !important;
     }
-    
+
     body {
         padding-top: 0 !important;
+    }
+
+    /* HIDE MENU ITEMS ON DESKTOP - Show only hamburger on mobile */
+    .navbar-collapse {
+        display: none !important;
+    }
+
+    .navbar-toggler {
+        display: none !important;
+    }
+
+    /* 50% Bigger logo size on desktop */
+    .header-logo-responsive,
+    .nav-logo {
+        max-height: 75px !important; /* Adjusted for better fit */
+        display: block !important;
+    }
+
+    /* Remove padding from main nav on desktop */
+    .main-nav {
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    .main-nav-row {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    .container-fluid {
+        padding: 0 !important;
+    }
+
+    .logo-col,
+    .search-col,
+    .icons-col {
+        padding-top: 5px !important;
+        padding-bottom: 5px !important;
     }
 }
 
@@ -31,39 +71,47 @@
         background: #fff !important;
         width: 100% !important;
         transition: box-shadow 0.3s ease;
-        padding: 8px 15px !important; /* Reduced padding for mobile */
+        padding: 0 8px !important; /* Minimal horizontal padding only */
+        margin: 0 !important;
     }
-    
+
     header.ecommerce-header.scrolled {
         box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
     }
-    
+
     /* Add padding to body to prevent content from hiding under sticky header */
     body {
-        padding-top: 80px !important; /* Reduced from 120px */
+        padding-top: 52px !important; /* Reduced for ultra-compact header */
     }
-    
-    /* Reduce header height on mobile */
+
+    /* Remove all vertical padding from mobile header */
     .main-nav {
-        padding: 4px 0 !important;
+        padding: 0 !important;
+        margin: 0 !important;
     }
-    
+
     .header-logo-responsive {
-        max-height: 40px !important; /* Smaller logo on mobile */
+        max-height: 45px !important;
+        display: block !important;
     }
-    
+
+    .nav-logo {
+        max-height: 45px !important;
+        display: block !important;
+    }
+
     .col-icons {
-        gap: 4px !important;
+        gap: 2px !important;
     }
-    
+
     /* Smaller icons on mobile */
     .col-icons a,
     .col-icons .dropdown {
-        padding: 6px !important;
+        padding: 2px !important;
     }
-    
+
     .col-icons i {
-        font-size: 18px !important;
+        font-size: 15px !important;
     }
 }
 
@@ -77,29 +125,29 @@ header.ecommerce-header * {
    ============================================ */
 
 @media (max-width: 991px) {
-    /* Show hamburger menu button */
+    /* Show hamburger menu button - Black, no border */
     .navbar-toggler {
         display: inline-flex !important;
         align-items: center;
         justify-content: center;
         padding: 8px 12px;
-        border: 1px solid #ddd;
+        border: none !important;
         border-radius: 4px;
-        background: #fff;
+        background: transparent !important;
         cursor: pointer;
         transition: all 0.3s ease;
     }
-    
+
     .navbar-toggler:hover {
-        background: #f5f5f5;
-        border-color: #7caa53;
+        background: transparent !important;
+        opacity: 0.7;
     }
-    
+
     .navbar-toggler i {
         font-size: 24px;
-        color: #333;
+        color: #000 !important;
     }
-    
+
     /* Mobile menu collapsed by default */
     .navbar-collapse {
         display: none !important;
@@ -117,25 +165,25 @@ header.ecommerce-header * {
         transform: translateX(-100%);
         transition: transform 0.3s ease;
     }
-    
+
     /* Show menu when active */
     .navbar-collapse.show {
         display: block !important;
         transform: translateX(0) !important;
     }
-    
-    /* Mobile menu header */
+
+    /* Mobile menu header - WHITE BACKGROUND */
     .navbar-collapse::before {
         content: 'Menu';
         display: block;
         padding: 20px 20px 15px;
-        background: linear-gradient(135deg, #7caa53 0%, #5d8a3f 100%);
-        color: #fff;
+        background: #fff !important;
+        color: #333 !important;
         font-size: 20px;
         font-weight: 600;
-        border-bottom: 1px solid rgba(255,255,255,0.2);
+        border-bottom: 2px solid #f0f0f0;
     }
-    
+
     /* Mobile menu items */
     .navbar-collapse .navbar-nav {
         display: flex !important;
@@ -143,12 +191,12 @@ header.ecommerce-header * {
         width: 100%;
         padding: 10px 0;
     }
-    
+
     .navbar-nav .nav-item {
         width: 100%;
         border-bottom: 1px solid #f0f0f0;
     }
-    
+
     .navbar-nav .nav-link {
         padding: 15px 20px !important;
         color: #333 !important;
@@ -159,21 +207,27 @@ header.ecommerce-header * {
         gap: 12px;
         width: 100%;
         transition: all 0.3s ease;
+        background: #fff !important;
     }
-    
+
     .navbar-nav .nav-link i {
         font-size: 18px;
-        color: #7caa53;
+        color: #333;
         width: 20px;
         text-align: center;
     }
-    
+
     .navbar-nav .nav-link:hover,
     .navbar-nav .nav-item.active .nav-link {
-        background: #f8f9fa;
-        color: #7caa53 !important;
+        background: #f8f9fa !important;
+        color: #000 !important;
     }
-    
+
+    .navbar-nav .nav-link:hover i,
+    .navbar-nav .nav-item.active .nav-link i {
+        color: #000;
+    }
+
     /* Category Dropdown Styling */
     .navbar-nav .dropdown-toggle::after {
         content: '\f107'; /* Font Awesome chevron down */
@@ -183,11 +237,11 @@ header.ecommerce-header * {
         margin-left: auto;
         transition: transform 0.3s ease;
     }
-    
+
     .navbar-nav .dropdown-toggle.active::after {
         transform: rotate(180deg);
     }
-    
+
     /* Dropdown in mobile */
     .navbar-nav .dropdown-menu {
         position: static !important;
@@ -200,92 +254,111 @@ header.ecommerce-header * {
         padding: 10px 0;
         display: none;
     }
-    
+
     .navbar-nav .dropdown-menu.show {
         display: block;
     }
-    
-    /* Category Headers in Mobile */
+
+    /* Category Headers in Mobile - SIMPLE WHITE DESIGN */
     .category-column {
         width: 100%;
         padding: 0;
         margin-bottom: 15px;
     }
-    
+
     .category-header {
-        background: linear-gradient(135deg, #7caa53 0%, #6b9a49 100%);
-        padding: 12px 20px;
-        margin: 0 0 8px 0;
+        background: #fff !important;
+        padding: 12px 16px;
+        margin: 0 0 4px 0;
+        border-radius: 0;
+        border-bottom: 2px solid #f0f0f0;
     }
-    
+
     .category-title {
-        color: #fff !important;
+        color: #333 !important;
         font-weight: 600;
-        font-size: 15px;
+        font-size: 14px;
         text-transform: uppercase;
-        letter-spacing: 0.5px;
+        letter-spacing: 0.3px;
         text-decoration: none !important;
         display: block;
     }
-    
-    /* Subcategory List */
+
+    /* Subcategory List - SIMPLE WHITE DESIGN */
     .subcategory-list {
         list-style: none;
         padding: 0;
         margin: 0;
+        background: #fff;
+        border-radius: 0;
+        overflow: hidden;
     }
-    
+
     .subcategory-list li {
-        border-bottom: 1px solid #e8e8e8;
+        border-bottom: 1px solid #f0f0f0;
     }
-    
+
     .subcategory-list li:last-child {
         border-bottom: none;
     }
-    
+
     .subcategory-item {
         display: flex;
         align-items: center;
-        gap: 10px;
-        padding: 12px 20px 12px 30px;
-        color: #555 !important;
+        gap: 8px;
+        padding: 10px 16px 10px 28px;
+        color: #333 !important;
         font-size: 14px;
         text-decoration: none !important;
-        transition: all 0.3s ease;
+        transition: all 0.2s ease;
+        border-left: 3px solid transparent;
+        background: #fff !important;
     }
-    
+
     .subcategory-item i {
-        color: #7caa53;
+        color: #999;
         font-size: 12px;
-        transition: transform 0.3s ease;
+        transition: all 0.2s ease;
     }
-    
+
     .subcategory-item:hover {
-        background: #fff;
-        color: #7caa53 !important;
-        padding-left: 35px;
+        background: #f8f9fa !important;
+        color: #000 !important;
+        padding-left: 32px;
+        border-left-color: #000;
     }
-    
+
     .subcategory-item:hover i {
+        color: #000;
         transform: translateX(3px);
     }
-    
+
+    /* Dropdown menu containers - SIMPLE WHITE DESIGN */
+    .navbar-nav .dropdown-menu {
+        background: #fff !important;
+        border: 1px solid #e0e0e0 !important;
+        border-radius: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        box-shadow: none !important;
+    }
+
     /* Mega menu in mobile */
     .mega-dropdown-menu {
         position: static !important;
         max-height: 60vh;
         overflow-y: auto;
     }
-    
+
     .mega-dropdown-menu .row {
         flex-direction: column;
     }
-    
+
     .mega-dropdown-menu .col {
         width: 100%;
         max-width: 100%;
     }
-    
+
     /* Menu overlay backdrop */
     .navbar-collapse.show::after {
         content: '';
@@ -297,14 +370,14 @@ header.ecommerce-header * {
         background: rgba(0,0,0,0.5);
         z-index: -1;
     }
-    
-    /* Close button for mobile menu */
+
+    /* Close button for mobile menu - BLACK */
     .navbar-collapse .close-menu {
         position: absolute;
         top: 15px;
         right: 15px;
         font-size: 32px;
-        color: #fff;
+        color: #333 !important;
         cursor: pointer;
         background: none;
         border: none;
@@ -334,7 +407,7 @@ header.ecommerce-header * {
     .navbar-toggler {
         display: none !important;
     }
-    
+
     /* Show horizontal menu */
     .navbar-collapse {
         display: flex !important;
@@ -347,47 +420,110 @@ header.ecommerce-header * {
         transform: none;
         overflow: visible;
     }
-    
+
     .navbar-collapse .navbar-nav {
         display: flex !important;
         flex-direction: row;
         gap: 10px;
     }
-    
+
     .navbar-nav .nav-item {
         border-bottom: none;
     }
-    
-    /* Dropdown on desktop */
+
+    /* Dropdown on desktop - FORMAL DESIGN */
     .navbar-nav .dropdown:hover .dropdown-menu {
         display: block;
     }
-    
+
     .dropdown-menu {
         position: absolute;
         top: 100%;
         left: 0;
-        background: #fff;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        border: 1px solid #f0f0f0;
-        border-radius: 4px;
-        padding: 10px 0;
-        min-width: 200px;
+        background: #fff !important;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1) !important;
+        border: 1px solid #e0e0e0 !important;
+        border-radius: 8px !important;
+        padding: 16px 0 !important;
+        min-width: 220px;
         display: none;
         z-index: 1000;
+        margin-top: 8px;
     }
-    
-    /* Mega menu on desktop */
+
+    .dropdown-item {
+        color: #333 !important;
+        padding: 8px 20px !important;
+        border-radius: 0 !important;
+        transition: all 0.2s ease !important;
+        font-size: 14px !important;
+        background: transparent !important;
+        border-left: 3px solid transparent !important;
+    }
+
+    .dropdown-item:hover {
+        background: #f8f9fa !important;
+        color: #7caa53 !important;
+        transform: translateX(4px) !important;
+        border-left-color: #7caa53 !important;
+    }
+
+    /* Mega menu on desktop - FORMAL DESIGN */
     .mega-dropdown:hover .mega-dropdown-menu {
         display: block;
     }
-    
+
     .mega-dropdown-menu {
         position: absolute;
         top: 100%;
         left: 0;
-        min-width: 600px;
-        padding: 20px;
+        min-width: 700px;
+        padding: 24px !important;
+        background: #fff !important;
+        border: 1px solid #e0e0e0 !important;
+        border-radius: 8px !important;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1) !important;
+        margin-top: 8px;
+    }
+
+    /* Mega menu columns */
+    .mega-dropdown-menu .col-md-3,
+    .mega-dropdown-menu .col-md-4 {
+        border-right: 1px solid #f0f0f0;
+        padding-right: 20px;
+        padding-left: 20px;
+    }
+
+    .mega-dropdown-menu .col-md-3:last-child,
+    .mega-dropdown-menu .col-md-4:last-child {
+        border-right: none;
+    }
+
+    /* Category headers in mega menu */
+    .mega-dropdown-menu h6,
+    .mega-dropdown-menu .dropdown-header,
+    .mega-dropdown-menu .category-title {
+        color: #333 !important;
+        font-weight: 600 !important;
+        font-size: 13px !important;
+        padding: 8px 16px !important;
+        margin-bottom: 8px !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.5px !important;
+        border-bottom: 2px solid #7caa53 !important;
+        background: transparent !important;
+    }
+
+    /* Clean dropdown toggle */
+    .navbar-nav .nav-link.dropdown-toggle {
+        color: #333 !important;
+        font-weight: 500 !important;
+        transition: color 0.2s ease !important;
+    }
+
+    .navbar-nav .nav-link.dropdown-toggle:hover,
+    .navbar-nav .nav-link.dropdown-toggle:focus {
+        color: #7caa53 !important;
     }
 }
 
@@ -437,7 +573,7 @@ body.rtl .navbar-collapse.show.show {
         right: 0;
         transform: translateX(100%);
     }
-    
+
     html[lang="ar"] .navbar-collapse.show,
     html[dir="rtl"] .navbar-collapse.show,
     body.rtl .navbar-collapse.show {

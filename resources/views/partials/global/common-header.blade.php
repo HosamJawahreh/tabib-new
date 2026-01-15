@@ -1,5 +1,5 @@
  <!--==================== Header Section Start ====================-->
- <header class="ecommerce-header px-3 px-lg-5" style="position: sticky; top: 0; z-index: 9999; background: #fff; box-shadow: 0 2px 10px rgba(0,0,0,0.06); padding-top: 0; padding-bottom: 0;">
+ <header class="ecommerce-header" style="position: sticky; top: 0; z-index: 9999; background: #fff; box-shadow: 0 2px 10px rgba(0,0,0,0.06); padding: 0 20px;">
    <style>
      /* Stabilize scrollbar to avoid layout shift/jitter */
      html { scrollbar-gutter: stable both-edges; }
@@ -853,6 +853,89 @@
        transform: translateY(-2px);
        box-shadow: 0 4px 8px rgba(124, 170, 83, 0.3);
    }
+
+   /* HIDE MENU ITEMS ON DESKTOP - Mobile Only */
+   @media (min-width: 992px) {
+       .navbar-collapse,
+       .navbar-nav,
+       .navbar-toggler {
+           display: none !important;
+           visibility: hidden !important;
+       }
+
+       /* Remove all padding from desktop header */
+       header.ecommerce-header {
+           padding: 0 15px !important;
+           margin: 0 !important;
+       }
+
+       .main-nav {
+           padding: 0 !important;
+           margin: 0 !important;
+       }
+
+       .main-nav-row {
+           margin: 0 !important;
+           padding: 0 !important;
+       }
+
+       .container-fluid {
+           padding: 0 !important;
+       }
+
+       .logo-col,
+       .search-col,
+       .icons-col {
+           padding-top: 5px !important;
+           padding-bottom: 5px !important;
+       }
+
+       /* Bigger logo on desktop - 50% increase */
+       .header-logo-responsive,
+       .nav-logo {
+           max-height: 82px !important;
+           display: block !important;
+           margin: 0 !important;
+           padding: 0 !important;
+       }
+   }
+
+   /* Mobile: Minimal padding */
+   @media (max-width: 991px) {
+       header.ecommerce-header {
+           padding: 0 8px !important;
+           margin: 0 !important;
+       }
+
+       .main-nav {
+           padding: 0 !important;
+           margin: 0 !important;
+       }
+
+       .main-nav-row {
+           margin: 0 !important;
+           padding: 0 !important;
+       }
+
+       .container-fluid {
+           padding: 0 !important;
+       }
+
+       .logo-col,
+       .search-col,
+       .icons-col {
+           padding-top: 3px !important;
+           padding-bottom: 3px !important;
+       }
+
+       .header-logo-responsive,
+       .nav-logo {
+           max-height: 45px !important;
+           display: block !important;
+           margin: 0 !important;
+           padding: 0 !important;
+       }
+   }
    </style>
 
 
@@ -860,13 +943,13 @@
 $categories = App\Models\Category::with('subs')->where('status',1)->get();
 $pages = App\Models\Page::get();
 @endphp
-<div class="main-nav" style="padding: 8px 0 !important;">
-    <div class="container-fluid">
-        <div class="row align-items-center main-nav-row" style="margin: 0 !important; display: flex !important;">
-            <div class="col-lg-2 col-md-3 col-4 text-start logo-col">
-                <nav class="navbar navbar-expand-lg nav-dark nav-primary-hover nav-line-active p-0">
-                    <a class="navbar-brand" href="{{ route('front.index') }}" style="margin: 0 !important; padding: 0 !important;">
-                        <img class="nav-logo lazy header-logo-responsive" data-src="{{ asset('assets/images/'.$gs->logo) }}" src="{{ asset('assets/images/'.$gs->logo) }}" alt="Logo">
+<div class="main-nav" style="padding: 0 !important; margin: 0 !important;">
+    <div class="container-fluid" style="padding: 0 !important;">
+        <div class="row align-items-center main-nav-row" style="margin: 0 !important; display: flex !important; padding: 0 !important;">
+            <div class="col-lg-2 col-md-3 col-4 text-start logo-col" style="padding: 0 15px !important;">
+                <nav class="navbar navbar-expand-lg nav-dark nav-primary-hover nav-line-active p-0" style="padding: 0 !important; margin: 0 !important;">
+                    <a class="navbar-brand" href="{{ route('front.index') }}" style="margin: 0 !important; padding: 0 !important; display: inline-block;">
+                        <img class="nav-logo lazy header-logo-responsive" data-src="{{ asset('assets/images/'.$gs->logo) }}" src="{{ asset('assets/images/'.$gs->logo) }}" alt="Logo" style="display: block; margin: 0; padding: 0;">
                     </a>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <i class="flaticon-menu-2 flat-small text-primary"></i>
