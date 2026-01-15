@@ -59,6 +59,7 @@
     <link rel="stylesheet" href="{{ asset('assets/front/css/template.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/front/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/front/css/product-card-custom.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/front/css/product-card-responsive.css') }}">
 
     <link rel="stylesheet" href="{{ asset('assets/front/css/category/default.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/front/css/toastr.min.css') }}">

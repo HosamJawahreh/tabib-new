@@ -109,15 +109,15 @@ class SimpleOrderController extends Controller
             $order->payment_status = 'Pending';
             $order->status = 'pending';
 
-            // Customer details
+            // Customer details - Ensure no NULL values for required fields
             $order->customer_name = $customerName;
             $order->customer_email = $customerEmail;
             $order->customer_phone = $customerPhone;
-            $order->customer_country = $request->input('customer_country', '');
-            $order->customer_address = $request->input('customer_address', '');
-            $order->customer_city = $request->input('customer_city', '');
-            $order->customer_zip = $request->input('customer_zip', '');
-            $order->customer_state = $request->input('customer_state', '');
+            $order->customer_country = $request->input('customer_country', 'Jordan');
+            $order->customer_address = $request->input('customer_address', 'N/A');
+            $order->customer_city = $request->input('customer_city', 'N/A');
+            $order->customer_zip = $request->input('customer_zip', '00000');
+            $order->customer_state = $request->input('customer_state', 'N/A');
 
             // Shipping (same as customer for COD)
             $order->shipping_name = $customerName;
@@ -129,18 +129,18 @@ class SimpleOrderController extends Controller
             $order->shipping_zip = $order->customer_zip;
             $order->shipping_state = $order->customer_state;
 
-            // Other fields
+            // Other fields - Use the calculated values, not direct from request
             $order->order_note = $request->input('order_note', '');
             $order->coupon_code = null;
             $order->coupon_discount = 0;
             $order->currency_sign = $request->input('currency_sign', 'JD');
             $order->currency_name = $request->input('currency_name', 'Jordanian Dinar');
-            $order->currency_value = $request->input('currency_value', 0.71);
-            $order->shipping_cost = $request->input('shipping_cost', 0);
-            $order->packing_cost = $request->input('packing_cost', 0);
-            $order->tax = $request->input('tax', 0);
-            $order->dp = $request->input('dp', 0);
-            $order->wallet_price = $request->input('wallet_price', 0);
+            $order->currency_value = floatval($request->input('currency_value', 0.71));
+            $order->shipping_cost = $shippingCost; // Use calculated value
+            $order->packing_cost = $packingCost; // Use calculated value
+            $order->tax = $tax; // Use calculated value (guaranteed to be float)
+            $order->dp = intval($request->input('dp', 0));
+            $order->wallet_price = floatval($request->input('wallet_price', 0));
 
             Log::info('Attempting to save order...');
             $order->save();
