@@ -114,61 +114,21 @@ $pages = App\Models\Page::get();
 
 @media (max-width: 576px) {
     .professional-footer {
-        padding: 12px 0;
-    }
-
-    .footer-content {
-        flex-direction: row;
-        justify-content: space-between;
-        gap: 10px;
-        flex-wrap: nowrap;
-        overflow-x: auto;
-    }
-
-    .footer-left-section {
-        flex-direction: row;
-        gap: 10px;
-        flex-wrap: nowrap;
-        align-items: center;
-        width: auto;
-    }
-
-    .footer-contact-info {
-        flex-direction: row;
-        gap: 8px;
-        font-size: 0.7rem;
-        flex-wrap: nowrap;
-        width: auto;
+        padding: 15px 0;
     }
 
     .footer-contact-item {
-        font-size: 0.7rem;
-        white-space: nowrap;
-    }
-
-    .footer-contact-item i {
         font-size: 0.85rem;
     }
 
     .footer-copyright {
-        font-size: 0.7rem;
-        padding-left: 8px;
-        padding-top: 0;
-        border-top: none;
-        border-left: 1px solid rgba(16, 185, 129, 0.3);
-        width: auto;
-        white-space: nowrap;
-    }
-
-    .footer-social-icons {
-        gap: 6px;
-        flex-shrink: 0;
+        font-size: 0.8rem;
     }
 
     .footer-social-icons a {
-        width: 28px;
-        height: 28px;
-        font-size: 0.8rem;
+        width: 32px;
+        height: 32px;
+        font-size: 0.9rem;
     }
 }
 </style>

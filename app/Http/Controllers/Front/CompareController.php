@@ -6,7 +6,7 @@ use App\{
     Models\Compare,
     Models\Product
 };
-use Session;
+use Illuminate\Support\Facades\Session;
 
 class CompareController extends FrontBaseController
 {
