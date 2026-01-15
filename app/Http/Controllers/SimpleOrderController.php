@@ -135,7 +135,7 @@ class SimpleOrderController extends Controller
             $order->coupon_discount = 0;
             $order->currency_sign = $request->input('currency_sign', 'JD');
             $order->currency_name = $request->input('currency_name', 'Jordanian Dinar');
-            $order->currency_value = floatval($request->input('currency_value', 0.71));
+            $order->currency_value = floatval($request->input('currency_value', 1)); // Changed to 1 - prices already in JD
             $order->shipping_cost = $shippingCost; // Use calculated value
             $order->packing_cost = $packingCost; // Use calculated value
             $order->tax = $tax; // Use calculated value (guaranteed to be float)
