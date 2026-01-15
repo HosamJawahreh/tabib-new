@@ -58,10 +58,11 @@
     <link rel="stylesheet" href="{{ asset('assets/front/css/owl.carousel.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/front/css/template.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/front/css/style.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/front/css/product-card-custom.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/front/css/product-card-responsive.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/front/css/product-card-custom.css') }}?v={{ time() }}">
+    <link rel="stylesheet" href="{{ asset('assets/front/css/product-card-responsive.css') }}?v={{ time() }}">
     <link rel="stylesheet" href="{{ asset('assets/front/css/cart-sidebar-responsive.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/front/css/responsive-fixes.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/front/css/header-responsive.css') }}?v={{ time() }}">
 
     <link rel="stylesheet" href="{{ asset('assets/front/css/category/default.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/front/css/toastr.min.css') }}">
@@ -175,6 +176,7 @@
     <script src="{{ asset('assets/front/js/main.js') }}?v={{ \Illuminate\Support\Facades\File::exists(public_path('assets/front/js/main.js')) ? filemtime(public_path('assets/front/js/main.js')) : time() }}"></script>
     <script src="{{ asset('assets/front/js/product-card-custom.js') }}"></script>
     <script src="{{ asset('assets/front/js/cart-sidebar-responsive.js') }}"></script>
+    <script src="{{ asset('assets/front/js/header-responsive.js') }}?v={{ time() }}"></script>
 
     <script>
         lazy();

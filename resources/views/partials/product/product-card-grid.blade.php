@@ -26,7 +26,7 @@
             @endif
 
             {{-- Add to Cart Button - Upper Right Corner, Clean Black Icon --}}
-            <div class="cart-action-buttons position-absolute" style="top: 10px; right: 10px; z-index: 10;">
+            <div class="cart-action-buttons position-absolute" style="top: 10px; right: 10px; z-index: 10; display: flex !important; opacity: 1 !important; visibility: visible !important;">
                 @if($product->product_type == "affiliate")
                     {{-- Affiliate Product --}}
                     <a href="javascript:;"
@@ -34,17 +34,18 @@
                        class="cart-icon-clean affilate-btn"
                        data-bs-toggle="tooltip"
                        data-bs-placement="left"
-                       title="{{ __('Add To Cart') }}">
-                        <i class="fas fa-shopping-cart" style="font-size: 20px; color: #000;"></i>
+                       title="{{ __('Add To Cart') }}"
+                       style="display: inline-flex !important; opacity: 1 !important; visibility: visible !important;">
+                        <i class="fas fa-shopping-cart"></i>
                     </a>
                 @else
                     @if($product->emptyStock())
                         {{-- Out of Stock --}}
                         <a class="cart-icon-clean cart-out-of-stock"
                            href="#"
-                           style="cursor: not-allowed; opacity: 0.4;"
+                           style="cursor: not-allowed; opacity: 0.4; display: inline-flex !important; visibility: visible !important;"
                            title="{{ __('Out Of Stock') }}">
-                            <i class="fas fa-times-circle" style="font-size: 20px; color: #000;"></i>
+                            <i class="fas fa-times-circle"></i>
                         </a>
                     @else
                         {{-- Add to Cart --}}
@@ -53,8 +54,9 @@
                            class="cart-icon-clean add-cart"
                            data-bs-toggle="tooltip"
                            data-bs-placement="left"
-                           title="{{ __('Add To Cart') }}">
-                            <i class="fas fa-shopping-cart" style="font-size: 20px; color: #000;"></i>
+                           title="{{ __('Add To Cart') }}"
+                           style="display: inline-flex !important; opacity: 1 !important; visibility: visible !important;">
+                            <i class="fas fa-shopping-cart"></i>
                         </a>
                     @endif
                 @endif

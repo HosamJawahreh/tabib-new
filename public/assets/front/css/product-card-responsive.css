@@ -96,44 +96,52 @@
     top: 10px;
     right: 10px;
     z-index: 10;
-    display: flex;
-    gap: 5px;
+    display: flex !important;
+    gap: 8px;
+    flex-direction: column;
+    opacity: 1 !important;
+    visibility: visible !important;
 }
 
 .cart-icon-clean {
-    display: inline-flex;
+    display: inline-flex !important;
     align-items: center;
     justify-content: center;
-    width: 44px;
-    height: 44px;
-    background: rgba(255, 255, 255, 0.95);
-    border-radius: 50%;
+    width: 44px !important;
+    height: 44px !important;
+    background: rgba(255, 255, 255, 0.95) !important;
+    border: none !important;
+    border-radius: 50% !important;
     transition: all 0.3s ease;
     cursor: pointer;
     text-decoration: none;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
     position: relative;
-    z-index: 2;
+    z-index: 9999;
+    opacity: 1 !important;
+    visibility: visible !important;
 }
 
 .cart-icon-clean i {
-    font-size: 20px;
-    color: #000;
+    font-size: 20px !important;
+    color: #000 !important;
     transition: all 0.3s ease;
+    display: block !important;
 }
 
 .cart-icon-clean:hover {
-    background: #000;
+    background: #000 !important;
     transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25) !important;
 }
 
 .cart-icon-clean:hover i {
-    color: #fff;
+    color: #fff !important;
 }
 
 /* Success State */
 .cart-icon-clean.added {
-    background: #28a745;
+    background: #28a745 !important;
 }
 
 .cart-icon-clean.added i {
@@ -144,8 +152,8 @@
 /* Out of Stock */
 .cart-icon-clean.cart-out-of-stock {
     cursor: not-allowed;
-    opacity: 0.4;
-    background: rgba(200, 200, 200, 0.8);
+    opacity: 0.4 !important;
+    background: rgba(200, 200, 200, 0.8) !important;
 }
 
 /* ========================================
@@ -271,12 +279,18 @@
     }
 
     .cart-icon-clean {
-        width: 36px;
-        height: 36px;
+        width: 40px;
+        height: 40px;
     }
 
     .cart-icon-clean i {
-        font-size: 16px;
+        font-size: 18px;
+    }
+
+    /* Make cart icons visible on tablets */
+    .product-card .cart-action-buttons {
+        opacity: 1 !important;
+        visibility: visible !important;
     }
 
     .on-sale {
@@ -321,14 +335,14 @@
         padding: 10px; /* More padding on mobile */
     }
 
-    /* Smaller badges on mobile */
+    /* Cart icon visible on mobile */
     .cart-icon-clean {
-        width: 32px;
-        height: 32px;
+        width: 38px;
+        height: 38px;
     }
 
     .cart-icon-clean i {
-        font-size: 14px;
+        font-size: 16px;
     }
 
     .on-sale {
@@ -341,6 +355,14 @@
     .cart-action-buttons {
         top: 8px;
         right: 8px;
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+
+    /* Make cart icons always visible on mobile */
+    .product-card .cart-icon-clean {
+        opacity: 1 !important;
+        visibility: visible !important;
     }
 
     /* Content adjustments */

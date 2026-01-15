@@ -1,12 +1,22 @@
  <!--==================== Header Section Start ====================-->
- <header class="ecommerce-header px-3 px-lg-5" style="position: relative; z-index: 999; background: #fff; box-shadow: 0 2px 10px rgba(0,0,0,0.06); padding-top: 0; padding-bottom: 0;">
+ <header class="ecommerce-header px-3 px-lg-5" style="position: sticky; top: 0; z-index: 9999; background: #fff; box-shadow: 0 2px 10px rgba(0,0,0,0.06); padding-top: 0; padding-bottom: 0;">
    <style>
      /* Stabilize scrollbar to avoid layout shift/jitter */
      html { scrollbar-gutter: stable both-edges; }
      html, body { overflow-x: hidden; overflow-y: scroll; scroll-behavior: auto; }
 
+   /* STICKY HEADER */
    .ecommerce-header {
-       position: relative;
+       position: sticky !important;
+       top: 0 !important;
+       z-index: 9999 !important;
+       background: #fff !important;
+       transition: box-shadow 0.3s ease;
+   }
+
+   /* Enhanced shadow when scrolling */
+   .ecommerce-header.scrolled {
+       box-shadow: 0 4px 12px rgba(0,0,0,0.1) !important;
    }
 
    /* COMPLETE RTL Support for Arabic Language - FLIP ENTIRE LAYOUT */
@@ -497,14 +507,15 @@
        }
    }
 
-   /* Professional Modern Search Bar Design */
+   /* Professional Modern Search Bar Design - 35% Smaller */
    .enhanced-search-form {
        border: 2px solid #e8ecef !important;
        border-radius: 50px !important;
        overflow: hidden;
        box-shadow: 0 2px 8px rgba(0,0,0,0.06);
        transition: all 0.3s ease;
-       max-width: 600px !important;
+       max-width: 390px !important; /* 35% smaller than 600px */
+       width: 100% !important;
        margin: 0 auto;
        background: #ffffff !important;
        display: flex !important;
@@ -857,53 +868,57 @@ $pages = App\Models\Page::get();
                     <a class="navbar-brand" href="{{ route('front.index') }}" style="margin: 0 !important; padding: 0 !important;">
                         <img class="nav-logo lazy header-logo-responsive" data-src="{{ asset('assets/images/'.$gs->logo) }}" src="{{ asset('assets/images/'.$gs->logo) }}" alt="Logo">
                     </a>
-                    <button class="navbar-toggler d-none" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <i class="flaticon-menu-2 flat-small text-primary"></i>
                     </button>
-                    <div class="collapse navbar-collapse" id="navbarSupportedContent" style="display: none !important;">
-                        <ul class="navbar-nav ms-md-5" style="display: none !important;">
-                            <li class="nav-item dropdown {{ request()->path() == '/' ? 'active':''}}">
-                                <a class="nav-link dropdown-toggle" href="{{ route('front.index') }}">{{ __('Home') }}</a>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav ms-md-5">
+                            {{-- Home --}}
+                            <li class="nav-item {{ request()->path() == '/' ? 'active':''}}">
+                                <a class="nav-link" href="{{ route('front.index') }}">
+                                    <i class="fas fa-home"></i> {{ __('Home') }}
+                                </a>
                             </li>
+
+                            {{-- Categories with Subcategories --}}
                             <li class="nav-item dropdown mega-dropdown">
-                                <a class="nav-link dropdown-toggle" href="{{ route('front.category') }}">{{ __('Product') }}</a>
+                                <a class="nav-link dropdown-toggle" href="{{ route('front.category') }}">
+                                    <i class="fas fa-th-large"></i> {{ __('Categories') }}
+                                </a>
                                 <ul class="dropdown-menu mega-dropdown-menu">
                                     <li class="mega-container">
                                         <div class="row row-cols-lg-4 row-cols-sm-2 row-cols-1">
-
                                             @foreach ($categories as $category)
-                                            <div class="col">
-                                                <span class="d-inline-block px-3 font-600 text-uppercase text-secondary pb-2">{{ $category->name }}</span>
-                                                <ul>
-                                                    @if($category->subs->count() > 0)
+                                            <div class="col category-column">
+                                                <div class="category-header">
+                                                    <a href="{{ route('front.category', $category->slug) }}" class="category-title">
+                                                        {{ $category->name }}
+                                                    </a>
+                                                </div>
+                                                @if($category->subs->count() > 0)
+                                                <ul class="subcategory-list">
                                                     @foreach ($category->subs as $subcategory)
-                                                    <li><a class="dropdown-item" href="{{route('front.category', [$category->slug, $subcategory->slug])}}{{!empty(request()->input('search')) ? '?search='.request()->input('search') : ''}}" >{{$subcategory->name}}</a></li>
+                                                    <li>
+                                                        <a class="subcategory-item" href="{{route('front.category', [$category->slug, $subcategory->slug])}}{{!empty(request()->input('search')) ? '?search='.request()->input('search') : ''}}">
+                                                            <i class="fas fa-angle-right"></i> {{$subcategory->name}}
+                                                        </a>
+                                                    </li>
                                                     @endforeach
-                                                    @endif
                                                 </ul>
+                                                @endif
                                             </div>
                                             @endforeach
-
                                         </div>
                                     </li>
                                 </ul>
                             </li>
-                            <li class="nav-item dropdown ">
-                                <a class="nav-link dropdown-toggle" href="#">{{ __('Pages') }}</a>
-                                <ul class="dropdown-menu">
-                                    @foreach($pages->where('header','=',1) as $data)
-                                    <li><a class="dropdown-item" href="{{ route('front.vendor',$data->slug) }}">{{ $data->title }}</a></li>
-                                    @endforeach
-                                </ul>
-                            </li>
-                            <li class="nav-item dropdown {{ request()->path()=='blog' ? 'active' : '' }}">
-                                <a class="nav-link dropdown-toggle" href="{{ route('front.blog') }}">{{ __('Blog') }}</a>
-                            </li>
-                            <li class="nav-item dropdown {{ request()->path()=='faq' ? 'active' : '' }}">
-                                <a class="nav-link dropdown-toggle" href="{{ route('front.faq') }}">{{ __('FAQ') }}</a>
-                            </li>
 
-                            <li class="nav-item {{ request()->path()=='contact' ? 'active' : '' }}"><a class="nav-link" href="{{ route('front.contact') }}">{{ __('Contact') }}</a></li>
+                            {{-- Contact --}}
+                            <li class="nav-item {{ request()->path()=='contact' ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('front.contact') }}">
+                                    <i class="fas fa-envelope"></i> {{ __('Contact') }}
+                                </a>
+                            </li>
                         </ul>
                     </div>
                 </nav>

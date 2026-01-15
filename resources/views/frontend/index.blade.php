@@ -80,9 +80,10 @@
         object-fit: contain;
     }
 
+    /* Cart icon always visible */
     .add-to-cart-btn {
-        opacity: 0;
-        transition: opacity 0.3s ease;
+        opacity: 1 !important;
+        transition: all 0.3s ease;
         border-radius: 50%;
         width: 40px;
         height: 40px;
@@ -93,7 +94,8 @@
     }
 
     .product-card:hover .add-to-cart-btn {
-        opacity: 1;
+        opacity: 1 !important;
+        transform: scale(1.1);
     }
 
     .price-current {
@@ -104,6 +106,33 @@
     .product-title {
         font-size: 0.9rem;
         line-height: 1.4;
+    }
+
+    /* Cart Icon - Force Visibility */
+    .cart-action-buttons {
+        display: flex !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+
+    .cart-icon-clean {
+        display: inline-flex !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        background: transparent !important;
+        width: 40px !important;
+        height: 40px !important;
+        border-radius: 50% !important;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+    }
+
+    .cart-icon-clean:hover {
+        background: #000 !important;
+        transform: scale(1.1);
+    }
+
+    .cart-icon-clean:hover i {
+        color: #fff !important;
     }
 
     /* Loading Spinner */
@@ -169,23 +198,35 @@
         z-index: 1;
     }
 
-    /* Responsive slider heights - REDUCED BY 20% FOR MOBILE */
+    /* Responsive slider heights - Optimized for all devices */
+    /* Mobile Small (< 576px) */
     @media (max-width: 575px) {
         .slider-item {
-            min-height: 160px !important; /* Reduced from ~200px by 20% */
-            max-height: 200px !important;
+            min-height: 180px !important;
+            max-height: 220px !important;
+        }
+        .slider-content h2 {
+            font-size: 1.2rem !important;
+        }
+        .slider-content p {
+            font-size: 0.75rem !important;
         }
     }
 
-    @media (min-width: 576px) {
+    /* Mobile Large (576px - 767px) */
+    @media (min-width: 576px) and (max-width: 767px) {
         .slider-item {
-            min-height: 200px; /* Reduced from 250px by 20% */
+            min-height: 220px !important;
+        }
+        .slider-content h2 {
+            font-size: 1.4rem !important;
         }
     }
 
-    @media (min-width: 768px) {
+    /* Tablet (768px - 991px) */
+    @media (min-width: 768px) and (max-width: 991px) {
         .slider-item {
-            min-height: 280px; /* Reduced from 350px by 20% */
+            min-height: 300px !important;
         }
         .home-slider-section {
             padding: 0 20px !important;
@@ -194,26 +235,41 @@
             border-radius: 20px !important;
             box-shadow: 0 4px 20px rgba(0,0,0,0.1);
         }
-    }
-
-    @media (min-width: 992px) {
-        .slider-item {
-            min-height: 320px; /* Reduced from 400px by 20% */
+        .slider-content h2 {
+            font-size: 1.8rem !important;
         }
     }
 
-    @media (min-width: 1200px) {
+    /* Desktop Small (992px - 1199px) */
+    @media (min-width: 992px) and (max-width: 1199px) {
         .slider-item {
-            min-height: 360px; /* Reduced from 450px by 20% */
+            min-height: 350px !important;
+        }
+        .slider-content h2 {
+            font-size: 2rem !important;
+        }
+    }
+
+    /* Desktop Large (1200px - 1399px) */
+    @media (min-width: 1200px) and (max-width: 1399px) {
+        .slider-item {
+            min-height: 400px !important;
         }
         .home-slider-section {
             padding: 0 30px !important;
         }
+        .slider-content h2 {
+            font-size: 2.2rem !important;
+        }
     }
 
+    /* Desktop XL (≥ 1400px) */
     @media (min-width: 1400px) {
         .slider-item {
-            min-height: 400px; /* Reduced from 500px by 20% */
+            min-height: 450px !important;
+        }
+        .slider-content h2 {
+            font-size: 2.5rem !important;
         }
     }
 

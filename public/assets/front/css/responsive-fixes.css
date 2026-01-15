@@ -49,6 +49,25 @@
 @media (min-width: 992px) {
     .search-col {
         display: block !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+}
+
+/* Small Desktop (992px - 1199px) - Force Search Visible */
+@media (min-width: 992px) and (max-width: 1199px) {
+    .search-col {
+        display: block !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        flex: 1 1 auto !important;
+    }
+    
+    .product-search-one,
+    .enhanced-search-form {
+        display: block !important;
+        opacity: 1 !important;
+        visibility: visible !important;
     }
 }
 

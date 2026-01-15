@@ -20,34 +20,46 @@
 .cart-action-buttons {
     display: flex;
     gap: 5px;
+    flex-direction: column;
 }
 
 .cart-icon-clean {
-    display: inline-flex;
+    display: inline-flex !important;
     align-items: center;
     justify-content: center;
-    width: 36px;
-    height: 36px;
+    width: 40px !important;
+    height: 40px !important;
     transition: all 0.3s ease;
     cursor: pointer;
     text-decoration: none;
-    background: transparent !important;
+    background: rgba(255, 255, 255, 0.95) !important;
     border: none !important;
-    box-shadow: none !important;
+    border-radius: 50% !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    position: relative !important;
+    z-index: 9999 !important;
 }
 
 .cart-icon-clean i {
-    font-size: 20px;
-    color: #000;
+    font-size: 18px !important;
+    color: #000 !important;
     transition: all 0.3s ease;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    display: block !important;
 }
 
 /* Hover Effect - Scale and slight color change */
+.cart-icon-clean:hover {
+    background: #000 !important;
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25) !important;
+}
+
 .cart-icon-clean:hover i {
-    transform: scale(1.2);
-    color: #333;
+    color: #fff !important;
 }
 
 /* Loading State */

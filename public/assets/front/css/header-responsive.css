@@ -1,0 +1,446 @@
+/**
+ * HEADER STICKY & RESPONSIVE MENU FIX
+ * Makes header sticky on MOBILE ONLY and menu responsive on all devices
+ */
+
+/* ============================================
+   STICKY HEADER - MOBILE ONLY
+   ============================================ */
+
+/* Desktop: Normal (not sticky) */
+@media (min-width: 992px) {
+    header.ecommerce-header {
+        position: relative !important;
+        top: auto !important;
+        z-index: 999 !important;
+    }
+    
+    body {
+        padding-top: 0 !important;
+    }
+}
+
+/* Mobile & Tablet: Sticky */
+@media (max-width: 991px) {
+    header.ecommerce-header {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        z-index: 9999 !important;
+        background: #fff !important;
+        width: 100% !important;
+        transition: box-shadow 0.3s ease;
+        padding: 8px 15px !important; /* Reduced padding for mobile */
+    }
+    
+    header.ecommerce-header.scrolled {
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
+    }
+    
+    /* Add padding to body to prevent content from hiding under sticky header */
+    body {
+        padding-top: 80px !important; /* Reduced from 120px */
+    }
+    
+    /* Reduce header height on mobile */
+    .main-nav {
+        padding: 4px 0 !important;
+    }
+    
+    .header-logo-responsive {
+        max-height: 40px !important; /* Smaller logo on mobile */
+    }
+    
+    .col-icons {
+        gap: 4px !important;
+    }
+    
+    /* Smaller icons on mobile */
+    .col-icons a,
+    .col-icons .dropdown {
+        padding: 6px !important;
+    }
+    
+    .col-icons i {
+        font-size: 18px !important;
+    }
+}
+
+/* Prevent header content from being cut off */
+header.ecommerce-header * {
+    overflow: visible !important;
+}
+
+/* ============================================
+   MOBILE MENU (Below 992px)
+   ============================================ */
+
+@media (max-width: 991px) {
+    /* Show hamburger menu button */
+    .navbar-toggler {
+        display: inline-flex !important;
+        align-items: center;
+        justify-content: center;
+        padding: 8px 12px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        background: #fff;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .navbar-toggler:hover {
+        background: #f5f5f5;
+        border-color: #7caa53;
+    }
+    
+    .navbar-toggler i {
+        font-size: 24px;
+        color: #333;
+    }
+    
+    /* Mobile menu collapsed by default */
+    .navbar-collapse {
+        display: none !important;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 85%;
+        max-width: 360px;
+        height: 100vh;
+        background: #fff;
+        box-shadow: 2px 0 20px rgba(0,0,0,0.15);
+        overflow-y: auto;
+        z-index: 99999;
+        padding: 0;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+    }
+    
+    /* Show menu when active */
+    .navbar-collapse.show {
+        display: block !important;
+        transform: translateX(0) !important;
+    }
+    
+    /* Mobile menu header */
+    .navbar-collapse::before {
+        content: 'Menu';
+        display: block;
+        padding: 20px 20px 15px;
+        background: linear-gradient(135deg, #7caa53 0%, #5d8a3f 100%);
+        color: #fff;
+        font-size: 20px;
+        font-weight: 600;
+        border-bottom: 1px solid rgba(255,255,255,0.2);
+    }
+    
+    /* Mobile menu items */
+    .navbar-collapse .navbar-nav {
+        display: flex !important;
+        flex-direction: column;
+        width: 100%;
+        padding: 10px 0;
+    }
+    
+    .navbar-nav .nav-item {
+        width: 100%;
+        border-bottom: 1px solid #f0f0f0;
+    }
+    
+    .navbar-nav .nav-link {
+        padding: 15px 20px !important;
+        color: #333 !important;
+        font-size: 16px;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        width: 100%;
+        transition: all 0.3s ease;
+    }
+    
+    .navbar-nav .nav-link i {
+        font-size: 18px;
+        color: #7caa53;
+        width: 20px;
+        text-align: center;
+    }
+    
+    .navbar-nav .nav-link:hover,
+    .navbar-nav .nav-item.active .nav-link {
+        background: #f8f9fa;
+        color: #7caa53 !important;
+    }
+    
+    /* Category Dropdown Styling */
+    .navbar-nav .dropdown-toggle::after {
+        content: '\f107'; /* Font Awesome chevron down */
+        font-family: "Font Awesome 5 Free";
+        font-weight: 900;
+        border: none;
+        margin-left: auto;
+        transition: transform 0.3s ease;
+    }
+    
+    .navbar-nav .dropdown-toggle.active::after {
+        transform: rotate(180deg);
+    }
+    
+    /* Dropdown in mobile */
+    .navbar-nav .dropdown-menu {
+        position: static !important;
+        float: none;
+        width: 100%;
+        margin: 0;
+        border: none;
+        box-shadow: none;
+        background: #f9f9f9;
+        padding: 10px 0;
+        display: none;
+    }
+    
+    .navbar-nav .dropdown-menu.show {
+        display: block;
+    }
+    
+    /* Category Headers in Mobile */
+    .category-column {
+        width: 100%;
+        padding: 0;
+        margin-bottom: 15px;
+    }
+    
+    .category-header {
+        background: linear-gradient(135deg, #7caa53 0%, #6b9a49 100%);
+        padding: 12px 20px;
+        margin: 0 0 8px 0;
+    }
+    
+    .category-title {
+        color: #fff !important;
+        font-weight: 600;
+        font-size: 15px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        text-decoration: none !important;
+        display: block;
+    }
+    
+    /* Subcategory List */
+    .subcategory-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    
+    .subcategory-list li {
+        border-bottom: 1px solid #e8e8e8;
+    }
+    
+    .subcategory-list li:last-child {
+        border-bottom: none;
+    }
+    
+    .subcategory-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 20px 12px 30px;
+        color: #555 !important;
+        font-size: 14px;
+        text-decoration: none !important;
+        transition: all 0.3s ease;
+    }
+    
+    .subcategory-item i {
+        color: #7caa53;
+        font-size: 12px;
+        transition: transform 0.3s ease;
+    }
+    
+    .subcategory-item:hover {
+        background: #fff;
+        color: #7caa53 !important;
+        padding-left: 35px;
+    }
+    
+    .subcategory-item:hover i {
+        transform: translateX(3px);
+    }
+    
+    /* Mega menu in mobile */
+    .mega-dropdown-menu {
+        position: static !important;
+        max-height: 60vh;
+        overflow-y: auto;
+    }
+    
+    .mega-dropdown-menu .row {
+        flex-direction: column;
+    }
+    
+    .mega-dropdown-menu .col {
+        width: 100%;
+        max-width: 100%;
+    }
+    
+    /* Menu overlay backdrop */
+    .navbar-collapse.show::after {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0,0,0,0.5);
+        z-index: -1;
+    }
+    
+    /* Close button for mobile menu */
+    .navbar-collapse .close-menu {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        font-size: 32px;
+        color: #fff;
+        cursor: pointer;
+        background: none;
+        border: none;
+        padding: 5px 10px;
+        z-index: 10;
+        line-height: 1;
+        font-weight: 300;
+    }
+}
+
+/* ============================================
+   TABLET MENU (768px - 991px)
+   ============================================ */
+
+@media (min-width: 768px) and (max-width: 991px) {
+    .navbar-collapse {
+        max-width: 400px;
+    }
+}
+
+/* ============================================
+   DESKTOP MENU (992px and above)
+   ============================================ */
+
+@media (min-width: 992px) {
+    /* Hide hamburger on desktop */
+    .navbar-toggler {
+        display: none !important;
+    }
+    
+    /* Show horizontal menu */
+    .navbar-collapse {
+        display: flex !important;
+        position: static;
+        width: auto;
+        height: auto;
+        background: transparent;
+        box-shadow: none;
+        padding: 0;
+        transform: none;
+        overflow: visible;
+    }
+    
+    .navbar-collapse .navbar-nav {
+        display: flex !important;
+        flex-direction: row;
+        gap: 10px;
+    }
+    
+    .navbar-nav .nav-item {
+        border-bottom: none;
+    }
+    
+    /* Dropdown on desktop */
+    .navbar-nav .dropdown:hover .dropdown-menu {
+        display: block;
+    }
+    
+    .dropdown-menu {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        background: #fff;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        border: 1px solid #f0f0f0;
+        border-radius: 4px;
+        padding: 10px 0;
+        min-width: 200px;
+        display: none;
+        z-index: 1000;
+    }
+    
+    /* Mega menu on desktop */
+    .mega-dropdown:hover .mega-dropdown-menu {
+        display: block;
+    }
+    
+    .mega-dropdown-menu {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        min-width: 600px;
+        padding: 20px;
+    }
+}
+
+/* ============================================
+   STICKY HEADER ADJUSTMENTS
+   ============================================ */
+
+/* Add padding to body to prevent content jump */
+body {
+    padding-top: 0 !important;
+}
+
+/* Ensure cart dropdown appears above everything */
+.cart-sidebar,
+.shopping-cart {
+    z-index: 99999 !important;
+}
+
+/* ============================================
+   RTL SUPPORT FOR MENU
+   ============================================ */
+
+html[lang="ar"] .navbar-collapse,
+html[dir="rtl"] .navbar-collapse,
+body.rtl .navbar-collapse {
+    left: auto;
+    right: 0;
+}
+
+html[lang="ar"] .navbar-collapse.show,
+html[dir="rtl"] .navbar-collapse.show,
+body.rtl .navbar-collapse.show {
+    transform: translateX(100%) !important;
+}
+
+html[lang="ar"] .navbar-collapse.show.show,
+html[dir="rtl"] .navbar-collapse.show.show,
+body.rtl .navbar-collapse.show.show {
+    transform: translateX(0) !important;
+}
+
+@media (max-width: 991px) {
+    html[lang="ar"] .navbar-collapse,
+    html[dir="rtl"] .navbar-collapse,
+    body.rtl .navbar-collapse {
+        left: auto;
+        right: 0;
+        transform: translateX(100%);
+    }
+    
+    html[lang="ar"] .navbar-collapse.show,
+    html[dir="rtl"] .navbar-collapse.show,
+    body.rtl .navbar-collapse.show {
+        transform: translateX(0) !important;
+    }
+}
