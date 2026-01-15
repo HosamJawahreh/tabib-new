@@ -247,12 +247,12 @@
     .product-thumb {
         padding-top: 100%; /* Keep square */
     }
-    
+
     .product-title {
         font-size: 13px;
         min-height: 40px;
     }
-    
+
     .price-current {
         font-size: 16px;
     }
@@ -263,38 +263,38 @@
     .product-thumb {
         padding-top: 100%; /* Keep square */
     }
-    
+
     .product-thumb img.product-image {
         padding: 8px;
     }
-    
+
     .cart-icon-clean {
         width: 36px;
         height: 36px;
     }
-    
+
     .cart-icon-clean i {
         font-size: 16px;
     }
-    
+
     .on-sale {
         font-size: 11px;
         padding: 4px 8px;
     }
-    
+
     .product-content {
         padding: 12px;
     }
-    
+
     .product-title {
         font-size: 13px;
         min-height: 38px;
     }
-    
+
     .price-current {
         font-size: 15px;
     }
-    
+
     .price-old {
         font-size: 13px;
     }
@@ -305,71 +305,71 @@
     .product-item {
         margin-bottom: 15px;
     }
-    
+
     .product-card {
         border-radius: 6px;
     }
-    
+
     .product-thumb {
         padding-top: 100%; /* Perfect square */
         border-radius: 6px 6px 0 0;
     }
-    
+
     .product-thumb img.product-image {
         padding: 10px; /* More padding on mobile */
     }
-    
+
     /* Smaller badges on mobile */
     .cart-icon-clean {
         width: 32px;
         height: 32px;
     }
-    
+
     .cart-icon-clean i {
         font-size: 14px;
     }
-    
+
     .on-sale {
         font-size: 10px;
         padding: 3px 6px;
         top: 8px;
         left: 8px;
     }
-    
+
     .cart-action-buttons {
         top: 8px;
         right: 8px;
     }
-    
+
     /* Content adjustments */
     .product-content {
         padding: 10px;
     }
-    
+
     .product-title {
         font-size: 12px;
         min-height: 36px;
         margin-bottom: 8px;
         line-height: 1.3;
     }
-    
+
     .product-price {
         margin-bottom: 8px;
         gap: 6px;
     }
-    
+
     .price-current {
         font-size: 14px;
     }
-    
+
     .price-old {
         font-size: 12px;
     }
-    
+
     .product-rating .stars i {
         font-size: 12px;
     }
-    
+
     .rating-count {
         font-size: 11px;
     }
@@ -381,11 +381,11 @@
         font-size: 11px;
         min-height: 34px;
     }
-    
+
     .price-current {
         font-size: 13px;
     }
-    
+
     .price-old {
         font-size: 11px;
     }
