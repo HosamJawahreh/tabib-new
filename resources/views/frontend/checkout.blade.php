@@ -1583,4 +1583,8 @@
    100% { transform: rotate(360deg); }
 }
 </style>
+
+<!-- Checkout Redirect Fix Script -->
+<script src="{{asset('assets/js/checkout-redirect-fix.js')}}"></script>
+
 @endsection

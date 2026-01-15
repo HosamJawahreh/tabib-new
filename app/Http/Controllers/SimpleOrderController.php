@@ -26,6 +26,17 @@ class SimpleOrderController extends Controller
         // Define debug log path
         $debugLog = storage_path('logs/order-debug.log');
 
+        // Log everything for debugging
+        Log::info('=== ORDER SUBMISSION STARTED ===');
+        Log::info('Request URL: ' . $request->fullUrl());
+        Log::info('Request Method: ' . $request->method());
+        Log::info('Request Data: ' . json_encode($request->all()));
+        
+        if (config('app.debug')) {
+            file_put_contents($debugLog, "\n\n" . date('Y-m-d H:i:s') . " - NEW ORDER SUBMISSION\n", FILE_APPEND);
+            file_put_contents($debugLog, "Request: " . json_encode($request->all()) . "\n", FILE_APPEND);
+        }
+
         try {
             // PERFORMANCE: Start database transaction for data integrity
             DB::beginTransaction();
@@ -34,13 +45,26 @@ class SimpleOrderController extends Controller
             $cart = Session::get('cart');
 
             if (!$cart) {
+                Log::warning('Cart is empty!');
+                
+                if ($request->expectsJson() || $request->ajax()) {
+                    return response()->json([
+                        'success' => false,
+                        'error' => 'Your cart is empty'
+                    ], 400);
+                }
+                
                 return redirect()->back()->with('error', 'Your cart is empty');
             }
+
+            Log::info('Cart found: ' . $cart->totalQty . ' items, Total: ' . $cart->totalPrice);
 
             // Get customer data from request
             $customerName = $request->input('customer_name', 'Guest Customer');
             $customerPhone = $request->input('customer_phone', '');
             $customerEmail = $request->input('customer_email', 'noemail@example.com');
+
+            Log::info('Customer Data: Name=' . $customerName . ', Email=' . $customerEmail . ', Phone=' . $customerPhone);
 
             if (config('app.debug')) {
                 file_put_contents($debugLog, "Customer: $customerName, Phone: $customerPhone\n", FILE_APPEND);
@@ -51,6 +75,8 @@ class SimpleOrderController extends Controller
             $totalQty = $cart->totalQty;
             $subtotal = $cart->totalPrice;
 
+            Log::info('Cart Data: Items=' . count($cartData) . ', Qty=' . $totalQty . ', Subtotal=' . $subtotal);
+
             // Get costs from request
             $shippingCost = floatval($request->input('shipping_cost', 0));
             $packingCost = floatval($request->input('packing_cost', 0));
@@ -60,6 +86,8 @@ class SimpleOrderController extends Controller
             // Calculate total
             $totalAmount = $subtotal + $shippingCost + $packingCost + $tax - $discount;
 
+            Log::info('Calculated Total: ' . $totalAmount);
+
             if (config('app.debug')) {
                 file_put_contents($debugLog, "Creating order...\n", FILE_APPEND);
             }
@@ -67,6 +95,8 @@ class SimpleOrderController extends Controller
             // Create order in database
             $order = new Order();
             $order->order_number = 'ORD-' . time() . '-' . rand(1000, 9999);
+            
+            Log::info('Generated Order Number: ' . $order->order_number);
             $order->user_id = auth()->check() ? auth()->id() : null;
             $order->cart = json_encode($cartData);
             $order->method = $request->input('method', 'Cash on Delivery');
@@ -131,19 +161,26 @@ class SimpleOrderController extends Controller
 
             Log::info('Redirecting to success page');
 
-            // TEMPORARY FIX: Force redirect without AJAX detection
+            // Generate success URL
             $successUrl = route('order.success', ['order_number' => $order->order_number]);
 
             if (config('app.debug')) {
                 file_put_contents($debugLog, "Success URL: $successUrl\n", FILE_APPEND);
             }
 
-            // Force redirect using multiple methods
-            return redirect()->away($successUrl)
-                           ->with('success', 'Order placed successfully!')
-                           ->header('Cache-Control', 'no-cache, no-store, must-revalidate')
-                           ->header('Pragma', 'no-cache')
-                           ->header('Expires', '0');
+            // Check if request expects JSON (AJAX)
+            if ($request->expectsJson() || $request->ajax()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Order placed successfully!',
+                    'redirect' => $successUrl,
+                    'order_number' => $order->order_number
+                ]);
+            }
+
+            // Regular form submission - redirect normally
+            return redirect($successUrl)
+                           ->with('success', 'Order placed successfully!');
         } catch (\Exception $e) {
             // PERFORMANCE: Rollback transaction on error
             DB::rollBack();
@@ -160,9 +197,19 @@ class SimpleOrderController extends Controller
             Log::error('Error file: ' . $e->getFile() . ':' . $e->getLine());
             Log::error('Stack trace: ' . $e->getTraceAsString());
 
-            // Return with more detailed error
+            $errorMessage = 'Failed to place order: ' . $e->getMessage();
+
+            // Check if request expects JSON (AJAX)
+            if ($request->expectsJson() || $request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'error' => $errorMessage
+                ], 500);
+            }
+
+            // Regular form submission - redirect back with error
             return redirect()->back()
-                ->with('error', 'Failed to place order: ' . $e->getMessage())
+                ->with('error', $errorMessage)
                 ->withInput();
         }
     }
