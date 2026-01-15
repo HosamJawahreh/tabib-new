@@ -313,51 +313,51 @@
        .search-col {
            display: block !important;
        }
-       
+
        .enhanced-search-form {
            max-width: 100% !important;
        }
-       
+
        .enhanced-search-form .search-field {
            font-size: 13px !important;
            padding: 8px 15px !important;
        }
-       
+
        .enhanced-search-form .categori-container select {
            min-width: 90px !important;
            font-size: 12px !important;
            padding: 8px 25px 8px 10px !important;
        }
-       
+
        .col-icons {
            gap: 6px !important;
            overflow: visible !important;
        }
-       
+
        .icons-col {
            overflow: visible !important;
            padding-right: 18px !important;
        }
-       
+
        .header-icon-enhanced {
            min-width: 40px;
            max-width: 40px;
            padding: 8px !important;
        }
-       
+
        .cart-icon {
            padding: 8px !important;
        }
-       
+
        .cart-icon i {
            font-size: 18px !important;
        }
-       
+
        .header-cart-count {
            top: 2px !important;
            right: 2px !important;
        }
-       
+
        .language-selector-modern select {
            font-size: 12px !important;
            width: 75px !important;
@@ -715,19 +715,19 @@
        .icons-col {
            padding-right: 15px !important;
        }
-       
+
        .header-icon-enhanced {
            padding: 6px !important;
        }
-       
+
        .cart-icon {
            padding: 6px !important;
        }
-       
+
        .cart-icon i {
            font-size: 18px !important;
        }
-       
+
        .header-cart-count {
            font-size: 9px !important;
            padding: 2px 5px !important;
@@ -741,23 +741,23 @@
        .icons-col {
            padding-right: 25px !important;
        }
-       
+
        .col-icons {
            gap: 10px !important;
        }
-       
+
        .header-icon-enhanced {
            padding: 10px !important;
        }
-       
+
        .cart-icon {
            padding: 10px !important;
        }
-       
+
        .cart-icon i {
            font-size: 22px !important;
        }
-       
+
        .header-cart-count {
            top: 4px !important;
            right: 4px !important;
