@@ -1,0 +1,37 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    
+    # Redirect Trailing Slashes If Not A Folder...
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_URI} (.+)/$
+    RewriteRule ^ %1 [L,R=301]
+    
+    # Handle Front Controller...
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ public/index.php [L]
+</IfModule>
+
+# Security: Deny access to sensitive files
+<FilesMatch "^\.">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+<FilesMatch "(^composer\.|^package\.|^yarn\.|\.env|artisan|phpunit\.xml|webpack\.mix\.js)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Security: Deny access to directories
+RedirectMatch 403 ^/\.(git|svn|hg)(/|$)
+RedirectMatch 403 ^/(app|bootstrap|config|database|resources|routes|storage|tests|vendor)(/|$)
+
+# Security: Disable directory browsing
+Options -Indexes
+
+# Security: Block access to backup and log files
+<FilesMatch "\.(bak|config|sql|fla|psd|ini|log|sh|inc|swp|dist)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
