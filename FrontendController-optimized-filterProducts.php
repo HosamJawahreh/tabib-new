@@ -6,14 +6,14 @@
  * ============================================================================
  * Replace the filterProducts() method in:
  * app/Http/Controllers/Front/FrontendController.php
- * 
+ *
  * IMPROVEMENTS:
  * - 70% less data transfer (select only needed columns)
  * - 80-90% faster queries (optimized joins and removed unnecessary withCount)
  * - Query result caching (5 minute cache for identical requests)
  * - Better error handling
  * ============================================================================
- * 
+ *
  * COPY THE ENTIRE METHOD BELOW (starting from "public function")
  * AND PASTE IT INTO: app/Http/Controllers/Front/FrontendController.php
  * REPLACING THE EXISTING filterProducts() METHOD
@@ -33,10 +33,10 @@ public function filterProducts(Request $request)
     try {
         // Create cache key from request parameters
         $cacheKey = 'products_filter_' . md5(json_encode($request->all()));
-        
+
         // Try to get from cache (5 minute cache)
         $result = Cache::remember($cacheKey, 300, function () use ($request) {
-            
+
             // Build optimized query
             // Only select columns we actually display
             $query = Product::select([
@@ -83,10 +83,10 @@ public function filterProducts(Request $request)
             // This is much faster than withCount/withAvg on the whole query
             if ($products->count() > 0) {
                 $productIds = $products->pluck('id')->toArray();
-                
+
                 // Get ratings count and average in one efficient query
                 $ratingsData = DB::table('ratings')
-                    ->select('product_id', 
+                    ->select('product_id',
                         DB::raw('COUNT(*) as ratings_count'),
                         DB::raw('AVG(rating) as ratings_avg')
                     )
@@ -94,7 +94,7 @@ public function filterProducts(Request $request)
                     ->groupBy('product_id')
                     ->get()
                     ->keyBy('product_id');
-                
+
                 // Attach ratings data to products
                 $products->each(function ($product) use ($ratingsData) {
                     $ratingData = $ratingsData->get($product->id);
@@ -147,24 +147,24 @@ public function filterProducts(Request $request)
  * ============================================================================
  * PERFORMANCE NOTES:
  * ============================================================================
- * 
+ *
  * 1. Database Indexes Required (run optimize-category-filters.sql):
  *    - idx_category_status (category_id, status)
- *    - idx_subcategory_status (subcategory_id, status) 
+ *    - idx_subcategory_status (subcategory_id, status)
  *    - idx_childcategory_status (childcategory_id, status)
  *    - idx_status_id (status, id)
- * 
+ *
  * 2. Cache Configuration:
  *    - Uses Laravel's cache system (5 minute TTL)
  *    - Clear cache after product updates: Cache::flush()
- * 
+ *
  * 3. Expected Performance:
  *    - Without indexes: 800-1200ms
  *    - With indexes + optimization: 50-150ms
  *    - From cache: < 10ms
- * 
+ *
  * 4. To clear filter cache:
  *    php artisan cache:forget products_filter_*
- * 
+ *
  * ============================================================================
  */

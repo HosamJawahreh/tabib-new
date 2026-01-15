@@ -25,7 +25,7 @@ class SimpleOrderController extends Controller
     {
         // Define debug log path
         $debugLog = storage_path('logs/order-debug.log');
-        
+
         try {
             // PERFORMANCE: Start database transaction for data integrity
             DB::beginTransaction();
@@ -128,16 +128,16 @@ class SimpleOrderController extends Controller
             if (config('app.debug')) {
                 file_put_contents($debugLog, "Order saved! Redirecting to success page\n", FILE_APPEND);
             }
-            
+
             Log::info('Redirecting to success page');
-            
+
             // TEMPORARY FIX: Force redirect without AJAX detection
             $successUrl = route('order.success', ['order_number' => $order->order_number]);
-            
+
             if (config('app.debug')) {
                 file_put_contents($debugLog, "Success URL: $successUrl\n", FILE_APPEND);
             }
-            
+
             // Force redirect using multiple methods
             return redirect()->away($successUrl)
                            ->with('success', 'Order placed successfully!')
@@ -147,7 +147,7 @@ class SimpleOrderController extends Controller
         } catch (\Exception $e) {
             // PERFORMANCE: Rollback transaction on error
             DB::rollBack();
-            
+
             if (config('app.debug')) {
                 file_put_contents($debugLog, "\n=== EXCEPTION CAUGHT ===\n", FILE_APPEND);
                 file_put_contents($debugLog, "Error: " . $e->getMessage() . "\n", FILE_APPEND);
