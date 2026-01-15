@@ -10,7 +10,7 @@
 
     // Cart Sidebar Manager
     const CartSidebar = {
-        
+
         // Initialize
         init: function() {
             this.cacheElements();
@@ -133,7 +133,7 @@
         // Enable smooth scrolling
         enableSmoothScroll: function() {
             const $cartItems = this.$cartSidebar.find('.cart-items, .cart-body');
-            
+
             // Add momentum scrolling for iOS
             $cartItems.css('-webkit-overflow-scrolling', 'touch');
 
@@ -157,7 +157,7 @@
         decreaseQuantity: function($btn) {
             const $input = $btn.siblings('.qty-input, .quantity-input');
             const currentQty = parseInt($input.val()) || 1;
-            
+
             if (currentQty > 1) {
                 const newQty = currentQty - 1;
                 $input.val(newQty);
@@ -170,7 +170,7 @@
             const $input = $btn.siblings('.qty-input, .quantity-input');
             const currentQty = parseInt($input.val()) || 1;
             const maxQty = parseInt($input.attr('max')) || 999;
-            
+
             if (currentQty < maxQty) {
                 const newQty = currentQty + 1;
                 $input.val(newQty);
@@ -181,7 +181,7 @@
         // Update cart item
         updateCartItem: function($item, quantity) {
             const productId = $item.data('product-id') || $item.data('id');
-            
+
             // Show loading
             $item.addClass('updating');
 
@@ -199,7 +199,7 @@
                     if (response.success) {
                         $('.cart-total-amount').text(response.total);
                         $('.cart-count').text(response.count);
-                        
+
                         // Update item subtotal
                         $item.find('.cart-item-subtotal').text(response.item_total);
                     }
@@ -239,7 +239,7 @@
                         // Animate removal
                         $item.slideUp(300, function() {
                             $(this).remove();
-                            
+
                             // Update cart totals
                             $('.cart-total-amount').text(response.total);
                             $('.cart-count').text(response.count);
@@ -303,7 +303,7 @@ class CartSidebarManager {
         this.cartBackdrop = document.querySelector('.cart-overlay-backdrop, .cart-backdrop');
         this.cartCloseBtn = document.querySelectorAll('.cart-close, .close-cart');
         this.cartOpenBtn = document.querySelectorAll('.cart-icon, .open-cart, [data-toggle="cart"]');
-        
+
         if (this.cartSidebar) {
             this.init();
         }
@@ -352,7 +352,7 @@ class CartSidebarManager {
             this.cartBackdrop.classList.add('active', 'show');
         }
         document.body.style.overflow = 'hidden';
-        
+
         // Focus for accessibility
         this.cartSidebar.focus();
     }

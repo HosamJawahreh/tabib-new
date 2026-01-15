@@ -2,7 +2,7 @@
  * ============================================
  * OPTIMIZED SEARCH AUTOCOMPLETE
  * ============================================
- * 
+ *
  * Fast, debounced search with autocomplete dropdown
  * Performance optimized with caching and debouncing
  */
@@ -44,7 +44,7 @@
         // Input event with debouncing
         searchInput.addEventListener('input', function(e) {
             const query = e.target.value.trim();
-            
+
             // Clear previous timer
             clearTimeout(debounceTimer);
 
@@ -133,7 +133,7 @@
             if (error.name !== 'AbortError') {
                 console.error('Search error:', error);
             }
-            
+
             const searchForm = document.getElementById('searchForm');
             searchForm.classList.remove('searching');
         })
@@ -147,7 +147,7 @@
      */
     function displayResults(results) {
         const container = document.getElementById('myInputautocomplete-list');
-        
+
         if (!container) return;
 
         // Clear previous results
@@ -183,22 +183,22 @@
             img.src = item.image;
             img.alt = item.name;
             img.style.cssText = 'width: 40px; height: 40px; object-fit: cover; border-radius: 4px;';
-            
+
             // Product info
             const info = document.createElement('div');
             info.style.cssText = 'flex: 1;';
-            
+
             const name = document.createElement('div');
             name.textContent = item.name;
             name.style.cssText = 'font-size: 14px; font-weight: 500; color: #333; margin-bottom: 2px;';
-            
+
             const price = document.createElement('div');
             price.textContent = item.price;
             price.style.cssText = 'font-size: 13px; color: #7caa53; font-weight: 600;';
-            
+
             info.appendChild(name);
             info.appendChild(price);
-            
+
             div.appendChild(img);
             div.appendChild(info);
 
@@ -242,7 +242,7 @@
         if (items.length === 0) return;
 
         let currentIndex = -1;
-        
+
         // Find currently focused item
         items.forEach((item, index) => {
             if (item.classList.contains('active')) {

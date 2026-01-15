@@ -30,10 +30,10 @@
 
     function init() {
         console.log('🔍 Product Image Zoom: Initializing...');
-        
+
         // Find all product images to zoom
         const imageContainers = document.querySelectorAll('.product-image-zoom-container, .product-img-holder, .single-product-image');
-        
+
         if (imageContainers.length === 0) {
             console.log('⚠️ No product images found to zoom');
             return;
@@ -49,10 +49,10 @@
 
         // Add necessary classes
         container.classList.add('product-image-zoom-container');
-        
+
         // Detect device type
-        const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) || 
-                        ('ontouchstart' in window) || 
+        const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) ||
+                        ('ontouchstart' in window) ||
                         (navigator.maxTouchPoints > 0);
 
         if (isMobile) {
@@ -70,12 +70,12 @@
         // Smooth mouse move zoom
         container.addEventListener('mousemove', function(e) {
             if (rafId) cancelAnimationFrame(rafId);
-            
+
             rafId = requestAnimationFrame(() => {
                 const rect = container.getBoundingClientRect();
                 const x = ((e.clientX - rect.left) / rect.width) * 100;
                 const y = ((e.clientY - rect.top) / rect.height) * 100;
-                
+
                 img.style.transformOrigin = `${x}% ${y}%`;
             });
         });
@@ -113,39 +113,39 @@
         // Create overlay
         const overlay = document.createElement('div');
         overlay.className = 'mobile-zoom-overlay active';
-        
+
         // Create content container
         const content = document.createElement('div');
         content.className = 'mobile-zoom-content';
-        
+
         // Clone image
         const zoomedImg = img.cloneNode(true);
         zoomedImg.style.transform = 'scale(1)';
-        
+
         // Create close button
         const closeBtn = document.createElement('button');
         closeBtn.className = 'mobile-zoom-close';
         closeBtn.innerHTML = '×';
         closeBtn.setAttribute('aria-label', 'Close zoom');
-        
+
         // Create instructions
         const instructions = document.createElement('div');
         instructions.className = 'zoom-instructions';
         instructions.textContent = 'Pinch to zoom • Drag to pan • Tap to close';
-        
+
         // Assemble
         content.appendChild(zoomedImg);
         overlay.appendChild(content);
         overlay.appendChild(closeBtn);
         overlay.appendChild(instructions);
         document.body.appendChild(overlay);
-        
+
         // Prevent body scroll
         document.body.style.overflow = 'hidden';
-        
+
         // Setup pinch-to-zoom
         setupPinchZoom(zoomedImg, content);
-        
+
         // Close handlers
         const closeZoom = () => {
             overlay.classList.remove('active');
@@ -154,7 +154,7 @@
                 document.body.style.overflow = '';
             }, 300);
         };
-        
+
         closeBtn.addEventListener('click', closeZoom);
         overlay.addEventListener('click', function(e) {
             if (e.target === overlay || e.target === content) {
@@ -169,12 +169,12 @@
         let startDistance = 0;
         let startScale = 1;
         let isPinching = false;
-        
+
         // Pan variables
         let isDragging = false;
         let startX = 0, startY = 0;
         let translateX = 0, translateY = 0;
-        
+
         // Touch start
         container.addEventListener('touchstart', function(e) {
             if (e.touches.length === 2) {
@@ -190,7 +190,7 @@
                 startY = e.touches[0].clientY - translateY;
             }
         }, { passive: false });
-        
+
         // Touch move
         container.addEventListener('touchmove', function(e) {
             if (isPinching && e.touches.length === 2) {
@@ -205,7 +205,7 @@
                 updateTransform();
             }
         }, { passive: false });
-        
+
         // Touch end
         container.addEventListener('touchend', function(e) {
             if (e.touches.length < 2) {
@@ -213,7 +213,7 @@
             }
             if (e.touches.length === 0) {
                 isDragging = false;
-                
+
                 // Reset if zoomed out
                 if (scale <= 1) {
                     scale = 1;
@@ -223,13 +223,13 @@
                 }
             }
         });
-        
+
         // Double tap to zoom
         let lastTap = 0;
         container.addEventListener('touchend', function(e) {
             const currentTime = new Date().getTime();
             const tapLength = currentTime - lastTap;
-            
+
             if (tapLength < 300 && tapLength > 0) {
                 e.preventDefault();
                 if (scale === 1) {
@@ -243,11 +243,11 @@
             }
             lastTap = currentTime;
         });
-        
+
         function updateTransform() {
             img.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
         }
-        
+
         function getDistance(touch1, touch2) {
             const dx = touch1.clientX - touch2.clientX;
             const dy = touch1.clientY - touch2.clientY;
@@ -259,32 +259,32 @@
     function setupThumbnails() {
         const thumbnails = document.querySelectorAll('.product-thumbnail');
         const mainImage = document.querySelector('.product-image-zoom-container img');
-        
+
         if (!mainImage || thumbnails.length === 0) return;
-        
+
         thumbnails.forEach((thumb, index) => {
             thumb.addEventListener('click', function() {
                 // Remove active class from all
                 thumbnails.forEach(t => t.classList.remove('active'));
-                
+
                 // Add active to clicked
                 this.classList.add('active');
-                
+
                 // Update main image
-                const newSrc = this.querySelector('img').getAttribute('data-full-image') || 
+                const newSrc = this.querySelector('img').getAttribute('data-full-image') ||
                               this.querySelector('img').src;
                 mainImage.src = newSrc;
-                
+
                 // Add loading state
                 const container = mainImage.closest('.product-image-zoom-container');
                 container.classList.add('loading');
-                
+
                 mainImage.onload = function() {
                     container.classList.remove('loading');
                 };
             });
         });
-        
+
         // Mark first thumbnail as active
         if (thumbnails[0]) {
             thumbnails[0].classList.add('active');

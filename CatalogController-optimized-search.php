@@ -4,10 +4,10 @@
  * ============================================
  * OPTIMIZED PRODUCT SEARCH METHOD
  * ============================================
- * 
+ *
  * This is a highly optimized version of the category/search method
  * that dramatically improves performance for product searches.
- * 
+ *
  * PERFORMANCE IMPROVEMENTS:
  * - Uses eager loading to reduce N+1 queries
  * - Implements query caching for repeated searches
@@ -15,11 +15,11 @@
  * - Optimizes attribute filtering
  * - Adds pagination limits
  * - Uses select() to load only needed columns
- * 
+ *
  * INSTALLATION:
  * Replace the category() method in app/Http/Controllers/Front/CatalogController.php
  * with this optimized version.
- * 
+ *
  * REQUIREMENTS:
  * 1. Run optimize-search-performance.sql to add database indexes
  * 2. Ensure products table has FULLTEXT index on 'name' column
@@ -87,7 +87,7 @@ class CatalogControllerOptimized extends Controller
         // OPTIMIZATION 2: Eager load latest products efficiently
         // =====================================================
         $data['latest_products'] = Product::select([
-                'id', 'name', 'slug', 'photo', 'thumbnail', 'price', 'previous_price', 
+                'id', 'name', 'slug', 'photo', 'thumbnail', 'price', 'previous_price',
                 'user_id', 'status', 'latest', 'created_at'
             ])
             ->with(['user:id,is_vendor'])
@@ -113,7 +113,7 @@ class CatalogControllerOptimized extends Controller
         // =====================================================
         // OPTIMIZATION 4: Apply filters efficiently
         // =====================================================
-        
+
         // Category filter
         if ($cat) {
             $prods->where('category_id', $cat->id);
@@ -244,14 +244,14 @@ class CatalogControllerOptimized extends Controller
     public function quickSearch(Request $request)
     {
         $search = $request->search;
-        
+
         if (empty($search) || strlen($search) < 2) {
             return response()->json([]);
         }
 
         // Cache search results for 5 minutes
         $cacheKey = "quick_search_" . md5($search);
-        
+
         $results = Cache::remember($cacheKey, 300, function() use ($search) {
             return Product::select('id', 'name', 'slug', 'photo', 'price')
                 ->where('status', 1)
@@ -276,34 +276,34 @@ class CatalogControllerOptimized extends Controller
  * ============================================
  * USAGE INSTRUCTIONS
  * ============================================
- * 
+ *
  * 1. Run optimize-search-performance.sql on your database
- * 
+ *
  * 2. Copy the categoryOptimized method to replace the existing
  *    category method in app/Http/Controllers/Front/CatalogController.php
- * 
+ *
  * 3. Add this route for quick search autocomplete:
  *    Route::get('/quick-search', 'CatalogController@quickSearch');
- * 
+ *
  * 4. Clear cache:
  *    php artisan cache:clear
  *    php artisan config:clear
- * 
+ *
  * 5. Test the search - it should be 5-10x faster!
- * 
+ *
  * ============================================
  * PERFORMANCE METRICS
  * ============================================
- * 
+ *
  * Before optimization:
  * - Search query: 500-2000ms
  * - Category filter: 300-1000ms
  * - Total page load: 3-8 seconds
- * 
+ *
  * After optimization:
  * - Search query: 50-200ms (10x faster)
  * - Category filter: 30-100ms (10x faster)
  * - Total page load: 0.5-2 seconds (5x faster)
- * 
+ *
  * ============================================
  */

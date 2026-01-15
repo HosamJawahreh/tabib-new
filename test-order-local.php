@@ -22,11 +22,11 @@ echo "2️⃣  Checking orders table structure...\n";
 $result = DB::select("SHOW COLUMNS FROM orders WHERE Field = 'currency_name'");
 if (!empty($result)) {
     echo "   Column Type: {$result[0]->Type}\n";
-    
+
     // Extract size from VARCHAR(X)
     preg_match('/varchar\((\d+)\)/i', $result[0]->Type, $matches);
     $size = isset($matches[1]) ? intval($matches[1]) : 0;
-    
+
     if ($size < 50) {
         echo "   ❌ PROBLEM: Column too small ({$size} chars)\n";
         echo "   ⚠️  Need at least 50 characters\n\n";
@@ -55,7 +55,7 @@ try {
     ];
     $cart->totalQty = 2;
     $cart->totalPrice = 21.00;
-    
+
     // Create test order
     $order = new \App\Models\Order();
     $order->order_number = 'TEST-' . time();
@@ -66,7 +66,7 @@ try {
     $order->pay_amount = $cart->totalPrice;
     $order->payment_status = 'Pending';
     $order->status = 'pending';
-    
+
     // Customer details
     $order->customer_name = 'Test Customer';
     $order->customer_email = 'test@example.com';
@@ -75,7 +75,7 @@ try {
     $order->customer_address = 'Test Address';
     $order->customer_city = 'Amman';
     $order->customer_zip = '11111';
-    
+
     // Shipping (same as customer)
     $order->shipping_name = $order->customer_name;
     $order->shipping_email = $order->customer_email;
@@ -84,12 +84,12 @@ try {
     $order->shipping_address = $order->customer_address;
     $order->shipping_city = $order->customer_city;
     $order->shipping_zip = $order->customer_zip;
-    
+
     // Currency - THIS IS THE CRITICAL PART
     $order->currency_sign = $currency->sign;
     $order->currency_name = $currency->name; // This was causing the error!
     $order->currency_value = $currency->value;
-    
+
     // Add all required fields
     $order->shipping_cost = 0;
     $order->packing_cost = 0;
@@ -104,22 +104,22 @@ try {
     $order->pickup_location = null;
     $order->txnid = null;
     $order->charge_id = null;
-    
+
     echo "   Testing with currency name: '{$currency->name}' (" . strlen($currency->name) . " chars)\n";
-    
+
     // Try to save
     $order->save();
-    
+
     echo "   ✅ Order created successfully!\n";
     echo "   Order Number: {$order->order_number}\n\n";
-    
+
     // Clean up test order
     $order->delete();
     echo "   🧹 Test order cleaned up\n\n";
-    
+
 } catch (\Exception $e) {
     echo "   ❌ ERROR: " . $e->getMessage() . "\n\n";
-    
+
     if (strpos($e->getMessage(), 'Data too long') !== false) {
         echo "   🔧 FIX NEEDED:\n";
         echo "   Run: mysql -u root -p your_database < fix-currency-name-column.sql\n";
@@ -135,7 +135,7 @@ $result = DB::select("SHOW COLUMNS FROM orders WHERE Field = 'currency_name'");
 if (!empty($result)) {
     preg_match('/varchar\((\d+)\)/i', $result[0]->Type, $matches);
     $size = isset($matches[1]) ? intval($matches[1]) : 0;
-    
+
     if ($size < 50) {
         echo "❌ ISSUE FOUND: currency_name column is too small\n";
         echo "   Current: VARCHAR({$size})\n";
