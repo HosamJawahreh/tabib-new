@@ -1,0 +1,106 @@
+═══════════════════════════════════════════════════════════
+🚨 QUICK FIX - DO THIS NOW
+═══════════════════════════════════════════════════════════
+
+YOUR PROBLEM:
+- Server shows: "Resource temporarily unavailable"  
+- artisan file is MISSING on server
+- 403 Forbidden error on website
+
+═══════════════════════════════════════════════════════════
+✅ SOLUTION (5 MINUTES):
+═══════════════════════════════════════════════════════════
+
+STEP 1: Open File Explorer
+---------------------------
+Navigate to:
+/home/hjawahreh/Desktop/Projects/file/upload-package/
+
+You'll see these files:
+✓ artisan
+✓ fix-server.sh  
+✓ htaccess-root
+✓ README.txt
+
+STEP 2: Upload to Server
+-------------------------
+Method A - cPanel (Recommended):
+1. Login to cPanel
+2. File Manager
+3. Go to: domains/new.tabib-jo.com/public_html
+4. Click "Upload" button
+5. Select ALL 4 files from upload-package/
+6. Click "Upload"
+
+Method B - FTP:
+1. Open FileZilla/WinSCP
+2. Connect to server
+3. Navigate to: /home/tabibjoc/domains/new.tabib-jo.com/public_html
+4. Upload all 4 files
+
+STEP 3: After Upload
+--------------------
+In cPanel File Manager:
+1. Rename "htaccess-root" → ".htaccess"
+2. Right-click "artisan" → Change Permissions → 755
+3. Right-click "fix-server.sh" → Change Permissions → 755
+
+STEP 4: Set Document Root
+--------------------------
+In cPanel:
+1. Go to: Domains
+2. Click "Manage" on new.tabib-jo.com
+3. Find "Document Root" field
+4. Change it to: domains/new.tabib-jo.com/public_html/public
+   (Add /public at the end!)
+5. Click Save
+
+STEP 5: Wait & Test
+-------------------
+1. Wait 10 minutes (let server recover)
+2. Visit: http://new.tabib-jo.com
+3. Should work now! ✅
+
+STEP 6: SSH Commands (Optional)
+--------------------------------
+If you can SSH, run:
+cd ~/domains/new.tabib-jo.com/public_html
+bash fix-server.sh
+
+This will:
+- Generate app key
+- Create storage symlink
+- Clear caches
+- Fix permissions
+
+═══════════════════════════════════════════════════════════
+⚠️  MOST IMPORTANT:
+═══════════════════════════════════════════════════════════
+
+Document Root MUST be:
+domains/new.tabib-jo.com/public_html/public
+
+NOT:
+domains/new.tabib-jo.com/public_html  ❌
+
+═══════════════════════════════════════════════════════════
+🆘 IF STILL NOT WORKING:
+═══════════════════════════════════════════════════════════
+
+Check these files exist on server:
+✓ public_html/artisan
+✓ public_html/.htaccess
+✓ public_html/public/index.php
+✓ public_html/public/.htaccess
+
+Check Document Root points to:
+✓ public_html/public
+
+Check .env file:
+✓ public_html/.env (should exist)
+
+═══════════════════════════════════════════════════════════
+
+Questions? Read: FIX-SERVER-RESOURCE-ERROR.md
+
+═══════════════════════════════════════════════════════════

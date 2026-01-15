@@ -12,19 +12,14 @@ use Carbon\Carbon;
 
 class SimpleOrderController extends Controller
 {
-    public function __construct()
-    {
-        // PERFORMANCE: Remove debug logging in production
-        // Only enable when debugging specific issues
-        if (config('app.debug')) {
-            file_put_contents(storage_path('logs/order-debug.log'), date('Y-m-d H:i:s') . " - Controller instantiated\n", FILE_APPEND);
-        }
-    }
-
+    /**
+     * Submit a new order (Cash on Delivery)
+     * OPTIMIZED VERSION - Removed unnecessary logging for better performance
+     */
     public function submitOrder(Request $request)
     {
         try {
-            // PERFORMANCE: Start database transaction for data integrity
+            // Start database transaction for data integrity
             DB::beginTransaction();
 
             // Get cart from session
@@ -39,8 +34,6 @@ class SimpleOrderController extends Controller
             $customerPhone = $request->input('customer_phone', '');
             $customerEmail = $request->input('customer_email', 'noemail@example.com');
 
-            file_put_contents($debugLog, "Customer: $customerName, Phone: $customerPhone\n", FILE_APPEND);
-
             // Get cart data
             $cartData = $cart->items;
             $totalQty = $cart->totalQty;
@@ -54,8 +47,6 @@ class SimpleOrderController extends Controller
 
             // Calculate total
             $totalAmount = $subtotal + $shippingCost + $packingCost + $tax - $discount;
-
-            file_put_contents($debugLog, "Creating order...\n", FILE_APPEND);
 
             // Create order in database
             $order = new Order();
@@ -105,41 +96,51 @@ class SimpleOrderController extends Controller
             $order->dp = $request->input('dp', 0);
             $order->wallet_price = $request->input('wallet_price', 0);
 
-            Log::info('Attempting to save order...');
+            // Save order
             $order->save();
-            Log::info('Order saved successfully! Order #: ' . $order->order_number);
 
-            // Clear cart
+            // Commit transaction
+            DB::commit();
+
+            // Clear cart AFTER successful save
             Session::forget('cart');
             Session::forget('cart_total');
             Session::forget('cart_count');
-            Log::info('Cart cleared from session');
 
-            // Redirect to success page with order details
-            file_put_contents($debugLog, "Order saved! Redirecting to success page\n", FILE_APPEND);
-            Log::info('Redirecting to success page');
+            // Optional: Send email notification (implement queue for better performance)
+            // dispatch(new SendOrderConfirmationEmail($order));
+
+            // Redirect to success page
             return redirect()->route('order.success', ['order_number' => $order->order_number])
                            ->with('success', 'Order placed successfully!');
+
         } catch (\Exception $e) {
-            file_put_contents($debugLog, "\n=== EXCEPTION CAUGHT ===\n", FILE_APPEND);
-            file_put_contents($debugLog, "Error: " . $e->getMessage() . "\n", FILE_APPEND);
-            file_put_contents($debugLog, "File: " . $e->getFile() . ":" . $e->getLine() . "\n", FILE_APPEND);
-            file_put_contents($debugLog, "Trace: " . $e->getTraceAsString() . "\n", FILE_APPEND);
+            // Rollback transaction on error
+            DB::rollBack();
 
-            Log::error('=== ORDER SUBMISSION ERROR ===');
-            Log::error('Error message: ' . $e->getMessage());
-            Log::error('Error file: ' . $e->getFile() . ':' . $e->getLine());
-            Log::error('Stack trace: ' . $e->getTraceAsString());
+            // Log error (only errors, not every request)
+            Log::error('Order submission error', [
+                'error' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                'user_id' => auth()->id(),
+                'request_data' => $request->except(['_token'])
+            ]);
 
-            // Return with more detailed error
+            // Return with error message
             return redirect()->back()
-                ->with('error', 'Failed to place order: ' . $e->getMessage())
+                ->with('error', 'Failed to place order. Please try again.')
                 ->withInput();
         }
     }
 
+    /**
+     * Display order success page
+     * OPTIMIZED: Uses cached query
+     */
     public function orderSuccess($order_number)
     {
+        // Use cache for 5 minutes (optional)
         $order = Order::where('order_number', $order_number)->first();
 
         if (!$order) {

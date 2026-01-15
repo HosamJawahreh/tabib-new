@@ -14,11 +14,34 @@
 $app = new Illuminate\Foundation\Application(
     dirname(__DIR__)
 );
-$app->bind('path.public', function() {
-   return base_path() . '/../';
+
+/*
+|--------------------------------------------------------------------------
+| Fix public path (DirectAdmin / shared hosting)
+|--------------------------------------------------------------------------
+*/
+$app->bind('path.public', function () {
+    return base_path() . '/../';
 });
 
+/*
+|--------------------------------------------------------------------------
+| IMPORTANT: Force correct .env location
+|--------------------------------------------------------------------------
+| This fixes the issue where Laravel was trying to load:
+| vendor/markury/src/.env (which does NOT exist)
+|
+| We explicitly tell Laravel to use the project root .env file.
+|
+*/
+$app->useEnvironmentPath(base_path());
+$app->loadEnvironmentFrom('.env');
 
+/*
+|--------------------------------------------------------------------------
+| Bind Important Interfaces
+|--------------------------------------------------------------------------
+*/
 
 $app->singleton(
     Illuminate\Contracts\Http\Kernel::class,
@@ -35,6 +58,14 @@ $app->singleton(
     App\Exceptions\Handler::class
 );
 
-$app->useEnvironmentPath(realpath(__DIR__.'/../vendor/markury/src/'));
+/*
+|--------------------------------------------------------------------------
+| REMOVE THIS LINE (DO NOT USE)
+|--------------------------------------------------------------------------
+| ❌ $app->useEnvironmentPath(realpath(__DIR__.'/../vendor/markury/src/'));
+|
+| It was breaking the application.
+|--------------------------------------------------------------------------
+*/
 
 return $app;
