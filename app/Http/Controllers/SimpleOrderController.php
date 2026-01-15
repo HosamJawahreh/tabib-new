@@ -23,6 +23,9 @@ class SimpleOrderController extends Controller
 
     public function submitOrder(Request $request)
     {
+        // Define debug log path
+        $debugLog = storage_path('logs/order-debug.log');
+        
         try {
             // PERFORMANCE: Start database transaction for data integrity
             DB::beginTransaction();
@@ -39,7 +42,9 @@ class SimpleOrderController extends Controller
             $customerPhone = $request->input('customer_phone', '');
             $customerEmail = $request->input('customer_email', 'noemail@example.com');
 
-            file_put_contents($debugLog, "Customer: $customerName, Phone: $customerPhone\n", FILE_APPEND);
+            if (config('app.debug')) {
+                file_put_contents($debugLog, "Customer: $customerName, Phone: $customerPhone\n", FILE_APPEND);
+            }
 
             // Get cart data
             $cartData = $cart->items;
@@ -55,7 +60,9 @@ class SimpleOrderController extends Controller
             // Calculate total
             $totalAmount = $subtotal + $shippingCost + $packingCost + $tax - $discount;
 
-            file_put_contents($debugLog, "Creating order...\n", FILE_APPEND);
+            if (config('app.debug')) {
+                file_put_contents($debugLog, "Creating order...\n", FILE_APPEND);
+            }
 
             // Create order in database
             $order = new Order();
@@ -115,16 +122,26 @@ class SimpleOrderController extends Controller
             Session::forget('cart_count');
             Log::info('Cart cleared from session');
 
-            // Redirect to success page with order details
-            file_put_contents($debugLog, "Order saved! Redirecting to success page\n", FILE_APPEND);
+            // PERFORMANCE: Commit transaction
+            DB::commit();
+
+            if (config('app.debug')) {
+                file_put_contents($debugLog, "Order saved! Redirecting to success page\n", FILE_APPEND);
+            }
+            
             Log::info('Redirecting to success page');
             return redirect()->route('order.success', ['order_number' => $order->order_number])
                            ->with('success', 'Order placed successfully!');
         } catch (\Exception $e) {
-            file_put_contents($debugLog, "\n=== EXCEPTION CAUGHT ===\n", FILE_APPEND);
-            file_put_contents($debugLog, "Error: " . $e->getMessage() . "\n", FILE_APPEND);
-            file_put_contents($debugLog, "File: " . $e->getFile() . ":" . $e->getLine() . "\n", FILE_APPEND);
-            file_put_contents($debugLog, "Trace: " . $e->getTraceAsString() . "\n", FILE_APPEND);
+            // PERFORMANCE: Rollback transaction on error
+            DB::rollBack();
+            
+            if (config('app.debug')) {
+                file_put_contents($debugLog, "\n=== EXCEPTION CAUGHT ===\n", FILE_APPEND);
+                file_put_contents($debugLog, "Error: " . $e->getMessage() . "\n", FILE_APPEND);
+                file_put_contents($debugLog, "File: " . $e->getFile() . ":" . $e->getLine() . "\n", FILE_APPEND);
+                file_put_contents($debugLog, "Trace: " . $e->getTraceAsString() . "\n", FILE_APPEND);
+            }
 
             Log::error('=== ORDER SUBMISSION ERROR ===');
             Log::error('Error message: ' . $e->getMessage());
