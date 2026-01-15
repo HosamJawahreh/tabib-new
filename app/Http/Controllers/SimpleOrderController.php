@@ -130,6 +130,17 @@ class SimpleOrderController extends Controller
             }
             
             Log::info('Redirecting to success page');
+            
+            // Check if request wants JSON (for AJAX debugging)
+            if (request()->expectsJson() || request()->ajax()) {
+                return response()->json([
+                    'success' => true,
+                    'order_number' => $order->order_number,
+                    'redirect_url' => route('order.success', ['order_number' => $order->order_number])
+                ]);
+            }
+            
+            // Normal redirect
             return redirect()->route('order.success', ['order_number' => $order->order_number])
                            ->with('success', 'Order placed successfully!');
         } catch (\Exception $e) {
