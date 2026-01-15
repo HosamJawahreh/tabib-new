@@ -1,0 +1,136 @@
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🚀 COMPLETE SERVER DEPLOYMENT GUIDE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Server: da900 (LiteSpeed)
+Path: /home/tabibjoc/domains/new.tabib-jo.com/public_html
+Domain: new.tabib-jo.com
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📋 STEP-BY-STEP COMMANDS (Copy and paste on server)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+# 1. Navigate to project directory
+cd ~/domains/new.tabib-jo.com/public_html
+
+# 2. Pull latest code (includes artisan file!)
+git pull origin main
+
+# 3. Run automated setup script
+bash server-setup-complete.sh
+
+# OR run commands manually:
+
+# 3a. Fix permissions
+bash fix-server.sh
+
+# 3b. Generate application key
+php artisan key:generate
+
+# 3c. Create storage symlink
+php artisan storage:link
+
+# 3d. Clear all caches
+php artisan config:clear
+php artisan cache:clear
+php artisan route:clear
+php artisan view:clear
+
+# 3e. Run migrations
+php artisan migrate
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+⚠️  CRITICAL: SET DOCUMENT ROOT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Current:  /home/tabibjoc/domains/new.tabib-jo.com/public_html
+Required: /home/tabibjoc/domains/new.tabib-jo.com/public_html/public
+
+How to change in cPanel/Plesk:
+1. Login to control panel
+2. Go to: Domains → Manage (or Hosting Settings)
+3. Find: Document Root
+4. Change to: public_html/public
+5. Save and restart
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✅ VERIFICATION CHECKLIST
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+□ artisan file exists and is executable
+  Check: ls -la artisan
+
+□ .env file has correct database credentials
+  Check: cat .env | grep DB_
+
+□ storage folder has correct permissions (755 or 775)
+  Check: ls -ld storage
+
+□ bootstrap/cache has correct permissions
+  Check: ls -ld bootstrap/cache
+
+□ public/.htaccess exists
+  Check: ls -la public/.htaccess
+
+□ public/index.php exists
+  Check: ls -la public/index.php
+
+□ storage/app/public exists
+  Check: ls -la storage/app/public
+
+□ public/storage symlink exists
+  Check: ls -la public/storage
+
+□ APP_KEY is set in .env
+  Check: cat .env | grep APP_KEY
+
+□ Document Root points to public folder
+  Test: Visit https://new.tabib-jo.com
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🔍 TROUBLESHOOTING
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Still getting 403 error?
+1. Check Apache/LiteSpeed error log
+2. Verify Document Root is set to: public_html/public
+3. Clear browser cache
+4. Restart web server
+
+Check Laravel logs:
+tail -f storage/logs/laravel.log
+
+Check permissions:
+ls -la storage/
+ls -la bootstrap/cache/
+
+Test artisan:
+php artisan --version
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📝 WHAT WAS FIXED
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ Added missing artisan file (was causing all errors)
+✅ Created root .htaccess for automatic redirection
+✅ Created .htaccess.secure with enhanced security
+✅ Created fix-server.sh for automated setup
+✅ Created server-setup-complete.sh for full automation
+✅ Created comprehensive documentation
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🎯 QUICK TEST
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+After completing setup, test these URLs:
+
+✅ https://new.tabib-jo.com
+   → Should show Laravel homepage (not 403)
+
+✅ https://new.tabib-jo.com/assets/front/css/bootstrap.min.css
+   → Should load CSS file (not 404)
+
+✅ https://new.tabib-jo.com/checkout
+   → Should show checkout page
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
