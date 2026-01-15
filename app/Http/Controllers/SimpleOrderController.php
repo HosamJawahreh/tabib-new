@@ -131,18 +131,19 @@ class SimpleOrderController extends Controller
             
             Log::info('Redirecting to success page');
             
-            // Check if request wants JSON (for AJAX debugging)
-            if (request()->expectsJson() || request()->ajax()) {
-                return response()->json([
-                    'success' => true,
-                    'order_number' => $order->order_number,
-                    'redirect_url' => route('order.success', ['order_number' => $order->order_number])
-                ]);
+            // TEMPORARY FIX: Force redirect without AJAX detection
+            $successUrl = route('order.success', ['order_number' => $order->order_number]);
+            
+            if (config('app.debug')) {
+                file_put_contents($debugLog, "Success URL: $successUrl\n", FILE_APPEND);
             }
             
-            // Normal redirect
-            return redirect()->route('order.success', ['order_number' => $order->order_number])
-                           ->with('success', 'Order placed successfully!');
+            // Force redirect using multiple methods
+            return redirect()->away($successUrl)
+                           ->with('success', 'Order placed successfully!')
+                           ->header('Cache-Control', 'no-cache, no-store, must-revalidate')
+                           ->header('Pragma', 'no-cache')
+                           ->header('Expires', '0');
         } catch (\Exception $e) {
             // PERFORMANCE: Rollback transaction on error
             DB::rollBack();
