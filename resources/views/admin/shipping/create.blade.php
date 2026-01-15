@@ -9,7 +9,7 @@
                   <div class="col-lg-12">
                     <div class="product-description">
                       <div class="body-area" id="modalEdit">
-                        @include('alerts.admin.form-error')  
+                        @include('alerts.admin.form-error')
                       <form id="geniusformdata" action="{{route('admin-shipping-create')}}" method="POST" enctype="multipart/form-data">
                         {{csrf_field()}}
 
@@ -53,7 +53,7 @@
                         <div class="row">
                           <div class="col-lg-4">
                             <div class="left-area">
-                              
+
                             </div>
                           </div>
                           <div class="col-lg-7">

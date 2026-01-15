@@ -599,7 +599,7 @@
     // CANCEL CLICK ENDS
 
     // COMMENT FORM ENDS
-    
+
     // Product Details - Add to Cart (Simple like homepage)
     $(document).on("click", "#addcrt", function (e) {
       e.preventDefault();
@@ -634,7 +634,7 @@
           $(".cart-popup").load(mainurl + "/carts/view");
           $("#cart-items").load(mainurl + "/carts/view");
           toastr.success(lang.cart_success || "Successfully Added To Cart");
-          
+
           // Show success state
           $btn.addClass('success');
           setTimeout(function() {
@@ -648,7 +648,7 @@
         $btn.find('.btn-loader').hide();
         toastr.error("Error adding to cart. Please try again.");
       });
-      
+
       return false;
     });
 
@@ -702,7 +702,7 @@
         $btn.find('.btn-loader').hide();
         toastr.error("Error. Please try again.");
       });
-      
+
       return false;
     });
 
