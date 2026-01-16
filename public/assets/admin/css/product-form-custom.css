@@ -47,7 +47,7 @@ button[type="submit"]:active {
 }
 
 /* Image Upload Area Hover */
-.cropme:hover, 
+.cropme:hover,
 div[style*="border: 2px dashed"]:hover {
     border-color: #9f7aea !important;
     background: #faf5ff !important;
@@ -117,11 +117,11 @@ input[type="checkbox"] {
     .col-lg-6, .col-lg-3 {
         margin-bottom: 20px;
     }
-    
+
     h4.heading {
         font-size: 14px !important;
     }
-    
+
     .body-area {
         padding: 20px !important;
     }

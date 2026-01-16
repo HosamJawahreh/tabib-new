@@ -143,7 +143,7 @@ class ProductController extends AdminBaseController
         $cats = Category::all();
         $sign = $this->curr;
         $languages = \App\Models\AdminLanguage::where('is_default', 0)->get(); // Get all non-default languages
-        
+
         if ($slug == 'physical') {
             return view('admin.product.create.physical', compact('cats', 'sign', 'languages'));
         } else if ($slug == 'digital') {

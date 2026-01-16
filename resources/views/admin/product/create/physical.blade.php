@@ -45,7 +45,7 @@
 									<div class="product-description">
 										<div class="body-area" style="padding: 30px;">
 											<div class="gocover" style="background: url({{asset('assets/images/'.$gs->admin_loader)}}) no-repeat scroll center center rgba(45, 45, 45, 0.5);"></div>
-										
+
 											{{-- PRODUCT NAME SECTION (2 COLUMNS: ENGLISH & ARABIC) --}}
 											<div class="row">
 												<div class="col-lg-12 mb-3">
@@ -58,15 +58,15 @@
 												<div class="col-lg-6">
 													<div class="form-group">
 														<label style="font-weight: 600; color: #2d3748; font-size: 14px; display: flex; align-items: center; margin-bottom: 8px;">
-															<img src="{{ asset('assets/flags/english.png') }}" 
-																 style="width: 24px; height: 18px; margin-right: 10px; border-radius: 3px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);" 
+															<img src="{{ asset('assets/flags/english.png') }}"
+																 style="width: 24px; height: 18px; margin-right: 10px; border-radius: 3px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);"
 																 onerror="this.style.display='none'">
 															{{ __('Product Name (English)') }} *
 														</label>
-														<input type="text" 
-															   class="input-field" 
-															   placeholder="Enter product name in English" 
-															   name="name" 
+														<input type="text"
+															   class="input-field"
+															   placeholder="Enter product name in English"
+															   name="name"
 															   required=""
 															   style="border: 2px solid #e2e8f0; border-radius: 6px; padding: 12px; font-size: 14px;">
 													</div>
@@ -78,14 +78,14 @@
 														<div class="col-lg-6">
 															<div class="form-group">
 																<label style="font-weight: 600; color: #2d3748; font-size: 14px; display: flex; align-items: center; margin-bottom: 8px;">
-																	<img src="{{ asset('assets/flags/'.strtolower($language->language).'.png') }}" 
-																		 style="width: 24px; height: 18px; margin-right: 10px; border-radius: 3px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);" 
+																	<img src="{{ asset('assets/flags/'.strtolower($language->language).'.png') }}"
+																		 style="width: 24px; height: 18px; margin-right: 10px; border-radius: 3px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);"
 																		 onerror="this.src='{{ asset('assets/flags/arabic.png') }}'">
 																	{{ __('Product Name (Arabic)') }} *
 																</label>
-																<input type="text" 
-																	   class="input-field" 
-																	   name="translations[{{$language->id}}][name]" 
+																<input type="text"
+																	   class="input-field"
+																	   name="translations[{{$language->id}}][name]"
 																	   placeholder="أدخل اسم المنتج بالعربية"
 																	   style="border: 2px solid #e2e8f0; border-radius: 6px; padding: 12px; font-size: 14px; direction: rtl; text-align: right;">
 																<input type="hidden" name="translations[{{$language->id}}][lang_code]" value="{{$language->language}}">
@@ -109,11 +109,11 @@
 														<label style="font-weight: 600; color: #2d3748; font-size: 14px; margin-bottom: 8px; display: block;">
 															{{ __('Product SKU') }} *
 														</label>
-														<input type="text" 
-															   class="input-field" 
-															   placeholder="{{ __('Enter Product SKU') }}" 
-															   name="sku" 
-															   required="" 
+														<input type="text"
+															   class="input-field"
+															   placeholder="{{ __('Enter Product SKU') }}"
+															   name="sku"
+															   required=""
 															   value="{{ Str::random(3).substr(time(), 6,8).Str::random(3) }}"
 															   style="border: 2px solid #e2e8f0; border-radius: 6px; padding: 12px; font-size: 14px;">
 													</div>
@@ -125,12 +125,12 @@
 														<label style="font-weight: 600; color: #2d3748; font-size: 14px; margin-bottom: 8px; display: block;">
 															{{ __('Current Price') }} * <small style="color: #718096;">({{$sign->name}})</small>
 														</label>
-														<input name="price" 
-															   type="number" 
-															   class="input-field" 
-															   placeholder="20.00" 
-															   step="0.1" 
-															   required="" 
+														<input name="price"
+															   type="number"
+															   class="input-field"
+															   placeholder="20.00"
+															   step="0.1"
+															   required=""
 															   min="0"
 															   style="border: 2px solid #e2e8f0; border-radius: 6px; padding: 12px; font-size: 14px;">
 													</div>
@@ -142,11 +142,11 @@
 														<label style="font-weight: 600; color: #2d3748; font-size: 14px; margin-bottom: 8px; display: block;">
 															{{ __('Discount Price') }} <small style="color: #718096;">({{ __('Optional') }})</small>
 														</label>
-														<input name="previous_price" 
-															   step="0.1" 
-															   type="number" 
-															   class="input-field" 
-															   placeholder="15.00" 
+														<input name="previous_price"
+															   step="0.1"
+															   type="number"
+															   class="input-field"
+															   placeholder="15.00"
 															   min="0"
 															   style="border: 2px solid #e2e8f0; border-radius: 6px; padding: 12px; font-size: 14px;">
 													</div>
@@ -175,7 +175,7 @@
 																		<i class="fas fa-chevron-down toggle-icon" style="margin-left: auto; color: #718096; font-size: 12px;"></i>
 																	@endif
 																</label>
-																
+
 																@if($cat->subs->count() > 0)
 																	<div class="subcategories" style="margin-left: 25px; display: none;">
 																		@foreach($cat->subs as $sub)
@@ -188,7 +188,7 @@
 																						<i class="fas fa-chevron-down toggle-icon" style="margin-left: auto; color: #718096; font-size: 11px;"></i>
 																					@endif
 																				</label>
-																				
+
 																				@if($sub->childs->count() > 0)
 																					<div class="childcategories" style="margin-left: 20px; display: none;">
 																						@foreach($sub->childs as $child)
@@ -316,14 +316,14 @@
 												{{-- English Description --}}
 												<div class="col-lg-6">
 													<label style="font-weight: 600; color: #2d3748; font-size: 14px; display: flex; align-items: center; margin-bottom: 10px;">
-														<img src="{{ asset('assets/flags/english.png') }}" 
-															 style="width: 24px; height: 18px; margin-right: 10px; border-radius: 3px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);" 
+														<img src="{{ asset('assets/flags/english.png') }}"
+															 style="width: 24px; height: 18px; margin-right: 10px; border-radius: 3px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);"
 															 onerror="this.style.display='none'">
 														{{ __('Description (English)') }} *
 													</label>
 													<div class="text-editor">
-														<textarea class="nic-edit-p" 
-																  name="details" 
+														<textarea class="nic-edit-p"
+																  name="details"
 																  placeholder="Enter product description in English"
 																  style="min-height: 250px;"></textarea>
 													</div>
@@ -334,14 +334,14 @@
 													@foreach($languages as $language)
 														<div class="col-lg-6">
 															<label style="font-weight: 600; color: #2d3748; font-size: 14px; display: flex; align-items: center; margin-bottom: 10px;">
-																<img src="{{ asset('assets/flags/'.strtolower($language->language).'.png') }}" 
-																	 style="width: 24px; height: 18px; margin-right: 10px; border-radius: 3px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);" 
+																<img src="{{ asset('assets/flags/'.strtolower($language->language).'.png') }}"
+																	 style="width: 24px; height: 18px; margin-right: 10px; border-radius: 3px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);"
 																	 onerror="this.src='{{ asset('assets/flags/arabic.png') }}'">
 																{{ __('Description (Arabic)') }} *
 															</label>
 															<div class="text-editor">
-																<textarea class="nic-edit-p" 
-																		  name="translations[{{$language->id}}][description]" 
+																<textarea class="nic-edit-p"
+																		  name="translations[{{$language->id}}][description]"
 																		  placeholder="أدخل وصف المنتج بالعربية"
 																		  style="min-height: 250px; direction: rtl; text-align: right;"></textarea>
 															</div>
@@ -350,7 +350,7 @@
 												@endif
 											</div>
 
-										
+
 											{{-- HIDDEN: Product Condition Section --}}
 											<div class="row d-none">
 												<div class="col-lg-12">
@@ -435,7 +435,7 @@
 												</div>
 											</div>
 
-				
+
 											<div class="showbox d-none">
 												<div class="row">
 													<div class="col-lg-12">
@@ -448,7 +448,7 @@
 															placeholder="{{ __('Minimum Order Qty') }}" name="minimum_qty">
 													</div>
 												</div>
-				
+
 											</div>
 
 											{{-- HIDDEN: Shipping Time Section --}}
@@ -563,7 +563,7 @@
 																	<div class="tsize-area">
 																		<span class="remove tsize-remove"><i class="fas fa-times"></i></span>
 																		<input  type="text" name="size_all[]" class="input-field tsize" placeholder="{{ __('Enter Product Size') }}"  >
-																		
+
 																		</div>
 																</div>
 															<a href="javascript:;" id="tsize-btn" class="add-more mt-4 mb-3"><i class="fas fa-plus"></i>{{ __('Add More Size') }} </a>
@@ -802,9 +802,9 @@
 															<label style="font-weight: 600; color: #2d3748; font-size: 14px; margin-bottom: 10px; display: block;">
 																{{ __('Meta Description') }}
 															</label>
-															<textarea class="input-field" 
-																	  name="meta_description" 
-																	  rows="4" 
+															<textarea class="input-field"
+																	  name="meta_description"
+																	  rows="4"
 																	  placeholder="{{ __('Enter meta description') }}"
 																	  style="border: 2px solid #e2e8f0; border-radius: 6px; padding: 12px; font-size: 14px; resize: vertical;"></textarea>
 														</div>
@@ -815,15 +815,15 @@
 											{{-- Submit Button --}}
 											<div class="row mt-5 mb-4">
 												<div class="col-12 text-center">
-													<button class="btn btn-lg" 
+													<button class="btn btn-lg"
 															type="submit"
-															style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
-																   color: white; 
-																   padding: 15px 60px; 
-																   font-size: 16px; 
-																   font-weight: 600; 
-																   border: none; 
-																   border-radius: 8px; 
+															style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+																   color: white;
+																   padding: 15px 60px;
+																   font-size: 16px;
+																   font-weight: 600;
+																   border: none;
+																   border-radius: 8px;
 																   box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
 																   transition: all 0.3s ease;">
 														<i class="fas fa-check-circle" style="margin-right: 8px;"></i>
@@ -833,7 +833,7 @@
 											</div>
 
 											<input type="hidden" name="type" value="Physical">
-										
+
 									</div>
 								</div>
 							</div>
@@ -902,24 +902,24 @@ $(document).ready(function() {
 		if ($(e.target).is('input[type="checkbox"]')) {
 			return; // Let checkbox handle itself
 		}
-		
+
 		e.preventDefault();
 		const $label = $(this);
 		const $subcategories = $label.next('.subcategories, .childcategories');
 		const $icon = $label.find('.toggle-icon');
-		
+
 		if ($subcategories.length) {
 			$subcategories.slideToggle(300);
 			$icon.toggleClass('fa-chevron-down fa-chevron-up');
 		}
 	});
-	
+
 	// Handle checkbox selection
 	$('.category-checkbox').on('change', function() {
 		updateSelectedCategories();
 		updateHiddenFields();
 	});
-	
+
 	// Update selected categories display
 	function updateSelectedCategories() {
 		const selected = [];
@@ -929,7 +929,7 @@ $(document).ready(function() {
 			const categoryId = $(this).val();
 			selected.push({id: categoryId, name: categoryName});
 		});
-		
+
 		if (selected.length > 0) {
 			let html = '';
 			selected.forEach(function(cat) {
@@ -943,14 +943,14 @@ $(document).ready(function() {
 			$('#selected-categories-display').slideUp();
 		}
 	}
-	
+
 	// Update hidden fields for backward compatibility
 	function updateHiddenFields() {
 		const firstChecked = $('.category-checkbox:checked').first();
 		if (firstChecked.length) {
 			const categoryId = firstChecked.val();
 			const hasParent = firstChecked.data('parent-id');
-			
+
 			if (firstChecked.hasClass('parent-checkbox')) {
 				$('#main-category-id').val(categoryId);
 				$('#sub-category-id').val('');
@@ -969,18 +969,18 @@ $(document).ready(function() {
 			$('#child-category-id').val('');
 		}
 	}
-	
+
 	// Expand all button (optional - can add to UI)
 	window.expandAllCategories = function() {
 		$('.subcategories, .childcategories').slideDown(300);
 		$('.toggle-icon').removeClass('fa-chevron-down').addClass('fa-chevron-up');
 	};
-	
+
 	window.collapseAllCategories = function() {
 		$('.subcategories, .childcategories').slideUp(300);
 		$('.toggle-icon').removeClass('fa-chevron-up').addClass('fa-chevron-down');
 	};
-	
+
 	// Initial update
 	updateSelectedCategories();
 });

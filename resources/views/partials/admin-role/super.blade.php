@@ -429,12 +429,12 @@
             <i class="fas fa-cog"></i>{{ __('Site Settings') }}
         </a>
         <ul class="collapse list-unstyled" id="siteSettings" data-parent="#accordion">
-            
+
             <!-- Slider -->
             <li>
                 <a href="{{ route('admin-sl-index') }}"><i class="fas fa-sliders-h"></i> {{ __('Sliders') }}</a>
             </li>
-            
+
             <!-- Manage Country -->
             <li>
                 <a href="#country" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
@@ -522,12 +522,12 @@
             <li>
                 <a href="{{ route('admin-role-index') }}"><i class="fas fa-user-tag"></i> {{ __('Manage Roles') }}</a>
             </li>
-            
+
             <!-- Font Option -->
             <li>
                 <a href="{{ route('admin.fonts.index') }}"><i class="fa fa-font"></i> {{ __('Font Option') }}</a>
             </li>
-            
+
             <!-- Email Settings -->
             <li>
                 <a href="#emails" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">

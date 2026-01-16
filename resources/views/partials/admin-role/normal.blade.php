@@ -414,7 +414,7 @@
             <li>
                 <a href="{{ route('admin-ps-deal') }}"><span>{{ __('Deal of the day') }}</span></a>
             </li>
-            
+
             <li>
                 <a href="{{ route('admin-service-index') }}"><span>{{ __('Services') }}</span></a>
             </li>
@@ -469,15 +469,15 @@
             <a href="{{ route('admin-staff-index') }}"><span><i class="fas fa-user-secret"></i> {{ __('Manage Staffs') }}</span></a>
         </li>
         @endif
-        
+
         <li>
             <a href="{{ route('admin-role-index') }}"><span><i class="fas fa-user-tag"></i> {{ __('Manage Roles') }}</span></a>
         </li>
-        
+
         <li>
             <a href="{{ route('admin.fonts.index') }}"><span><i class="fa fa-font"></i> {{ __('Font Option') }}</span></a>
         </li>
-        
+
         @if(Auth::guard('admin')->user()->sectionCheck('emails_settings'))
         <li>
             <a href="#emails" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">

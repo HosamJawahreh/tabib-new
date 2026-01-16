@@ -20,7 +20,7 @@
 		<!-- Sidemenu Css -->
 		<link href="{{asset('assets/admin/plugins/fullside-menu/css/dark-side-style.css')}}" rel="stylesheet" />
 		<link href="{{asset('assets/admin/plugins/fullside-menu/waves.min.css')}}" rel="stylesheet" />
-	
+
 		<link href="{{asset('assets/admin/css/plugin.css')}}" rel="stylesheet" />
 
 		<link href="{{asset('assets/admin/css/jquery.tagit.css')}}" rel="stylesheet" />
@@ -172,9 +172,9 @@
 							@else
 								@include('partials.admin-role.normal')
 							@endif
-							
+
 						</ul>
-						
+
 					</nav>
 					<!-- Main Content Area Start -->
 					@yield('content')
