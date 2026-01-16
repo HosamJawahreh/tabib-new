@@ -273,31 +273,31 @@
        overflow-x: hidden !important;
    }
 
-   /* Logo Sizing - Compact 40px height */
+   /* Logo Sizing - Bigger 150px height */
    img.nav-logo.header-logo-responsive,
    .navbar-brand img.nav-logo,
    .header-logo-responsive {
-       height: 100px !important;
+       height: 150px !important;
        width: auto !important;
-       max-height: 100px !important;
+       max-height: 150px !important;
        object-fit: contain !important;
    }
    @media (min-width: 768px) {
        img.nav-logo.header-logo-responsive,
        .navbar-brand img.nav-logo,
        .header-logo-responsive {
-           height: 100px !important;
+           height: 150px !important;
            width: auto !important;
-           max-height: 100px !important;
+           max-height: 150px !important;
        }
    }
    @media (min-width: 1200px) {
        img.nav-logo.header-logo-responsive,
        .navbar-brand img.nav-logo,
        .header-logo-responsive {
-           height: 100px !important;
+           height: 150px !important;
            width: auto !important;
-           max-height: 100px !important;
+           max-height: 150px !important;
        }
    }
 
@@ -847,11 +847,16 @@
        box-shadow: 0 4px 8px rgba(124, 170, 83, 0.3);
    }
 
+   /* HIDE BURGER MENU COMPLETELY - All screen sizes */
+   .navbar-toggler {
+       display: none !important;
+       visibility: hidden !important;
+   }
+
    /* HIDE MENU ITEMS ON DESKTOP - Mobile Only */
    @media (min-width: 992px) {
        .navbar-collapse,
-       .navbar-nav,
-       .navbar-toggler {
+       .navbar-nav {
            display: none !important;
            visibility: hidden !important;
        }
@@ -933,6 +938,103 @@
            padding: 0 !important;
        }
    }
+
+   /* ========================================
+    * CART DROPDOWN - CENTERED & BUTTON FIX
+    * ======================================== */
+
+   /* Center the cart dropdown - FORCE CENTER */
+   .header-cart-1 .cart-popup,
+   .has-cart-data .cart-popup,
+   .cart-popup {
+       position: fixed !important;
+       top: 120px !important;
+       left: 50% !important;
+       right: auto !important;
+       margin-left: -190px !important; /* Half of 380px width */
+       transform: translateY(-10px) !important;
+       width: 380px !important;
+       max-width: 90vw !important;
+       z-index: 999999 !important;
+       opacity: 0 !important;
+       visibility: hidden !important;
+       pointer-events: none !important;
+   }
+
+   /* When cart is hovered/visible */
+   .header-cart-1:hover .cart-popup,
+   .has-cart-data:hover .cart-popup {
+       opacity: 1 !important;
+       visibility: visible !important;
+       pointer-events: auto !important;
+       transform: translateY(0) !important;
+   }
+
+   /* Also show when hovering the cart popup itself */
+   .cart-popup:hover {
+       opacity: 1 !important;
+       visibility: visible !important;
+       pointer-events: auto !important;
+   }
+
+   /* Cart Buttons - White background with dark text */
+   .cart-popup .view-cart,
+   .cart-popup .checkout,
+   .cart-popup a.view-cart,
+   .cart-popup a.checkout {
+       background: #ffffff !important;
+       color: #2d3748 !important;
+       border: 2px solid #e2e8f0 !important;
+       font-weight: 600 !important;
+       transition: all 0.3s ease !important;
+       text-decoration: none !important;
+   }
+
+   .cart-popup .view-cart:hover,
+   .cart-popup .checkout:hover,
+   .cart-popup a.view-cart:hover,
+   .cart-popup a.checkout:hover {
+       background: #f7fafc !important;
+       color: #1a202c !important;
+       border-color: #cbd5e0 !important;
+       transform: translateY(-2px) !important;
+       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+   }
+
+   /* Mobile: Keep cart centered on smaller screens */
+   @media (max-width: 767px) {
+       .header-cart-1 .cart-popup,
+       .has-cart-data .cart-popup,
+       .cart-popup {
+           width: 320px !important;
+           max-width: 90vw !important;
+           left: 50% !important;
+           right: auto !important;
+           margin-left: -160px !important; /* Half of 320px width */
+           transform: translateY(-10px) !important;
+       }
+
+       .header-cart-1:hover .cart-popup,
+       .has-cart-data:hover .cart-popup {
+           transform: translateY(0) !important;
+       }
+   }
+
+   /* RTL Support - Still centered */
+   [dir="rtl"] .header-cart-1 .cart-popup,
+   [dir="rtl"] .has-cart-data .cart-popup,
+   [dir="rtl"] .cart-popup {
+       left: 50% !important;
+       right: auto !important;
+       margin-left: -190px !important;
+       transform: translateY(-10px) !important;
+   }
+
+   [dir="rtl"] .header-cart-1:hover .cart-popup,
+   [dir="rtl"] .has-cart-data:hover .cart-popup {
+       transform: translateY(0) !important;
+   }
+
    </style>
 
 
@@ -948,7 +1050,8 @@ $pages = App\Models\Page::get();
                     <a class="navbar-brand" href="{{ route('front.index') }}">
                         <img class="nav-logo lazy header-logo-responsive" data-src="{{ asset('assets/images/'.$gs->logo) }}" src="{{ asset('assets/images/'.$gs->logo) }}" alt="Logo">
                     </a>
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <!-- Burger menu hidden -->
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" style="display: none !important;">
                     <i class="flaticon-menu-2 flat-small text-primary"></i>
                     </button>
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">

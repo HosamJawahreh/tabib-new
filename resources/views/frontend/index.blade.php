@@ -49,7 +49,8 @@
         padding-bottom: 0 !important;
         position: relative !important;
         z-index: 1 !important;
-        background: #f5f5f5 !important;
+        background: transparent !important;
+        min-height: 0 !important;
     }
 
     .category-navigation-section {
@@ -236,7 +237,7 @@
         z-index: 1;
     }
 
-    /* Responsive slider heights - Increased for better visibility */
+    /* Responsive slider heights - Decreased 25% for mobile */
     /* Mobile Small (< 576px) */
     @media (max-width: 575px) {
         .home-slider-section {
@@ -248,9 +249,9 @@
         .slider-item,
         .home-slider .owl-item .slider-item,
         .owl-item .slider-item {
-            min-height: 220px !important;
-            max-height: 220px !important;
-            height: 220px !important;
+            min-height: 165px !important;
+            max-height: 165px !important;
+            height: 165px !important;
         }
 
         .slider-content h2 {
@@ -283,9 +284,9 @@
         .slider-item,
         .home-slider .owl-item .slider-item,
         .owl-item .slider-item {
-            min-height: 250px !important;
-            max-height: 250px !important;
-            height: 250px !important;
+            min-height: 188px !important;
+            max-height: 188px !important;
+            height: 188px !important;
         }
         .slider-content h2 {
             font-size: 1.1rem !important;
@@ -297,9 +298,9 @@
         .slider-item,
         .home-slider .owl-item .slider-item,
         .owl-item .slider-item {
-            min-height: 280px !important;
-            max-height: 280px !important;
-            height: 280px !important;
+            min-height: 210px !important;
+            max-height: 210px !important;
+            height: 210px !important;
         }
         .home-slider-section {
             padding: 0 15px !important;
@@ -527,11 +528,11 @@
 
 {{-- Slider Section - Rounded with Same Width as Products --}}
 @if(isset($ps) && isset($sliders) && $ps->slider == 1 && count($sliders) > 0)
-<section class="home-slider-section">
+<section class="home-slider-section" style="display: block !important; visibility: visible !important; min-height: 300px;">
     <div class="container-fluid px-4">
         <div class="home-slider owl-carousel owl-theme">
             @foreach($sliders as $slider)
-            <div class="slider-item" style="background-image: url('{{asset('assets/images/sliders/'.$slider->photo)}}');">
+            <div class="slider-item" style="background-image: url('{{asset('assets/images/sliders/'.$slider->photo)}}'); height: 300px; background-size: cover; background-position: center;">
                 <div class="slider-content text-{{ $slider->position ?? 'left' }}">
 
                 </div>
@@ -540,6 +541,14 @@
         </div>
     </div>
 </section>
+@else
+<div style="padding: 20px; background: #ffcccc; text-align: center;">
+    DEBUG: Slider not showing.
+    PS exists: {{ isset($ps) ? 'YES' : 'NO' }} |
+    Sliders exists: {{ isset($sliders) ? 'YES' : 'NO' }} |
+    PS slider value: {{ isset($ps) ? $ps->slider : 'N/A' }} |
+    Sliders count: {{ isset($sliders) ? count($sliders) : '0' }}
+</div>
 @endif
 
 {{-- Category Navigation Section --}}

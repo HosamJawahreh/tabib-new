@@ -194,11 +194,7 @@
     }
 }
 
-/* Fix for any overflow issues */
-@media (max-width: 768px) {
-    * {
-        max-width: 100%;
-    }
+
 
     img {
         max-width: 100%;
