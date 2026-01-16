@@ -86,8 +86,10 @@ class FrontendController extends FrontBaseController
 
         $data['featured_categories'] = Category::withCount('products')->where('is_featured', 1)->get();
 
-        // Get all categories with subcategories and child categories for navigation
+        // Get only ROOT/MAIN categories with subcategories and child categories for navigation
+        // Only show the 10 main categories (IDs: 84-96) - exclude imported subcategories
         $data['categories'] = Category::where('status', 1)
+            ->whereIn('id', [84, 85, 86, 87, 88, 89, 90, 91, 95, 96]) // Only root categories
             ->with(['subs' => function($query) {
                 $query->where('status', 1)->with(['childs' => function($q) {
                     $q->where('status', 1);
@@ -102,14 +104,14 @@ class FrontendController extends FrontBaseController
         // Get footer blogs for footer section
         $data['footer_blogs'] = Blog::orderBy('created_at', 'desc')->limit(3)->get();
 
-        // Get initial 24 products for homepage with infinite scroll (newest first by ID)
+        // Get initial 24 products for homepage with infinite scroll (alphabetically by name)
         $data['products'] = Product::where('status', 1)
             ->with(['user' => function ($query) {
                 $query->select('id', 'is_vendor');
-            }])
+            }, 'categories']) // Load multi-categories
             ->withCount('ratings')
             ->withAvg('ratings', 'rating')
-            ->orderBy('id', 'desc')
+            ->orderBy('name', 'asc')
             ->paginate(24);
 
         $data['total_products_count'] = Product::where('status', 1)->count();
@@ -127,10 +129,10 @@ class FrontendController extends FrontBaseController
         $products = Product::where('status', 1)
             ->with(['user' => function ($query) {
                 $query->select('id', 'is_vendor');
-            }])
+            }, 'categories']) // Load multi-categories
             ->withCount('ratings')
             ->withAvg('ratings', 'rating')
-            ->orderBy('id', 'desc')
+            ->orderBy('name', 'asc')
             ->paginate(24, ['*'], 'page', $page);
 
         if ($request->ajax()) {
@@ -159,30 +161,61 @@ class FrontendController extends FrontBaseController
         $query = Product::where('status', 1)
             ->with(['user' => function ($q) {
                 $q->select('id', 'is_vendor');
-            }])
+            }, 'categories']) // Load multi-categories
             ->withCount('ratings')
             ->withAvg('ratings', 'rating');
 
-        // Apply category filter
+        // Apply multi-category filter using many-to-many relationship
         if ($request->has('category_id') && $request->category_id) {
-            $query->where('category_id', $request->category_id);
+            $categoryId = $request->category_id;
+            
+            // Search in both pivot table AND old category columns (backward compatibility)
+            $query->where(function($q) use ($categoryId) {
+                // New multi-category system
+                $q->whereHas('categories', function($subQuery) use ($categoryId) {
+                    $subQuery->where('categories.id', $categoryId);
+                })
+                // OR old single-category columns for backward compatibility
+                ->orWhere('category_id', $categoryId)
+                ->orWhere('subcategory_id', $categoryId)
+                ->orWhere('childcategory_id', $categoryId);
+            });
         }
 
         // Apply subcategory filter
         if ($request->has('subcategory_id') && $request->subcategory_id) {
-            $query->where('subcategory_id', $request->subcategory_id);
+            $subcategoryId = $request->subcategory_id;
+            
+            $query->where(function($q) use ($subcategoryId) {
+                // New multi-category system
+                $q->whereHas('categories', function($subQuery) use ($subcategoryId) {
+                    $subQuery->where('categories.id', $subcategoryId);
+                })
+                // OR old columns for backward compatibility
+                ->orWhere('subcategory_id', $subcategoryId)
+                ->orWhere('childcategory_id', $subcategoryId);
+            });
         }
 
         // Apply child category filter
         if ($request->has('childcategory_id') && $request->childcategory_id) {
-            $query->where('childcategory_id', $request->childcategory_id);
+            $childcategoryId = $request->childcategory_id;
+            
+            $query->where(function($q) use ($childcategoryId) {
+                // New multi-category system
+                $q->whereHas('categories', function($subQuery) use ($childcategoryId) {
+                    $subQuery->where('categories.id', $childcategoryId);
+                })
+                // OR old column for backward compatibility
+                ->orWhere('childcategory_id', $childcategoryId);
+            });
         }
 
         // Get total count BEFORE pagination
         $totalCount = $query->count();
 
-        // Order by newest
-        $query->orderBy('id', 'desc');
+        // Order alphabetically by name
+        $query->orderBy('name', 'asc');
 
         // Paginate (24 per page)
         $products = $query->paginate(24);
