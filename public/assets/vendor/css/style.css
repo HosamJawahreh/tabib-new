@@ -131,8 +131,8 @@ select:focus {
   padding: 7px 25px;
   border: 0px;
  }
-  
-  
+
+
 
 .page {
   background: #f2f3f8; }
@@ -183,7 +183,7 @@ select:focus {
     line-height: 38px;
     font-weight: 300;
     color: #182a11;
-    
+
     margin-bottom: 1px;
     font-family: "Open Sans", sans-serif; }
   .section-title .title {
@@ -409,7 +409,7 @@ select:focus {
   padding-right: 30px;
   color: rgba(13, 51, 89, 0.6);
   border: 0px;
-  border-bottom: 1px solid rgba(45, 50, 116, 0.3); 
+  border-bottom: 1px solid rgba(45, 50, 116, 0.3);
 }
 
   .nice-select:hover, .nice-select:focus {
@@ -746,13 +746,13 @@ Mr table Area Start / Mamunur Rashid.
     margin-bottom: 0px; }
 
 /*----------------------------------
-All Order Area Start 
+All Order Area Start
 -------------------------------------*/
 .order-area {
   background: #fff; }
 
 /*----------------------------------
-All Product Area Start 
+All Product Area Start
 -------------------------------------*/
 .product-area {
   background: #fff; }
@@ -769,7 +769,7 @@ All Product Area Start
         margin-right: 4px; }
 
 /*----------------------------------
-General Settings Area Start 
+General Settings Area Start
 -------------------------------------*/
 .add-logo-area {
   background: #fff;
@@ -816,7 +816,7 @@ General Settings Area Start
     height: 40px;
     font-size: 14px;
     font-weight: 600;
-    
+
     -webkit-transition: all 0.3s ease-in;
     -o-transition: all 0.3s ease-in;
     transition: all 0.3s ease-in; }
@@ -969,17 +969,17 @@ div.modal {
   padding: 30px 30px 30px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.15);
   padding-bottom: 20px;
-  margin-bottom: 25px; 
+  margin-bottom: 25px;
   }
   .heading-area .title {
     display: inline-block;
     font-size: 20px;
     line-height: 30px;
     margin-bottom: 0px;
-    margin-right: 10px; 
+    margin-right: 10px;
   }
   .heading-area .action-list {
-    display: inline-block; 
+    display: inline-block;
   }
 
 .action-list .dropdown .custom-btn {
@@ -1013,7 +1013,7 @@ div.modal {
     -o-transition: .4s;
     transition: .4s;
     font-size: 14px;
-    
+
     margin-top: 10px; }
     .social-links-area .submit-btn:hover {
       background: #1f224f; }
@@ -1134,7 +1134,7 @@ div.modal {
       height: 40px;
       color: #fff;
       font-size: 14px;
-      
+
       border: 0px;
       margin-top: 15px;
       -webkit-transition: all 0.3s ease-in;
@@ -1334,7 +1334,7 @@ div.modal {
       background: #1f224f;
       border: 0px;
       color: #fff;
-      
+
       margin-top: 20px;
       -webkit-transition: all 0.3s ease-in;
       -o-transition: all 0.3s ease-in;

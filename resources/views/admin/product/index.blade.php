@@ -1,6 +1,6 @@
-@extends('layouts.admin') 
+@extends('layouts.admin')
 
-@section('content')  
+@section('content')
 					<input type="hidden" id="headerdata" value="{{ __("PRODUCT") }}">
 					<div class="content-area">
 						<div class="mr-breadcrumb">
@@ -16,7 +16,7 @@
           '<i class="fas fa-plus"></i> <span class="remove-mobile">{{ __("Add Product") }}<span>'+
           '</a>'+
           '</div>');
-      });											
+      });
 
 })(jQuery);ks">
 											<li>
@@ -36,7 +36,7 @@
 							<div class="row">
 								<div class="col-lg-12">
 									<div class="mr-table allproduct">
-                        					@include('alerts.admin.form-success')  
+                        					@include('alerts.admin.form-success')
 
 										{{-- Filters Section --}}
 										<div class="row mb-4" style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 0 0 20px 0;">
@@ -112,8 +112,8 @@
 {{-- HIGHLIGHT MODAL --}}
 
 										<div class="modal fade" id="modal2" tabindex="-1" role="dialog" aria-labelledby="modal2" aria-hidden="true">
-										
-										
+
+
 										<div class="modal-dialog highlight" role="document">
 										<div class="modal-content">
 												<div class="submit-loader">
@@ -247,7 +247,7 @@
 
 {{-- GALLERY MODAL ENDS --}}
 
-@endsection    
+@endsection
 
 @section('scripts')
 
@@ -281,7 +281,7 @@
                 	processing: '<img src="{{asset('assets/images/'.$gs->admin_loader)}}">'
                 },
 				drawCallback : function( settings ) {
-	    				$('.select').niceSelect();	
+	    				$('.select').niceSelect();
 				}
             });
 
@@ -319,7 +319,7 @@
 			var checkbox = $(this);
 			var productId = checkbox.data('id');
 			var newStatus = checkbox.is(':checked') ? 1 : 0;
-			
+
 			$.ajax({
 				url: '{{ route('admin-prod-status', ['id1' => '__ID__', 'id2' => '__STATUS__']) }}'.replace('__ID__', productId).replace('__STATUS__', newStatus),
 				type: 'GET',
@@ -339,7 +339,7 @@
           '<i class="fas fa-plus"></i> <span class="remove-mobile">{{ __("Add Product") }}<span>'+
           '</a>'+
           '</div>');
-      });											
+      });
 
 })(jQuery);
 
@@ -350,7 +350,7 @@
 {{-- Gallery Section Update--}}
 
 <script type="text/javascript">
-	
+
     $(function($) {
 		"use strict";
 
@@ -370,7 +370,7 @@
      				  }
                       else {
 	                    $('.selected-image .row').removeClass('justify-content-center');
-	      				$('.selected-image .row h3').remove();      
+	      				$('.selected-image .row h3').remove();
                           var arr = $.map(data[1], function(el) {
                           return el });
 
@@ -386,9 +386,9 @@
                                             '</a>'+
                                         '</div>'+
                                   	'</div>');
-                          }                         
+                          }
                        }
- 
+
                     }
                   });
       });
@@ -407,10 +407,10 @@
   $(document).on('click', '#prod_gallery' ,function() {
     $('#uploadgallery').click();
   });
-                                        
-                                
+
+
   $("#uploadgallery").change(function(){
-    $("#form-gallery").submit();  
+    $("#form-gallery").submit();
   });
 
   $(document).on('submit', '#form-gallery' ,function() {
@@ -427,7 +427,7 @@
 		    if(data != 0)
 		    {
 	                    $('.selected-image .row').removeClass('justify-content-center');
-	      				$('.selected-image .row h3').remove();   
+	      				$('.selected-image .row h3').remove();
 		        var arr = $.map(data, function(el) {
 		        return el });
 		        for(var k in arr)
@@ -442,9 +442,9 @@
                                             '</a>'+
                                         '</div>'+
                                   	'</div>');
-		            }          
+		            }
 		    }
-		                     
+
 		    }
 
 		  });
@@ -452,7 +452,7 @@
 
 })(jQuery);
 
- }); 
+ });
 
 
 </script>
@@ -517,4 +517,4 @@ input:checked + .slider:before {
 }
 </style>
 
-@endsection   
+@endsection

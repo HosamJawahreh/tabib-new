@@ -118,6 +118,9 @@
 
     {{-- Scrollbar Fix CSS --}}
     <link rel="stylesheet" href="{{ asset('assets/vendor/css/scrollbar-fix.css') }}">
+    
+    {{-- Mobile Responsive Fix CSS --}}
+    <link rel="stylesheet" href="{{ asset('assets/vendor/css/mobile-fix.css') }}">
 
     @yield('css')
 </head>
