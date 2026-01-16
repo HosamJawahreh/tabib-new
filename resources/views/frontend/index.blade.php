@@ -2,14 +2,35 @@
 
 @section('css')
 <style>
-    /* Remove white space before slider */
+    /* Ensure no extra spacing */
+    #page_wrapper {
+        padding-top: 0 !important;
+        margin-top: 0 !important;
+    }
+
+    /* Body spacing for sticky header */
     body {
         margin: 0 !important;
         padding: 0 !important;
+        padding-top: 50px !important;
+        overflow-x: hidden;
+        position: relative;
+    }
+
+    /* Mobile body padding for sticky header */
+    @media (max-width: 991px) {
+        body {
+            padding-top: 48px !important;
+        }
     }
 
     header, .ecommerce-header {
         margin-bottom: 0 !important;
+        background: #ffffff !important;
+        position: sticky !important;
+        top: 0 !important;
+        z-index: 9999 !important;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1) !important;
     }
 
     .main-nav {
@@ -23,9 +44,12 @@
 
     .home-slider-section {
         margin-top: 0 !important;
-        margin-bottom: 0 !important;
+        margin-bottom: 15px !important;
         padding-top: 0 !important;
         padding-bottom: 0 !important;
+        position: relative !important;
+        z-index: 1 !important;
+        background: #f5f5f5 !important;
     }
 
     .category-navigation-section {
@@ -43,13 +67,6 @@
     html {
         scroll-behavior: smooth;
         overflow-x: hidden;
-    }
-
-    body {
-        overflow-x: hidden;
-        position: relative;
-        padding-top: 0 !important;
-        margin-top: 0 !important;
     }
 
     /* Product Grid Styles */
@@ -182,9 +199,9 @@
     .slider-item,
     .home-slider .owl-item .slider-item,
     .owl-item .slider-item {
-        min-height: 150px !important;
-        max-height: 150px !important;
-        height: 150px !important;
+        min-height: 300px !important;
+        max-height: 300px !important;
+        height: 300px !important;
         display: flex !important;
         align-items: center;
         background-size: cover !important;
@@ -219,7 +236,7 @@
         z-index: 1;
     }
 
-    /* Responsive slider heights - Optimized for all devices */
+    /* Responsive slider heights - Increased for better visibility */
     /* Mobile Small (< 576px) */
     @media (max-width: 575px) {
         .home-slider-section {
@@ -227,24 +244,24 @@
             margin-bottom: 15px !important;
             margin-top: 0 !important;
         }
-        
+
         .slider-item,
         .home-slider .owl-item .slider-item,
         .owl-item .slider-item {
-            min-height: 140px !important;
-            max-height: 140px !important;
-            height: 140px !important;
+            min-height: 220px !important;
+            max-height: 220px !important;
+            height: 220px !important;
         }
-        
+
         .slider-content h2 {
             font-size: 0.9rem !important;
             padding: 0 10px !important;
         }
-        
+
         .slider-content p {
             display: none !important;
         }
-        
+
         .home-slider-section .container-fluid {
             padding-left: 0 !important;
             padding-right: 0 !important;
@@ -266,9 +283,9 @@
         .slider-item,
         .home-slider .owl-item .slider-item,
         .owl-item .slider-item {
-            min-height: 180px !important;
-            max-height: 180px !important;
-            height: 180px !important;
+            min-height: 250px !important;
+            max-height: 250px !important;
+            height: 250px !important;
         }
         .slider-content h2 {
             font-size: 1.1rem !important;
@@ -280,9 +297,9 @@
         .slider-item,
         .home-slider .owl-item .slider-item,
         .owl-item .slider-item {
-            min-height: 220px !important;
-            max-height: 220px !important;
-            height: 220px !important;
+            min-height: 280px !important;
+            max-height: 280px !important;
+            height: 280px !important;
         }
         .home-slider-section {
             padding: 0 15px !important;
@@ -301,9 +318,9 @@
         .slider-item,
         .home-slider .owl-item .slider-item,
         .owl-item .slider-item {
-            min-height: 280px !important;
-            max-height: 280px !important;
-            height: 280px !important;
+            min-height: 320px !important;
+            max-height: 320px !important;
+            height: 320px !important;
         }
         .slider-content h2 {
             font-size: 1.6rem !important;
@@ -315,9 +332,9 @@
         .slider-item,
         .home-slider .owl-item .slider-item,
         .owl-item .slider-item {
-            min-height: 320px !important;
-            max-height: 320px !important;
-            height: 320px !important;
+            min-height: 350px !important;
+            max-height: 350px !important;
+            height: 350px !important;
         }
         .home-slider-section {
             padding: 0 20px !important;
@@ -332,9 +349,9 @@
         .slider-item,
         .home-slider .owl-item .slider-item,
         .owl-item .slider-item {
-            min-height: 380px !important;
-            max-height: 380px !important;
-            height: 380px !important;
+            min-height: 400px !important;
+            max-height: 400px !important;
+            height: 400px !important;
         }
         .slider-content h2 {
             font-size: 2rem !important;

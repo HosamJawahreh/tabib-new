@@ -60,7 +60,7 @@
     <link rel="stylesheet" href="{{ asset('assets/front/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/front/css/product-card-custom.css') }}?v={{ time() }}">
     <link rel="stylesheet" href="{{ asset('assets/front/css/product-card-responsive.css') }}?v={{ time() }}">
-    <link rel="stylesheet" href="{{ asset('assets/front/css/cart-sidebar-responsive.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/front/css/cart-sidebar-responsive.css') }}?v={{ time() }}">
     <link rel="stylesheet" href="{{ asset('assets/front/css/responsive-fixes.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/front/css/header-responsive.css') }}?v={{ time() }}">
     <link rel="stylesheet" href="{{ asset('assets/front/css/slider-header-fix.css') }}?v={{ time() }}">
@@ -119,9 +119,9 @@
     @yield('css')
 </head>
 
-<body>
+<body style="margin: 0 !important; padding: 0 !important; overflow-x: hidden;">
 
-    <div id="page_wrapper" class="bg-white">
+    <div id="page_wrapper" class="bg-white" style="padding-top: 0 !important; margin-top: 0 !important;">
         <div class="loader">
             <div class="spinner"></div>
         </div>

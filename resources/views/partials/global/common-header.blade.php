@@ -1,23 +1,9 @@
  <!--==================== Header Section Start ====================-->
- <header class="ecommerce-header" style="position: sticky; top: 0; z-index: 9999; background: #fff; box-shadow: 0 2px 10px rgba(0,0,0,0.06); padding: 0 20px;">
+ <header class="ecommerce-header">
    <style>
      /* Stabilize scrollbar to avoid layout shift/jitter */
      html { scrollbar-gutter: stable both-edges; }
      html, body { overflow-x: hidden; overflow-y: scroll; scroll-behavior: auto; }
-
-   /* STICKY HEADER */
-   .ecommerce-header {
-       position: sticky !important;
-       top: 0 !important;
-       z-index: 9999 !important;
-       background: #fff !important;
-       transition: box-shadow 0.3s ease;
-   }
-
-   /* Enhanced shadow when scrolling */
-   .ecommerce-header.scrolled {
-       box-shadow: 0 4px 12px rgba(0,0,0,0.1) !important;
-   }
 
    /* COMPLETE RTL Support for Arabic Language - FLIP ENTIRE LAYOUT */
    html[lang="ar"],
@@ -287,34 +273,31 @@
        overflow-x: hidden !important;
    }
 
-   /* Logo Sizing - Desktop 90px (25% smaller), Mobile 50-55px */
+   /* Logo Sizing - Compact 40px height */
    img.nav-logo.header-logo-responsive,
    .navbar-brand img.nav-logo,
    .header-logo-responsive {
-       max-width: 90px !important;
-       min-width: 90px !important;
-       width: 90px !important;
-       height: auto !important;
+       height: 100px !important;
+       width: auto !important;
+       max-height: 100px !important;
        object-fit: contain !important;
    }
    @media (min-width: 768px) {
        img.nav-logo.header-logo-responsive,
        .navbar-brand img.nav-logo,
        .header-logo-responsive {
-           max-width: 90px !important;
-           min-width: 90px !important;
-           width: 90px !important;
-           height: auto !important;
+           height: 100px !important;
+           width: auto !important;
+           max-height: 100px !important;
        }
    }
    @media (min-width: 1200px) {
        img.nav-logo.header-logo-responsive,
        .navbar-brand img.nav-logo,
        .header-logo-responsive {
-           max-width: 90px !important;
-           min-width: 90px !important;
-           width: 90px !important;
-           height: auto !important;
+           height: 100px !important;
+           width: auto !important;
+           max-height: 100px !important;
        }
    }
 
@@ -377,22 +360,32 @@
 
    /* Mobile Menu Improvements - Keep items in one line */
    @media (max-width: 991px) {
+       .ecommerce-header {
+           height: 48px !important;
+           padding: 4px 15px !important;
+       }
+
+       .main-nav, .main-nav-row {
+           height: 48px !important;
+       }
+
        img.nav-logo.header-logo-responsive,
        .navbar-brand img.nav-logo,
        .header-logo-responsive {
-           max-width: 55px !important;
-           min-width: 55px !important;
-           width: 55px !important;
+           height: 38px !important;
+           width: auto !important;
+           max-height: 38px !important;
        }
 
        .header-icon-enhanced {
-           padding: 5px !important;
-           min-width: 40px;
-           max-width: 40px;
+           padding: 4px !important;
+           min-width: 36px;
+           max-width: 36px;
+           height: 36px;
        }
 
        .header-icon-enhanced i {
-           font-size: 16px !important;
+           font-size: 15px !important;
        }
 
        .header-cart-count {
@@ -890,10 +883,12 @@
            padding-bottom: 5px !important;
        }
 
-       /* Bigger logo on desktop - 50% increase */
+       /* Bigger logo on desktop */
        .header-logo-responsive,
        .nav-logo {
-           max-height: 82px !important;
+           height: 100px !important;
+           max-height: 100px !important;
+           width: auto !important;
            display: block !important;
            margin: 0 !important;
            padding: 0 !important;
@@ -930,7 +925,9 @@
 
        .header-logo-responsive,
        .nav-logo {
-           max-height: 45px !important;
+           height: 38px !important;
+           max-height: 38px !important;
+           width: auto !important;
            display: block !important;
            margin: 0 !important;
            padding: 0 !important;
@@ -943,13 +940,13 @@
 $categories = App\Models\Category::with('subs')->where('status',1)->get();
 $pages = App\Models\Page::get();
 @endphp
-<div class="main-nav" style="padding: 0 !important; margin: 0 !important;">
-    <div class="container-fluid" style="padding: 0 !important;">
-        <div class="row align-items-center main-nav-row" style="margin: 0 !important; display: flex !important; padding: 0 !important;">
-            <div class="col-lg-2 col-md-3 col-4 text-start logo-col" style="padding: 0 15px !important;">
-                <nav class="navbar navbar-expand-lg nav-dark nav-primary-hover nav-line-active p-0" style="padding: 0 !important; margin: 0 !important;">
-                    <a class="navbar-brand" href="{{ route('front.index') }}" style="margin: 0 !important; padding: 0 !important; display: inline-block;">
-                        <img class="nav-logo lazy header-logo-responsive" data-src="{{ asset('assets/images/'.$gs->logo) }}" src="{{ asset('assets/images/'.$gs->logo) }}" alt="Logo" style="display: block; margin: 0; padding: 0;">
+<div class="main-nav">
+    <div class="container-fluid">
+        <div class="row align-items-center main-nav-row">
+            <div class="col-lg-2 col-md-3 col-4 text-start logo-col">
+                <nav class="navbar navbar-expand-lg nav-dark nav-primary-hover nav-line-active p-0">
+                    <a class="navbar-brand" href="{{ route('front.index') }}">
+                        <img class="nav-logo lazy header-logo-responsive" data-src="{{ asset('assets/images/'.$gs->logo) }}" src="{{ asset('assets/images/'.$gs->logo) }}" alt="Logo">
                     </a>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <i class="flaticon-menu-2 flat-small text-primary"></i>
@@ -1006,8 +1003,8 @@ $pages = App\Models\Page::get();
                     </div>
                 </nav>
             </div>
-            <div class="col-lg-7 col-md-6 d-none d-md-block order-md-2 order-3 search-col" style="margin-top: 0 !important; margin-bottom: 0 !important;">
-                <div class="d-flex align-items-center justify-content-center h-100" style="padding: 0 !important;">
+            <div class="col-lg-7 col-md-6 d-none d-md-block order-md-2 order-3 search-col">
+                <div class="d-flex align-items-center justify-content-center h-100">
                     <div class="product-search-one w-100 global-search touch-screen-view">
                         <form id="searchForm" class="search-form form-inline enhanced-search-form" action="{{ route('front.category', [Request::route('category'),Request::route('subcategory'),Request::route('childcategory')]) }}" method="GET">
 
@@ -1030,8 +1027,8 @@ $pages = App\Models\Page::get();
                     </div>
                 </div>
             </div>
-            <div class="col-lg-3 col-md-3 col-8 order-md-3 order-2 icons-col" style="margin-top: 0 !important; margin-bottom: 0 !important;">
-                <div class="d-flex align-items-center justify-content-end h-100 col-icons" style="gap: 8px; padding: 0 8px 0 0 !important; flex-wrap: nowrap !important;">
+            <div class="col-lg-3 col-md-3 col-8 order-md-3 order-2 icons-col">
+                <div class="d-flex align-items-center justify-content-end h-100 col-icons">
 
                     <!-- Wishlist Icon - REMOVED as requested -->
 

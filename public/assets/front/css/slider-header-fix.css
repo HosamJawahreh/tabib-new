@@ -1,70 +1,424 @@
 /**
- * SLIDER & HEADER FIX - Ultra Compact
+ * SLIDER & HEADER FIX - Clean and Simple
  * High priority overrides
  */
 
 /* ============================================
-   HEADER - ULTRA COMPACT
+   HEADER - CLEAN SINGLE LINE
    ============================================ */
 
-/* Remove all spacing from header */
-header.ecommerce-header {
-    padding: 0 15px !important;
+/* Remove all spacing above header */
+html, body {
     margin: 0 !important;
+    padding: 0 !important;
+}
+
+body {
+    padding-top: 0 !important;
+    margin-top: 0 !important;
+}
+
+#page_wrapper {
+    padding-top: 0 !important;
+    margin-top: 0 !important;
+}
+
+/* Header - Clean single line */
+header.ecommerce-header {
+    padding: 12px 30px !important;
+    margin: 0 0 35px 0 !important;
+    background: #ffffff !important;
+    position: relative !important;
+    z-index: 9999 !important;
+    height: 110px !important;
+    min-height: 110px !important;
+    max-height: 110px !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08) !important;
+    display: flex !important;
+    align-items: center !important;
 }
 
 .main-nav {
     padding: 0 !important;
     margin: 0 !important;
+    height: 110px !important;
+    display: flex !important;
+    align-items: center !important;
 }
 
 .main-nav .container-fluid {
     padding: 0 !important;
+    height: 110px !important;
+    display: flex !important;
+    align-items: center !important;
 }
 
 .main-nav-row {
     margin: 0 !important;
     padding: 0 !important;
+    height: 110px !important;
+    align-items: center !important;
+    display: flex !important;
 }
 
-/* Desktop - Compact with bigger logo */
+/* Ensure columns align properly in one line */
+.logo-col,
+.search-col,
+.icons-col {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    height: 110px !important;
+    padding: 0 12px !important;
+    margin: 0 !important;
+}
+
+.logo-col {
+    justify-content: flex-start !important;
+}
+
+.icons-col {
+    justify-content: flex-end !important;
+}
+
+/* Force all child divs to center */
+.logo-col > *,
+.search-col > *,
+.icons-col > * {
+    display: flex !important;
+    align-items: center !important;
+    height: 100% !important;
+    margin: 0 !important;
+}
+
+.search-col > * {
+    width: 100% !important;
+    justify-content: center !important;
+}
+
+.col-icons {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    gap: 8px !important;
+    flex-wrap: nowrap !important;
+    height: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.navbar-brand {
+    display: flex !important;
+    align-items: center !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    height: auto !important;
+}
+
+.navbar {
+    display: flex !important;
+    align-items: center !important;
+    height: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.product-search-one,
+.enhanced-search-form {
+    margin: 0 auto !important;
+    display: flex !important;
+    align-items: center !important;
+}
+
+/* Force logo image to center */
+.header-logo-responsive,
+.nav-logo {
+    display: block !important;
+    margin: 0 !important;
+}
+
+/* ============================================
+   CART DROPDOWN - Fixed Height with Scroll
+   ============================================ */
+
+/* Cart popup container */
+.cart-popup {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    background: #ffffff;
+    border: 1px solid #e8ecef;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    min-width: 320px;
+    max-width: 380px;
+    z-index: 10000;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+}
+
+/* Show cart popup on hover */
+.header-cart-1:hover .cart-popup,
+.cart:hover + .cart-popup,
+.cart-popup:hover {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+/* Cart list with fixed height and scroll */
+.cart_list.product_list_widget {
+    max-height: 350px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 15px;
+    margin: 0;
+    list-style: none;
+}
+
+/* Custom scrollbar for cart list */
+.cart_list.product_list_widget::-webkit-scrollbar {
+    width: 6px;
+}
+
+.cart_list.product_list_widget::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.cart_list.product_list_widget::-webkit-scrollbar-thumb {
+    background: #cbd5e0;
+    border-radius: 10px;
+}
+
+.cart_list.product_list_widget::-webkit-scrollbar-thumb:hover {
+    background: #7caa53;
+}
+
+/* Cart item styling */
+.mini-cart-item {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    padding: 12px 0;
+    border-bottom: 1px solid #f0f0f0;
+    position: relative;
+}
+
+.mini-cart-item:last-child {
+    border-bottom: none;
+}
+
+/* Remove button */
+.cart-remove {
+    position: absolute;
+    top: 12px;
+    right: 0;
+    width: 20px;
+    height: 20px;
+    background: #ff4757;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 10px;
+    transition: all 0.3s ease;
+}
+
+.cart-remove:hover {
+    background: #e84118;
+    transform: scale(1.1);
+}
+
+/* Product image in cart */
+.mini-cart-item .product-image {
+    width: 60px;
+    height: 60px;
+    margin-right: 12px;
+    flex-shrink: 0;
+}
+
+.mini-cart-item .product-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+/* Product name */
+.mini-cart-item .product-name {
+    flex: 1;
+    font-size: 13px;
+    font-weight: 500;
+    color: #2d3748;
+    text-decoration: none;
+    line-height: 1.4;
+    margin-bottom: 6px;
+    display: block;
+    padding-right: 25px;
+}
+
+.mini-cart-item .product-name:hover {
+    color: #7caa53;
+}
+
+/* Cart quantity */
+.cart-item-quantity {
+    width: 100%;
+    font-size: 12px;
+    color: #718096;
+    margin-top: 4px;
+    padding-left: 72px;
+}
+
+/* Total cart section */
+.total-cart {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    border-top: 2px solid #e8ecef;
+    border-bottom: 1px solid #e8ecef;
+    background: #f7fafc;
+}
+
+.total-cart .title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #2d3748;
+}
+
+.total-cart .price {
+    font-size: 18px;
+    font-weight: 700;
+    color: #7caa53;
+}
+
+/* Cart buttons */
+.cart-popup .view-cart,
+.cart-popup .checkout {
+    display: block;
+    width: calc(100% - 40px);
+    margin: 10px 20px;
+    padding: 12px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.cart-popup .view-cart {
+    background: #7caa53;
+    color: white;
+    border: 2px solid #7caa53;
+}
+
+.cart-popup .view-cart:hover {
+    background: #6a9447;
+    border-color: #6a9447;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(124, 170, 83, 0.3);
+}
+
+.cart-popup .checkout {
+    background: white;
+    color: #7caa53;
+    border: 2px solid #7caa53;
+}
+
+.cart-popup .checkout:hover {
+    background: #7caa53;
+    color: white;
+    transform: translateY(-2px);
+}
+
+/* Empty cart message */
+.cart-popup .card {
+    margin: 20px;
+    padding: 30px 15px;
+    text-align: center;
+    border: 2px dashed #e8ecef;
+    border-radius: 8px;
+}
+
+.cart-popup .card h4 {
+    font-size: 14px;
+    color: #718096;
+    margin: 0;
+}
+
+/* Desktop - Clean single line */
 @media (min-width: 992px) {
+    header.ecommerce-header {
+        height: 110px !important;
+        min-height: 110px !important;
+        max-height: 110px !important;
+        padding: 12px 30px !important;
+        margin: 0 0 20px 0 !important;
+    }
+
+    .main-nav,
+    .main-nav-row,
+    .main-nav .container-fluid {
+        height: 110px !important;
+        display: flex !important;
+        align-items: center !important;
+    }
+
     .logo-col,
     .search-col,
     .icons-col {
-        padding-top: 5px !important;
-        padding-bottom: 5px !important;
+        height: 110px !important;
+        padding: 0 12px !important;
+        display: flex !important;
+        align-items: center !important;
     }
 
     .header-logo-responsive,
     .nav-logo {
-        max-height: 75px !important;
+        height: 100px !important;
+        width: auto !important;
+        max-height: 100px !important;
         display: block !important;
         margin: 0 !important;
         padding: 0 !important;
     }
 }
 
-/* Mobile - Ultra compact */
+/* Mobile - Compact */
 @media (max-width: 991px) {
     header.ecommerce-header {
-        padding: 0 8px !important;
+        padding: 10px 15px !important;
+        height: 58px !important;
+        min-height: 58px !important;
+        max-height: 58px !important;
+        margin: 0 0 15px 0 !important;
     }
 
-    body {
-        padding-top: 52px !important;
+    .main-nav,
+    .main-nav-row,
+    .main-nav .container-fluid {
+        height: 58px !important;
     }
 
     .logo-col,
     .search-col,
     .icons-col {
-        padding-top: 3px !important;
-        padding-bottom: 3px !important;
+        height: 58px !important;
+        padding: 0 8px !important;
     }
 
     .header-logo-responsive,
     .nav-logo {
-        max-height: 45px !important;
+        height: 38px !important;
+        width: auto !important;
+        max-height: 38px !important;
         display: block !important;
         margin: 0 !important;
         padding: 0 !important;
@@ -92,15 +446,15 @@ header.ecommerce-header {
     border-radius: 0 !important;
 }
 
-/* Force slider item heights */
+/* Force slider item heights - 300px base, responsive */
 .slider-item,
 .home-slider .slider-item,
 .home-slider .owl-item .slider-item,
 .owl-carousel .owl-item .slider-item,
 .owl-item > .slider-item {
-    min-height: 140px !important;
-    max-height: 140px !important;
-    height: 140px !important;
+    min-height: 300px !important;
+    max-height: 300px !important;
+    height: 300px !important;
     margin: 0 !important;
     padding: 0 !important;
     display: flex !important;
@@ -127,9 +481,9 @@ header.ecommerce-header {
     .home-slider .slider-item,
     .home-slider .owl-item .slider-item,
     .owl-carousel .owl-item .slider-item {
-        min-height: 140px !important;
-        max-height: 140px !important;
-        height: 140px !important;
+        min-height: 220px !important;
+        max-height: 220px !important;
+        height: 220px !important;
     }
 
     .home-slider-section .container-fluid {
@@ -152,9 +506,9 @@ header.ecommerce-header {
     .home-slider .slider-item,
     .home-slider .owl-item .slider-item,
     .owl-carousel .owl-item .slider-item {
-        min-height: 180px !important;
-        max-height: 180px !important;
-        height: 180px !important;
+        min-height: 250px !important;
+        max-height: 250px !important;
+        height: 250px !important;
     }
 }
 
@@ -164,9 +518,9 @@ header.ecommerce-header {
     .home-slider .slider-item,
     .home-slider .owl-item .slider-item,
     .owl-carousel .owl-item .slider-item {
-        min-height: 220px !important;
-        max-height: 220px !important;
-        height: 220px !important;
+        min-height: 280px !important;
+        max-height: 280px !important;
+        height: 280px !important;
     }
 
     .home-slider-section {
@@ -184,9 +538,9 @@ header.ecommerce-header {
     .home-slider .slider-item,
     .home-slider .owl-item .slider-item,
     .owl-carousel .owl-item .slider-item {
-        min-height: 280px !important;
-        max-height: 280px !important;
-        height: 280px !important;
+        min-height: 320px !important;
+        max-height: 320px !important;
+        height: 320px !important;
     }
 }
 
@@ -196,9 +550,9 @@ header.ecommerce-header {
     .home-slider .slider-item,
     .home-slider .owl-item .slider-item,
     .owl-carousel .owl-item .slider-item {
-        min-height: 320px !important;
-        max-height: 320px !important;
-        height: 320px !important;
+        min-height: 350px !important;
+        max-height: 350px !important;
+        height: 350px !important;
     }
 
     .home-slider-section {
@@ -212,8 +566,8 @@ header.ecommerce-header {
     .home-slider .slider-item,
     .home-slider .owl-item .slider-item,
     .owl-carousel .owl-item .slider-item {
-        min-height: 380px !important;
-        max-height: 380px !important;
-        height: 380px !important;
+        min-height: 400px !important;
+        max-height: 400px !important;
+        height: 400px !important;
     }
 }

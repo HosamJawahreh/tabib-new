@@ -14,29 +14,28 @@
 /* Cart Popup - Fixed Position to prevent scroll issues */
 .has-cart-data .cart-popup {
     position: fixed !important;
-    top: 70px !important;
-    right: 150px !important;
+    top: 120px !important;
+    right: 180px !important;
     width: 380px;
-    max-height: 0;
+    max-height: 600px;
     background: #ffffff;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
-    border-radius: 8px;
-    overflow: hidden;
+    border-radius: 12px;
+    overflow: visible;
     opacity: 0;
     visibility: hidden;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     z-index: 999999 !important;
     pointer-events: none;
-    display: none;
+    transform: translateY(-10px);
 }
 
 /* Show cart on hover */
 .has-cart-data:hover .cart-popup {
-    max-height: 600px;
     opacity: 1;
     visibility: visible;
     pointer-events: auto;
-    display: block;
+    transform: translateY(0);
 }
 
 /* RTL positioning */
@@ -48,9 +47,9 @@
 /* Cart List - Scrollable Container */
 .cart-popup .cart_list,
 .cart-popup .product_list_widget {
-    max-height: 400px;
-    overflow-y: auto;
-    overflow-x: hidden;
+    max-height: 350px !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
     padding: 15px;
     margin: 0;
     list-style: none;
@@ -60,24 +59,24 @@
 /* Custom Scrollbar for Cart List */
 .cart_list::-webkit-scrollbar,
 .product_list_widget::-webkit-scrollbar {
-    width: 6px;
+    width: 8px;
 }
 
 .cart_list::-webkit-scrollbar-track,
 .product_list_widget::-webkit-scrollbar-track {
-    background: #f1f1f1;
+    background: #f7fafc;
     border-radius: 10px;
 }
 
 .cart_list::-webkit-scrollbar-thumb,
 .product_list_widget::-webkit-scrollbar-thumb {
-    background: #ccc;
+    background: #cbd5e0;
     border-radius: 10px;
 }
 
 .cart_list::-webkit-scrollbar-thumb:hover,
 .product_list_widget::-webkit-scrollbar-thumb:hover {
-    background: #999;
+    background: #7caa53;
 }
 
 /* Individual Cart Item */
