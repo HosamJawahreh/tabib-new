@@ -116,12 +116,15 @@
     @endif
 
 
+    {{-- Scrollbar Fix CSS --}}
+    <link rel="stylesheet" href="{{ asset('assets/vendor/css/scrollbar-fix.css') }}">
+
     @yield('css')
 </head>
 
-<body style="margin: 0 !important; padding: 0 !important; overflow-x: hidden;">
+<body>
 
-    <div id="page_wrapper" class="bg-white" style="padding-top: 0 !important; margin-top: 0 !important;">
+    <div id="page_wrapper" class="bg-white">
         <div class="loader">
             <div class="spinner"></div>
         </div>

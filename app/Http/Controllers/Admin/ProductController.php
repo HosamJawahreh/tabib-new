@@ -25,14 +25,51 @@ class ProductController extends AdminBaseController
     //*** JSON Request
     public function datatables(Request $request)
     {
-        // Optimized query with select only needed columns and eager loading
-        $query = Product::select(['id', 'name', 'slug', 'sku', 'price', 'stock', 'status', 'type', 'product_type', 'user_id'])
-            ->whereProductType('normal')
-            ->latest('id');
+        // Optimized query with select only needed columns
+        $query = Product::select(['id', 'name', 'slug', 'sku', 'price', 'status', 'type', 'product_type', 'user_id'])
+            ->where('type', 'Physical');
 
+        // Apply filters
         if ($request->type == 'deactive') {
             $query->whereStatus(0);
         }
+
+        // Search filter
+        if ($request->has('search_query') && $request->search_query != '') {
+            $search = $request->search_query;
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'like', '%' . $search . '%')
+                  ->orWhere('sku', 'like', '%' . $search . '%');
+            });
+        }
+
+        // Status filter
+        if ($request->has('status') && $request->status !== '') {
+            $query->where('status', $request->status);
+        }
+
+        // Category filter
+        if ($request->has('category') && $request->category != '') {
+            $query->whereHas('categories', function($q) use ($request) {
+                $q->where('categories.id', $request->category);
+            });
+        }
+
+        // Price filter
+        if ($request->has('price') && $request->price != '') {
+            $priceRange = $request->price;
+            if ($priceRange == '0-10') {
+                $query->whereBetween('price', [0, 10]);
+            } elseif ($priceRange == '10-50') {
+                $query->whereBetween('price', [10, 50]);
+            } elseif ($priceRange == '50-100') {
+                $query->whereBetween('price', [50, 100]);
+            } elseif ($priceRange == '100+') {
+                $query->where('price', '>', 100);
+            }
+        }
+
+        $query->latest('id');
 
         //--- Integrating This Collection Into Datatables with Query Builder (optimized)
         return Datatables::eloquent($query)
@@ -46,22 +83,12 @@ class ProductController extends AdminBaseController
                 $price = $data->price * $this->curr->value;
                 return PriceHelper::showAdminCurrencyPrice($price);
             })
-            ->editColumn('stock', function (Product $data) {
-                $stck = (string) $data->stock;
-                if ($stck == "0") {
-                    return __("Out Of Stock");
-                } elseif ($stck == null) {
-                    return __("Unlimited");
-                } else {
-                    return $data->stock;
-                }
-
-            })
             ->addColumn('status', function (Product $data) {
-                $class = $data->status == 1 ? 'drop-success' : 'drop-danger';
-                $s = $data->status == 1 ? 'selected' : '';
-                $ns = $data->status == 0 ? 'selected' : '';
-                return '<div class="action-list"><select class="process select droplinks ' . $class . '"><option data-val="1" value="' . route('admin-prod-status', ['id1' => $data->id, 'id2' => 1]) . '" ' . $s . '>' . __("Activated") . '</option><option data-val="0" value="' . route('admin-prod-status', ['id1' => $data->id, 'id2' => 0]) . '" ' . $ns . '>' . __("Deactivated") . '</option>/select></div>';
+                $checked = $data->status == 1 ? 'checked' : '';
+                return '<label class="switch">
+                            <input type="checkbox" class="status-toggle" data-id="'.$data->id.'" '.$checked.'>
+                            <span class="slider round"></span>
+                        </label>';
             })
             ->addColumn('action', function (Product $data) {
                 $catalog = $data->type == 'Physical' ? ($data->is_catalog == 1 ? '<a href="javascript:;" data-href="' . route('admin-prod-catalog', ['id1' => $data->id, 'id2' => 0]) . '" data-toggle="modal" data-target="#catalog-modal" class="delete"><i class="fas fa-trash-alt"></i> ' . __("Remove Catalog") . '</a>' : '<a href="javascript:;" data-href="' . route('admin-prod-catalog', ['id1' => $data->id, 'id2' => 1]) . '" data-toggle="modal" data-target="#catalog-modal"> <i class="fas fa-plus"></i> ' . __("Add To Catalog") . '</a>') : '';

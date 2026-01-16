@@ -7,7 +7,18 @@
 							<div class="row">
 								<div class="col-lg-12">
 										<h4 class="heading">{{ __("Products") }}</h4>
-										<ul class="links">
+										<u			});
+		});
+
+      	$(function() {
+        $(".btn-area").append('<div class="col-sm-4 table-contents">'+
+        	'<a class="add-btn" href="{{route('admin-prod-physical-create')}}">'+
+          '<i class="fas fa-plus"></i> <span class="remove-mobile">{{ __("Add Product") }}<span>'+
+          '</a>'+
+          '</div>');
+      });											
+
+})(jQuery);ks">
 											<li>
 												<a href="{{ route('admin.dashboard') }}">{{ __("Dashboard") }} </a>
 											</li>
@@ -27,13 +38,62 @@
 									<div class="mr-table allproduct">
                         					@include('alerts.admin.form-success')  
 
+										{{-- Filters Section --}}
+										<div class="row mb-4" style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 0 0 20px 0;">
+											<div class="col-md-3">
+												<label style="font-weight: 600; color: #2d3748; font-size: 13px; margin-bottom: 8px; display: block;">
+													<i class="fas fa-search"></i> {{ __("Search Product") }}
+												</label>
+												<input type="text" id="search-product" class="form-control" placeholder="{{ __('Search by name or SKU...') }}" style="border-radius: 6px;">
+											</div>
+											<div class="col-md-2">
+												<label style="font-weight: 600; color: #2d3748; font-size: 13px; margin-bottom: 8px; display: block;">
+													<i class="fas fa-toggle-on"></i> {{ __("Status") }}
+												</label>
+												<select id="filter-status" class="form-control" style="border-radius: 6px;">
+													<option value="">{{ __("All Status") }}</option>
+													<option value="1">{{ __("Active") }}</option>
+													<option value="0">{{ __("Inactive") }}</option>
+												</select>
+											</div>
+											<div class="col-md-2">
+												<label style="font-weight: 600; color: #2d3748; font-size: 13px; margin-bottom: 8px; display: block;">
+													<i class="fas fa-folder"></i> {{ __("Category") }}
+												</label>
+												<select id="filter-category" class="form-control" style="border-radius: 6px;">
+													<option value="">{{ __("All Categories") }}</option>
+													@foreach(\App\Models\Category::all() as $cat)
+														<option value="{{$cat->id}}">{{$cat->name}}</option>
+													@endforeach
+												</select>
+											</div>
+											<div class="col-md-2">
+												<label style="font-weight: 600; color: #2d3748; font-size: 13px; margin-bottom: 8px; display: block;">
+													<i class="fas fa-dollar-sign"></i> {{ __("Price Range") }}
+												</label>
+												<select id="filter-price" class="form-control" style="border-radius: 6px;">
+													<option value="">{{ __("All Prices") }}</option>
+													<option value="0-10">0 - 10</option>
+													<option value="10-50">10 - 50</option>
+													<option value="50-100">50 - 100</option>
+													<option value="100+">100+</option>
+												</select>
+											</div>
+											<div class="col-md-3">
+												<label style="font-weight: 600; color: #2d3748; font-size: 13px; margin-bottom: 8px; display: block;">
+													&nbsp;
+												</label>
+												<button id="reset-filters" class="btn btn-secondary" style="width: 100%; border-radius: 6px;">
+													<i class="fas fa-redo"></i> {{ __("Reset Filters") }}
+												</button>
+											</div>
+										</div>
+
 										<div class="table-responsive">
 												<table id="geniustable" class="table table-hover dt-responsive" cellspacing="0" width="100%">
 													<thead>
 														<tr>
 									                        <th>{{ __("Name") }}</th>
-									                        <th>{{ __("Type") }}</th>
-									                        <th>{{ __("Stock") }}</th>
 									                        <th>{{ __("Price") }}</th>
 									                        <th>{{ __("Status") }}</th>
 									                        <th>{{ __("Options") }}</th>
@@ -202,15 +262,20 @@
 			   ordering: false,
                processing: true,
                serverSide: true,
-               ajax: '{{ route('admin-prod-datatables') }}?type=all',
+               ajax: {
+					url: '{{ route('admin-prod-datatables') }}?type=all',
+					data: function (d) {
+						d.search_query = $('#search-product').val();
+						d.status = $('#filter-status').val();
+						d.category = $('#filter-category').val();
+						d.price = $('#filter-price').val();
+					}
+			   },
                columns: [
                         { data: 'name', name: 'name' },
-                        { data: 'type', name: 'type' },
-                        { data: 'stock', name: 'stock' },
                         { data: 'price', name: 'price' },
                         { data: 'status', searchable: false, orderable: false},
             			{ data: 'action', searchable: false, orderable: false }
-
                      ],
                 language : {
                 	processing: '<img src="{{asset('assets/images/'.$gs->admin_loader)}}">'
@@ -219,6 +284,54 @@
 	    				$('.select').niceSelect();	
 				}
             });
+
+		// Search filter
+		$('#search-product').on('keyup', function() {
+			table.draw();
+		});
+
+		// Status filter
+		$('#filter-status').on('change', function() {
+			table.draw();
+		});
+
+		// Category filter
+		$('#filter-category').on('change', function() {
+			table.draw();
+		});
+
+		// Price filter
+		$('#filter-price').on('change', function() {
+			table.draw();
+		});
+
+		// Reset filters
+		$('#reset-filters').on('click', function() {
+			$('#search-product').val('');
+			$('#filter-status').val('');
+			$('#filter-category').val('');
+			$('#filter-price').val('');
+			table.draw();
+		});
+
+		// Toggle status directly in table
+		$(document).on('change', '.status-toggle', function() {
+			var checkbox = $(this);
+			var productId = checkbox.data('id');
+			var newStatus = checkbox.is(':checked') ? 1 : 0;
+			
+			$.ajax({
+				url: '{{ route('admin-prod-status', ['id1' => '__ID__', 'id2' => '__STATUS__']) }}'.replace('__ID__', productId).replace('__STATUS__', newStatus),
+				type: 'GET',
+				success: function(response) {
+					toastr.success('{{ __("Status updated successfully!") }}');
+				},
+				error: function() {
+					toastr.error('{{ __("Failed to update status!") }}');
+					checkbox.prop('checked', !checkbox.is(':checked'));
+				}
+			});
+		});
 
       	$(function() {
         $(".btn-area").append('<div class="col-sm-4 table-contents">'+
@@ -346,5 +459,62 @@
 
 {{-- Gallery Section Update Ends--}}
 
+<style>
+/* Toggle Switch Styling */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 24px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #28a745;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #28a745;
+}
+
+input:checked + .slider:before {
+  transform: translateX(26px);
+}
+
+.slider.round {
+  border-radius: 24px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+</style>
 
 @endsection   

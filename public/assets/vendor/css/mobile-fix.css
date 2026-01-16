@@ -1,0 +1,215 @@
+/* Mobile Responsive Fixes */
+
+/* Mobile spacing for container */
+@media (max-width: 768px) {
+    /* Add left and right spacing for mobile */
+    body {
+        padding-left: 15px !important;
+        padding-right: 15px !important;
+    }
+
+    #page_wrapper {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+
+    /* Container spacing */
+    .container,
+    .container-fluid {
+        padding-left: 15px !important;
+        padding-right: 15px !important;
+    }
+
+    /* Products grid spacing - equal margins */
+    .product-grid,
+    .products-row,
+    .row {
+        margin-left: -8px !important;
+        margin-right: -8px !important;
+    }
+
+    /* Product cards - equal spacing on all sides */
+    .product-card,
+    .single-product,
+    .product-item,
+    [class*="col-"] {
+        padding-left: 8px !important;
+        padding-right: 8px !important;
+        margin-bottom: 16px !important;
+    }
+
+    /* Product card inner spacing */
+    .product-card-inner,
+    .product-content {
+        padding: 10px !important;
+    }
+
+    /* Logo bigger on mobile */
+    .navbar-brand img,
+    .logo img,
+    .header-logo img {
+        max-height: 50px !important;
+        width: auto !important;
+        height: auto !important;
+    }
+
+    .navbar-brand,
+    .logo,
+    .header-logo {
+        padding: 8px 0 !important;
+    }
+
+    /* Header adjustments */
+    .ecommerce-header {
+        padding: 10px 15px !important;
+    }
+
+    /* Navigation menu mobile adjustments */
+    .main-nav-row {
+        padding: 8px 0 !important;
+    }
+
+    /* Mobile menu icon sizing */
+    .mobile-menu-icon,
+    .navbar-toggler {
+        font-size: 24px !important;
+        padding: 8px !important;
+    }
+
+    /* Icons in header */
+    .header-icon,
+    .cart-icon,
+    .user-icon,
+    .search-icon {
+        font-size: 20px !important;
+        padding: 6px !important;
+    }
+
+    /* Search bar mobile */
+    .search-bar,
+    .search-input {
+        padding: 8px 12px !important;
+        font-size: 14px !important;
+    }
+
+    /* Categories slider - equal spacing */
+    .categories-slider,
+    .category-pills,
+    .filter-pills {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        margin-left: -8px !important;
+        margin-right: -8px !important;
+    }
+
+    .category-pill,
+    .filter-pill {
+        margin: 0 8px 8px 8px !important;
+    }
+
+    /* Ensure images don't overflow */
+    .product-image img,
+    .banner-image img,
+    .slider-image img {
+        max-width: 100% !important;
+        height: auto !important;
+    }
+
+    /* Remove extra padding from sections */
+    section,
+    .section {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+
+    /* Footer spacing */
+    footer {
+        padding-left: 15px !important;
+        padding-right: 15px !important;
+    }
+}
+
+/* Extra small devices (phones, less than 576px) */
+@media (max-width: 575.98px) {
+    body {
+        padding-left: 12px !important;
+        padding-right: 12px !important;
+    }
+
+    .container,
+    .container-fluid {
+        padding-left: 12px !important;
+        padding-right: 12px !important;
+    }
+
+    /* Products - 2 columns on small phones with equal spacing */
+    .row {
+        margin-left: -6px !important;
+        margin-right: -6px !important;
+    }
+
+    [class*="col-"] {
+        padding-left: 6px !important;
+        padding-right: 6px !important;
+    }
+
+    /* Logo slightly smaller on very small screens */
+    .navbar-brand img,
+    .logo img,
+    .header-logo img {
+        max-height: 45px !important;
+    }
+
+    /* Header icons smaller on very small screens */
+    .header-icon,
+    .cart-icon,
+    .user-icon {
+        font-size: 18px !important;
+        padding: 5px !important;
+    }
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) and (max-width: 991.98px) {
+    .container {
+        padding-left: 20px !important;
+        padding-right: 20px !important;
+    }
+
+    /* Products - 3 columns on tablets with equal spacing */
+    .row {
+        margin-left: -10px !important;
+        margin-right: -10px !important;
+    }
+
+    [class*="col-"] {
+        padding-left: 10px !important;
+        padding-right: 10px !important;
+    }
+
+    .navbar-brand img,
+    .logo img,
+    .header-logo img {
+        max-height: 55px !important;
+    }
+}
+
+/* Fix for any overflow issues */
+@media (max-width: 768px) {
+    * {
+        max-width: 100%;
+    }
+
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+
+    /* Prevent text overflow */
+    .product-title,
+    .product-name,
+    h1, h2, h3, h4, h5, h6 {
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+    }
+}

@@ -1,0 +1,43 @@
+/* Fix for double scrollbar issue */
+html {
+    overflow-y: scroll !important;
+    overflow-x: hidden !important;
+    height: 100%;
+    width: 100%;
+}
+
+body {
+    overflow-x: hidden !important;
+    overflow-y: visible !important;
+    margin: 0;
+    padding: 0;
+    height: auto;
+    min-height: 100%;
+    width: 100%;
+    max-width: 100vw;
+    box-sizing: border-box;
+}
+
+#page_wrapper {
+    overflow-x: hidden !important;
+    width: 100%;
+    max-width: 100vw;
+    box-sizing: border-box;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.container-fluid,
+.container,
+.row {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+/* Ensure images don't overflow */
+img {
+    max-width: 100%;
+    height: auto;
+}
