@@ -103,8 +103,11 @@
             <i class="icofont-cart"></i>{{ __('Products') }}
         </a>
         <ul class="collapse list-unstyled" id="menu2" data-parent="#accordion">
-            <li>
+            <li class="d-none">
                 <a href="{{ route('admin-prod-types') }}"><span>{{ __('Add New Product') }}</span></a>
+            </li>
+            <li>
+                <a href="{{ route('admin-prod-create', 'physical') }}"><span>{{ __('Add New Product') }}</span></a>
             </li>
             <li>
                 <a href="{{ route('admin-prod-index') }}"><span>{{ __('All Products') }}</span></a>
@@ -123,6 +126,7 @@
 
 @endif
 
+{{-- AFFILIATE PRODUCTS SECTION HIDDEN --}}
 @if(Auth::guard('admin')->user()->sectionCheck('affilate_products'))
 
     <li>
@@ -140,7 +144,9 @@
     </li>
 
 @endif
+--}}
 
+{{-- BULK PRODUCT UPLOAD SECTION HIDDEN --}}
 @if(Auth::guard('admin')->user()->sectionCheck('bulk_product_upload'))
 
     <li>
@@ -148,7 +154,9 @@
     </li>
 
 @endif
+--}}
 
+{{-- PRODUCT DISCUSSION SECTION HIDDEN --}}
 @if(Auth::guard('admin')->user()->sectionCheck('product_discussion'))
 
     <li>
@@ -169,7 +177,9 @@
     </li>
 
 @endif
+--}}
 
+{{-- SET COUPONS SECTION HIDDEN --}}
 @if(Auth::guard('admin')->user()->sectionCheck('set_coupons'))
 
     <li>
@@ -177,6 +187,7 @@
     </li>
 
 @endif
+--}}
 
 
 @if(Auth::guard('admin')->user()->sectionCheck('customers'))
@@ -201,6 +212,7 @@
 
 @endif
 
+{{-- CUSTOMER DEPOSITS SECTION HIDDEN --}}
 @if(Auth::guard('admin')->user()->sectionCheck('customer_deposits'))
 
     <li>
@@ -223,7 +235,10 @@
     </li>
 
 @endif
+--}}
 
+{{-- VENDOR SECTIONS HIDDEN --}}
+{{--
 @if(Auth::guard('admin')->user()->sectionCheck('vendors'))
 
     <li>
@@ -291,6 +306,8 @@
     </li>
 
 @endif
+--}}
+{{-- END VENDOR SECTIONS --}}
 
 @if(Auth::guard('admin')->user()->sectionCheck('messages'))
 
@@ -413,6 +430,7 @@
 @endif
 
 
+{{-- MENU PAGE SETTINGS SECTION HIDDEN --}}
 @if(Auth::guard('admin')->user()->sectionCheck('menu_page_settings'))
 
     <li>
@@ -439,24 +457,44 @@
     </li>
 
 @endif
+--}}
 
+<li>
+    <a href="#siteSettings" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
+        <i class="fas fa-cog"></i>{{ __('Site Settings') }}
+    </a>
+    <ul class="collapse list-unstyled" id="siteSettings" data-parent="#accordion">
+        @if(Auth::guard('admin')->user()->sectionCheck('manage_staffs'))
+        <li>
+            <a href="{{ route('admin-staff-index') }}"><span><i class="fas fa-user-secret"></i> {{ __('Manage Staffs') }}</span></a>
+        </li>
+        @endif
+        
+        <li>
+            <a href="{{ route('admin-role-index') }}"><span><i class="fas fa-user-tag"></i> {{ __('Manage Roles') }}</span></a>
+        </li>
+        
+        <li>
+            <a href="{{ route('admin.fonts.index') }}"><span><i class="fa fa-font"></i> {{ __('Font Option') }}</span></a>
+        </li>
+        
+        @if(Auth::guard('admin')->user()->sectionCheck('emails_settings'))
+        <li>
+            <a href="#emails" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
+                <span><i class="fas fa-at"></i> {{ __('Email Settings') }}</span>
+            </a>
+            <ul class="collapse list-unstyled" id="emails" data-parent="#siteSettings">
+                <li><a href="{{ route('admin-mail-index') }}"><span>{{ __('Email Template') }}</span></a></li>
+                <li><a href="{{ route('admin-mail-config') }}"><span>{{ __('Email Configurations') }}</span></a></li>
+                <li><a href="{{ route('admin-group-show') }}"><span>{{ __('Group Email') }}</span></a></li>
+            </ul>
+        </li>
+        @endif
+    </ul>
+</li>
 
-@if(Auth::guard('admin')->user()->sectionCheck('emails_settings'))
-
-    <li>
-        <a href="#emails" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
-            <i class="fas fa-at"></i>{{ __('Email Settings') }}
-        </a>
-        <ul class="collapse list-unstyled" id="emails" data-parent="#accordion">
-            <li><a href="{{ route('admin-mail-index') }}"><span>{{ __('Email Template') }}</span></a></li>
-            <li><a href="{{ route('admin-mail-config') }}"><span>{{ __('Email Configurations') }}</span></a></li>
-            <li><a href="{{ route('admin-group-show') }}"><span>{{ __('Group Email') }}</span></a></li>
-        </ul>
-    </li>
-
-@endif
-
-
+{{-- PAYMENT SETTINGS HIDDEN --}}
+{{--
 @if(Auth::guard('admin')->user()->sectionCheck('payment_settings'))
 
     <li>
@@ -472,6 +510,7 @@
     </li>
 
 @endif
+--}}
 
 @if(Auth::guard('admin')->user()->sectionCheck('social_settings'))
 
@@ -525,21 +564,15 @@
 
 @endif
 
-@if(Auth::guard('admin')->user()->sectionCheck('manage_staffs'))
-
-
-    <li>
-        <a href="{{ route('admin-staff-index') }}" class=" wave-effect"><i class="fas fa-user-secret"></i>{{ __('Manage Staffs') }}</a>
-    </li>
-
-@endif
-
+{{-- ADDON MANAGER SECTION HIDDEN --}}
 @if(Auth::guard('admin')->user()->sectionCheck('addons'))
     <li>
         <a href="{{ route('admin-addon-index') }}" class=" wave-effect"><i class="fas fa-list-alt"></i>{{ __('Addon Manager') }}</a>
     </li>
 @endif
+--}}
 
+{{-- SUBSCRIBERS SECTION HIDDEN --}}
 @if(Auth::guard('admin')->user()->sectionCheck('subscribers'))
 
     <li>
@@ -547,5 +580,6 @@
     </li>
 
 @endif
+--}}
 
 @endif

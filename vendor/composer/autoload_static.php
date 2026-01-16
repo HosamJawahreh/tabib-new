@@ -876,6 +876,7 @@ class ComposerStaticInitd20c24590b16e95037338cc1fff00a35
         'App\\Http\\Controllers\\Payment\\Subscription\\TwoCheckoutController' => __DIR__ . '/../..' . '/app/Http/Controllers/Payment/Subscription/TwoCheckoutController.php',
         'App\\Http\\Controllers\\Payment\\Subscription\\VoguepayController' => __DIR__ . '/../..' . '/app/Http/Controllers/Payment/Subscription/VoguepayController.php',
         'App\\Http\\Controllers\\Payment\\Subscription\\WalletPaymentController' => __DIR__ . '/../..' . '/app/Http/Controllers/Payment/Subscription/WalletPaymentController.php',
+        'App\\Http\\Controllers\\SimpleOrderController' => __DIR__ . '/../..' . '/app/Http/Controllers/SimpleOrderController.php',
         'App\\Http\\Controllers\\User\\DepositController' => __DIR__ . '/../..' . '/app/Http/Controllers/User/DepositController.php',
         'App\\Http\\Controllers\\User\\ForgotController' => __DIR__ . '/../..' . '/app/Http/Controllers/User/ForgotController.php',
         'App\\Http\\Controllers\\User\\LoginController' => __DIR__ . '/../..' . '/app/Http/Controllers/User/LoginController.php',

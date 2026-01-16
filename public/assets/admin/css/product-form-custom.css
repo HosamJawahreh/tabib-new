@@ -1,0 +1,164 @@
+/* Modern Product Form Styling */
+
+/* Form Card Shadow - Full Width */
+.add-product-content {
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    border-radius: 8px;
+    background: white;
+    padding: 0 !important;
+}
+
+.body-area {
+    padding: 30px !important;
+}
+
+/* Form Group Hover Effects */
+.form-group .input-field:hover {
+    border-color: #4299e1 !important;
+    box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
+}
+
+.form-group .input-field:focus {
+    border-color: #4299e1 !important;
+    box-shadow: 0 0 0 4px rgba(66, 153, 225, 0.2);
+    outline: none;
+}
+
+/* Submit Button Hover */
+button[type="submit"]:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6) !important;
+}
+
+button[type="submit"]:active {
+    transform: translateY(0);
+}
+
+/* Category Tree Hover Effects */
+.category-item label:hover {
+    background: #f7fafc !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08) !important;
+    transform: translateX(3px);
+}
+
+/* Category Tree Container - Better Spacing */
+.category-tree-container {
+    max-height: 350px !important;
+}
+
+/* Image Upload Area Hover */
+.cropme:hover, 
+div[style*="border: 2px dashed"]:hover {
+    border-color: #9f7aea !important;
+    background: #faf5ff !important;
+}
+
+/* Section Headers Animation */
+h4.heading {
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+h4.heading i {
+    transition: transform 0.3s ease;
+}
+
+h4.heading:hover i {
+    transform: scale(1.1);
+}
+
+/* Input Field Animations */
+.input-field, textarea.input-field {
+    transition: all 0.3s ease;
+}
+
+/* Checkbox Styling */
+input[type="checkbox"] {
+    cursor: pointer;
+    width: 18px;
+    height: 18px;
+    accent-color: #667eea;
+}
+
+/* Nice Edit Styling */
+.text-editor {
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.nic-edit-p {
+    border: 2px solid #e2e8f0 !important;
+    border-radius: 6px !important;
+    padding: 12px !important;
+    font-size: 14px !important;
+}
+
+.nic-edit-p:focus {
+    border-color: #4299e1 !important;
+}
+
+/* Tag Input Styling */
+.myTags {
+    transition: all 0.3s ease;
+}
+
+.myTags:hover {
+    border-color: #667eea !important;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+/* Category Checkbox Styling */
+.category-checkbox:checked + i {
+    color: #ed8936 !important;
+}
+
+/* Responsive Improvements */
+@media (max-width: 991px) {
+    .col-lg-6, .col-lg-3 {
+        margin-bottom: 20px;
+    }
+    
+    h4.heading {
+        font-size: 14px !important;
+    }
+    
+    .body-area {
+        padding: 20px !important;
+    }
+}
+
+@media (max-width: 767px) {
+    .body-area {
+        padding: 15px !important;
+    }
+}
+
+/* Loading State */
+.gocover {
+    z-index: 9999;
+}
+
+/* Flag Images */
+img[src*="flags"] {
+    transition: transform 0.2s ease;
+}
+
+img[src*="flags"]:hover {
+    transform: scale(1.1);
+}
+
+/* Form Spacing */
+.form-group {
+    margin-bottom: 0 !important;
+}
+
+/* Better column spacing */
+.row {
+    margin-left: -10px;
+    margin-right: -10px;
+}
+
+.row > [class*="col-"] {
+    padding-left: 10px;
+    padding-right: 10px;
+}

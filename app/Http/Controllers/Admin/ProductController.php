@@ -25,14 +25,17 @@ class ProductController extends AdminBaseController
     //*** JSON Request
     public function datatables(Request $request)
     {
-        if ($request->type == 'all') {
-            $datas = Product::whereProductType('normal')->latest('id')->get();
-        } else if ($request->type == 'deactive') {
-            $datas = Product::whereProductType('normal')->whereStatus(0)->latest('id')->get();
+        // Optimized query with select only needed columns and eager loading
+        $query = Product::select(['id', 'name', 'slug', 'sku', 'price', 'stock', 'status', 'type', 'product_type', 'user_id'])
+            ->whereProductType('normal')
+            ->latest('id');
+
+        if ($request->type == 'deactive') {
+            $query->whereStatus(0);
         }
 
-        //--- Integrating This Collection Into Datatables
-        return Datatables::of($datas)
+        //--- Integrating This Collection Into Datatables with Query Builder (optimized)
+        return Datatables::eloquent($query)
             ->editColumn('name', function (Product $data) {
                 $name = mb_strlen($data->name, 'UTF-8') > 50 ? mb_substr($data->name, 0, 50, 'UTF-8') . '...' : $data->name;
                 $id = '<small>' . __("ID") . ': <a href="' . route('front.product', $data->slug) . '" target="_blank">' . sprintf("%'.08d", $data->id) . '</a></small>';
@@ -139,14 +142,16 @@ class ProductController extends AdminBaseController
     {
         $cats = Category::all();
         $sign = $this->curr;
+        $languages = \App\Models\AdminLanguage::where('is_default', 0)->get(); // Get all non-default languages
+        
         if ($slug == 'physical') {
-            return view('admin.product.create.physical', compact('cats', 'sign'));
+            return view('admin.product.create.physical', compact('cats', 'sign', 'languages'));
         } else if ($slug == 'digital') {
-            return view('admin.product.create.digital', compact('cats', 'sign'));
+            return view('admin.product.create.digital', compact('cats', 'sign', 'languages'));
         } else if (($slug == 'license')) {
-            return view('admin.product.create.license', compact('cats', 'sign'));
+            return view('admin.product.create.license', compact('cats', 'sign', 'languages'));
         } else if (($slug == 'listing')) {
-            return view('admin.product.create.listing', compact('cats', 'sign'));
+            return view('admin.product.create.listing', compact('cats', 'sign', 'languages'));
 
         }
     }
@@ -443,6 +448,26 @@ class ProductController extends AdminBaseController
 
         // Save Data
         $data->fill($input)->save();
+
+        // Sync Multiple Categories (if provided)
+        if ($request->has('categories') && is_array($request->categories)) {
+            $data->categories()->sync($request->categories);
+        }
+
+        // Save Product Translations (if provided)
+        if ($request->has('translations') && is_array($request->translations)) {
+            foreach ($request->translations as $langId => $translation) {
+                if (!empty($translation['name']) || !empty($translation['description'])) {
+                    \App\Models\ProductTranslation::create([
+                        'ec_products_id' => $data->id,
+                        'lang_code' => $translation['lang_code'] ?? '',
+                        'name' => $translation['name'] ?? '',
+                        'description' => $translation['description'] ?? '',
+                        'content' => '' // You can add content field later if needed
+                    ]);
+                }
+            }
+        }
 
         // Set SLug
         $prod = Product::find($data->id);

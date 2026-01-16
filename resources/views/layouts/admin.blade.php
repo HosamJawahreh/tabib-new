@@ -34,6 +34,7 @@
 		<link href="{{asset('assets/admin/css/rtl/custom.css')}}" rel="stylesheet"/>
 		<link href="{{asset('assets/admin/css/rtl/responsive.css')}}" rel="stylesheet" />
 		<link href="{{asset('assets/admin/css/common.css')}}" rel="stylesheet" />
+		<link href="{{asset('assets/admin/css/sidebar-custom.css')}}" rel="stylesheet" />
 
 		@else
 
@@ -41,6 +42,7 @@
 		<link href="{{asset('assets/admin/css/custom.css')}}" rel="stylesheet"/>
 		<link href="{{asset('assets/admin/css/responsive.css')}}" rel="stylesheet" />
 		<link href="{{asset('assets/admin/css/common.css')}}" rel="stylesheet" />
+		<link href="{{asset('assets/admin/css/sidebar-custom.css')}}" rel="stylesheet" />
 		@endif
 
 		@yield('styles')
@@ -161,9 +163,12 @@
 							@if(Auth::guard('admin')->user()->IsSuper())
 								@include('partials.admin-role.super')
 
+								{{-- VERSION TEXT HIDDEN --}}
+								{{--
 								<li class="mt-3 text-dark text-center">
 									Version 4.1
 								</li>
+								--}}
 							@else
 								@include('partials.admin-role.normal')
 							@endif

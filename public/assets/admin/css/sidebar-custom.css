@@ -1,0 +1,564 @@
+/* ============================================
+   CUSTOM ADMIN SIDEBAR STYLES
+   Professional, Clean, and Modern Design
+   ============================================ */
+
+/* Sidebar styling - keep visible and flowing with content */
+#sidebar {
+    position: relative !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    height: auto !important;
+    overflow-y: visible !important;
+    overflow-x: hidden !important;
+    z-index: 1000;
+    background: #ffffff !important;
+    box-shadow: 2px 0 15px rgba(0,0,0,0.08);
+    width: 260px !important;
+    min-width: 260px !important;
+    max-width: 260px !important;
+    border-right: 1px solid #e8ecef;
+    float: left !important;
+    transform: none !important;
+    transition: none !important;
+}
+
+/* Ensure sidebar is never hidden */
+#sidebar.active,
+#sidebar.collapsed {
+    display: block !important;
+    visibility: visible !important;
+    transform: none !important;
+}
+
+/* Custom scrollbar for sidebar */
+#sidebar::-webkit-scrollbar {
+    width: 5px;
+}
+
+#sidebar::-webkit-scrollbar-track {
+    background: #f8f9fa;
+}
+
+#sidebar::-webkit-scrollbar-thumb {
+    background: #cbd5e0;
+    border-radius: 3px;
+}
+
+#sidebar::-webkit-scrollbar-thumb:hover {
+    background: #a0aec0;
+}
+
+/* Wrapper should flow beside sidebar */
+.wrapper {
+    margin-left: 0 !important;
+    overflow: auto !important;
+    padding: 20px;
+    min-height: 100vh;
+}
+
+.wrapper > .container,
+.wrapper > .container-fluid {
+    padding-left: 15px !important;
+    padding-right: 15px !important;
+    max-width: 100% !important;
+}
+
+/* Header */
+.navbar,
+.top-header,
+.main-header,
+.header,
+.page-main > .header {
+    margin-left: 0 !important;
+    width: 100% !important;
+}
+
+/* Remove collapsed sidebar styles */
+
+/* Body layout - restore original */
+body {
+    overflow-x: visible !important;
+}
+
+.page,
+.page-main {
+    margin-left: 0 !important;
+    width: 100% !important;
+}
+
+/* Sidebar container padding */
+#sidebar .nav {
+    padding: 10px 0 !important;
+}
+
+/* Add subtle separators between main menu items */
+#sidebar .nav > li:not(:last-child)::after {
+    content: '';
+    display: block;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #e8ecef 50%, transparent);
+    margin: 8px 15px;
+    opacity: 0.5;
+}
+
+/* Top-level menu items - Enhanced Professional Design */
+#sidebar .nav > li {
+    border-bottom: none;
+    margin: 3px 0;
+}
+
+#sidebar .nav > li > a {
+    padding: 15px 20px !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    color: #2d3748 !important;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex !important;
+    align-items: center !important;
+    border-radius: 10px;
+    margin: 2px 10px;
+    background: transparent !important;
+    position: relative;
+    letter-spacing: 0.2px;
+}
+
+#sidebar .nav > li > a i {
+    font-size: 16px !important;
+    margin-right: 14px !important;
+    width: 22px;
+    text-align: center;
+    color: #718096 !important;
+    transition: all 0.25s ease;
+    opacity: 0.85;
+}
+
+#sidebar .nav > li > a:hover {
+    background: #f7fafc !important;
+    color: #1a202c !important;
+    transform: translateX(5px);
+    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+    border-left: 3px solid #4299e1;
+    padding-left: 17px !important;
+}
+
+#sidebar .nav > li > a:hover i {
+    color: #4299e1 !important;
+    transform: scale(1.12);
+    opacity: 1;
+}
+
+#sidebar .nav > li.active > a {
+    background: linear-gradient(135deg, #4299e1 0%, #3182ce 100%) !important;
+    color: #fff !important;
+    box-shadow: 0 4px 15px rgba(66, 153, 225, 0.35);
+    font-weight: 600 !important;
+}
+
+#sidebar .nav > li.active > a i {
+    color: #fff !important;
+    opacity: 1;
+}
+
+/* Site Settings - Main accordion toggle */
+#sidebar .nav > li > a.accordion-toggle {
+    position: relative;
+}
+
+#sidebar .nav > li > a.accordion-toggle::after {
+    content: '\f107';
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    position: absolute;
+    right: 18px;
+    font-size: 12px;
+    transition: transform 0.3s ease;
+    color: #718096 !important;
+    opacity: 0.7;
+}
+
+#sidebar .nav > li > a.accordion-toggle:hover::after {
+    color: #4299e1 !important;
+    opacity: 1;
+}
+
+#sidebar .nav > li > a.accordion-toggle[aria-expanded="true"]::after {
+    transform: rotate(180deg);
+    color: #4299e1 !important;
+    opacity: 1;
+}
+
+/* First level submenu (Site Settings children) - Enhanced Design */
+#siteSettings {
+    background: #f8fafb !important;
+    padding: 6px 0 !important;
+    margin: 0 8px;
+    border-radius: 8px;
+    border: 1px solid #e8ecef;
+}
+
+#siteSettings > li {
+    border-bottom: none;
+    margin: 2px 0;
+}
+
+#siteSettings > li > a {
+    padding: 13px 20px 13px 45px !important;
+    font-size: 13.5px !important;
+    font-weight: 400 !important;
+    color: #4a5568 !important;
+    display: flex !important;
+    align-items: center !important;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 6px;
+    margin: 2px 8px;
+    background: transparent !important;
+}
+
+#siteSettings > li > a i {
+    font-size: 15px !important;
+    margin-right: 12px !important;
+    width: 20px;
+    text-align: center;
+    color: #718096 !important;
+    transition: all 0.25s ease;
+}
+
+#siteSettings > li > a:hover {
+    background: #ffffff !important;
+    color: #2d3748 !important;
+    transform: translateX(4px);
+    border-left: 3px solid #4299e1;
+    padding-left: 42px !important;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+#siteSettings > li > a:hover i {
+    color: #4299e1 !important;
+    transform: scale(1.08);
+}
+
+/* Nested accordions inside Site Settings */
+#siteSettings > li > a.accordion-toggle {
+    position: relative;
+}
+
+#siteSettings > li > a.accordion-toggle::after {
+    content: '\f105';
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    position: absolute;
+    right: 20px;
+    font-size: 12px;
+    transition: transform 0.3s ease;
+}
+
+#siteSettings > li > a.accordion-toggle[aria-expanded="true"]::after {
+    transform: rotate(90deg);
+}
+
+/* Second level submenu (nested inside Site Settings) */
+#siteSettings .collapse {
+    background: #ffffff !important;
+    margin: 4px 8px;
+    border-radius: 6px;
+    padding: 4px 0;
+    border: 1px solid #e2e8f0;
+}
+
+#siteSettings .collapse > li {
+    border-bottom: none;
+    margin: 1px 0;
+}
+
+#siteSettings .collapse > li > a {
+    padding: 11px 20px 11px 65px !important;
+    font-size: 12.5px !important;
+    font-weight: 400 !important;
+    color: #718096 !important;
+    display: block !important;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 5px;
+    margin: 2px 6px;
+    background: transparent !important;
+}
+
+#siteSettings .collapse > li > a:hover {
+    background: #f7fafc !important;
+    color: #4299e1 !important;
+    transform: translateX(3px);
+    border-left: 2px solid #4299e1;
+    padding-left: 63px !important;
+}
+
+#siteSettings .collapse > li > a span {
+    color: inherit !important;
+}
+
+#siteSettings .collapse > li.active > a {
+    color: #4299e1 !important;
+    font-weight: 500 !important;
+    background: #ebf8ff !important;
+}
+
+/* Other top-level submenus (Orders, Categories, Products) */
+#sidebar .nav > li > .collapse {
+    background: #f8fafb !important;
+    margin: 4px 12px;
+    border-radius: 8px;
+    padding: 6px 0;
+    border: 1px solid #e8ecef;
+}
+
+#sidebar .nav > li > .collapse > li {
+    margin: 2px 0;
+}
+
+#sidebar .nav > li > .collapse > li > a {
+    padding: 12px 20px 12px 48px !important;
+    font-size: 13px !important;
+    color: #4a5568 !important;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 6px;
+    margin: 2px 8px;
+    background: transparent !important;
+}
+
+#sidebar .nav > li > .collapse > li > a:hover {
+    background: #ffffff !important;
+    color: #4299e1 !important;
+    transform: translateX(3px);
+    border-left: 3px solid #4299e1;
+    padding-left: 45px !important;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+#sidebar .nav > li > .collapse > li > a span {
+    color: inherit !important;
+}
+
+#sidebar .nav > li > .collapse > li.active > a {
+    background: #ebf8ff !important;
+    color: #4299e1 !important;
+    font-weight: 500 !important;
+    border-left: 3px solid #4299e1;
+}
+
+/* Active states */
+#sidebar .nav li.active > a {
+    background: linear-gradient(90deg, #4299e1 0%, #3182ce 100%) !important;
+    color: #fff !important;
+    box-shadow: 0 3px 10px rgba(66, 153, 225, 0.25);
+}
+
+#siteSettings li.active > a {
+    background: #ebf8ff !important;
+    color: #4299e1 !important;
+    border-left: 3px solid #4299e1;
+    font-weight: 500 !important;
+}
+
+/* Professional color scheme */
+:root {
+    --sidebar-bg: #ffffff;
+    --sidebar-hover: #f7fafc;
+    --sidebar-active: #4299e1;
+    --submenu-bg: #f8fafb;
+    --text-primary: #2d3748;
+    --text-secondary: #718096;
+    --border-color: #e8ecef;
+}
+
+/* Improve readability */
+#sidebar .nav a {
+    line-height: 1.5 !important;
+    letter-spacing: 0.3px;
+}
+
+/* Badge styling if needed */
+#sidebar .badge {
+    padding: 3px 7px;
+    font-size: 10px;
+    border-radius: 10px;
+    margin-left: auto;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    #sidebar {
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+    }
+    
+    #sidebar.active {
+        transform: translateX(0);
+    }
+    
+    .main-content {
+        margin-left: 0 !important;
+    }
+}
+
+/* Smooth animations */
+#sidebar * {
+    transition: all 0.2s ease;
+}
+
+/* Remove any conflicting white text */
+#siteSettings a,
+#siteSettings a *,
+#siteSettings span {
+    color: inherit !important;
+}
+
+/* Ensure icons are visible */
+#siteSettings i {
+    opacity: 0.8;
+}
+
+#siteSettings a:hover i {
+    opacity: 1;
+    color: #3498db !important;
+}
+
+/* Professional hover effects */
+#sidebar .nav > li > a,
+#siteSettings > li > a,
+#siteSettings .collapse > li > a {
+    position: relative;
+    overflow: hidden;
+}
+
+#sidebar .nav > li > a::before,
+#siteSettings > li > a::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 0;
+    background: rgba(52, 152, 219, 0.1);
+    transition: width 0.3s ease;
+}
+
+#sidebar .nav > li > a:hover::before,
+#siteSettings > li > a:hover::before {
+    width: 100%;
+}
+
+/* Clean separator lines */
+#sidebar .nav > li:not(:last-child) {
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+/* Typography improvements */
+#sidebar {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* Logo/Brand area spacing */
+#sidebar .sidebar-user {
+    padding: 20px 24px !important;
+    border-bottom: 1px solid #e8ecef;
+    margin-bottom: 10px;
+    background: #ffffff !important;
+}
+
+#sidebar .sidebar-user a {
+    color: #2d3748 !important;
+}
+
+/* Menu section spacing */
+#sidebar .nav {
+    padding: 8px 0;
+}
+
+/* Accordion arrow improvements */
+#sidebar .nav > li > a.accordion-toggle::after {
+    font-size: 13px;
+    opacity: 0.5;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    color: #718096 !important;
+}
+
+#sidebar .nav > li > a.accordion-toggle:hover::after {
+    opacity: 1;
+    color: #4299e1 !important;
+}
+
+#siteSettings > li > a.accordion-toggle::after {
+    font-size: 11px;
+    opacity: 0.5;
+    color: #718096 !important;
+}
+
+#siteSettings > li > a.accordion-toggle:hover::after {
+    opacity: 0.9;
+    color: #4299e1 !important;
+}
+
+/* Better focus states for accessibility */
+#sidebar .nav a:focus {
+    outline: 2px solid #4299e1;
+    outline-offset: -2px;
+}
+
+/* Smooth expand/collapse animations */
+#sidebar .collapse {
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Version text hidden */
+#sidebar .version-text,
+#sidebar [class*="version"],
+#sidebar small:contains("Version"),
+.sidebar-footer {
+    display: none !important;
+}
+
+/* Hover background effect - subtle */
+#sidebar .nav > li > a::before,
+#siteSettings > li > a::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 0;
+    background: rgba(66, 153, 225, 0.05);
+    transition: width 0.3s ease;
+    border-radius: 8px;
+}
+
+#sidebar .nav > li > a:hover::before,
+#siteSettings > li > a:hover::before {
+    width: 100%;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    #sidebar {
+        width: 100% !important;
+    }
+}
+
+/* Ensure icons are visible */
+#siteSettings i {
+    opacity: 0.8;
+}
+
+#siteSettings a:hover i {
+    opacity: 1;
+    color: #4299e1 !important;
+}
+
+/* Typography improvements */
+#sidebar {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* Clean separator lines */
+#sidebar .nav > li:not(:last-child) {
+    border-bottom: 1px solid #f0f3f5;
+}

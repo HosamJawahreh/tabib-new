@@ -180,6 +180,7 @@ return array(
     'App\\Http\\Controllers\\Payment\\Subscription\\TwoCheckoutController' => $baseDir . '/app/Http/Controllers/Payment/Subscription/TwoCheckoutController.php',
     'App\\Http\\Controllers\\Payment\\Subscription\\VoguepayController' => $baseDir . '/app/Http/Controllers/Payment/Subscription/VoguepayController.php',
     'App\\Http\\Controllers\\Payment\\Subscription\\WalletPaymentController' => $baseDir . '/app/Http/Controllers/Payment/Subscription/WalletPaymentController.php',
+    'App\\Http\\Controllers\\SimpleOrderController' => $baseDir . '/app/Http/Controllers/SimpleOrderController.php',
     'App\\Http\\Controllers\\User\\DepositController' => $baseDir . '/app/Http/Controllers/User/DepositController.php',
     'App\\Http\\Controllers\\User\\ForgotController' => $baseDir . '/app/Http/Controllers/User/ForgotController.php',
     'App\\Http\\Controllers\\User\\LoginController' => $baseDir . '/app/Http/Controllers/User/LoginController.php',
