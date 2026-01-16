@@ -1,7 +1,7 @@
 <?php
 /**
  * Verification Script - Check Product Status Filtering
- * 
+ *
  * This script verifies that inactive products (status=0) are properly filtered
  * from all product queries in the application.
  */
@@ -33,7 +33,7 @@ $totalInactive = 0;
 foreach ($statusCount as $stat) {
     $label = $stat->status == 1 ? 'Active (Published)' : 'Inactive (Pending)';
     echo "   - Status {$stat->status} ({$label}): {$stat->count} products\n";
-    
+
     if ($stat->status == 1) $totalActive = $stat->count;
     if ($stat->status == 0) $totalInactive = $stat->count;
 }

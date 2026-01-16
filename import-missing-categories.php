@@ -26,7 +26,7 @@ for ($i = 0; $i < count($catMatches[1]); $i++) {
     $id = $catMatches[1][$i];
     $name = str_replace("\\'", "'", $catMatches[2][$i]);
     $parentId = $catMatches[3][$i];
-    
+
     $oldCategories[] = [
         'old_id' => $id,
         'name' => $name,
@@ -60,14 +60,14 @@ echo "\n\nTotal missing: " . count($missingCategories) . " categories\n\n";
 if (count($missingCategories) > 0) {
     echo "Do you want to import these categories? (This will add them to your categories table)\n";
     echo "Type 'yes' to proceed: ";
-    
+
     $handle = fopen ("php://stdin","r");
     $line = fgets($handle);
     $confirmation = trim($line);
-    
+
     if(strtolower($confirmation) === 'yes') {
         echo "\n📦 Importing categories...\n\n";
-        
+
         $imported = 0;
         foreach ($missingCategories as $cat) {
             try {
@@ -76,21 +76,21 @@ if (count($missingCategories) > 0) {
                     'slug' => \Illuminate\Support\Str::slug($cat['name']),
                     'status' => 1,
                 ]);
-                
+
                 echo "  ✅ Imported: {$cat['name']}\n";
                 $imported++;
             } catch (\Exception $e) {
                 echo "  ❌ Failed: {$cat['name']} - " . $e->getMessage() . "\n";
             }
         }
-        
+
         echo "\n\n✅ Import Complete!\n";
         echo "Imported: $imported categories\n";
-        
+
         // Re-count
         $newTotal = Category::count();
         echo "Total categories now: $newTotal\n";
-        
+
     } else {
         echo "\nImport cancelled.\n";
     }

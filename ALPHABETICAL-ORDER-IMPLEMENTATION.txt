@@ -183,9 +183,9 @@ PERFORMANCE CONSIDERATIONS
   • Pagination efficiency maintained
 
 QUERY EXAMPLE:
-SELECT * FROM products 
-WHERE status = 1 
-ORDER BY name ASC 
+SELECT * FROM products
+WHERE status = 1
+ORDER BY name ASC
 LIMIT 24 OFFSET 0;
 
 ================================================================================
@@ -194,7 +194,7 @@ RELATED FILES
 
 1. Main Controller:
    app/Http/Controllers/Front/FrontendController.php
-   
+
    Methods modified:
    - index() - Line ~112
    - loadMoreProducts() - Line ~130
@@ -202,13 +202,13 @@ RELATED FILES
 
 2. Test Script:
    test-alphabetical-order.php
-   
+
    Purpose: Verify alphabetical ordering
    Usage: php test-alphabetical-order.php
 
 3. Product Model:
    app/Models/Product.php
-   
+
    Status: No changes needed
    Note: scopeHome() method not affected
 

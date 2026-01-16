@@ -23,7 +23,7 @@ for ($i = 0; $i < count($catMatches[1]); $i++) {
     $id = $catMatches[1][$i];
     $name = str_replace("\\'", "'", $catMatches[2][$i]);
     $parentId = $catMatches[3][$i];
-    
+
     $oldCategories[] = [
         'old_id' => $id,
         'name' => $name,
@@ -68,7 +68,7 @@ foreach ($parentGroups as $parentId => $children) {
             break;
         }
     }
-    
+
     echo "\n  Parent: {$parentName} (ID: {$parentId})\n";
     foreach ($children as $child) {
         echo "    → {$child['name']} (Old ID: {$child['old_id']})\n";
@@ -120,7 +120,7 @@ if (count($incorrectlyPlaced) > 0) {
     echo "⚠️  INCORRECTLY PLACED CATEGORIES:\n";
     echo "────────────────────────────────────────────────────────────────────────────\n";
     echo "These are subcategories from the old DB but are in the main categories table:\n\n";
-    
+
     foreach ($incorrectlyPlaced as $item) {
         $parentName = 'Unknown';
         foreach ($oldCategories as $cat) {
@@ -132,7 +132,7 @@ if (count($incorrectlyPlaced) > 0) {
         echo "  ❌ ID {$item['id']}: {$item['name']}\n";
         echo "     → Should be subcategory of: {$parentName}\n\n";
     }
-    
+
     echo "Total Incorrectly Placed: " . count($incorrectlyPlaced) . "\n\n";
 }
 

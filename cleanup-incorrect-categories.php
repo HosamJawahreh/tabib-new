@@ -69,21 +69,21 @@ if ($relationshipsAffected > 0) {
     echo "   The FrontendController has been updated to only show root categories.\n\n";
 } else {
     echo "✅ Safe to delete - no products using these categories\n\n";
-    
+
     echo "Do you want to delete these " . count($incorrectlyPlaced) . " categories? (yes/no): ";
     $handle = fopen("php://stdin", "r");
     $line = fgets($handle);
     $confirmation = trim($line);
-    
+
     if (strtolower($confirmation) === 'yes') {
         echo "\n🗑️  Deleting categories...\n";
-        
+
         $deleted = DB::table('categories')
             ->whereNotIn('id', $rootCategoryIds)
             ->delete();
-        
+
         echo "✅ Deleted $deleted categories\n";
-        
+
         $remaining = DB::table('categories')->count();
         echo "✅ Remaining categories: $remaining (should be 10)\n";
     } else {

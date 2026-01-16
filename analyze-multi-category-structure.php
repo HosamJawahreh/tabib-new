@@ -51,7 +51,7 @@ $oldCategories = [];
 if (!empty($categoryMatches[1][0])) {
     $values = $categoryMatches[1][0];
     preg_match_all('/\((\d+),\s*\'([^\']+)\'/', $values, $catData);
-    
+
     foreach ($catData[1] as $idx => $catId) {
         $oldCategories[$catId] = $catData[2][$idx];
     }
@@ -76,12 +76,12 @@ $productCategoryCounts = [];
 for ($i = 0; $i < count($relMatches[1]); $i++) {
     $categoryId = $relMatches[1][$i];
     $productId = $relMatches[2][$i];
-    
+
     if (!isset($relationships[$productId])) {
         $relationships[$productId] = [];
         $productCategoryCounts[$productId] = 0;
     }
-    
+
     $relationships[$productId][] = $categoryId;
     $productCategoryCounts[$productId]++;
 }

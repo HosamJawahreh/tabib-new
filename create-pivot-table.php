@@ -28,9 +28,9 @@ echo "📦 Creating category_product pivot table...\n";
 Schema::create('category_product', function (Blueprint $table) {
     $table->unsignedBigInteger('category_id');
     $table->unsignedBigInteger('product_id');
-    
+
     $table->primary(['category_id', 'product_id']);
-    
+
     $table->index('category_id');
     $table->index('product_id');
 });

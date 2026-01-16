@@ -35,7 +35,7 @@ echo "────────────────────────�
 $newQuery = Category::where('status', 1)
     ->whereIn('id', [84, 85, 86, 87, 88, 89, 90, 91, 95, 96])
     ->get();
-    
+
 echo "Query: Category::where('status', 1)->whereIn('id', [84, 85, 86...])->get()\n";
 echo "Result: " . $newQuery->count() . " categories\n";
 echo "\nCategories shown:\n";

@@ -168,7 +168,7 @@ class FrontendController extends FrontBaseController
         // Apply multi-category filter using many-to-many relationship
         if ($request->has('category_id') && $request->category_id) {
             $categoryId = $request->category_id;
-            
+
             // Search in both pivot table AND old category columns (backward compatibility)
             $query->where(function($q) use ($categoryId) {
                 // New multi-category system
@@ -185,7 +185,7 @@ class FrontendController extends FrontBaseController
         // Apply subcategory filter
         if ($request->has('subcategory_id') && $request->subcategory_id) {
             $subcategoryId = $request->subcategory_id;
-            
+
             $query->where(function($q) use ($subcategoryId) {
                 // New multi-category system
                 $q->whereHas('categories', function($subQuery) use ($subcategoryId) {
@@ -200,7 +200,7 @@ class FrontendController extends FrontBaseController
         // Apply child category filter
         if ($request->has('childcategory_id') && $request->childcategory_id) {
             $childcategoryId = $request->childcategory_id;
-            
+
             $query->where(function($q) use ($childcategoryId) {
                 // New multi-category system
                 $q->whereHas('categories', function($subQuery) use ($childcategoryId) {

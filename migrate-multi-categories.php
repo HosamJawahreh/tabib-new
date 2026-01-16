@@ -32,7 +32,7 @@ for ($i = 0; $i < count($catMatches[1]); $i++) {
     $id = $catMatches[1][$i];
     $name = str_replace("\\'", "'", $catMatches[2][$i]);
     $parentId = $catMatches[3][$i];
-    
+
     $oldCategories[$id] = $name;
     $categoryParents[$id] = $parentId;
 }
@@ -62,11 +62,11 @@ $oldRelationships = [];
 for ($i = 0; $i < count($relMatches[1]); $i++) {
     $categoryId = $relMatches[1][$i];
     $productId = $relMatches[2][$i];
-    
+
     if (!isset($oldRelationships[$productId])) {
         $oldRelationships[$productId] = [];
     }
-    
+
     $oldRelationships[$productId][] = $categoryId;
 }
 
@@ -144,9 +144,9 @@ foreach ($oldRelationships as $oldProductId => $oldCategoryIds) {
         $skippedReasons['product_not_found'] += count($oldCategoryIds);
         continue;
     }
-    
+
     $newProductId = $productMapping[$oldProductId];
-    
+
     foreach ($oldCategoryIds as $oldCategoryId) {
         // Map category ID
         if (!isset($categoryMapping[$oldCategoryId])) {
@@ -154,15 +154,15 @@ foreach ($oldRelationships as $oldProductId => $oldCategoryIds) {
             $skippedReasons['category_not_found']++;
             continue;
         }
-        
+
         $newCategoryId = $categoryMapping[$oldCategoryId];
-        
+
         // Add to batch
         $insertBatch[] = [
             'category_id' => $newCategoryId,
             'product_id' => $newProductId,
         ];
-        
+
         // Insert batch
         if (count($insertBatch) >= $batchSize) {
             try {
