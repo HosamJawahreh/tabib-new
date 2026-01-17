@@ -2328,7 +2328,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 let html = '';
                 data.products.forEach(product => {
                     const imageUrl = product.photo ? `{{ asset('assets/images/products/') }}/${product.photo}` : `{{ asset('assets/images/noimage.png') }}`;
-                    const productUrl = `{{ url('/item') }}/${product.slug}`;
+                    const productUrl = `${mainurl}/item/${product.slug}`;
 
                     html += `
                         <a href="${productUrl}" class="mobile-search-result-item">

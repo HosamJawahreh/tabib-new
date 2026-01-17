@@ -5,6 +5,221 @@
     box-shadow: 0 6px 12px rgba(0,0,0,0.15) !important;
 }
 
+/* Professional Main Product Image Container */
+.product-images {
+    position: relative !important;
+    overflow: visible !important;
+}
+
+.woocommerce-product-gallery {
+    overflow: visible !important;
+}
+
+.woocommerce-product-gallery__wrapper {
+    margin: 0 !important;
+    overflow: visible !important;
+}
+
+#single-image-zoom {
+    cursor: zoom-in !important;
+    transition: all 0.3s ease !important;
+    display: block !important;
+}
+
+/* Desktop Zoom Lens */
+.zoomLens {
+    border: 2px solid #10b981 !important;
+    cursor: crosshair !important;
+}
+
+.zoomWindow {
+    border: 2px solid #10b981 !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15) !important;
+    border-radius: 8px !important;
+}
+
+/* Professional Gallery Thumbnails */
+#gallery_09 {
+    margin-top: 20px;
+    position: relative;
+}
+
+#gallery_09 .owl-carousel {
+    position: relative;
+    padding: 0 50px;
+}
+
+#gallery_09 .item {
+    padding: 5px !important;
+}
+
+#gallery_09 a {
+    display: block;
+    position: relative;
+    overflow: hidden;
+    border-radius: 10px;
+    border: 3px solid #e5e7eb;
+    transition: all 0.3s ease;
+    background: #fff;
+    padding: 5px;
+}
+
+#gallery_09 a:hover {
+    border-color: #10b981;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(16, 185, 129, 0.3) !important;
+}
+
+#gallery_09 a.active {
+    border-color: #10b981;
+    box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.2);
+    background: #f0fdf4;
+}
+
+#gallery_09 img {
+    height: 100px !important;
+    object-fit: cover;
+    width: 100%;
+    transition: transform 0.3s ease;
+    border-radius: 6px;
+    display: block;
+}
+
+#gallery_09 a:hover img {
+    transform: scale(1.05);
+}
+
+/* Owl Carousel Navigation */
+#gallery_09 {
+    position: relative;
+}
+
+#gallery_09 .owl-carousel {
+    position: relative;
+    padding: 0 50px;
+}
+
+#gallery_09 .owl-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 100%;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    pointer-events: none;
+    z-index: 10;
+}
+
+#gallery_09 .owl-nav button {
+    pointer-events: all !important;
+    width: 40px !important;
+    height: 40px !important;
+    background: rgba(255, 255, 255, 0.95) !important;
+    border-radius: 50% !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: all 0.3s ease !important;
+    border: 2px solid #e5e7eb !important;
+    cursor: pointer !important;
+    position: relative !important;
+}
+
+#gallery_09 .owl-nav button:hover {
+    background: #10b981 !important;
+    border-color: #10b981 !important;
+    transform: scale(1.15) !important;
+    box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4) !important;
+}
+
+#gallery_09 .owl-nav button span {
+    font-size: 26px !important;
+    line-height: 1 !important;
+    color: #1f2937 !important;
+    font-weight: bold !important;
+}
+
+#gallery_09 .owl-nav button:hover span {
+    color: #fff !important;
+}
+
+#gallery_09 .owl-nav .owl-prev {
+    position: absolute !important;
+    left: 5px !important;
+}
+
+#gallery_09 .owl-nav .owl-next {
+    position: absolute !important;
+    right: 5px !important;
+}
+
+#gallery_09 .owl-nav button.disabled {
+    opacity: 0.4 !important;
+    cursor: not-allowed !important;
+}
+
+/* Main Image Container Enhancement */
+.bg-light.rounded.shadow-sm {
+    background: #ffffff !important;
+    border: 2px solid #e5e7eb !important;
+    position: relative;
+    overflow: hidden;
+    padding: 15px !important;
+}
+
+.bg-light.rounded.shadow-sm img {
+    border-radius: 8px !important;
+    width: 100% !important;
+    height: auto !important;
+    display: block !important;
+}
+
+/* Zoom Hint for Desktop */
+.zoom-hint {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 10px 18px;
+    border-radius: 24px;
+    font-size: 14px;
+    color: #1f2937;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    z-index: 10;
+    border: 2px solid rgba(16, 185, 129, 0.3);
+}
+
+.product-images:hover .zoom-hint {
+    opacity: 1;
+}
+
+.zoom-hint i {
+    font-size: 18px;
+    color: #10b981;
+}
+
+@media (min-width: 768px) {
+    #gallery_09 img {
+        height: 110px !important;
+    }
+}
+
+@media (min-width: 992px) {
+    #gallery_09 img {
+        height: 120px !important;
+    }
+}
+
 /* Mobile Image Zoom - Professional Implementation */
 @media (max-width: 767px) {
     .product-images {
@@ -20,7 +235,29 @@
         -webkit-touch-callout: none !important;
     }
 
-    /* Fullscreen image viewer for mobile */
+    /* Mobile gallery navigation adjustments */
+    #gallery_09 .owl-carousel {
+        padding: 0 45px;
+    }
+
+    #gallery_09 .owl-nav .owl-prev {
+        left: 0px !important;
+    }
+
+    #gallery_09 .owl-nav .owl-next {
+        right: 0px !important;
+    }
+
+    #gallery_09 .owl-nav button {
+        width: 38px !important;
+        height: 38px !important;
+    }
+
+    #gallery_09 .owl-nav button span {
+        font-size: 24px !important;
+    }
+
+    /* Fullscreen image viewer for mobile - Modern Design */
     .mobile-image-viewer {
         display: none;
         position: fixed;
@@ -28,10 +265,17 @@
         left: 0;
         width: 100vw;
         height: 100vh;
-        background: rgba(0, 0, 0, 0.95);
+        background: linear-gradient(135deg, rgba(0, 0, 0, 0.97) 0%, rgba(0, 0, 0, 0.92) 100%);
+        backdrop-filter: blur(10px);
         z-index: 99999;
         overflow: hidden;
         touch-action: none;
+        animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
     }
 
     .mobile-image-viewer.active {
@@ -49,46 +293,116 @@
         transition: none;
         user-select: none;
         -webkit-user-select: none;
+        filter: drop-shadow(0 8px 32px rgba(0, 0, 0, 0.3));
     }
 
     .mobile-viewer-close {
         position: absolute;
         top: 20px;
         right: 20px;
-        width: 44px;
-        height: 44px;
-        background: rgba(255, 255, 255, 0.9);
+        width: 48px;
+        height: 48px;
+        background: rgba(255, 255, 255, 0.95);
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
         cursor: pointer;
         z-index: 100000;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-        font-size: 24px;
-        color: #333;
-        font-weight: bold;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+        font-size: 26px;
+        color: #1f2937;
+        font-weight: 600;
         line-height: 1;
+        transition: all 0.2s ease;
+        border: 2px solid rgba(16, 185, 129, 0.3);
+    }
+
+    .mobile-viewer-close:active {
+        transform: scale(0.92);
+        background: #10b981;
+        color: white;
+        border-color: #10b981;
+    }
+
+    .mobile-zoom-controls {
+        position: absolute;
+        bottom: 30px;
+        right: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        z-index: 100000;
+    }
+
+    .mobile-zoom-btn {
+        width: 52px;
+        height: 52px;
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+        font-size: 22px;
+        color: #1f2937;
+        font-weight: 700;
+        transition: all 0.2s ease;
+        border: 2px solid rgba(16, 185, 129, 0.3);
+    }
+
+    .mobile-zoom-btn:active {
+        transform: scale(0.92);
+        background: #10b981;
+        color: white;
+        border-color: #10b981;
+    }
+
+    .mobile-zoom-level {
+        position: absolute;
+        top: 25px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(16, 185, 129, 0.95);
+        padding: 10px 20px;
+        border-radius: 24px;
+        color: white;
+        font-size: 15px;
+        font-weight: 700;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        z-index: 100000;
+        box-shadow: 0 4px 16px rgba(16, 185, 129, 0.4);
+        letter-spacing: 0.5px;
+    }
+
+    .mobile-zoom-level.show {
+        opacity: 1;
     }
 
     .mobile-viewer-hint {
         position: absolute;
-        bottom: 30px;
+        bottom: 100px;
         left: 50%;
         transform: translateX(-50%);
-        background: rgba(255, 255, 255, 0.9);
-        padding: 10px 20px;
-        border-radius: 20px;
-        color: #333;
-        font-size: 14px;
+        background: rgba(255, 255, 255, 0.95);
+        padding: 12px 24px;
+        border-radius: 24px;
+        color: #1f2937;
+        font-size: 13px;
+        font-weight: 600;
         pointer-events: none;
         opacity: 0;
-        animation: fadeInOut 3s ease-in-out;
+        animation: hintFadeInOut 4s ease;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+        border: 2px solid rgba(16, 185, 129, 0.3);
     }
 
-    @keyframes fadeInOut {
-        0%, 100% { opacity: 0; }
-        10%, 90% { opacity: 1; }
+    @keyframes hintFadeInOut {
+        0%, 100% { opacity: 0; transform: translateX(-50%) translateY(10px); }
+        10%, 90% { opacity: 1; transform: translateX(-50%) translateY(0); }
     }
 }
 
@@ -217,18 +531,126 @@
     background: #f0fdf4 !important;
 }
 
+/* Desktop Layout - Keep original flex layout */
+@media (min-width: 769px) {
+    .product-purchase-section {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+    }
+
+    .quantity-wrapper {
+        flex: 0 0 auto;
+        margin-bottom: 0 !important;
+    }
+
+    .action-buttons {
+        flex: 1 1 auto;
+        flex-direction: row !important;
+    }
+}
+
 @media (max-width: 768px) {
     .product-images {
         position: relative !important;
         top: 0 !important;
     }
 
+    /* Mobile Quantity Selector - Centered and Larger */
+    .qty-selector {
+        max-width: 100% !important;
+        justify-content: center !important;
+        margin: 0 auto 20px !important;
+        padding: 8px !important;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
+    }
+
+    .qty-selector .qtminus,
+    .qty-selector .qtplus {
+        width: 48px !important;
+        height: 48px !important;
+        font-size: 1.3rem !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        background: #f3f4f6 !important;
+        border-radius: 8px !important;
+        transition: all 0.2s ease !important;
+    }
+
+    .qty-selector .qtminus:active,
+    .qty-selector .qtplus:active {
+        background: #10b981 !important;
+        color: white !important;
+        transform: scale(0.95);
+    }
+
+    .qty-selector .qttotal {
+        width: 80px !important;
+        font-size: 1.2rem !important;
+        font-weight: 700 !important;
+        padding: 12px 8px !important;
+        text-align: center !important;
+    }
+
+    /* Mobile Action Buttons - Full Width and Centered */
+    .action-buttons {
+        width: 100% !important;
+        flex-direction: column !important;
+        gap: 12px !important;
+        margin-top: 20px !important;
+    }
+
     .add-to-cart-btn,
     .buy-now-btn,
     .contact-seller-btn {
-        padding: 14px 24px !important;
-        font-size: 1rem !important;
-        min-height: 48px;
+        width: 100% !important;
+        padding: 16px 24px !important;
+        font-size: 1.1rem !important;
+        min-height: 54px !important;
+        border-radius: 12px !important;
+        font-weight: 600 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 10px !important;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
+        transition: all 0.3s ease !important;
+    }
+
+    .add-to-cart-btn i,
+    .buy-now-btn i,
+    .contact-seller-btn i {
+        font-size: 1.3rem !important;
+    }
+
+    .add-to-cart-btn:active,
+    .buy-now-btn:active,
+    .contact-seller-btn:active {
+        transform: scale(0.97);
+    }
+
+    /* Buy Now Button - Prominent */
+    .buy-now-btn {
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+        border: none !important;
+        box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4) !important;
+    }
+
+    /* Add to Cart Button */
+    .add-to-cart-btn {
+        background: white !important;
+        border: 2px solid #10b981 !important;
+        color: #10b981 !important;
+    }
+
+    /* Product Info Section - Better Spacing */
+    .summary.entry-summary {
+        padding: 20px 15px !important;
+    }
+
+    .single-product-wrapper .col-md-6 {
+        padding: 0 15px !important;
     }
 }
 </style>
@@ -237,41 +659,49 @@
   <div class="container">
       <div class="row single-product-wrapper">
           <div class="col-md-6 mb-4">
-              <div class="product-images overflow-hidden position-sticky" style="top: 20px;">
-                  <div class="images-inner">
-                      <div class="woocommerce-product-gallery woocommerce-product-gallery--with-images woocommerce-product-gallery--columns-4 images" data-columns="4" style="opacity: 1; transition: opacity 0.25s ease-in-out 0s;">
-                          <figure class="woocommerce-product-gallery__wrapper">
-                              <div class="bg-light rounded shadow-sm p-3 mb-4">
-                                  <img id="single-image-zoom" src="{{filter_var($productt->photo, FILTER_VALIDATE_URL) ?$productt->photo:asset('assets/images/products/'.$productt->photo)}}" alt="Thumb Image" data-zoom-image="{{filter_var($productt->photo, FILTER_VALIDATE_URL) ?$productt->photo:asset('assets/images/products/'.$productt->photo)}}" style="border-radius: 8px; width: 100%; height: auto;" />
+              <div class="product-images position-relative" style="top: 20px;">
+                  <div class="woocommerce-product-gallery woocommerce-product-gallery--with-images woocommerce-product-gallery--columns-4 images" data-columns="4">
+                      <figure class="woocommerce-product-gallery__wrapper" style="margin: 0;">
+                          <div class="bg-light rounded shadow-sm p-3 mb-4" style="position: relative;">
+                              <img id="single-image-zoom" src="{{filter_var($productt->photo, FILTER_VALIDATE_URL) ?$productt->photo:asset('assets/images/products/'.$productt->photo)}}" alt="Product Image" data-zoom-image="{{filter_var($productt->photo, FILTER_VALIDATE_URL) ?$productt->photo:asset('assets/images/products/'.$productt->photo)}}" style="border-radius: 8px; width: 100%; height: auto; display: block;" />
+                              <div class="zoom-hint d-none d-md-flex">
+                                  <i class="fas fa-search-plus"></i>
+                                  <span>Hover to zoom</span>
                               </div>
+                          </div>
 
-                              <div id="gallery_09" class="product-slide-thumb">
-                                  <div class="owl-carousel three-carousel dot-disable nav-arrow-middle">
-                                      {{-- Main Product Image --}}
-                                      <div class="item px-2">
-                                          <a class="active d-block rounded overflow-hidden shadow-sm" href="{{filter_var($productt->photo, FILTER_VALIDATE_URL) ?$productt->photo:asset('assets/images/products/'.$productt->photo)}}" data-image="{{filter_var($productt->photo, FILTER_VALIDATE_URL) ?$productt->photo:asset('assets/images/products/'.$productt->photo)}}" data-zoom-image="{{filter_var($productt->photo, FILTER_VALIDATE_URL) ?$productt->photo:asset('assets/images/products/'.$productt->photo)}}" style="transition: transform 0.3s ease, box-shadow 0.3s ease;">
-                                              <img src="{{filter_var($productt->photo, FILTER_VALIDATE_URL) ?$productt->photo:asset('assets/images/products/'.$productt->photo)}}" alt="Main Product Image" style="height: 160px; object-fit: cover; width: 100%; border-radius: 6px;" />
-                                          </a>
-                                      </div>
-                                      {{-- Gallery Images --}}
-                                      @foreach($productt->galleries as $gal)
-                                      <div class="item px-2">
-                                          <a class="d-block rounded overflow-hidden shadow-sm" href="{{asset('assets/images/galleries/'.$gal->photo)}}" data-image="{{asset('assets/images/galleries/'.$gal->photo)}}" data-zoom-image="{{asset('assets/images/galleries/'.$gal->photo)}}" style="transition: transform 0.3s ease, box-shadow 0.3s ease;">
-                                              <img src="{{asset('assets/images/galleries/'.$gal->photo)}}" alt="Thumb Image" style="height: 160px; object-fit: cover; width: 100%; border-radius: 6px;" />
-                                          </a>
-                                      </div>
-                                      @endforeach
+                          <div id="gallery_09" class="product-slide-thumb">
+                              <div class="owl-carousel three-carousel">
+                                  {{-- Main Product Image --}}
+                                  <div class="item">
+                                      <a class="active" href="{{filter_var($productt->photo, FILTER_VALIDATE_URL) ?$productt->photo:asset('assets/images/products/'.$productt->photo)}}" data-image="{{filter_var($productt->photo, FILTER_VALIDATE_URL) ?$productt->photo:asset('assets/images/products/'.$productt->photo)}}" data-zoom-image="{{filter_var($productt->photo, FILTER_VALIDATE_URL) ?$productt->photo:asset('assets/images/products/'.$productt->photo)}}">
+                                          <img src="{{filter_var($productt->photo, FILTER_VALIDATE_URL) ?$productt->photo:asset('assets/images/products/'.$productt->photo)}}" alt="Main Product Image" />
+                                      </a>
                                   </div>
+                                  {{-- Gallery Images --}}
+                                  @foreach($productt->galleries as $gal)
+                                  <div class="item">
+                                      <a href="{{asset('assets/images/galleries/'.$gal->photo)}}" data-image="{{asset('assets/images/galleries/'.$gal->photo)}}" data-zoom-image="{{asset('assets/images/galleries/'.$gal->photo)}}">
+                                          <img src="{{asset('assets/images/galleries/'.$gal->photo)}}" alt="Gallery Image" />
+                                      </a>
+                                  </div>
+                                  @endforeach
                               </div>
-                          </figure>
-                      </div>
+                          </div>
+                      </figure>
                   </div>
 
                   {{-- Mobile Image Viewer with Pinch Zoom --}}
                   <div class="mobile-image-viewer" id="mobileImageViewer">
                       <div class="mobile-viewer-close" id="closeViewer">&times;</div>
+                      <div class="mobile-zoom-level" id="zoomLevel">100%</div>
+                      <div class="mobile-zoom-controls">
+                          <div class="mobile-zoom-btn" id="zoomIn">+</div>
+                          <div class="mobile-zoom-btn" id="zoomOut">−</div>
+                          <div class="mobile-zoom-btn" id="zoomReset" style="font-size: 16px;">⟲</div>
+                      </div>
                       <img id="viewerImage" src="" alt="Product Image" />
-                      <div class="mobile-viewer-hint">Pinch to zoom • Drag to pan</div>
+                      <div class="mobile-viewer-hint">Pinch to zoom • Drag to pan • Double tap</div>
                   </div>
               </div>
 
@@ -283,6 +713,10 @@
                       const viewer = document.getElementById('mobileImageViewer');
                       const viewerImage = document.getElementById('viewerImage');
                       const closeBtn = document.getElementById('closeViewer');
+                      const zoomInBtn = document.getElementById('zoomIn');
+                      const zoomOutBtn = document.getElementById('zoomOut');
+                      const zoomResetBtn = document.getElementById('zoomReset');
+                      const zoomLevel = document.getElementById('zoomLevel');
 
                       let scale = 1;
                       let posX = 0;
@@ -291,6 +725,17 @@
                       let lastPosX = 0;
                       let lastPosY = 0;
                       let isDragging = false;
+                      let zoomLevelTimeout;
+
+                      // Show zoom level indicator
+                      function showZoomLevel() {
+                          zoomLevel.textContent = Math.round(scale * 100) + '%';
+                          zoomLevel.classList.add('show');
+                          clearTimeout(zoomLevelTimeout);
+                          zoomLevelTimeout = setTimeout(() => {
+                              zoomLevel.classList.remove('show');
+                          }, 1500);
+                      }
 
                       // Open viewer on image tap
                       mainImage.addEventListener('click', function(e) {
@@ -325,6 +770,28 @@
                           }
                       });
 
+                      // Zoom controls
+                      zoomInBtn.addEventListener('click', function() {
+                          scale = Math.min(scale + 0.5, 5);
+                          updateTransform();
+                          showZoomLevel();
+                      });
+
+                      zoomOutBtn.addEventListener('click', function() {
+                          scale = Math.max(scale - 0.5, 1);
+                          if (scale === 1) {
+                              posX = 0;
+                              posY = 0;
+                          }
+                          updateTransform();
+                          showZoomLevel();
+                      });
+
+                      zoomResetBtn.addEventListener('click', function() {
+                          resetTransform();
+                          showZoomLevel();
+                      });
+
                       // Reset transform
                       function resetTransform() {
                           scale = 1;
@@ -336,6 +803,10 @@
                       // Update image transform
                       function updateTransform() {
                           viewerImage.style.transform = `translate(-50%, -50%) translate(${posX}px, ${posY}px) scale(${scale})`;
+                          viewerImage.style.transition = 'transform 0.2s ease-out';
+                          setTimeout(() => {
+                              viewerImage.style.transition = 'none';
+                          }, 200);
                       }
 
                       // Get distance between two touch points
@@ -370,6 +841,7 @@
                               scale = Math.max(1, Math.min(scale, 5)); // Limit zoom between 1x and 5x
                               lastDistance = distance;
                               updateTransform();
+                              showZoomLevel();
                           } else if (e.touches.length === 1 && isDragging && scale > 1) {
                               // Drag to pan (only when zoomed in)
                               const deltaX = e.touches[0].clientX - lastPosX;
@@ -385,7 +857,7 @@
 
                               lastPosX = e.touches[0].clientX;
                               lastPosY = e.touches[0].clientY;
-                              updateTransform();
+                              viewerImage.style.transform = `translate(-50%, -50%) translate(${posX}px, ${posY}px) scale(${scale})`;
                           }
                       });
 
@@ -645,24 +1117,26 @@
 
     @endif
     {{-- PRODUCT STOCK CONDITION SECTION ENDS --}}
-                         <div class="d-flex flex-wrap align-items-center gap-3 mt-4">
+                         <div class="product-purchase-section mt-4">
                             @if($productt->product_type != "affiliate" && $productt->type == 'Physical')
-                               <div class="qty-selector border rounded d-flex align-items-center" style="background: #ffffff; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-                                  <button type="button" class="qtminus btn btn-light border-0 px-3 py-2" style="font-size: 1.2rem;">
-                                     <i class="icofont-minus"></i>
-                                  </button>
-                                  <input class="qttotal form-control border-0 text-center" type="text" id="order-qty" value="{{ $productt->minimum_qty == null ? '1' : (int)$productt->minimum_qty }}" style="width: 70px; font-weight: 600;">
-                                  <input type="hidden" id="affilate_user" value="{{ $affilate_user }}">
-                                  <input type="hidden" id="product_minimum_qty" value="{{ $productt->minimum_qty == null ? '0' : $productt->minimum_qty }}">
-                                  <button type="button" class="qtplus btn btn-light border-0 px-3 py-2" style="font-size: 1.2rem;">
-                                     <i class="icofont-plus"></i>
-                                  </button>
+                               <div class="quantity-wrapper mb-3 d-flex justify-content-center">
+                                   <div class="qty-selector border rounded d-flex align-items-center" style="background: #ffffff; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                                      <button type="button" class="qtminus btn btn-light border-0 px-3 py-2" style="font-size: 1.2rem;">
+                                         <i class="icofont-minus"></i>
+                                      </button>
+                                      <input class="qttotal form-control border-0 text-center" type="text" id="order-qty" value="{{ $productt->minimum_qty == null ? '1' : (int)$productt->minimum_qty }}" style="width: 70px; font-weight: 600;">
+                                      <input type="hidden" id="affilate_user" value="{{ $affilate_user }}">
+                                      <input type="hidden" id="product_minimum_qty" value="{{ $productt->minimum_qty == null ? '0' : $productt->minimum_qty }}">
+                                      <button type="button" class="qtplus btn btn-light border-0 px-3 py-2" style="font-size: 1.2rem;">
+                                         <i class="icofont-plus"></i>
+                                      </button>
+                                   </div>
                                </div>
                           @endif
 
 
                           {{-- PRODUCT QUANTITY SECTION ENDS --}}
-                          <div class="action-buttons d-flex flex-wrap gap-3 flex-grow-1">
+                          <div class="action-buttons d-flex flex-wrap gap-3">
                           @if($productt->product_type == "affiliate")
 
                               <a href="javascript:;" class="btn btn-primary affilate-btn add-to-cart-btn" data-href="{{ $productt->affiliate_link }}" target="_blank">

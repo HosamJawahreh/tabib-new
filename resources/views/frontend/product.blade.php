@@ -3,6 +3,54 @@
 @section('content')
 @include('partials.global.common-header')
 <!-- breadcrumb -->
+<style>
+    .breadcrumb-categories-wrapper {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        justify-content: center;
+        align-items: center;
+        margin-top: 12px;
+    }
+
+    .breadcrumb-category-badge {
+        background: rgba(16, 185, 129, 0.15);
+        border: 1px solid rgba(16, 185, 129, 0.3);
+        padding: 6px 14px;
+        border-radius: 20px;
+        color: #fff;
+        font-size: 13px;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        backdrop-filter: blur(10px);
+        cursor: default;
+        pointer-events: none;
+    }
+
+    .breadcrumb-category-badge::before {
+        content: '📁';
+        font-size: 12px;
+    }
+
+    .breadcrumb-separator {
+        color: rgba(255, 255, 255, 0.5);
+        font-size: 12px;
+    }
+
+    @media (max-width: 767px) {
+        .breadcrumb-categories-wrapper {
+            gap: 6px;
+            margin-top: 8px;
+        }
+
+        .breadcrumb-category-badge {
+            font-size: 12px;
+            padding: 5px 12px;
+        }
+    }
+</style>
 <div class="full-row bg-light overlay-dark py-5" style="background-image: url({{ $gs->breadcrumb_banner ? asset('assets/images/'.$gs->breadcrumb_banner):asset('assets/images/noimage.png') }}); background-position: center center; background-size: cover;">
    <div class="container">
       <div class="row text-center text-white">
@@ -13,9 +61,25 @@
             <nav aria-label="breadcrumb">
                <ol class="breadcrumb mb-0 d-inline-flex bg-transparent p-0">
                   <li class="breadcrumb-item"><a href="{{ route('front.index') }}">{{ __('Home') }}</a></li>
-                  <li class="breadcrumb-item active" aria-current="page">{{ __('Product Details') }}</li>
+                  @if($productt->categories->count() > 0)
+                     @foreach($productt->categories as $index => $category)
+                        <li class="breadcrumb-item text-white">{{ $category->name }}</li>
+                     @endforeach
+                  @endif
+                  <li class="breadcrumb-item active" aria-current="page">{{ $productt->name }}</li>
                </ol>
             </nav>
+            
+            @if($productt->categories->count() > 0)
+            <div class="breadcrumb-categories-wrapper">
+               @foreach($productt->categories as $index => $category)
+                  <span class="breadcrumb-category-badge">{{ $category->name }}</span>
+                  @if($index < $productt->categories->count() - 1)
+                     <span class="breadcrumb-separator">•</span>
+                  @endif
+               @endforeach
+            </div>
+            @endif
          </div>
       </div>
    </div>
@@ -26,14 +90,73 @@
 {{-- Description section moved under product name in top.blade.php --}}
 <!--==================== Product Description Section End ====================-->
 <!--==================== Related Products Section Start ====================-->
+<style>
+    /* Modern Related Products Section */
+    .modern-section-header {
+        position: relative;
+        padding: 30px 0 20px;
+        margin-bottom: 30px;
+    }
+
+    .modern-section-header::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 80px;
+        height: 4px;
+        background: linear-gradient(90deg, #10b981 0%, #34d399 100%);
+        border-radius: 2px;
+    }
+
+    .modern-section-title {
+        font-size: 28px;
+        font-weight: 700;
+        color: #1f2937;
+        margin: 0;
+        letter-spacing: -0.5px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .modern-section-title::before {
+        content: '✨';
+        font-size: 24px;
+        animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+        0%, 100% { opacity: 0.6; transform: scale(1); }
+        50% { opacity: 1; transform: scale(1.1); }
+    }
+
+    @media (max-width: 767px) {
+        .modern-section-title {
+            font-size: 22px;
+        }
+
+        .modern-section-title::before {
+            font-size: 20px;
+        }
+
+        .modern-section-header {
+            padding: 20px 0 15px;
+            margin-bottom: 20px;
+        }
+
+        .modern-section-header::after {
+            width: 60px;
+            height: 3px;
+        }
+    }
+</style>
 <div class="full-row pt-0">
    <div class="container">
       <div class="row">
          <div class="col-12">
-            <div class="section-head border-bottom d-flex justify-content-between align-items-end mb-2">
-               <div class="d-flex section-head-side-title">
-                  <h4 class="font-600 text-dark mb-0">{{ __('Related Products') }}</h4>
-               </div>
+            <div class="modern-section-header">
+               <h4 class="modern-section-title">{{ __('Related Products') }}</h4>
             </div>
          </div>
          <div class="col-12">
@@ -194,16 +317,80 @@ lazy();
          //initiate the plugin and pass the id of the div containing gallery images
       $("#single-image-zoom").elevateZoom({
          gallery: 'gallery_09',
-         zoomType: "inner",
+         zoomType: "lens",
+         lensShape: "round",
+         lensSize: 200,
          cursor: "crosshair",
          galleryActiveClass: 'active',
          imageCrossfade: true,
-         loadingIcon: 'http://www.elevateweb.co.uk/spinner.gif'
+         borderSize: 2,
+         borderColour: "#10b981",
+         responsive: true,
+         easing: true,
+         lensFadeIn: 300,
+         lensFadeOut: 300,
+         zoomWindowFadeIn: 300,
+         zoomWindowFadeOut: 300
       });
-      //pass the images to Fancybox
+      
+      // Gallery thumbnail click handler
+      $('#gallery_09 a').on('click', function(e) {
+          e.preventDefault();
+          $('#gallery_09 a').removeClass('active');
+          $(this).addClass('active');
+          
+          var ez = $('#single-image-zoom').data('elevateZoom');
+          if (ez) {
+              $('#single-image-zoom').data('elevateZoom').swaptheimage(
+                  $(this).data('image'), 
+                  $(this).data('zoom-image')
+              );
+          }
+      });
+      
+      // Initialize gallery carousel
+      $('#gallery_09 .owl-carousel').owlCarousel({
+          items: 4,
+          margin: 10,
+          nav: true,
+          dots: false,
+          loop: false,
+          autoWidth: false,
+          navText: ['<span>‹</span>', '<span>›</span>'],
+          responsive: {
+              0: {
+                  items: 3,
+                  margin: 8,
+                  stagePadding: 0
+              },
+              576: {
+                  items: 3,
+                  margin: 10
+              },
+              768: {
+                  items: 3,
+                  margin: 12
+              },
+              992: {
+                  items: 4,
+                  margin: 12
+              },
+              1200: {
+                  items: 4,
+                  margin: 15
+              }
+          },
+          onInitialized: function() {
+              console.log('Gallery carousel initialized');
+          }
+      });
+      
+      //pass the images to Fancybox on click
       $("#single-image-zoom").bind("click", function(e) {
          var ez = $('#single-image-zoom').data('elevateZoom');
-         $.fancybox(ez.getGalleryList());
+         if (ez) {
+             $.fancybox(ez.getGalleryList());
+         }
          return false;
       });
 
