@@ -77,6 +77,17 @@
     -webkit-user-select: none;
     user-select: none;
     width: 100%;
+    -webkit-touch-callout: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+@media (max-width: 767px) {
+    /* Prevent body scroll on mobile when touching image */
+    body.zoom-active {
+        overflow: hidden !important;
+        position: fixed !important;
+        width: 100% !important;
+    }
 }
 
 #single-image-zoom {
@@ -84,6 +95,7 @@
     width: 100%;
     height: auto;
     max-width: 100%;
+    pointer-events: auto;
 }
 
 #single-image-zoom.zoomed {
@@ -607,7 +619,7 @@
         padding: 15px !important;
     }
 
-    /* Mobile Quantity Selector - Centered and Full Width */
+    /* Mobile Quantity Selector - Light Gray Theme */
     .qty-selector {
         width: 100% !important;
         max-width: 100% !important;
@@ -616,10 +628,11 @@
         align-items: center !important;
         margin: 0 0 15px 0 !important;
         padding: 12px 20px !important;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
-        background: #1f2937 !important;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08) !important;
+        background: #f3f4f6 !important;
         border-radius: 12px !important;
         gap: 15px !important;
+        border: 1px solid #e5e7eb !important;
     }
 
     .qty-selector .qtminus,
@@ -630,9 +643,9 @@
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
-        background: #374151 !important;
-        border: none !important;
-        color: #ffffff !important;
+        background: #ffffff !important;
+        border: 2px solid #d1d5db !important;
+        color: #374151 !important;
         border-radius: 10px !important;
         transition: all 0.2s ease !important;
         font-weight: 700 !important;
@@ -643,6 +656,7 @@
     .qty-selector .qtplus:active {
         background: #10b981 !important;
         color: white !important;
+        border-color: #10b981 !important;
         transform: scale(0.95);
     }
 
@@ -652,10 +666,10 @@
         font-weight: 700 !important;
         padding: 12px 10px !important;
         text-align: center !important;
-        border: 2px solid #4b5563 !important;
+        border: 2px solid #d1d5db !important;
         border-radius: 10px !important;
-        background: #374151 !important;
-        color: #ffffff !important;
+        background: #ffffff !important;
+        color: #374151 !important;
         margin: 0 !important;
         flex-shrink: 0 !important;
     }
@@ -1029,15 +1043,26 @@
                       let startY = 0;
                       let initialDistance = 0;
                       let initialScale = 1;
+                      let isZooming = false;
 
                       // Prevent page scroll when touching the image
                       wrapper.style.touchAction = 'none';
                       document.body.style.overscrollBehavior = 'contain';
+                      
+                      // Lock body scroll during zoom
+                      function lockBodyScroll() {
+                          document.body.classList.add('zoom-active');
+                      }
+                      
+                      function unlockBodyScroll() {
+                          document.body.classList.remove('zoom-active');
+                      }
 
                       function updateTransform() {
                           mainImage.style.transform = `translate(${posX}px, ${posY}px) scale(${scale})`;
                           mainImage.style.transformOrigin = 'center center';
                           mainImage.style.transition = isDragging ? 'none' : 'transform 0.3s ease';
+                          mainImage.style.willChange = 'transform';
 
                           if (scale > 1) {
                               mainImage.classList.add('zoomed');
@@ -1068,6 +1093,8 @@
                               // Two finger pinch zoom
                               e.preventDefault();
                               e.stopPropagation();
+                              isZooming = true;
+                              lockBodyScroll();
                               initialDistance = Math.hypot(
                                   e.touches[0].pageX - e.touches[1].pageX,
                                   e.touches[0].pageY - e.touches[1].pageY
@@ -1078,6 +1105,7 @@
                               e.preventDefault();
                               e.stopPropagation();
                               isDragging = true;
+                              lockBodyScroll();
                               startX = e.touches[0].pageX - posX;
                               startY = e.touches[0].pageY - posY;
                           }
@@ -1108,10 +1136,20 @@
 
                       wrapper.addEventListener('touchend', (e) => {
                           isDragging = false;
+                          isZooming = false;
+                          
                           if (scale === 1) {
                               posX = 0;
                               posY = 0;
                               updateTransform();
+                              unlockBodyScroll();
+                          } else {
+                              // Keep body locked if still zoomed
+                              setTimeout(() => {
+                                  if (scale === 1) {
+                                      unlockBodyScroll();
+                                  }
+                              }, 100);
                           }
                       });
 
@@ -1126,6 +1164,7 @@
                               posX = 0;
                               posY = 0;
                               updateTransform();
+                              unlockBodyScroll();
                           }
                           lastTap = currentTime;
                       });
@@ -1142,6 +1181,7 @@
                                   posX = 0;
                                   posY = 0;
                                   updateTransform();
+                                  unlockBodyScroll();
                               }
                           });
                       });
