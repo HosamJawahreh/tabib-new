@@ -5,6 +5,35 @@
      html { scrollbar-gutter: stable both-edges; }
      html, body { overflow-x: hidden; overflow-y: scroll; scroll-behavior: auto; }
 
+   /* AGGRESSIVE STICKY HEADER - FORCE APPLY */
+   header.ecommerce-header,
+   .ecommerce-header,
+   header {
+       position: -webkit-sticky !important;
+       position: sticky !important;
+       top: 0 !important;
+       left: 0 !important;
+       right: 0 !important;
+       z-index: 9999 !important;
+       background: #ffffff !important;
+       background-color: #ffffff !important;
+       box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1) !important;
+       width: 100% !important;
+       will-change: transform !important;
+   }
+
+   /* Ensure body and parent containers allow sticky positioning */
+   body {
+       position: relative !important;
+       overflow-x: hidden !important;
+   }
+
+   #page_wrapper,
+   .page_wrapper {
+       overflow: visible !important;
+       position: relative !important;
+   }
+
    /* COMPLETE RTL Support for Arabic Language - FLIP ENTIRE LAYOUT */
    html[lang="ar"],
    html[lang="arabic"],
@@ -374,9 +403,10 @@
        }
 
        .main-nav-row {
-           height: 70px !important; /* Match header height */
-           min-height: 70px !important;
+           height: 80px !important;
+           min-height: 80px !important;
            display: flex !important;
+           align-items: center !important;
            flex-wrap: nowrap !important;
            width: 100% !important;
        }
@@ -387,12 +417,18 @@
            flex: 0 0 auto !important;
            width: auto !important;
            text-align: left !important;
+           display: flex !important;
+           align-items: center !important;
+           height: 100% !important;
        }
 
        .icons-col {
            order: 2 !important;
            flex: 1 1 auto !important;
            width: auto !important;
+           display: flex !important;
+           align-items: center !important;
+           height: 100% !important;
        }
 
        .language-col {
@@ -400,6 +436,15 @@
            flex: 0 0 auto !important;
            width: auto !important;
            text-align: right !important;
+           display: flex !important;
+           align-items: center !important;
+           height: 100% !important;
+       }
+
+       .phone-flag-col {
+           display: flex !important;
+           align-items: center !important;
+           height: 100% !important;
        }
 
        /* Logo - BIGGER on mobile (60px + 20% = 72px) */
@@ -411,25 +456,59 @@
            max-height: 72px !important;
        }
 
-       /* Logo column - align vertically */
-       .logo-col {
+       .logo-col .navbar,
+       .logo-col .navbar-brand {
            display: flex !important;
            align-items: center !important;
-           height: 70px !important;
+           height: 100% !important;
+           margin: 0 !important;
        }
 
-       /* Language column - align vertically */
-       .language-col {
+       .col-icons {
            display: flex !important;
            align-items: center !important;
-           height: 70px !important;
+           justify-content: center !important;
+           height: 100% !important;
+           gap: 10px !important;
+           padding: 0 !important;
        }
 
-       /* Icons column - align vertically */
-       .icons-col {
+       /* Force center alignment on mobile - override any desktop styles */
+       .icons-col .col-icons {
+           justify-content: center !important;
+       }
+
+       /* Ensure all header items are vertically centered with equal spacing */
+       .header-icon-enhanced,
+       .header-cart-1,
+       .mobile-search-icon {
            display: flex !important;
            align-items: center !important;
-           height: 70px !important;
+           justify-content: center !important;
+           margin: 0 !important;
+           padding: 0 !important;
+           position: relative !important;
+       }
+
+       .header-icon-enhanced a,
+       .header-cart-1 a,
+       .mobile-search-icon a,
+       .header-cart-1 .cart,
+       .mobile-search-icon > a {
+           display: flex !important;
+           align-items: center !important;
+           justify-content: center !important;
+           width: 100% !important;
+           height: 100% !important;
+           padding: 0 !important;
+           margin: 0 !important;
+       }
+
+       .language-flag-selector {
+           display: flex !important;
+           align-items: center !important;
+           justify-content: center !important;
+           margin: 0 !important;
        }
 
        /* PROFESSIONAL MOBILE MENU - Compact but readable */
@@ -452,14 +531,77 @@
        }
 
        .header-icon-enhanced {
-           padding: 4px !important;
-           min-width: 44px;
-           max-width: 44px;
-           height: 44px;
+           padding: 0 !important;
+           margin: 0 !important;
+           min-width: 48px !important;
+           max-width: 48px !important;
+           width: 48px !important;
+           min-height: 48px !important;
+           max-height: 48px !important;
+           height: 48px !important;
+           line-height: 48px !important;
+           display: flex !important;
+           align-items: center !important;
+           justify-content: center !important;
        }
 
        .header-icon-enhanced i {
-           font-size: 18px !important;
+           font-size: 20px !important;
+           line-height: 1 !important;
+           margin: 0 !important;
+       }
+
+       .header-cart-1 {
+           padding: 0 !important;
+           margin: 0 !important;
+           min-width: 48px !important;
+           max-width: 48px !important;
+           width: 48px !important;
+           min-height: 48px !important;
+           max-height: 48px !important;
+           height: 48px !important;
+           line-height: 48px !important;
+           display: flex !important;
+           align-items: center !important;
+           justify-content: center !important;
+       }
+
+       .header-cart-1 .cart-icon,
+       .header-cart-1 .cart {
+           padding: 0 !important;
+           margin: 0 !important;
+           display: flex !important;
+           align-items: center !important;
+           justify-content: center !important;
+       }
+
+       .header-cart-1 .cart-icon i {
+           font-size: 20px !important;
+           line-height: 1 !important;
+           margin: 0 !important;
+       }
+
+       .mobile-search-icon {
+           padding: 0 !important;
+           margin: 0 !important;
+           min-width: 48px !important;
+           max-width: 48px !important;
+           width: 48px !important;
+           min-height: 48px !important;
+           max-height: 48px !important;
+           height: 48px !important;
+           line-height: 48px !important;
+           display: flex !important;
+           align-items: center !important;
+           justify-content: center !important;
+       }
+
+       .mobile-search-icon .search-icon-wrapper,
+       .mobile-search-icon i {
+           margin: 0 !important;
+           padding: 0 !important;
+           font-size: 20px !important;
+           line-height: 1 !important;
        }
 
        .header-cart-count {
@@ -712,6 +854,106 @@
        box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1) !important;
    }
 
+   /* Flag-based Language Selector */
+   .language-flag-selector {
+       display: flex;
+       align-items: center;
+       justify-content: flex-end;
+       padding: 0 !important;
+   }
+
+   .language-flag-selector .flag-link {
+       display: inline-flex;
+       align-items: center;
+       justify-content: center;
+       padding: 0;
+       border-radius: 6px;
+       transition: all 0.3s ease;
+       background: transparent;
+       border: none;
+       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+   }
+
+   .language-flag-selector .flag-link:hover {
+       transform: scale(1.05);
+       box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+   }
+
+   .language-flag-selector .flag-icon {
+       width: 36px;
+       height: 27px;
+       object-fit: cover;
+       border-radius: 6px;
+       display: block;
+       border: 1px solid rgba(0, 0, 0, 0.08);
+   }
+
+   /* Desktop - Slightly larger but still compact */
+   @media (min-width: 992px) {
+       .language-flag-selector .flag-icon {
+           width: 40px;
+           height: 30px;
+           border-radius: 6px;
+       }
+   }
+
+   /* Mobile - Smaller flags */
+   @media (max-width: 991px) {
+       .language-flag-selector .flag-icon {
+           width: 32px;
+           height: 24px;
+           border-radius: 5px;
+       }
+   }
+
+   /* Phone and Flag Column - Far Right Positioning */
+   .phone-flag-col {
+       padding-right: 20px !important;
+       gap: 12px !important;
+   }
+
+   @media (max-width: 991px) {
+       .phone-flag-col {
+           padding-right: 10px !important;
+           gap: 8px !important;
+       }
+   }
+
+   /* Language and Phone Column - Desktop Layout */
+   .language-phone-col {
+       padding-left: 20px !important;
+   }
+   
+   @media (max-width: 991px) {
+       .language-phone-col {
+           order: 3 !important;
+           padding-left: 10px !important;
+       }
+   }
+   
+   /* Ensure proper alignment on desktop */
+   @media (min-width: 992px) {
+       .main-nav-row {
+           justify-content: space-between;
+       }
+       
+       .language-phone-col {
+           order: 1 !important;
+       }
+       
+       .logo-col {
+           order: 2 !important;
+       }
+       
+       .icons-col {
+           order: 3 !important;
+       }
+       
+       .col-icons {
+           justify-content: flex-end !important;
+       }
+   }
+
    /* Icon styling - compact and modern */
    .header-icon-enhanced {
        position: relative;
@@ -888,6 +1130,13 @@
        padding-top: 8px !important;
        padding-bottom: 8px !important;
        overflow: visible !important;
+       display: flex;
+       align-items: center;
+   }
+
+   .main-nav-row {
+       align-items: center !important;
+       width: 100%;
    }
 
    /* Prevent header from causing page scroll */
@@ -924,24 +1173,111 @@
        padding: 0 !important;
    }
 
-   /* Phone number styling */
+   /* Phone number styling - Compact, no border */
    .header-phone-link {
-       font-size: 16px !important;
+       font-size: 15px !important;
        font-weight: 600 !important;
        color: #4a5568 !important;
        text-decoration: none !important;
-       padding: 8px 15px !important;
-       border-radius: 8px !important;
-       border: 2px solid #e8ecef !important;
+       padding: 6px 12px !important;
+       border-radius: 6px !important;
+       border: none !important;
        transition: all 0.3s ease !important;
        display: inline-block !important;
+       background: transparent !important;
    }
    .header-phone-link:hover {
-       background-color: #7caa53 !important;
-       color: #fff !important;
-       border-color: #7caa53 !important;
-       transform: translateY(-2px);
-       box-shadow: 0 4px 8px rgba(124, 170, 83, 0.3);
+       background-color: #f0f8ea !important;
+       color: #7caa53 !important;
+       transform: translateY(-1px);
+   }
+
+   /* Right-aligned icons column - ensure items stay on the right */
+   .icons-col .col-icons {
+       display: flex;
+       align-items: center;
+       justify-content: center !important;
+       gap: 10px;
+       flex-wrap: nowrap;
+   }
+
+   /* Desktop layout - Logo far left, Icons center, Phone/Flag far right */
+   @media (min-width: 992px) {
+       .main-nav-row {
+           display: flex;
+           align-items: center;
+           justify-content: space-between;
+           flex-wrap: nowrap;
+       }
+
+       .logo-col {
+           order: 1;
+           flex: 0 0 auto;
+           padding-left: 20px !important;
+       }
+
+       .icons-col {
+           order: 2;
+           flex: 0 0 auto;
+           margin-left: auto;
+           margin-right: auto;
+       }
+
+       .icons-col .col-icons {
+           justify-content: center !important;
+           gap: 15px;
+       }
+
+       .phone-flag-col {
+           order: 3;
+           flex: 0 0 auto;
+           margin-left: auto !important;
+           padding-right: 20px !important;
+       }
+   }
+
+   /* Mobile layout - Vertically centered elements */
+   @media (max-width: 991px) {
+       .main-nav-row {
+           display: flex;
+           align-items: center !important;
+           justify-content: space-between;
+           min-height: 60px;
+       }
+
+       .logo-col {
+           display: flex;
+           align-items: center !important;
+       }
+
+       .logo-col .navbar {
+           display: flex;
+           align-items: center !important;
+       }
+
+       .icons-col {
+           display: flex;
+           align-items: center !important;
+       }
+
+       .icons-col .col-icons {
+           justify-content: flex-end !important;
+           align-items: center !important;
+       }
+
+       .phone-flag-col {
+           display: flex;
+           align-items: center !important;
+       }
+
+       /* Ensure all icon containers are vertically centered */
+       .header-icon-enhanced,
+       .header-cart-1,
+       .language-flag-selector {
+           display: flex;
+           align-items: center !important;
+           justify-content: center !important;
+       }
    }
 
    /* HIDE BURGER MENU COMPLETELY - All screen sizes */
@@ -1471,6 +1807,174 @@
        transform: translateY(0) !important;
    }
 
+   /* CRITICAL: Mobile Icon Centering - Updated 2026-01-17 - FORCE APPLY */
+   @media screen and (max-width: 991px) {
+       /* Force mobile header height */
+       .ecommerce-header,
+       header.ecommerce-header {
+           height: 80px !important;
+           min-height: 80px !important;
+       }
+
+       .main-nav-row {
+           height: 80px !important;
+           min-height: 80px !important;
+       }
+
+       /* FORCE CENTER ALIGNMENT FOR ICONS */
+       .icons-col,
+       div.icons-col,
+       .order-2.icons-col {
+           display: flex !important;
+           align-items: center !important;
+           justify-content: center !important;
+           height: 100% !important;
+       }
+
+       .col-icons,
+       .icons-col .col-icons,
+       div.col-icons {
+           display: flex !important;
+           align-items: center !important;
+           justify-content: center !important;
+           height: 100% !important;
+           gap: 12px !important;
+           padding: 0 !important;
+           margin: 0 !important;
+       }
+
+       /* FORCE EQUAL SIZING FOR ALL ICONS */
+       .header-icon-enhanced,
+       .header-cart-1,
+       .mobile-search-icon,
+       div.header-icon-enhanced,
+       div.header-cart-1,
+       div.mobile-search-icon {
+           width: 48px !important;
+           height: 48px !important;
+           min-width: 48px !important;
+           max-width: 48px !important;
+           min-height: 48px !important;
+           max-height: 48px !important;
+           padding: 0 !important;
+           margin: 0 !important;
+           display: flex !important;
+           align-items: center !important;
+           justify-content: center !important;
+           flex-shrink: 0 !important;
+       }
+
+       /* FORCE CENTER ALL NESTED ELEMENTS */
+       .header-icon-enhanced a,
+       .header-cart-1 a,
+       .header-cart-1 .cart,
+       .header-cart-1 .cart-icon,
+       .mobile-search-icon a,
+       .mobile-search-icon .search-icon-wrapper {
+           display: flex !important;
+           align-items: center !important;
+           justify-content: center !important;
+           width: 100% !important;
+           height: 100% !important;
+           padding: 0 !important;
+           margin: 0 !important;
+       }
+
+       /* FORCE ICON SIZES */
+       .header-icon-enhanced i,
+       .header-cart-1 i,
+       .header-cart-1 .cart-icon i,
+       .mobile-search-icon i,
+       .mobile-search-icon .search-icon-wrapper i {
+           font-size: 22px !important;
+           line-height: 1 !important;
+           margin: 0 !important;
+           padding: 0 !important;
+       }
+   }
+
+   /* FINAL OVERRIDE - STICKY HEADER FORCE */
+   header.ecommerce-header {
+       position: -webkit-sticky !important;
+       position: sticky !important;
+       top: 0px !important;
+       z-index: 9999 !important;
+       background-color: #fff !important;
+       box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1) !important;
+   }
+
+   /* Ensure parent containers don't prevent stickiness */
+   body, #page_wrapper, .main-wrapper {
+       overflow: visible !important;
+       position: relative !important;
+   }
+
+   /* Desktop sticky header */
+   @media (min-width: 992px) {
+       header.ecommerce-header,
+       .ecommerce-header {
+           position: -webkit-sticky !important;
+           position: sticky !important;
+           top: 0 !important;
+           z-index: 9999 !important;
+       }
+
+       /* DESKTOP: Make logo smaller - 100px instead of 150px */
+       img.nav-logo.header-logo-responsive,
+       .navbar-brand img.nav-logo,
+       .header-logo-responsive {
+           height: 100px !important;
+           max-height: 100px !important;
+           width: auto !important;
+       }
+
+       /* DESKTOP: Move language/phone to FAR RIGHT */
+       .main-nav-row {
+           display: flex !important;
+           justify-content: space-between !important;
+       }
+
+       .logo-col {
+           order: 1 !important;
+           flex: 0 0 auto !important;
+       }
+
+       .search-col {
+           order: 2 !important;
+           flex: 1 1 auto !important;
+       }
+
+       .icons-col {
+           order: 3 !important;
+           flex: 0 0 auto !important;
+       }
+
+       .language-phone-col,
+       .language-col {
+           order: 4 !important;
+           flex: 0 0 auto !important;
+           margin-left: auto !important;
+       }
+
+       .phone-flag-col {
+           display: flex !important;
+           align-items: center !important;
+           gap: 12px !important;
+           margin-left: auto !important;
+       }
+   }
+
+   /* Mobile sticky header */
+   @media (max-width: 991px) {
+       header.ecommerce-header,
+       .ecommerce-header {
+           position: -webkit-sticky !important;
+           position: sticky !important;
+           top: 0 !important;
+           z-index: 9999 !important;
+       }
+   }
+
    </style>
 
 
@@ -1481,7 +1985,9 @@ $pages = App\Models\Page::get();
 <div class="main-nav">
     <div class="container-fluid">
         <div class="row align-items-center main-nav-row">
-            <div class="col-lg-2 col-md-3 col-4 text-start logo-col">
+            
+            <!-- Logo Column - FAR LEFT -->
+            <div class="col-lg-2 col-md-3 col-4 order-1 text-start logo-col">
                 <nav class="navbar navbar-expand-lg nav-dark nav-primary-hover nav-line-active p-0">
                     <a class="navbar-brand" href="{{ route('front.index') }}">
                         <img class="nav-logo lazy header-logo-responsive" data-src="{{ asset('assets/images/'.$gs->logo) }}" src="{{ asset('assets/images/'.$gs->logo) }}" alt="Logo">
@@ -1543,24 +2049,8 @@ $pages = App\Models\Page::get();
                 </nav>
             </div>
 
-            <!-- Language Selector Column - Separate for mobile reordering -->
-            @php
-            $languges = App\Models\Language::all();
-            @endphp
-            <div class="col-auto order-1 language-col d-flex align-items-center">
-                <div class="header-icon-enhanced language-selector-modern">
-                    <select name="language" class="language selectors nice">
-                    @foreach($languges as $language)
-                    <option value="{{route('front.language',$language->id)}}" {{ Session::has('language') ? ( Session::get('language') == $language->id ? 'selected' : '' ) : ($languges->where('is_default','=',1)->first()->id == $language->id ? 'selected' : '') }}>
-                    {{$language->language}}
-                    </option>
-                    @endforeach
-                    </select>
-                </div>
-            </div>
-
-            <!-- Icons Column - Search, Cart, Account -->
-            <div class="col order-2 icons-col">
+            <!-- Icons Column - CENTER - Search, Cart, Account -->
+            <div class="col-auto order-2 icons-col">
                 <div class="d-flex align-items-center justify-content-center h-100 col-icons">
 
                     <!-- Mobile Search Icon -->
@@ -1595,13 +2085,39 @@ $pages = App\Models\Page::get();
                             </a>
                         @endif
                     </div>
+                </div>
+            </div>
 
-                    <!-- Support Number - Clickable Phone -->
-                    <div class="d-none d-lg-flex align-items-center ms-2">
-                        <a href="tel:{{$ps->phone}}" class="header-phone-link" style="font-size: 16px; font-weight: 600; color: #4a5568; text-decoration: none; padding: 8px 15px; border-radius: 8px; transition: all 0.3s ease; border: 2px solid #e8ecef;">
-                            {{$ps->phone}}
-                        </a>
-                    </div>
+            <!-- Spacer Column - Takes remaining space to push phone/flag right -->
+            <div class="col order-2 d-none d-lg-block"></div>
+
+            <!-- Phone & Flag Column - FAR RIGHT -->
+            @php
+            $languges = App\Models\Language::all();
+            $currentLang = Session::has('language') ? Session::get('language') : $languges->where('is_default','=',1)->first()->id;
+            $currentLangCode = $languges->where('id', $currentLang)->first()->language ?? 'English';
+            @endphp
+            <div class="col-auto order-3 d-flex align-items-center justify-content-end gap-2 phone-flag-col">
+                <!-- Phone Number - Desktop Only -->
+                <div class="d-none d-lg-block">
+                    <a href="tel:{{$ps->phone}}" class="header-phone-link">
+                        {{$ps->phone}}
+                    </a>
+                </div>
+
+                <!-- Language Flag Selector -->
+                <div class="language-flag-selector">
+                    @foreach($languges as $language)
+                        @if(($language->language == 'Arabic' || $language->language == 'العربية' || $language->language == 'ar') && ($currentLangCode != 'Arabic' && $currentLangCode != 'العربية' && $currentLangCode != 'ar'))
+                            <a href="{{route('front.language',$language->id)}}" class="flag-link" title="العربية">
+                                <img src="https://flagcdn.com/w40/jo.png" alt="Jordan Flag" class="flag-icon">
+                            </a>
+                        @elseif(($language->language == 'English' || $language->language == 'en') && ($currentLangCode == 'Arabic' || $currentLangCode == 'العربية' || $currentLangCode == 'ar'))
+                            <a href="{{route('front.language',$language->id)}}" class="flag-link" title="English">
+                                <img src="https://flagcdn.com/w40/gb.png" alt="UK Flag" class="flag-icon">
+                            </a>
+                        @endif
+                    @endforeach
                 </div>
             </div>
         </div>
@@ -1851,6 +2367,25 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+});
+
+// Language Flag Switcher - Ensure it works on desktop and mobile
+document.addEventListener('DOMContentLoaded', function() {
+    const flagLinks = document.querySelectorAll('.language-flag-selector .flag-link');
+    
+    flagLinks.forEach(function(link) {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const url = this.getAttribute('href');
+            
+            // Add a small loading indicator (optional)
+            this.style.opacity = '0.6';
+            this.style.pointerEvents = 'none';
+            
+            // Navigate to the language switch URL
+            window.location.href = url;
+        });
+    });
 });
 </script>
 

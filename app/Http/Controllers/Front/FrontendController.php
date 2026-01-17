@@ -169,16 +169,9 @@ class FrontendController extends FrontBaseController
         if ($request->has('category_id') && $request->category_id) {
             $categoryId = $request->category_id;
 
-            // Search in both pivot table AND old category columns (backward compatibility)
-            $query->where(function($q) use ($categoryId) {
-                // New multi-category system
-                $q->whereHas('categories', function($subQuery) use ($categoryId) {
-                    $subQuery->where('categories.id', $categoryId);
-                })
-                // OR old single-category columns for backward compatibility
-                ->orWhere('category_id', $categoryId)
-                ->orWhere('subcategory_id', $categoryId)
-                ->orWhere('childcategory_id', $categoryId);
+            // Use ONLY the new multi-category system (category_product pivot table)
+            $query->whereHas('categories', function($q) use ($categoryId) {
+                $q->where('categories.id', $categoryId);
             });
         }
 
@@ -186,14 +179,13 @@ class FrontendController extends FrontBaseController
         if ($request->has('subcategory_id') && $request->subcategory_id) {
             $subcategoryId = $request->subcategory_id;
 
-            $query->where(function($q) use ($subcategoryId) {
-                // New multi-category system
-                $q->whereHas('categories', function($subQuery) use ($subcategoryId) {
-                    $subQuery->where('categories.id', $subcategoryId);
-                })
-                // OR old columns for backward compatibility
-                ->orWhere('subcategory_id', $subcategoryId)
-                ->orWhere('childcategory_id', $subcategoryId);
+            // Products are linked directly to subcategory IDs in the category_product table
+            // The category_product table uses the subcategory ID as the category_id
+            $query->whereExists(function($q) use ($subcategoryId) {
+                $q->select(DB::raw(1))
+                  ->from('category_product')
+                  ->whereRaw('category_product.product_id = products.id')
+                  ->where('category_product.category_id', $subcategoryId);
             });
         }
 
@@ -201,13 +193,12 @@ class FrontendController extends FrontBaseController
         if ($request->has('childcategory_id') && $request->childcategory_id) {
             $childcategoryId = $request->childcategory_id;
 
-            $query->where(function($q) use ($childcategoryId) {
-                // New multi-category system
-                $q->whereHas('categories', function($subQuery) use ($childcategoryId) {
-                    $subQuery->where('categories.id', $childcategoryId);
-                })
-                // OR old column for backward compatibility
-                ->orWhere('childcategory_id', $childcategoryId);
+            // Products are linked directly to childcategory IDs in the category_product table
+            $query->whereExists(function($q) use ($childcategoryId) {
+                $q->select(DB::raw(1))
+                  ->from('category_product')
+                  ->whereRaw('category_product.product_id = products.id')
+                  ->where('category_product.category_id', $childcategoryId);
             });
         }
 

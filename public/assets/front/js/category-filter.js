@@ -295,6 +295,11 @@
                 // Update count display
                 updateProductCount(response.products_count, response.total_count);
 
+                // Reset pagination state for infinite scroll
+                if (window.resetPaginationState) {
+                    window.resetPaginationState(response.has_more);
+                }
+
                 // Smooth fade in
                 $productsGrid.fadeTo(300, 1);
 

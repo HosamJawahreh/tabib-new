@@ -1,0 +1,37 @@
+=== RESTORING SUBCATEGORY AND CHILDCATEGORY RELATIONSHIPS ===
+
+Step 1: Building product name mappings...
+  Current products: 5273
+  Backup products: 5361
+
+Step 2: Getting subcategory and childcategory IDs...
+  Subcategories: 31
+  Child categories: 13
+
+Step 3: Parsing and restoring relationships...
+  Found 7607 subcategory/childcategory relationships
+
+Step 4: Inserting relationships...
+
+=== RESTORATION COMPLETE ===
+
+Summary:
+  Total found: 7607
+  Successfully inserted: 0
+  Skipped (already exists/other): 7531
+  Product not found: 76
+  Category not found: 0
+  Subcategories updated: 0
+  Child categories updated: 0
+
+=== SAMPLE SUBCATEGORIES ===
+Subcategory 123 (سناكات): 566 products
+Subcategory 124 (رايس كيك /شوفان): 205 products
+Subcategory 125 (مشروبات): 170 products
+Subcategory 126 (متنوع): 149 products
+Subcategory 127 (مكملات): 799 products
+
+=== FINAL STATS ===
+Total category relationships: 15674
+
+Done!

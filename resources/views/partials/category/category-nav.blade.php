@@ -109,7 +109,7 @@
     .main-category-item {
         display: inline-flex;
         align-items: center;
-        gap: 6px;
+        gap: 0px;
         padding: 12px 24px;
         background: #f8f9fa;
         border: 2px solid #e0e0e0;
@@ -144,7 +144,7 @@
         display: inline-block;
         background: rgba(124, 170, 83, 0.2);
         color: #7caa53;
-        padding: 2px 8px;
+        padding: 0px 4px;
         border-radius: 12px;
         font-size: 11px;
         font-weight: 600;
@@ -208,7 +208,7 @@
     .subcategory-item {
         display: inline-flex;
         align-items: center;
-        gap: 5px;
+        gap: 0px;
         padding: 10px 20px;
         background: #fff;
         border: 2px solid #e0e0e0;
@@ -241,7 +241,7 @@
         display: inline-block;
         background: #e0e0e0;
         color: #555;
-        padding: 2px 6px;
+        padding: 0px 4px;
         border-radius: 10px;
         font-size: 10px;
         font-weight: 600;

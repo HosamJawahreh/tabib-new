@@ -1,0 +1,62 @@
+=== COMPREHENSIVE CATEGORY RESTORATION FROM LIVE DATABASE ===
+
+Step 1: Parsing live products backup to build SKU mapping...
+  Reading products.sql (this may take a moment)...
+  Found 1127 products with SKUs in backup
+
+Step 2: Building SKU to current product ID mapping...
+  Found 5344 products with SKUs in current database
+
+Step 3: Parsing category-product relationships from live backup...
+  Parsed 15950 category-product relationships
+
+Step 4: Mapping and inserting relationships...
+  Clearing existing category_product relationships...
+  Cleared.
+
+  Inserted 500 relationships...
+  Inserted 1000 relationships...
+  Inserted 1500 relationships...
+  Inserted 2000 relationships...
+  Inserted 2500 relationships...
+
+=== RESTORATION COMPLETE ===
+
+Summary:
+  Total relationships in backup: 15950
+  Successfully inserted: 2577
+  Already existed: 2
+  Skipped (category not found): 0
+  Skipped (product SKU not in backup): 12835
+  Skipped (product not in current DB): 536
+  Other errors: 0
+  Unique categories processed: 51
+
+=== FINAL DATABASE STATS ===
+Total products: 5344
+Products with categories: 955
+Products without categories: 4389
+
+=== SAMPLE CATEGORIES ===
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'field list' (SQL: select `id`, `name` from `product_categories` where `id` in (84, 85, 86, 88, 89, 170))
+
+  at vendor/laravel/framework/src/Illuminate/Database/Connection.php:712
+    708▕         // If an exception occurs when attempting to run a query, we'll format the error
+    709▕         // message to include the bindings with SQL, which will make this exception a
+    710▕         // lot more helpful to the developer instead of just the database's errors.
+    711▕         catch (Exception $e) {
+  ➜ 712▕             throw new QueryException(
+    713▕                 $query, $this->prepareBindings($bindings), $e
+    714▕             );
+    715▕         }
+    716▕     }
+
+  • A column was not found: You might have forgotten to run your migrations. You can run your migrations using `php artisan migrate`. 
+    https://laravel.com/docs/master/migrations#running-migrations
+
+      [2m+9 vendor frames [22m
+  10  restore-all-categories-from-live.php:204
+      Illuminate\Database\Query\Builder::get()

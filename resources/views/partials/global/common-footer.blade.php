@@ -4,12 +4,58 @@ $pages = App\Models\Page::get();
 @endphp
 
 <style>
-/* Professional One-Line Footer with Copyright */
+/* Professional One-Line Footer with Copyright - Sticky to Bottom */
 .professional-footer {
     background: #2d3748;
     color: #e2e8f0;
     padding: 20px 0;
     border-top: 3px solid #10b981;
+    margin-top: auto;
+    width: 100%;
+}
+
+/* Ensure body uses flexbox to push footer down */
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+#page_wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    flex: 1;
+}
+
+/* Ensure scroll to top button doesn't create spacing */
+.scroller {
+    position: fixed !important;
+    bottom: 20px !important;
+    right: 20px !important;
+    z-index: 9999 !important;
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #10b981;
+    border-radius: 50%;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+    transition: all 0.3s ease;
+}
+
+.scroller:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 16px rgba(16, 185, 129, 0.6);
 }
 
 .footer-content {

@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Helpers;
 
@@ -13,6 +13,12 @@ class PriceHelper
         $gs = cache()->remember('generalsettings', now()->addDay(), function () {
             return DB::table('generalsettings')->first();
         });
+
+        // Handle null or non-numeric values
+        if ($price === null || !is_numeric($price)) {
+            $price = 0;
+        }
+
         if(is_numeric( $price ) && floor( $price ) != $price){
            return number_format($price, 2, $gs->decimal_separator, $gs->thousand_separator);
         }else{
@@ -24,6 +30,12 @@ class PriceHelper
         $gs = cache()->remember('generalsettings', now()->addDay(), function () {
             return DB::table('generalsettings')->first();
         });
+
+        // Handle null or non-numeric values
+        if ($price === null || !is_numeric($price)) {
+            $price = 0;
+        }
+
         $new_price = 0;
         if(is_numeric( $price ) && floor( $price ) != $price){
             $new_price = number_format($price, 2, $gs->decimal_separator, $gs->thousand_separator);
@@ -56,15 +68,21 @@ class PriceHelper
         $gs = cache()->remember('generalsettings', now()->addDay(), function () {
             return DB::table('generalsettings')->first();
         });
+
+        // Handle null or non-numeric values
+        if ($price === null || !is_numeric($price)) {
+            $price = 0;
+        }
+
         $new_price = 0;
         if(is_numeric( $price ) && floor( $price ) != $price){
             $new_price = number_format($price, 2, $gs->decimal_separator, $gs->thousand_separator);
         }else{
             $new_price = number_format($price, 0, $gs->decimal_separator, $gs->thousand_separator);
         }
- 
+
         $curr = Currency::where('is_default','=',1)->first();
-  
+
 
         if($gs->currency_format == 0){
             return $curr->sign.$new_price;
@@ -79,13 +97,19 @@ class PriceHelper
         $gs = cache()->remember('generalsettings', now()->addDay(), function () {
             return DB::table('generalsettings')->first();
         });
+
+        // Handle null or non-numeric values
+        if ($price === null || !is_numeric($price)) {
+            $price = 0;
+        }
+
         $new_price = 0;
         if(is_numeric($price) && floor( $price ) != $price){
             $new_price = number_format($price, 2, $gs->decimal_separator, $gs->thousand_separator);
         }else{
             $new_price = number_format($price, 0, $gs->decimal_separator, $gs->thousand_separator);
         }
- 
+
         if($gs->currency_format == 0){
             return $currency.$new_price;
         }
@@ -97,7 +121,7 @@ class PriceHelper
 
     public static function ImageCreateName($image)
     {
-        $name = time() . preg_replace('/[^A-Za-z0-9\-]/', '', $image->getClientOriginalName()). '.'.$image->getClientOriginalExtension(); 
+        $name = time() . preg_replace('/[^A-Za-z0-9\-]/', '', $image->getClientOriginalName()). '.'.$image->getClientOriginalExtension();
         return $name;
     }
 

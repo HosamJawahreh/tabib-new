@@ -653,6 +653,19 @@
         let currentPage = 2;
         let hasMorePages = {{ $products->hasMorePages() ? 'true' : 'false' }};
 
+        // Reset pagination state when category filter changes
+        window.resetPaginationState = function(newHasMorePages) {
+            currentPage = 2; // Reset to page 2 (page 1 is already loaded)
+            hasMorePages = newHasMorePages !== undefined ? newHasMorePages : true;
+            isLoading = false;
+
+            // Hide end message and errors
+            productsEndMessage.addClass('d-none').hide();
+            productsError.addClass('d-none').hide();
+
+            console.log('🔄 Pagination state reset:', { currentPage, hasMorePages });
+        };
+
         // Verify elements exist
         const productsGrid = $('#products-grid');
         const productsLoading = $('#products-loading');
@@ -702,12 +715,41 @@
             isLoading = true;
             productsLoading.removeClass('d-none').show();
 
-            console.log('� Sending AJAX request for page:', currentPage);
+            // Get current filter state from CategoryFilter
+            const filterState = window.CategoryFilter ? window.CategoryFilter.getState() : {};
+            const hasActiveFilters = filterState.currentCategory || filterState.currentSubcategory || filterState.currentChildcategory;
+
+            // Build request data
+            const requestData = {
+                page: currentPage
+            };
+
+            // Add filter parameters if active
+            if (hasActiveFilters) {
+                if (filterState.currentCategory && filterState.currentCategory !== 'all') {
+                    requestData.category_id = filterState.currentCategory;
+                }
+                if (filterState.currentSubcategory && filterState.currentSubcategory !== 'all') {
+                    requestData.subcategory_id = filterState.currentSubcategory;
+                }
+                if (filterState.currentChildcategory && filterState.currentChildcategory !== 'all') {
+                    requestData.childcategory_id = filterState.currentChildcategory;
+                }
+            }
+
+            // Use filter endpoint if filters are active, otherwise use load endpoint
+            const url = hasActiveFilters ? '{{ route("front.products.filter") }}' : '{{ route("front.products.load") }}';
+
+            console.log('📡 Sending AJAX request:', {
+                url: url,
+                page: currentPage,
+                filters: requestData
+            });
 
             $.ajax({
-                url: '{{ route("front.products.load") }}',
+                url: url,
                 method: 'GET',
-                data: { page: currentPage },
+                data: requestData,
                 dataType: 'json',
                 headers: {
                     'X-Requested-With': 'XMLHttpRequest'
@@ -737,8 +779,15 @@
                             productsEndMessage.removeClass('d-none').show();
                             console.log('🏁 Reached end of products');
                         }
+
+                        // Initialize lazy loading if available
+                        if (typeof lazy === 'function') {
+                            lazy();
+                        }
                     } else {
                         console.warn('⚠️ Empty HTML response');
+                        hasMorePages = false;
+                        productsEndMessage.removeClass('d-none').show();
                     }
 
                     productsLoading.addClass('d-none').hide();

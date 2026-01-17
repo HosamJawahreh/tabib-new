@@ -81,10 +81,14 @@ class CatalogController extends FrontBaseController
       });
     })
       ->when($subcat, function ($query, $subcat) {
-        // Use whereHas to query the many-to-many relationship
-        return $query->whereHas('categories', function($q) use ($subcat) {
-          $q->where('categories.id', $subcat->id);
-        });
+        // Get the parent category of this subcategory
+        if ($subcat->category_id) {
+          return $query->whereHas('categories', function($q) use ($subcat) {
+            $q->where('categories.id', $subcat->category_id);
+          });
+        }
+        // Fallback: no results if no parent category
+        return $query->whereRaw('0=1');
       })
       ->when($type, function ($query, $type) {
         return $query->with('user')->whereStatus(1)->whereIsDiscount(1)
@@ -94,10 +98,15 @@ class CatalogController extends FrontBaseController
           });
       })
       ->when($childcat, function ($query, $childcat) {
-        // Use whereHas to query the many-to-many relationship
-        return $query->whereHas('categories', function($q) use ($childcat) {
-          $q->where('categories.id', $childcat->id);
-        });
+        // Get the parent category through subcategory
+        $subcat = Subcategory::find($childcat->subcategory_id);
+        if ($subcat && $subcat->category_id) {
+          return $query->whereHas('categories', function($q) use ($subcat) {
+            $q->where('categories.id', $subcat->category_id);
+          });
+        }
+        // Fallback: no results if no parent category
+        return $query->whereRaw('0=1');
       })
       ->when($search, function ($query, $search) {
         return $query->where('name', 'like', '%' . $search . '%')->orWhere('name', 'like', $search . '%');
@@ -185,12 +194,15 @@ class CatalogController extends FrontBaseController
       }
     });
 
-    $prods = $prods->where('status', 1)->get()
+    // First paginate, then map the price calculation
+    $prods = $prods->where('status', 1)->paginate(isset($pageby) ? $pageby : $this->gs->page_count);
 
-      ->map(function ($item) {
+    // Apply price mapping to paginated items
+    $prods->getCollection()->transform(function ($item) {
         $item->price = $item->vendorSizePrice();
         return $item;
-      })->paginate(isset($pageby) ? $pageby : $this->gs->page_count);
+    });
+
     $data['prods'] = $prods;
 
     // Add footer blogs for footer section

@@ -17,7 +17,19 @@ class Childcategory extends Model
 
     public function products()
     {
-        return $this->hasMany('App\Models\Product');
+        // Use the multi-category system by finding the corresponding main category
+        // Childcategories are now mapped as main categories in the categories table
+        $mainCategory = \App\Models\Category::where('name', $this->name)
+            ->where('status', 1)
+            ->first();
+
+        if ($mainCategory) {
+            // Return products through the category_product pivot table
+            return $mainCategory->products();
+        }
+
+        // Fallback to empty relationship if no mapping found
+        return $this->hasMany('App\Models\Product')->whereRaw('0=1');
     }
 
 

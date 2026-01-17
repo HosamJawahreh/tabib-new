@@ -7,8 +7,9 @@
          <div class="product-wrapper">
             <div class="product-image">
                <a href="{{ route('front.product', $product->slug) }}" class="woocommerce-LoopProduct-link"><img class="lazy" data-src="{{ $product->photo ? asset('assets/images/products/'.$product->photo):asset('assets/images/noimage.png') }}" alt="Product Image"></a>
-               @if (round($product->offPercentage() )>0)
-                    <div class="on-sale">- {{ round($product->offPercentage() )}}%</div>
+               @php $offPct = $product->offPercentage(); $offPct = is_numeric($offPct) ? round((float)$offPct) : 0; @endphp
+               @if ($offPct > 0)
+                    <div class="on-sale">- {{ $offPct }}%</div>
                @endif
                <div class="hover-area">
                   @if($product->product_type == "affiliate")
@@ -79,8 +80,9 @@
          <div class="product-wrapper">
             <div class="product-image">
                <a href="{{ route('front.product', $product->slug) }}" class="woocommerce-LoopProduct-link"><img class="lazy" data-src="{{ $product->photo ? asset('assets/images/products/'.$product->photo):asset('assets/images/noimage.png') }}" alt="Product Image"></a>
-               @if (round($product->offPercentage() )>0)
-               <div class="on-sale">- {{ round($product->offPercentage() )}}%</div>
+               @php $offPct = $product->offPercentage(); $offPct = is_numeric($offPct) ? round((float)$offPct) : 0; @endphp
+               @if ($offPct > 0)
+               <div class="on-sale">- {{ $offPct }}%</div>
                @endif
                <div class="hover-area">
                 @if($product->product_type == "affiliate")
@@ -154,8 +156,9 @@
          <div class="product-wrapper">
             <div class="product-image">
                <a href="{{ route('front.product', $product->slug) }}" class="woocommerce-LoopProduct-link"><img class="lazy" data-src="{{ $product->photo ? asset('assets/images/products/'.$product->photo):asset('assets/images/noimage.png') }}" alt="Product Image"></a>
-               @if (round($product->offPercentage() )>0)
-                    <div class="on-sale">- {{ round($product->offPercentage() )}}%</div>
+               @php $offPct = $product->offPercentage(); $offPct = is_numeric($offPct) ? round((float)$offPct) : 0; @endphp
+               @if ($offPct > 0)
+                    <div class="on-sale">- {{ $offPct }}%</div>
                @endif
                <div class="hover-area">
                   @if($product->product_type == "affiliate")
