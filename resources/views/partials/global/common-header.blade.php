@@ -1020,76 +1020,355 @@
        .header-cart-1 .cart-popup,
        .has-cart-data .cart-popup,
        .cart-popup {
-           top: 58px !important; /* Minimal gap for mobile */
+           position: fixed !important;
+           top: 60px !important; /* Just below header */
            width: 320px !important;
            max-width: 90vw !important;
            left: 50% !important;
            right: auto !important;
            margin-left: -160px !important; /* Half of 320px width */
+           display: none !important; /* Hidden by default on mobile */
+           opacity: 0 !important;
+           visibility: hidden !important;
+           transition: opacity 0.3s ease, visibility 0.3s ease !important;
+           z-index: 9999 !important;
        }
        
-       /* Mobile bridge area */
+       /* Remove hover effect on mobile - use click instead */
+       .header-cart-1:hover .cart-popup {
+           display: none !important; /* Disable hover on mobile */
+       }
+       
+       /* No bridge needed on mobile - using click */
        .header-cart-1::after,
        .has-cart-data::after {
-           bottom: -8px !important;
-           height: 8px !important;
+           display: none !important;
        }
        
-       /* Professional mobile search styling */
-       .search-col {
-           padding: 8px 10px !important;
-           order: 3 !important;
-       }
-       
-       .product-search-one {
-           margin: 0 !important;
-       }
-       
-       .search-form.enhanced-search-form {
-           display: flex !important;
-           align-items: center !important;
-           width: 100% !important;
-           margin: 0 !important;
-           background: #f8f9fa !important;
-           border-radius: 25px !important;
-           overflow: hidden !important;
-           box-shadow: 0 2px 6px rgba(0,0,0,0.08) !important;
-       }
-       
-       .search-field {
-           flex: 1 !important;
-           border: none !important;
-           background: transparent !important;
-           padding: 10px 15px !important;
-           font-size: 14px !important;
-           outline: none !important;
-           height: 38px !important;
-       }
-       
-       .search-submit {
-           background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
-           border: none !important;
-           padding: 10px 18px !important;
+       /* Make cart icon clearly tappable */
+       .header-cart-1 {
            cursor: pointer !important;
-           display: flex !important;
-           align-items: center !important;
-           justify-content: center !important;
-           min-width: 45px !important;
-           height: 38px !important;
-           transition: all 0.3s ease !important;
+           -webkit-tap-highlight-color: rgba(16, 185, 129, 0.2) !important;
        }
        
-       .search-submit:hover {
-           background: linear-gradient(135deg, #764ba2 0%, #667eea 100%) !important;
+       /* Hide desktop search bar on mobile */
+       .search-col {
+           display: none !important;
        }
        
-       .search-submit i {
-           font-size: 16px !important;
+       /* Mobile Search Icon Styling */
+       .mobile-search-icon {
+           padding: 8px !important;
+           margin-right: 5px;
+       }
+       
+       .mobile-search-icon .search-icon-wrapper {
+           width: 40px;
+           height: 40px;
+           display: flex;
+           align-items: center;
+           justify-content: center;
+           background: #10b981;
+           border-radius: 50%;
+           transition: all 0.3s ease;
+       }
+       
+       .mobile-search-icon .search-icon-wrapper i {
            color: #fff !important;
+           font-size: 18px !important;
+       }
+       
+       .mobile-search-icon a:hover .search-icon-wrapper {
+           transform: scale(1.1);
+           box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
        }
    }
-
-   /* RTL Support - Still centered */
+   
+   /* Mobile Search Overlay - Professional Fullscreen Design */
+   .mobile-search-overlay {
+       position: fixed;
+       top: 0;
+       left: 0;
+       width: 100%;
+       height: 100%;
+       background: rgba(0, 0, 0, 0.95);
+       z-index: 99999;
+       display: none;
+       opacity: 0;
+       transition: opacity 0.3s ease;
+   }
+   
+   .mobile-search-overlay.active {
+       display: block;
+       opacity: 1;
+   }
+   
+   .mobile-search-container {
+       width: 100%;
+       height: 100%;
+       display: flex;
+       flex-direction: column;
+       background: #fff;
+       animation: slideInFromTop 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+   }
+   
+   @keyframes slideInFromTop {
+       from {
+           transform: translateY(-100%);
+       }
+       to {
+           transform: translateY(0);
+       }
+   }
+   
+   .mobile-search-header {
+       padding: 20px;
+       background: #1a1a1a;
+       color: #fff;
+       display: flex;
+       align-items: center;
+       justify-content: space-between;
+       box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+   }
+   
+   .mobile-search-title {
+       margin: 0;
+       font-size: 20px;
+       font-weight: 600;
+       flex: 1;
+       text-align: center;
+       color: #fff;
+   }
+   
+   .mobile-search-close {
+       background: rgba(255, 255, 255, 0.15);
+       border: none;
+       width: 40px;
+       height: 40px;
+       border-radius: 50%;
+       color: #fff;
+       font-size: 20px;
+       cursor: pointer;
+       display: flex;
+       align-items: center;
+       justify-content: center;
+       transition: all 0.3s ease;
+   }
+   
+   .mobile-search-close:hover {
+       background: rgba(255, 255, 255, 0.25);
+       transform: rotate(90deg);
+   }
+   
+   .mobile-search-body {
+       flex: 1;
+       padding: 20px;
+       overflow-y: auto;
+       background: #fff;
+   }
+   
+   .mobile-search-form {
+       margin-bottom: 20px;
+   }
+   
+   .mobile-search-input-wrapper {
+       position: relative;
+       display: flex;
+       align-items: center;
+       background: #fff;
+       border: 2px solid #e5e7eb;
+       border-radius: 50px;
+       box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+       padding: 5px;
+       transition: all 0.3s ease;
+   }
+   
+   .mobile-search-input-wrapper:focus-within {
+       border-color: #10b981;
+       box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+       transform: translateY(-2px);
+   }
+   
+   .mobile-search-icon-input {
+       color: #10b981;
+       font-size: 20px;
+       padding: 0 15px;
+   }
+   
+   .mobile-search-input {
+       flex: 1;
+       border: none;
+       outline: none;
+       font-size: 16px;
+       padding: 15px 10px;
+       background: transparent;
+       color: #1a1a1a;
+   }
+   
+   .mobile-search-input::placeholder {
+       color: #9ca3af;
+   }
+   
+   .mobile-search-submit {
+       background: #10b981;
+       border: none;
+       width: 50px;
+       height: 50px;
+       border-radius: 50%;
+       color: #fff;
+       font-size: 18px;
+       cursor: pointer;
+       display: flex;
+       align-items: center;
+       justify-content: center;
+       transition: all 0.3s ease;
+       box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+   }
+   
+   .mobile-search-submit:hover {
+       background: #059669;
+       transform: scale(1.05);
+       box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+   }
+   
+   .mobile-search-suggestions {
+       background: #fff;
+       border-radius: 12px;
+       padding: 0;
+       box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+       max-height: calc(100vh - 250px);
+       overflow-y: auto;
+       display: none;
+   }
+   
+   .mobile-search-suggestions.active {
+       display: block;
+   }
+   
+   .mobile-search-result-item {
+       display: flex;
+       align-items: center;
+       padding: 12px 15px;
+       border-bottom: 1px solid #f3f4f6;
+       cursor: pointer;
+       transition: all 0.2s ease;
+       text-decoration: none;
+       color: inherit;
+   }
+   
+   .mobile-search-result-item:last-child {
+       border-bottom: none;
+   }
+   
+   .mobile-search-result-item:hover {
+       background: #f9fafb;
+       padding-left: 20px;
+   }
+   
+   .mobile-search-result-image {
+       width: 60px;
+       height: 60px;
+       object-fit: cover;
+       border-radius: 8px;
+       margin-right: 12px;
+       background: #f3f4f6;
+   }
+   
+   .mobile-search-result-info {
+       flex: 1;
+   }
+   
+   .mobile-search-result-name {
+       font-size: 14px;
+       font-weight: 600;
+       color: #1a1a1a;
+       margin: 0 0 4px 0;
+       display: -webkit-box;
+       -webkit-line-clamp: 2;
+       -webkit-box-orient: vertical;
+       overflow: hidden;
+   }
+   
+   .mobile-search-result-price {
+       font-size: 16px;
+       font-weight: 700;
+       color: #10b981;
+       margin: 0;
+   }
+   
+   .mobile-search-no-results {
+       padding: 40px 20px;
+       text-align: center;
+       color: #9ca3af;
+   }
+   
+   .mobile-search-no-results i {
+       font-size: 48px;
+       margin-bottom: 12px;
+       opacity: 0.5;
+   }
+   
+   .mobile-search-no-results p {
+       margin: 0;
+       font-size: 16px;
+   }
+   
+   .mobile-search-loading {
+       padding: 40px 20px;
+       text-align: center;
+       color: #10b981;
+   }
+   
+   .mobile-search-loading i {
+       font-size: 32px;
+       animation: spin 1s linear infinite;
+   }
+   
+   @keyframes spin {
+       from { transform: rotate(0deg); }
+       to { transform: rotate(360deg); }
+   }
+   
+   .mobile-search-view-all {
+       display: block;
+       text-align: center;
+       padding: 15px;
+       background: #10b981;
+       color: #fff;
+       text-decoration: none;
+       font-weight: 600;
+       border-radius: 0 0 12px 12px;
+       transition: all 0.3s ease;
+   }
+   
+   .mobile-search-view-all:hover {
+       background: #059669;
+       color: #fff;
+   }
+   
+   /* RTL Support for search results */
+   [dir="rtl"] .mobile-search-result-image {
+       margin-right: 0;
+       margin-left: 12px;
+   }
+   
+   [dir="rtl"] .mobile-search-result-item:hover {
+       padding-left: 15px;
+       padding-right: 20px;
+   }
+   
+   /* RTL Support for Mobile Search */
+   [dir="rtl"] .mobile-search-header {
+       flex-direction: row-reverse;
+   }
+   
+   [dir="rtl"] .mobile-search-input-wrapper {
+       flex-direction: row-reverse;
+   }
+   
+   [dir="rtl"] .mobile-search-icon-input {
+       padding: 0 10px 0 15px;
+   }   /* RTL Support - Still centered */
    [dir="rtl"] .header-cart-1 .cart-popup,
    [dir="rtl"] .has-cart-data .cart-popup,
    [dir="rtl"] .cart-popup {
@@ -1175,31 +1454,7 @@ $pages = App\Models\Page::get();
                     </div>
                 </nav>
             </div>
-            <div class="col-lg-7 col-md-6 col-12 d-block order-md-2 order-3 search-col">
-                <div class="d-flex align-items-center justify-content-center h-100">
-                    <div class="product-search-one w-100 global-search touch-screen-view">
-                        <form id="searchForm" class="search-form form-inline enhanced-search-form" action="{{ route('front.category', [Request::route('category'),Request::route('subcategory'),Request::route('childcategory')]) }}" method="GET">
-
-                            @if (!empty(request()->input('sort')))
-                            <input type="hidden" name="sort" value="{{ request()->input('sort') }}">
-                            @endif
-                            @if (!empty(request()->input('minprice')))
-                            <input type="hidden" name="minprice" value="{{ request()->input('minprice') }}">
-                            @endif
-                            @if (!empty(request()->input('maxprice')))
-                            <input type="hidden" name="maxprice" value="{{ request()->input('maxprice') }}">
-                            @endif
-                            <input type="text" id="prod_name" class="col form-control search-field" name="search" placeholder="@if(app()->getLocale() == 'ar' || app()->getLocale() == 'arabic')ابحث عن المنتجات...@else{{ __('Search products...') }}@endif" value="{{ request()->input('search') }}" dir="auto" style="text-align: start;">
-                            <button type="submit" name="submit" class="search-submit"><i class="flaticon-search flat-mini text-white"></i></button>
-
-                        </form>
-                    </div>
-                    <div class="autocomplete">
-                        <div id="myInputautocomplete-list" class="autocomplete-items"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-3 col-8 order-md-3 order-2 icons-col">
+            <div class="col-lg-10 col-md-9 col-8 order-md-3 order-2 icons-col">
                 <div class="d-flex align-items-center justify-content-end h-100 col-icons">
 
                     <!-- Mobile Search Icon -->
@@ -1263,6 +1518,52 @@ $pages = App\Models\Page::get();
         </div>
     </div>
 </div>
+
+<!-- Mobile Search Overlay - Fullscreen Professional Design -->
+<div class="mobile-search-overlay" id="mobileSearchOverlay">
+    <div class="mobile-search-container">
+        <div class="mobile-search-header">
+            <button class="mobile-search-close" id="mobileSearchClose">
+                <i class="fas fa-times"></i>
+            </button>
+            <h4 class="mobile-search-title">{{ __('Search Products') }}</h4>
+        </div>
+        <div class="mobile-search-body">
+            <form id="mobileSearchForm" class="mobile-search-form" action="{{ route('front.category') }}" method="GET">
+                @if (!empty(request()->input('sort')))
+                <input type="hidden" name="sort" value="{{ request()->input('sort') }}">
+                @endif
+                @if (!empty(request()->input('minprice')))
+                <input type="hidden" name="minprice" value="{{ request()->input('minprice') }}">
+                @endif
+                @if (!empty(request()->input('maxprice')))
+                <input type="hidden" name="maxprice" value="{{ request()->input('maxprice') }}">
+                @endif
+                <div class="mobile-search-input-wrapper">
+                    <i class="flaticon-search mobile-search-icon-input"></i>
+                    <input 
+                        type="text" 
+                        id="mobile_prod_name" 
+                        class="mobile-search-input" 
+                        name="search" 
+                        placeholder="@if(app()->getLocale() == 'ar' || app()->getLocale() == 'arabic')ابحث عن المنتجات...@else{{ __('Search for products...') }}@endif" 
+                        value="{{ request()->input('search') }}" 
+                        dir="auto"
+                        autocomplete="off"
+                        required
+                    >
+                    <button type="submit" class="mobile-search-submit">
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </form>
+            <div class="mobile-search-suggestions" id="mobileSearchSuggestions">
+                <!-- Auto-complete suggestions will appear here -->
+            </div>
+        </div>
+    </div>
+</div>
+
 </header>
 <!--==================== Header Section End ====================-->
 
@@ -1305,6 +1606,210 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         console.log('✅ LTR MODE - Language:', htmlLang);
+    }
+    
+    // Mobile Search Overlay - Professional Implementation
+    const mobileSearchToggle = document.getElementById('mobileSearchToggle');
+    const mobileSearchOverlay = document.getElementById('mobileSearchOverlay');
+    const mobileSearchClose = document.getElementById('mobileSearchClose');
+    const mobileSearchInput = document.getElementById('mobile_prod_name');
+    
+    if (mobileSearchToggle && mobileSearchOverlay) {
+        // Open mobile search
+        mobileSearchToggle.addEventListener('click', function(e) {
+            e.preventDefault();
+            mobileSearchOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            
+            // Focus on input after animation
+            setTimeout(function() {
+                if (mobileSearchInput) {
+                    mobileSearchInput.focus();
+                }
+            }, 400);
+        });
+        
+        // Close mobile search
+        if (mobileSearchClose) {
+            mobileSearchClose.addEventListener('click', function() {
+                mobileSearchOverlay.classList.remove('active');
+                document.body.style.overflow = '';
+            });
+        }
+        
+        // Close on overlay background click
+        mobileSearchOverlay.addEventListener('click', function(e) {
+            if (e.target === mobileSearchOverlay) {
+                mobileSearchOverlay.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
+        
+        // Close on ESC key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && mobileSearchOverlay.classList.contains('active')) {
+                mobileSearchOverlay.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
+        
+        // AJAX Live Search Implementation
+        if (mobileSearchInput) {
+            let searchTimeout;
+            const suggestionsContainer = document.getElementById('mobileSearchSuggestions');
+            
+            mobileSearchInput.addEventListener('input', function() {
+                const query = this.value.trim();
+                
+                // Clear previous timeout
+                clearTimeout(searchTimeout);
+                
+                // Clear results if query is too short
+                if (query.length < 2) {
+                    suggestionsContainer.innerHTML = '';
+                    suggestionsContainer.classList.remove('active');
+                    return;
+                }
+                
+                // Show loading state
+                suggestionsContainer.innerHTML = `
+                    <div class="mobile-search-loading">
+                        <i class="fas fa-spinner"></i>
+                        <p>${query.length >= 2 ? '{{ __("Searching...") }}' : ''}</p>
+                    </div>
+                `;
+                suggestionsContainer.classList.add('active');
+                
+                // Debounce search - wait 500ms after user stops typing
+                searchTimeout = setTimeout(function() {
+                    performSearch(query);
+                }, 500);
+            });
+            
+            function performSearch(query) {
+                fetch(`{{ route('front.category') }}?search=${encodeURIComponent(query)}&ajax=1`, {
+                    method: 'GET',
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'Accept': 'application/json'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    displayResults(data, query);
+                })
+                .catch(error => {
+                    console.error('Search error:', error);
+                    suggestionsContainer.innerHTML = `
+                        <div class="mobile-search-no-results">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <p>{{ __("Error loading results. Please try again.") }}</p>
+                        </div>
+                    `;
+                });
+            }
+            
+            function displayResults(data, query) {
+                if (!data.products || data.products.length === 0) {
+                    suggestionsContainer.innerHTML = `
+                        <div class="mobile-search-no-results">
+                            <i class="fas fa-search"></i>
+                            <p>{{ __("No products found for") }} "<strong>${query}</strong>"</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                let html = '';
+                data.products.forEach(product => {
+                    const imageUrl = product.photo ? `{{ asset('assets/images/products/') }}/${product.photo}` : `{{ asset('assets/images/noimage.png') }}`;
+                    const productUrl = `{{ url('/item') }}/${product.slug}`;
+                    
+                    html += `
+                        <a href="${productUrl}" class="mobile-search-result-item">
+                            <img src="${imageUrl}" alt="${product.name}" class="mobile-search-result-image">
+                            <div class="mobile-search-result-info">
+                                <h6 class="mobile-search-result-name">${product.name}</h6>
+                                <p class="mobile-search-result-price">${product.price}</p>
+                            </div>
+                        </a>
+                    `;
+                });
+                
+                // Add "View All Results" button if there are more products
+                if (data.total > data.products.length) {
+                    html += `
+                        <a href="{{ route('front.category') }}?search=${encodeURIComponent(query)}" class="mobile-search-view-all">
+                            {{ __("View All") }} ${data.total} {{ __("Results") }}
+                        </a>
+                    `;
+                }
+                
+                suggestionsContainer.innerHTML = html;
+            }
+            
+            // Submit form on enter or button click
+            const searchForm = document.getElementById('mobileSearchForm');
+            if (searchForm) {
+                searchForm.addEventListener('submit', function(e) {
+                    const query = mobileSearchInput.value.trim();
+                    if (query.length < 2) {
+                        e.preventDefault();
+                        alert('{{ __("Please enter at least 2 characters to search") }}');
+                    }
+                });
+            }
+        }
+    }
+    
+    // Mobile Cart - Touch-Friendly Implementation (Click to Toggle, No Auto-Close)
+    if (window.innerWidth <= 767) {
+        const cartIcon = document.querySelector('.header-cart-1');
+        const cartPopup = document.querySelector('.cart-popup');
+        
+        if (cartIcon && cartPopup) {
+            let cartOpen = false;
+            
+            // Click anywhere on cart icon to toggle
+            cartIcon.addEventListener('click', function(e) {
+                // If clicking on a link inside cart popup, let it work
+                if (e.target.closest('.cart-popup')) {
+                    return;
+                }
+                
+                e.preventDefault();
+                e.stopPropagation();
+                
+                // Toggle cart
+                cartOpen = !cartOpen;
+                
+                if (cartOpen) {
+                    cartPopup.style.display = 'block !important';
+                    cartPopup.style.opacity = '1';
+                    cartPopup.style.visibility = 'visible';
+                    cartPopup.style.pointerEvents = 'auto';
+                } else {
+                    cartPopup.style.display = 'none !important';
+                    cartPopup.style.opacity = '0';
+                    cartPopup.style.visibility = 'hidden';
+                    cartPopup.style.pointerEvents = 'none';
+                }
+            });
+            
+            // Keep cart open when interacting with it - IMPORTANT
+            cartPopup.addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
+            
+            // Prevent cart from closing when touching it
+            cartPopup.addEventListener('touchstart', function(e) {
+                e.stopPropagation();
+            });
+            
+            cartPopup.addEventListener('touchmove', function(e) {
+                e.stopPropagation();
+            });
+        }
     }
 });
 </script>

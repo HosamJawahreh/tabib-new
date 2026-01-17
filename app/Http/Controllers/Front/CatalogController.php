@@ -188,6 +188,32 @@ class CatalogController extends FrontBaseController
 
     //    dd($data['prods']);
     if ($request->ajax()) {
+      // Check if it's a mobile search AJAX request
+      if ($request->has('ajax') && $request->ajax == 1) {
+        // Return JSON for mobile search
+        $products = [];
+        foreach ($prods as $product) {
+          $products[] = [
+            'id' => $product->id,
+            'name' => $product->showName(),
+            'slug' => $product->slug,
+            'photo' => $product->photo,
+            'price' => $product->showPrice(),
+            'previous_price' => $product->showPreviousPrice(),
+            'rating' => number_format($product->ratings_avg_rating ?? 0, 1),
+            'rating_count' => $product->ratings_count ?? 0,
+          ];
+        }
+        
+        return response()->json([
+          'products' => $products,
+          'total' => $prods->total(),
+          'per_page' => $prods->perPage(),
+          'current_page' => $prods->currentPage(),
+        ]);
+      }
+      
+      // Regular AJAX request for category view
       $data['ajax_check'] = 1;
       return view('frontend.ajax.category', $data);
     }

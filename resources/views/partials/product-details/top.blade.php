@@ -12,14 +12,14 @@
         overflow: visible !important;
         touch-action: pan-x pan-y pinch-zoom !important;
     }
-    
+
     #single-image-zoom {
         cursor: zoom-in !important;
         user-select: none !important;
         -webkit-user-select: none !important;
         -webkit-touch-callout: none !important;
     }
-    
+
     /* Fullscreen image viewer for mobile */
     .mobile-image-viewer {
         display: none;
@@ -33,11 +33,11 @@
         overflow: hidden;
         touch-action: none;
     }
-    
+
     .mobile-image-viewer.active {
         display: block;
     }
-    
+
     .mobile-image-viewer img {
         position: absolute;
         top: 50%;
@@ -50,7 +50,7 @@
         user-select: none;
         -webkit-user-select: none;
     }
-    
+
     .mobile-viewer-close {
         position: absolute;
         top: 20px;
@@ -70,7 +70,7 @@
         font-weight: bold;
         line-height: 1;
     }
-    
+
     .mobile-viewer-hint {
         position: absolute;
         bottom: 30px;
@@ -85,7 +85,7 @@
         opacity: 0;
         animation: fadeInOut 3s ease-in-out;
     }
-    
+
     @keyframes fadeInOut {
         0%, 100% { opacity: 0; }
         10%, 90% { opacity: 1; }
@@ -266,7 +266,7 @@
                           </figure>
                       </div>
                   </div>
-                  
+
                   {{-- Mobile Image Viewer with Pinch Zoom --}}
                   <div class="mobile-image-viewer" id="mobileImageViewer">
                       <div class="mobile-viewer-close" id="closeViewer">&times;</div>
@@ -274,7 +274,7 @@
                       <div class="mobile-viewer-hint">Pinch to zoom • Drag to pan</div>
                   </div>
               </div>
-              
+
               <script>
               // Professional Mobile Image Zoom Implementation
               (function() {
@@ -283,7 +283,7 @@
                       const viewer = document.getElementById('mobileImageViewer');
                       const viewerImage = document.getElementById('viewerImage');
                       const closeBtn = document.getElementById('closeViewer');
-                      
+
                       let scale = 1;
                       let posX = 0;
                       let posY = 0;
@@ -291,7 +291,7 @@
                       let lastPosX = 0;
                       let lastPosY = 0;
                       let isDragging = false;
-                      
+
                       // Open viewer on image tap
                       mainImage.addEventListener('click', function(e) {
                           e.preventDefault();
@@ -301,7 +301,7 @@
                           document.body.style.overflow = 'hidden';
                           resetTransform();
                       });
-                      
+
                       // Gallery thumbnails tap
                       document.querySelectorAll('#gallery_09 a').forEach(function(thumb) {
                           thumb.addEventListener('click', function(e) {
@@ -311,20 +311,20 @@
                               mainImage.setAttribute('data-zoom-image', imgSrc);
                           });
                       });
-                      
+
                       // Close viewer
                       closeBtn.addEventListener('click', function() {
                           viewer.classList.remove('active');
                           document.body.style.overflow = '';
                       });
-                      
+
                       viewer.addEventListener('click', function(e) {
                           if (e.target === viewer) {
                               viewer.classList.remove('active');
                               document.body.style.overflow = '';
                           }
                       });
-                      
+
                       // Reset transform
                       function resetTransform() {
                           scale = 1;
@@ -332,19 +332,19 @@
                           posY = 0;
                           updateTransform();
                       }
-                      
+
                       // Update image transform
                       function updateTransform() {
                           viewerImage.style.transform = `translate(-50%, -50%) translate(${posX}px, ${posY}px) scale(${scale})`;
                       }
-                      
+
                       // Get distance between two touch points
                       function getDistance(touch1, touch2) {
                           const dx = touch1.clientX - touch2.clientX;
                           const dy = touch1.clientY - touch2.clientY;
                           return Math.sqrt(dx * dx + dy * dy);
                       }
-                      
+
                       // Touch start
                       viewerImage.addEventListener('touchstart', function(e) {
                           if (e.touches.length === 2) {
@@ -357,11 +357,11 @@
                               lastPosY = e.touches[0].clientY;
                           }
                       });
-                      
+
                       // Touch move
                       viewerImage.addEventListener('touchmove', function(e) {
                           e.preventDefault();
-                          
+
                           if (e.touches.length === 2) {
                               // Pinch zoom
                               const distance = getDistance(e.touches[0], e.touches[1]);
@@ -376,19 +376,19 @@
                               const deltaY = e.touches[0].clientY - lastPosY;
                               posX += deltaX;
                               posY += deltaY;
-                              
+
                               // Constrain panning
                               const maxPanX = (viewerImage.width * scale - window.innerWidth) / 2;
                               const maxPanY = (viewerImage.height * scale - window.innerHeight) / 2;
                               posX = Math.max(-maxPanX, Math.min(posX, maxPanX));
                               posY = Math.max(-maxPanY, Math.min(posY, maxPanY));
-                              
+
                               lastPosX = e.touches[0].clientX;
                               lastPosY = e.touches[0].clientY;
                               updateTransform();
                           }
                       });
-                      
+
                       // Touch end
                       viewerImage.addEventListener('touchend', function(e) {
                           if (e.touches.length < 2) {
@@ -396,7 +396,7 @@
                           }
                           if (e.touches.length === 0) {
                               isDragging = false;
-                              
+
                               // Reset if zoomed out beyond 1x
                               if (scale < 1) {
                                   scale = 1;
@@ -406,7 +406,7 @@
                               }
                           }
                       });
-                      
+
                       // Double tap to zoom
                       let lastTap = 0;
                       viewerImage.addEventListener('touchend', function(e) {
