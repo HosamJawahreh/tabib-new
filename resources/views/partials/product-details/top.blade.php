@@ -1046,7 +1046,7 @@
 
                   const wrapper = document.querySelector('.mobile-zoom-wrapper');
                   const mainImage = document.getElementById('single-image-zoom');
-                  
+
                   if (!wrapper || !mainImage) return;
 
                   // Zoom state
@@ -1056,7 +1056,7 @@
                   let lastScale = 1;
                   let lastPosX = 0;
                   let lastPosY = 0;
-                  
+
                   // Touch state
                   let initialDistance = 0;
                   let isPinching = false;
@@ -1083,7 +1083,7 @@
                   function updateTransform(animate = false) {
                       mainImage.style.transition = animate ? 'transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)' : 'none';
                       mainImage.style.transform = `translate(${posX}px, ${posY}px) scale(${scale})`;
-                      
+
                       if (scale > 1) {
                           mainImage.classList.add('zoomed');
                       } else {
@@ -1101,10 +1101,10 @@
 
                       const rect = mainImage.getBoundingClientRect();
                       const wrapperRect = wrapper.getBoundingClientRect();
-                      
+
                       const scaledWidth = rect.width / lastScale * scale;
                       const scaledHeight = rect.height / lastScale * scale;
-                      
+
                       const maxX = Math.max(0, (scaledWidth - wrapperRect.width) / 2);
                       const maxY = Math.max(0, (scaledHeight - wrapperRect.height) / 2);
 
@@ -1132,23 +1132,23 @@
                           // Start pinch zoom
                           e.preventDefault();
                           e.stopPropagation();
-                          
+
                           isPinching = true;
                           initialDistance = getDistance(e.touches);
                           lastScale = scale;
-                          
+
                           lockBody();
                       } else if (e.touches.length === 1 && scale > 1) {
                           // Start pan
                           e.preventDefault();
                           e.stopPropagation();
-                          
+
                           isPanning = true;
                           lastTouchX = e.touches[0].clientX;
                           lastTouchY = e.touches[0].clientY;
                           lastPosX = posX;
                           lastPosY = posY;
-                          
+
                           lockBody();
                       }
                   }, { passive: false });
@@ -1159,26 +1159,26 @@
                           // Pinch zoom
                           e.preventDefault();
                           e.stopPropagation();
-                          
+
                           const distance = getDistance(e.touches);
                           const scaleChange = distance / initialDistance;
-                          
+
                           scale = Math.max(1, Math.min(4, lastScale * scaleChange));
-                          
+
                           constrainPosition();
                           updateTransform(false);
-                          
+
                       } else if (e.touches.length === 1 && isPanning && scale > 1) {
                           // Pan
                           e.preventDefault();
                           e.stopPropagation();
-                          
+
                           const deltaX = e.touches[0].clientX - lastTouchX;
                           const deltaY = e.touches[0].clientY - lastTouchY;
-                          
+
                           posX = lastPosX + deltaX;
                           posY = lastPosY + deltaY;
-                          
+
                           constrainPosition();
                           updateTransform(false);
                       }
@@ -1189,7 +1189,7 @@
                       if (e.touches.length === 0) {
                           isPinching = false;
                           isPanning = false;
-                          
+
                           // If zoomed out completely, reset
                           if (scale <= 1) {
                               scale = 1;
@@ -1226,7 +1226,7 @@
                           if (mainImage && newImage) {
                               mainImage.src = newImage;
                               mainImage.setAttribute('data-zoom-image', this.getAttribute('data-zoom-image'));
-                              
+
                               // Reset zoom
                               scale = 1;
                               posX = 0;
