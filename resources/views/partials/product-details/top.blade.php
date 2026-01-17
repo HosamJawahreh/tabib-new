@@ -1038,7 +1038,7 @@
                           mainImage.style.transform = `translate(${posX}px, ${posY}px) scale(${scale})`;
                           mainImage.style.transformOrigin = 'center center';
                           mainImage.style.transition = isDragging ? 'none' : 'transform 0.3s ease';
-                          
+
                           if (scale > 1) {
                               mainImage.classList.add('zoomed');
                           } else {
@@ -1055,7 +1055,7 @@
 
                           const rect = mainImage.getBoundingClientRect();
                           const wrapperRect = wrapper.getBoundingClientRect();
-                          
+
                           const maxX = Math.max(0, (rect.width * scale - wrapperRect.width) / 2);
                           const maxY = Math.max(0, (rect.height * scale - wrapperRect.height) / 2);
 
