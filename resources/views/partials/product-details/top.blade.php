@@ -71,11 +71,19 @@
 /* Mobile Touch Zoom - Native Pinch-to-Zoom */
 .mobile-zoom-wrapper {
     position: relative;
-    overflow: auto;
+    overflow: hidden;
     -webkit-overflow-scrolling: touch;
-    touch-action: pan-x pan-y pinch-zoom;
+    touch-action: none;
     -webkit-user-select: none;
     user-select: none;
+    width: 100%;
+}
+
+#single-image-zoom {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-width: 100%;
 }
 
 #single-image-zoom.zoomed {
@@ -1005,7 +1013,7 @@
               </div>
 
               <script>
-              // Native Mobile Pinch-to-Zoom Implementation
+              // Improved Mobile Pinch-to-Zoom - No Page Shake
               (function() {
                   if (window.innerWidth <= 767) {
                       const wrapper = document.querySelector('.mobile-zoom-wrapper');
@@ -1019,50 +1027,86 @@
                       let isDragging = false;
                       let startX = 0;
                       let startY = 0;
+                      let initialDistance = 0;
+                      let initialScale = 1;
+
+                      // Prevent page scroll when touching the image
+                      wrapper.style.touchAction = 'none';
+                      document.body.style.overscrollBehavior = 'contain';
 
                       function updateTransform() {
                           mainImage.style.transform = `translate(${posX}px, ${posY}px) scale(${scale})`;
                           mainImage.style.transformOrigin = 'center center';
                           mainImage.style.transition = isDragging ? 'none' : 'transform 0.3s ease';
+                          
+                          if (scale > 1) {
+                              mainImage.classList.add('zoomed');
+                          } else {
+                              mainImage.classList.remove('zoomed');
+                          }
                       }
 
-                      // Pinch zoom handling
-                      let initialDistance = 0;
-                      let initialScale = 1;
+                      function constrainPosition() {
+                          if (scale <= 1) {
+                              posX = 0;
+                              posY = 0;
+                              return;
+                          }
+
+                          const rect = mainImage.getBoundingClientRect();
+                          const wrapperRect = wrapper.getBoundingClientRect();
+                          
+                          const maxX = Math.max(0, (rect.width * scale - wrapperRect.width) / 2);
+                          const maxY = Math.max(0, (rect.height * scale - wrapperRect.height) / 2);
+
+                          posX = Math.max(-maxX, Math.min(maxX, posX));
+                          posY = Math.max(-maxY, Math.min(maxY, posY));
+                      }
 
                       wrapper.addEventListener('touchstart', (e) => {
                           if (e.touches.length === 2) {
+                              // Two finger pinch zoom
                               e.preventDefault();
+                              e.stopPropagation();
                               initialDistance = Math.hypot(
                                   e.touches[0].pageX - e.touches[1].pageX,
                                   e.touches[0].pageY - e.touches[1].pageY
                               );
                               initialScale = scale;
                           } else if (e.touches.length === 1 && scale > 1) {
+                              // One finger pan when zoomed
+                              e.preventDefault();
+                              e.stopPropagation();
                               isDragging = true;
                               startX = e.touches[0].pageX - posX;
                               startY = e.touches[0].pageY - posY;
                           }
-                      });
+                      }, { passive: false });
 
                       wrapper.addEventListener('touchmove', (e) => {
                           if (e.touches.length === 2) {
+                              // Pinch zoom
                               e.preventDefault();
+                              e.stopPropagation();
                               const distance = Math.hypot(
                                   e.touches[0].pageX - e.touches[1].pageX,
                                   e.touches[0].pageY - e.touches[1].pageY
                               );
                               scale = Math.max(1, Math.min(4, initialScale * (distance / initialDistance)));
+                              constrainPosition();
                               updateTransform();
                           } else if (isDragging && scale > 1) {
+                              // Pan when zoomed
                               e.preventDefault();
+                              e.stopPropagation();
                               posX = e.touches[0].pageX - startX;
                               posY = e.touches[0].pageY - startY;
+                              constrainPosition();
                               updateTransform();
                           }
-                      });
+                      }, { passive: false });
 
-                      wrapper.addEventListener('touchend', () => {
+                      wrapper.addEventListener('touchend', (e) => {
                           isDragging = false;
                           if (scale === 1) {
                               posX = 0;
@@ -1077,6 +1121,7 @@
                           const currentTime = new Date().getTime();
                           const tapLength = currentTime - lastTap;
                           if (tapLength < 300 && tapLength > 0) {
+                              e.preventDefault();
                               scale = 1;
                               posX = 0;
                               posY = 0;
@@ -1088,6 +1133,7 @@
                       // Update when thumbnail clicked
                       document.querySelectorAll('#gallery_09 a').forEach(function(thumb) {
                           thumb.addEventListener('click', function(e) {
+                              e.preventDefault();
                               const newImage = this.getAttribute('data-image');
                               if (mainImage && newImage) {
                                   mainImage.src = newImage;
