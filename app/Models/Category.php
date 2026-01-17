@@ -15,10 +15,10 @@ class Category extends Model
     	return $this->hasMany('App\Models\Subcategory')->where('status','=',1);
     }
 
-
+    // Multi-category relationship (many-to-many)
     public function products()
     {
-        return $this->hasMany('App\Models\Product');
+        return $this->belongsToMany('App\Models\Product', 'category_product', 'category_id', 'product_id');
     }
 
     public function setSlugAttribute($value)

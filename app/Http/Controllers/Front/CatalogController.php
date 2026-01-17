@@ -75,10 +75,16 @@ class CatalogController extends FrontBaseController
       ->chunk(4);;
 
     $prods = Product::when($cat, function ($query, $cat) {
-      return $query->where('category_id', $cat->id);
+      // Use whereHas to query the many-to-many relationship
+      return $query->whereHas('categories', function($q) use ($cat) {
+        $q->where('categories.id', $cat->id);
+      });
     })
       ->when($subcat, function ($query, $subcat) {
-        return $query->where('subcategory_id', $subcat->id);
+        // Use whereHas to query the many-to-many relationship
+        return $query->whereHas('categories', function($q) use ($subcat) {
+          $q->where('categories.id', $subcat->id);
+        });
       })
       ->when($type, function ($query, $type) {
         return $query->with('user')->whereStatus(1)->whereIsDiscount(1)
@@ -88,7 +94,10 @@ class CatalogController extends FrontBaseController
           });
       })
       ->when($childcat, function ($query, $childcat) {
-        return $query->where('childcategory_id', $childcat->id);
+        // Use whereHas to query the many-to-many relationship
+        return $query->whereHas('categories', function($q) use ($childcat) {
+          $q->where('categories.id', $childcat->id);
+        });
       })
       ->when($search, function ($query, $search) {
         return $query->where('name', 'like', '%' . $search . '%')->orWhere('name', 'like', $search . '%');
@@ -113,6 +122,7 @@ class CatalogController extends FrontBaseController
       ->when(empty($sort), function ($query, $sort) {
         return $query->latest('id');
       })
+      ->with('categories') // Load multi-categories relationship
       ->withCount('ratings')
       ->withAvg('ratings', 'rating');
 

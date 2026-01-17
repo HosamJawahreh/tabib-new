@@ -357,37 +357,115 @@
    /* Mobile Menu Improvements - Keep items in one line */
    @media (max-width: 991px) {
        .ecommerce-header {
-           height: 48px !important;
-           padding: 4px 15px !important;
+           height: 70px !important; /* Increased height */
+           padding: 8px 20px !important; /* Better padding */
+           min-height: 70px !important;
        }
 
-       .main-nav, .main-nav-row {
-           height: 48px !important;
+       .main-nav {
+           width: 100% !important; /* Full width */
+           padding: 0 !important;
+       }
+       
+       .main-nav .container-fluid {
+           width: 100% !important;
+           max-width: 100% !important;
+           padding: 0 15px !important;
        }
 
+       .main-nav-row {
+           height: 70px !important; /* Match header height */
+           min-height: 70px !important;
+           display: flex !important;
+           flex-wrap: nowrap !important;
+           width: 100% !important;
+       }
+       
+       /* REORDERING: Logo Left (1), Icons Center (2), Language Right (3) */
+       .logo-col {
+           order: 1 !important;
+           flex: 0 0 auto !important;
+           width: auto !important;
+           text-align: left !important;
+       }
+       
+       .icons-col {
+           order: 2 !important;
+           flex: 1 1 auto !important;
+           width: auto !important;
+       }
+       
+       .language-col {
+           order: 3 !important;
+           flex: 0 0 auto !important;
+           width: auto !important;
+           text-align: right !important;
+       }
+
+       /* Logo - BIGGER on mobile (60px + 20% = 72px) */
        img.nav-logo.header-logo-responsive,
        .navbar-brand img.nav-logo,
        .header-logo-responsive {
-           height: 38px !important;
+           height: 72px !important;
            width: auto !important;
-           max-height: 38px !important;
+           max-height: 72px !important;
+       }
+
+       /* Logo column - align vertically */
+       .logo-col {
+           display: flex !important;
+           align-items: center !important;
+           height: 70px !important;
+       }
+       
+       /* Language column - align vertically */
+       .language-col {
+           display: flex !important;
+           align-items: center !important;
+           height: 70px !important;
+       }
+       
+       /* Icons column - align vertically */
+       .icons-col {
+           display: flex !important;
+           align-items: center !important;
+           height: 70px !important;
+       }
+
+       /* PROFESSIONAL MOBILE MENU - Compact but readable */
+       .navbar-nav {
+           gap: 3px !important;
+       }
+       
+       .navbar-nav .nav-link {
+           font-size: 13px !important;
+           padding: 8px 12px !important;
+       }
+       
+       .navbar-nav .nav-link i {
+           font-size: 14px !important;
+       }
+       
+       /* Hide icon text on smaller screens, keep icons */
+       .navbar-nav .nav-link {
+           gap: 5px !important;
        }
 
        .header-icon-enhanced {
            padding: 4px !important;
-           min-width: 36px;
-           max-width: 36px;
-           height: 36px;
+           min-width: 44px;
+           max-width: 44px;
+           height: 44px;
        }
 
        .header-icon-enhanced i {
-           font-size: 15px !important;
+           font-size: 18px !important;
        }
 
        .header-cart-count {
-           font-size: 8px !important;
-           padding: 2px 4px !important;
-           min-width: 16px;
+           font-size: 9px !important;
+           padding: 2px 5px !important;
+           min-width: 18px;
            top: 0px !important;
            right: 0px !important;
        }
@@ -401,29 +479,35 @@
            margin: 10px 0;
        }
 
-       .header-phone-support {
+       .header-phone-support,
+       .header-phone-link {
            display: none !important;
        }
 
+       /* Language Selector - Bigger and professional */
        .language-selector-modern {
            padding: 5px !important;
-           max-width: 85px !important;
+           max-width: 100px !important;
+           margin-left: 10px !important;
        }
 
        .language-selector-modern select {
-           font-size: 12px !important;
-           padding: 4px 6px !important;
-           min-width: auto !important;
-           width: 75px !important;
-           max-width: 75px !important;
+           font-size: 14px !important;
+           padding: 8px !important;
+           min-width: 95px !important;
+           width: 95px !important;
+           max-width: 95px !important;
+           height: 42px !important;
        }
 
-       /* Force icons container to stay in one line */
+       /* Force icons container to stay centered */
        .col-icons {
            display: flex !important;
            flex-wrap: nowrap !important;
-           gap: 6px !important;
+           gap: 8px !important;
            align-items: center !important;
+           justify-content: center !important;
+       }
            justify-content: flex-end !important;
            overflow: visible !important;
        }
@@ -438,12 +522,29 @@
    }
 
    @media (max-width: 576px) {
+       /* Logo - Even BIGGER on small mobile (55px + 20% = 66px) */
        img.nav-logo.header-logo-responsive,
        .navbar-brand img.nav-logo,
        .header-logo-responsive {
-           max-width: 50px !important;
-           min-width: 50px !important;
-           width: 50px !important;
+           height: 66px !important;
+           max-width: none !important;
+           min-width: auto !important;
+           width: auto !important;
+           max-height: 66px !important;
+       }
+
+       /* EXTRA SMALL MOBILE - Ultra compact menu */
+       .navbar-nav .nav-link {
+           font-size: 12px !important;
+           padding: 6px 10px !important;
+       }
+       
+       .navbar-nav .nav-link i {
+           font-size: 13px !important;
+       }
+       
+       .navbar-nav {
+           gap: 2px !important;
        }
 
        .header-icon-enhanced {
@@ -631,9 +732,9 @@
        color: #4a5568 !important;
    }
 
-   /* Cart icon container - ensure visibility */
+   /* Cart icon container - ensure visibility and stability */
    .header-cart-1 {
-       position: static !important;
+       position: relative !important;
        display: flex !important;
        align-items: center !important;
        overflow: visible !important;
@@ -848,6 +949,107 @@
        display: none !important;
        visibility: hidden !important;
    }
+   
+   /* PROFESSIONAL MENU ITEMS - Desktop & Mobile */
+   .navbar-nav {
+       display: flex !important;
+       align-items: center !important;
+       gap: 5px !important;
+   }
+   
+   .navbar-nav .nav-item {
+       position: relative !important;
+   }
+   
+   .navbar-nav .nav-link {
+       font-size: 15px !important;
+       font-weight: 500 !important;
+       padding: 12px 18px !important;
+       color: #374151 !important;
+       border-radius: 6px !important;
+       transition: all 0.3s ease !important;
+       display: flex !important;
+       align-items: center !important;
+       gap: 8px !important;
+       white-space: nowrap !important;
+   }
+   
+   .navbar-nav .nav-link i {
+       font-size: 16px !important;
+       color: #10b981 !important;
+   }
+   
+   .navbar-nav .nav-link:hover,
+   .navbar-nav .nav-item.active .nav-link {
+       background: #f0fdf4 !important;
+       color: #10b981 !important;
+   }
+   
+   /* Dropdown arrow */
+   .navbar-nav .dropdown-toggle::after {
+       margin-left: 6px !important;
+       font-size: 10px !important;
+   }
+   
+   /* PROFESSIONAL MEGA DROPDOWN MENU */
+   .navbar-nav .mega-dropdown-menu {
+       min-width: 800px !important;
+       padding: 20px !important;
+       background: white !important;
+       border-radius: 8px !important;
+       box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1) !important;
+       border: 1px solid #e5e7eb !important;
+   }
+   
+   .navbar-nav .category-column {
+       padding: 15px !important;
+   }
+   
+   .navbar-nav .category-header {
+       margin-bottom: 12px !important;
+       padding-bottom: 10px !important;
+       border-bottom: 2px solid #10b981 !important;
+   }
+   
+   .navbar-nav .category-title {
+       font-size: 16px !important;
+       font-weight: 600 !important;
+       color: #111827 !important;
+       text-decoration: none !important;
+       transition: color 0.2s ease !important;
+   }
+   
+   .navbar-nav .category-title:hover {
+       color: #10b981 !important;
+   }
+   
+   .navbar-nav .subcategory-list {
+       list-style: none !important;
+       padding: 0 !important;
+       margin: 0 !important;
+   }
+   
+   .navbar-nav .subcategory-item {
+       font-size: 14px !important;
+       padding: 8px 12px !important;
+       display: block !important;
+       color: #6b7280 !important;
+       text-decoration: none !important;
+       border-radius: 6px !important;
+       transition: all 0.2s ease !important;
+   }
+   
+   .navbar-nav .subcategory-item:hover {
+       background: #f0fdf4 !important;
+       color: #10b981 !important;
+       padding-left: 16px !important;
+   }
+   
+   .navbar-nav .subcategory-item i {
+       font-size: 12px !important;
+       margin-right: 6px !important;
+       color: #10b981 !important;
+   }
 
    /* HIDE MENU ITEMS ON DESKTOP - Mobile Only */
    @media (min-width: 992px) {
@@ -935,122 +1137,8 @@
        }
    }
 
-   /* ========================================
-    * CART DROPDOWN - CENTERED & BUTTON FIX
-    * ======================================== */
-
-   /* Center the cart dropdown - FORCE CENTER */
-   .header-cart-1 .cart-popup,
-   .has-cart-data .cart-popup,
-   .cart-popup {
-       position: fixed !important;
-       top: 75px !important; /* Right below header - no gap */
-       left: 50% !important;
-       right: auto !important;
-       margin-left: -190px !important; /* Half of 380px width */
-       width: 380px !important;
-       max-width: 90vw !important;
-       z-index: 999999 !important;
-       opacity: 0 !important;
-       visibility: hidden !important;
-       pointer-events: none !important;
-       transition: opacity 0.2s ease, visibility 0.2s ease !important;
-   }
-
-   /* Add invisible bridge area to prevent dropdown from closing */
-   .header-cart-1::after,
-   .has-cart-data::after {
-       content: '' !important;
-       position: absolute !important;
-       bottom: -15px !important;
-       left: 0 !important;
-       right: 0 !important;
-       height: 15px !important;
-       background: transparent !important;
-       z-index: 999998 !important;
-   }
-
-   /* When cart is hovered/visible */
-   .header-cart-1:hover .cart-popup,
-   .has-cart-data:hover .cart-popup {
-       opacity: 1 !important;
-       visibility: visible !important;
-       pointer-events: auto !important;
-   }
-
-   /* Keep dropdown visible when hovering the cart popup itself */
-   .cart-popup:hover {
-       opacity: 1 !important;
-       visibility: visible !important;
-       pointer-events: auto !important;
-   }
-
-   /* Alternative: Keep dropdown open when mouse moves from icon to dropdown */
-   .header-cart-1:hover::after,
-   .has-cart-data:hover::after {
-       pointer-events: auto !important;
-   }
-
-   /* Cart Buttons - White background with dark text */
-   .cart-popup .view-cart,
-   .cart-popup .checkout,
-   .cart-popup a.view-cart,
-   .cart-popup a.checkout {
-       background: #ffffff !important;
-       color: #2d3748 !important;
-       border: 2px solid #e2e8f0 !important;
-       font-weight: 600 !important;
-       transition: all 0.3s ease !important;
-       text-decoration: none !important;
-   }
-
-   .cart-popup .view-cart:hover,
-   .cart-popup .checkout:hover,
-   .cart-popup a.view-cart:hover,
-   .cart-popup a.checkout:hover {
-       background: #f7fafc !important;
-       color: #1a202c !important;
-       border-color: #cbd5e0 !important;
-       transform: translateY(-2px) !important;
-       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
-   }
-
-   /* Mobile: Keep cart centered on smaller screens */
+   /* Mobile styles */
    @media (max-width: 767px) {
-       .header-cart-1 .cart-popup,
-       .has-cart-data .cart-popup,
-       .cart-popup {
-           position: fixed !important;
-           top: 60px !important; /* Just below header */
-           width: 320px !important;
-           max-width: 90vw !important;
-           left: 50% !important;
-           right: auto !important;
-           margin-left: -160px !important; /* Half of 320px width */
-           display: none !important; /* Hidden by default on mobile */
-           opacity: 0 !important;
-           visibility: hidden !important;
-           transition: opacity 0.3s ease, visibility 0.3s ease !important;
-           z-index: 9999 !important;
-       }
-
-       /* Remove hover effect on mobile - use click instead */
-       .header-cart-1:hover .cart-popup {
-           display: none !important; /* Disable hover on mobile */
-       }
-
-       /* No bridge needed on mobile - using click */
-       .header-cart-1::after,
-       .has-cart-data::after {
-           display: none !important;
-       }
-
-       /* Make cart icon clearly tappable */
-       .header-cart-1 {
-           cursor: pointer !important;
-           -webkit-tap-highlight-color: rgba(16, 185, 129, 0.2) !important;
-       }
-
        /* Hide desktop search bar on mobile */
        .search-col {
            display: none !important;
@@ -1398,9 +1486,9 @@ $pages = App\Models\Page::get();
                     <a class="navbar-brand" href="{{ route('front.index') }}">
                         <img class="nav-logo lazy header-logo-responsive" data-src="{{ asset('assets/images/'.$gs->logo) }}" src="{{ asset('assets/images/'.$gs->logo) }}" alt="Logo">
                     </a>
-                    <!-- Burger menu hidden -->
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" style="display: none !important;">
-                    <i class="flaticon-menu-2 flat-small text-primary"></i>
+                    <!-- Burger menu for mobile -->
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <i class="flaticon-menu-2 flat-small"></i>
                     </button>
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav ms-md-5">
@@ -1454,8 +1542,26 @@ $pages = App\Models\Page::get();
                     </div>
                 </nav>
             </div>
-            <div class="col-lg-10 col-md-9 col-8 order-md-3 order-2 icons-col">
-                <div class="d-flex align-items-center justify-content-end h-100 col-icons">
+            
+            <!-- Language Selector Column - Separate for mobile reordering -->
+            @php
+            $languges = App\Models\Language::all();
+            @endphp
+            <div class="col-auto order-1 language-col d-flex align-items-center">
+                <div class="header-icon-enhanced language-selector-modern">
+                    <select name="language" class="language selectors nice">
+                    @foreach($languges as $language)
+                    <option value="{{route('front.language',$language->id)}}" {{ Session::has('language') ? ( Session::get('language') == $language->id ? 'selected' : '' ) : ($languges->where('is_default','=',1)->first()->id == $language->id ? 'selected' : '') }}>
+                    {{$language->language}}
+                    </option>
+                    @endforeach
+                    </select>
+                </div>
+            </div>
+            
+            <!-- Icons Column - Search, Cart, Account -->
+            <div class="col order-2 icons-col">
+                <div class="d-flex align-items-center justify-content-center h-100 col-icons">
 
                     <!-- Mobile Search Icon -->
                     <div class="header-icon-enhanced mobile-search-icon d-md-none">
@@ -1466,18 +1572,15 @@ $pages = App\Models\Page::get();
                         </a>
                     </div>
 
-                    <!-- Wishlist Icon - REMOVED as requested -->
-
                     <!-- Shopping Cart Icon -->
                     <div class="header-cart-1 header-icon-enhanced">
-                        <a href="{{ route('front.cart') }}" class="cart has-cart-data" title="View Cart">
+                        <a href="{{ route('front.cart') }}" class="cart" title="View Cart">
                             <div class="cart-icon"><i class="flaticon-shopping-cart flat-mini"></i> <span class="header-cart-count" id="cart-count">{{ Session::has('cart') ? count(Session::get('cart')->items) : '0' }}</span></div>
                             <div class="cart-wrap">
                                 <div class="cart-text">Cart</div>
                                 <span class="header-cart-count">{{ Session::has('cart') ? count(Session::get('cart')->items) : '0' }}</span>
                             </div>
                         </a>
-                        @include('load.cart')
                     </div>
 
                     <!-- Account Icon - redirects based on login status -->
@@ -1491,20 +1594,6 @@ $pages = App\Models\Page::get();
                                 <div class="cart-icon"><i class="flaticon-user-3 flat-mini mx-auto"></i></div>
                             </a>
                         @endif
-                    </div>
-
-                    @php
-                    $languges = App\Models\Language::all();
-                    @endphp
-                    <!-- Language Selector - Modern Design -->
-                    <div class="header-icon-enhanced language-selector-modern">
-                        <select name="language" class="language selectors nice">
-                        @foreach($languges as $language)
-                        <option value="{{route('front.language',$language->id)}}" {{ Session::has('language') ? ( Session::get('language') == $language->id ? 'selected' : '' ) : ($languges->where('is_default','=',1)->first()->id == $language->id ? 'selected' : '') }}>
-                        {{$language->language}}
-                        </option>
-                        @endforeach
-                        </select>
                     </div>
 
                     <!-- Support Number - Clickable Phone -->
@@ -1762,55 +1851,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Mobile Cart - Touch-Friendly Implementation (Click to Toggle, No Auto-Close)
-    if (window.innerWidth <= 767) {
-        const cartIcon = document.querySelector('.header-cart-1');
-        const cartPopup = document.querySelector('.cart-popup');
-
-        if (cartIcon && cartPopup) {
-            let cartOpen = false;
-
-            // Click anywhere on cart icon to toggle
-            cartIcon.addEventListener('click', function(e) {
-                // If clicking on a link inside cart popup, let it work
-                if (e.target.closest('.cart-popup')) {
-                    return;
-                }
-
-                e.preventDefault();
-                e.stopPropagation();
-
-                // Toggle cart
-                cartOpen = !cartOpen;
-
-                if (cartOpen) {
-                    cartPopup.style.display = 'block !important';
-                    cartPopup.style.opacity = '1';
-                    cartPopup.style.visibility = 'visible';
-                    cartPopup.style.pointerEvents = 'auto';
-                } else {
-                    cartPopup.style.display = 'none !important';
-                    cartPopup.style.opacity = '0';
-                    cartPopup.style.visibility = 'hidden';
-                    cartPopup.style.pointerEvents = 'none';
-                }
-            });
-
-            // Keep cart open when interacting with it - IMPORTANT
-            cartPopup.addEventListener('click', function(e) {
-                e.stopPropagation();
-            });
-
-            // Prevent cart from closing when touching it
-            cartPopup.addEventListener('touchstart', function(e) {
-                e.stopPropagation();
-            });
-
-            cartPopup.addEventListener('touchmove', function(e) {
-                e.stopPropagation();
-            });
-        }
-    }
 });
 </script>
 

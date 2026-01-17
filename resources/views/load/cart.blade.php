@@ -1,4 +1,5 @@
-<div class="cart-popup">
+<div class="cart-popup" style="position: absolute !important; top: calc(100% + 10px) !important; left: 50% !important; transform: translateX(-50%) translateZ(0) !important; width: 380px !important; max-width: 90vw !important; z-index: 999999 !important; backface-visibility: hidden !important; -webkit-backface-visibility: hidden !important;">
+    <ul class="cart_list product_list_widget ">"iv class="cart-popup">
     <ul class="cart_list product_list_widget ">
         @if (Session::has('cart'))
         @foreach(Session::get('cart')->items as $product)

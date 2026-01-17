@@ -1,4 +1,7 @@
 @extends('layouts.front')
+@push('css')
+<link rel="stylesheet" href="{{ asset('assets/front/css/cart-responsive.css') }}">
+@endpush
 @section('content')
 @include('partials.global.common-header')
 <!-- breadcrumb -->

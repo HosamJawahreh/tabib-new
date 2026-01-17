@@ -1,0 +1,253 @@
+/* ========================================
+ * CART PAGE - MOBILE RESPONSIVE STYLES
+ * Professional mobile optimization
+ * ======================================== */
+
+/* Desktop - Default styles */
+@media (min-width: 768px) {
+    .cartpage {
+        padding: 40px 0;
+    }
+}
+
+/* Mobile - Responsive Cart Table */
+@media (max-width: 767px) {
+    .cartpage {
+        padding: 20px 0;
+    }
+
+    /* Make cart responsive - stack on mobile */
+    .cart-table {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        margin-bottom: 30px;
+    }
+
+    /* Cart table - mobile friendly */
+    table.shop_table.cart {
+        min-width: 100%;
+        font-size: 14px;
+    }
+
+    /* Hide some columns on very small screens */
+    table.shop_table.cart th.product-thumbnail,
+    table.shop_table.cart td.product-thumbnail {
+        display: none;
+    }
+
+    /* Make product name column wider */
+    table.shop_table.cart th.product-name,
+    table.shop_table.cart td.product-name {
+        min-width: 150px;
+        font-size: 13px;
+    }
+
+    table.shop_table.cart td.product-name a {
+        display: block;
+        line-height: 1.4;
+        margin-bottom: 5px;
+    }
+
+    /* Price column */
+    table.shop_table.cart th.product-price,
+    table.shop_table.cart td.product-price {
+        min-width: 70px;
+        font-size: 13px;
+    }
+
+    /* Quantity column */
+    table.shop_table.cart th.product-quantity,
+    table.shop_table.cart td.product-quantity {
+        min-width: 80px;
+    }
+
+    table.shop_table.cart td.product-quantity .quantity input {
+        width: 50px;
+        height: 35px;
+        font-size: 14px;
+        padding: 5px;
+    }
+
+    /* Subtotal column */
+    table.shop_table.cart th.product-subtotal,
+    table.shop_table.cart td.product-subtotal {
+        min-width: 80px;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    /* Remove button */
+    table.shop_table.cart th.product-remove,
+    table.shop_table.cart td.product-remove {
+        min-width: 40px;
+    }
+
+    table.shop_table.cart td.product-remove .remove {
+        font-size: 20px;
+        padding: 5px 10px;
+    }
+
+    /* Cart totals sidebar */
+    .cart-collaterals {
+        margin-top: 30px;
+    }
+
+    .cart_totals {
+        padding: 20px;
+        background: #f8f9fa;
+        border-radius: 8px;
+    }
+
+    .cart_totals h2 {
+        font-size: 20px;
+        margin-bottom: 20px;
+    }
+
+    .cart_totals table {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    .cart_totals table th,
+    .cart_totals table td {
+        padding: 12px 0;
+        font-size: 15px;
+    }
+
+    .cart_totals table th {
+        text-align: left;
+        font-weight: 600;
+    }
+
+    .cart_totals table td {
+        text-align: right;
+    }
+
+    .cart_totals .order-total th,
+    .cart_totals .order-total td {
+        font-size: 18px;
+        font-weight: 700;
+        border-top: 2px solid #dee2e6;
+        padding-top: 15px;
+    }
+
+    /* Checkout button */
+    .wc-proceed-to-checkout {
+        margin-top: 20px;
+    }
+
+    .checkout-button {
+        display: block;
+        width: 100%;
+        padding: 15px 20px;
+        font-size: 16px;
+        font-weight: 600;
+        text-align: center;
+        background: #10b981;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+
+    .checkout-button:hover {
+        background: #059669;
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+    }
+
+    /* Color bar */
+    #color-bar {
+        margin-left: 8px;
+        border-radius: 50%;
+    }
+
+    /* Empty cart message */
+    .card.border.py-4 {
+        padding: 30px !important;
+        text-align: center;
+    }
+
+    .card.border.py-4 h4 {
+        font-size: 16px;
+        margin: 0;
+    }
+}
+
+/* Extra small screens - Simplified cart view */
+@media (max-width: 480px) {
+    /* Stack cart items vertically */
+    table.shop_table.cart {
+        display: block;
+    }
+
+    table.shop_table.cart thead {
+        display: none;
+    }
+
+    table.shop_table.cart tbody {
+        display: block;
+    }
+
+    table.shop_table.cart tr {
+        display: block;
+        margin-bottom: 20px;
+        padding: 15px;
+        background: #f8f9fa;
+        border-radius: 8px;
+        position: relative;
+    }
+
+    table.shop_table.cart td {
+        display: block;
+        text-align: left !important;
+        padding: 8px 0;
+        border: none;
+    }
+
+    table.shop_table.cart td::before {
+        content: attr(data-label);
+        font-weight: 600;
+        display: inline-block;
+        width: 100px;
+    }
+
+    /* Show thumbnail on mobile cards */
+    table.shop_table.cart td.product-thumbnail {
+        display: block;
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+    table.shop_table.cart td.product-thumbnail img {
+        max-width: 100px;
+        border-radius: 8px;
+    }
+
+    table.shop_table.cart td.product-name {
+        font-size: 15px;
+        font-weight: 600;
+        min-width: auto;
+    }
+
+    table.shop_table.cart td.product-quantity .quantity input {
+        width: 60px;
+        height: 40px;
+    }
+
+    /* Remove button - position absolute */
+    table.shop_table.cart td.product-remove {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        min-width: auto;
+    }
+
+    table.shop_table.cart td.product-remove .remove {
+        font-size: 24px;
+        color: #ef4444;
+        padding: 5px;
+    }
+}
