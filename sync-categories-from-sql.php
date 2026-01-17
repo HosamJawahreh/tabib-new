@@ -39,15 +39,15 @@ echo "\n🔍 Step 2: Parsing SQL files...\n\n";
 function parseCategories($file) {
     $content = file_get_contents($file);
     $categories = [];
-    
+
     // Match INSERT INTO statements
     preg_match_all("/INSERT INTO `ec_product_categories`.*?VALUES\s*(.*?);/s", $content, $matches);
-    
+
     if (!empty($matches[1])) {
         foreach ($matches[1] as $valuesBlock) {
             // Match individual value tuples
             preg_match_all("/\((\d+),\s*'([^']+)',[^)]+\)/", $valuesBlock, $tuples);
-            
+
             for ($i = 0; $i < count($tuples[1]); $i++) {
                 $id = $tuples[1][$i];
                 $name = $tuples[2][$i];
@@ -55,7 +55,7 @@ function parseCategories($file) {
             }
         }
     }
-    
+
     return $categories;
 }
 
@@ -63,15 +63,15 @@ function parseCategories($file) {
 function parseProducts($file) {
     $content = file_get_contents($file);
     $products = [];
-    
+
     // Match INSERT INTO statements
     preg_match_all("/INSERT INTO `ec_products`.*?VALUES\s*(.*?);/s", $content, $matches);
-    
+
     if (!empty($matches[1])) {
         foreach ($matches[1] as $valuesBlock) {
             // Match individual value tuples - only extract ID and name
             preg_match_all("/\((\d+),\s*'([^']+)'/", $valuesBlock, $tuples);
-            
+
             for ($i = 0; $i < count($tuples[1]); $i++) {
                 $id = $tuples[1][$i];
                 $name = $tuples[2][$i];
@@ -79,7 +79,7 @@ function parseProducts($file) {
             }
         }
     }
-    
+
     return $products;
 }
 
@@ -87,19 +87,19 @@ function parseProducts($file) {
 function parseRelations($file) {
     $content = file_get_contents($file);
     $relations = [];
-    
+
     // Match INSERT INTO statements
     preg_match_all("/INSERT INTO `ec_product_category_product`.*?VALUES\s*(.*?);/s", $content, $matches);
-    
+
     if (!empty($matches[1])) {
         foreach ($matches[1] as $valuesBlock) {
             // Match individual value tuples (category_id, product_id)
             preg_match_all("/\((\d+),\s*(\d+)\)/", $valuesBlock, $tuples);
-            
+
             for ($i = 0; $i < count($tuples[1]); $i++) {
                 $categoryId = $tuples[1][$i];
                 $productId = $tuples[2][$i];
-                
+
                 if (!isset($relations[$productId])) {
                     $relations[$productId] = [];
                 }
@@ -107,7 +107,7 @@ function parseRelations($file) {
             }
         }
     }
-    
+
     return $relations;
 }
 
@@ -159,7 +159,7 @@ foreach ($categories as $sqlId => $categoryName) {
             break;
         }
     }
-    
+
     if (!$found) {
         $unmappedCategories[$sqlId] = $categoryName;
     }
@@ -193,7 +193,7 @@ foreach ($products as $sqlId => $productName) {
             break;
         }
     }
-    
+
     if (!$found) {
         $unmappedProducts[$sqlId] = $productName;
     }
@@ -224,24 +224,24 @@ foreach ($relations as $sqlProductId => $sqlCategoryIds) {
         $skippedRelations += count($sqlCategoryIds);
         continue;
     }
-    
+
     $dbProductId = $productIdMap[$sqlProductId];
-    
+
     foreach ($sqlCategoryIds as $sqlCategoryId) {
         // Check if category exists in our mapping
         if (!isset($categoryIdMap[$sqlCategoryId])) {
             $skippedRelations++;
             continue;
         }
-        
+
         $dbCategoryId = $categoryIdMap[$sqlCategoryId];
-        
+
         // Check for duplicates
         $key = "$dbCategoryId-$dbProductId";
         if (isset($uniqueCheck[$key])) {
             continue; // Skip duplicate
         }
-        
+
         $uniqueCheck[$key] = true;
         $newRelations[] = [
             'category_id' => $dbCategoryId,
@@ -320,40 +320,40 @@ $choice = trim(fgets(STDIN));
 
 if ($choice === '1') {
     echo "\n🚀 Applying corrections...\n\n";
-    
+
     try {
         DB::beginTransaction();
-        
+
         // Remove all current relationships
         echo "  • Removing current relationships...\n";
         DB::table('category_product')->delete();
-        
+
         // Insert new relationships in batches
         echo "  • Inserting correct relationships...\n";
         $chunks = array_chunk($newRelations, 1000);
         foreach ($chunks as $chunk) {
             DB::table('category_product')->insert($chunk);
         }
-        
+
         DB::commit();
-        
+
         echo "\n✅ SUCCESS! Database synced with SQL files!\n\n";
-        
+
         // Final statistics
         $finalCount = DB::table('category_product')->count();
         echo "Final Statistics:\n";
         echo "  • Total relationships: $finalCount\n";
         echo "  • Products with categories: " . DB::table('category_product')->distinct('product_id')->count('product_id') . "\n";
         echo "  • Categories in use: " . DB::table('category_product')->distinct('category_id')->count('category_id') . "\n\n";
-        
+
         echo "🎉 Your database now matches the SQL export files exactly!\n";
-        
+
     } catch (\Exception $e) {
         DB::rollBack();
         echo "\n❌ ERROR: " . $e->getMessage() . "\n";
         echo "   No changes were made to the database.\n\n";
     }
-    
+
 } else {
     echo "\n✅ SQL file saved. You can review and apply it manually.\n\n";
 }

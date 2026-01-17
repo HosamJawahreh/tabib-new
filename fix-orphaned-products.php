@@ -1,7 +1,7 @@
 <?php
 /**
  * Fix Orphaned Products - Auto-assign Categories
- * 
+ *
  * This script assigns categories to the 10 products that don't have any categories
  */
 
@@ -45,21 +45,21 @@ $errors = 0;
 
 foreach ($orphanedProducts as $product) {
     echo "Processing: {$product->name} (ID: {$product->id})\n";
-    
+
     $assignedCategories = [];
-    
+
     // Try to find matching categories based on product name
     foreach ($categoryMap as $keyword => $categoryName) {
         if (stripos($product->name, $keyword) !== false) {
             $category = Category::where('name', $categoryName)->where('status', 1)->first();
-            
+
             if ($category) {
                 $assignedCategories[] = $category->id;
                 echo "  - Matched category: {$categoryName}\n";
             }
         }
     }
-    
+
     // Check if product name contains "خالي" (sugar-free/gluten-free indicators)
     if (stripos($product->name, 'خالي') !== false || stripos($product->name, 'خالية') !== false) {
         if (stripos($product->name, 'سكر') !== false) {
@@ -77,7 +77,7 @@ foreach ($orphanedProducts as $product) {
             }
         }
     }
-    
+
     // Check for organic products
     if (stripos($product->name, 'عضوي') !== false || stripos($product->name, 'العضوي') !== false) {
         $category = Category::where('name', 'أغذية عضوية')->where('status', 1)->first();
@@ -86,7 +86,7 @@ foreach ($orphanedProducts as $product) {
             echo "  - Added: أغذية عضوية\n";
         }
     }
-    
+
     // If no categories matched, assign to "متنوع" (Miscellaneous)
     if (empty($assignedCategories)) {
         $category = Category::where('name', 'متنوع')->where('status', 1)->first();
@@ -95,7 +95,7 @@ foreach ($orphanedProducts as $product) {
             echo "  - Default category: متنوع\n";
         }
     }
-    
+
     // Assign categories to product
     if (!empty($assignedCategories)) {
         try {
@@ -110,7 +110,7 @@ foreach ($orphanedProducts as $product) {
         echo "  ⚠️ No suitable categories found\n";
         $errors++;
     }
-    
+
     echo "\n";
 }
 

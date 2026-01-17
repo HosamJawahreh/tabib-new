@@ -10,12 +10,12 @@ use Illuminate\Support\Facades\DB;
 
 /**
  * PROFESSIONAL CATEGORY-PRODUCT CORRECTION SYSTEM
- * 
+ *
  * This script analyzes the 3 SQL files provided:
  * 1. ec_product_categories.sql - Category definitions
  * 2. ec_product_category_product.sql - Product-Category relationships
  * 3. ec_products.sql - Product definitions
- * 
+ *
  * It matches products by NAME (not ID) to handle ID differences between databases.
  */
 
@@ -62,7 +62,7 @@ echo "\n📊 Step 2: Parsing categories from SQL file...\n\n";
 function parseSqlInserts($sql, $tableName) {
     $pattern = "/INSERT INTO `{$tableName}`.*?VALUES\s*(.*?);/is";
     preg_match_all($pattern, $sql, $matches);
-    
+
     $allValues = [];
     foreach ($matches[1] as $valueString) {
         // Split by '),(' to separate multiple rows
@@ -72,7 +72,7 @@ function parseSqlInserts($sql, $tableName) {
             $allValues[] = $row;
         }
     }
-    
+
     return $allValues;
 }
 
@@ -81,39 +81,39 @@ function parseRow($row) {
     $current = '';
     $inQuotes = false;
     $escapeNext = false;
-    
+
     for ($i = 0; $i < strlen($row); $i++) {
         $char = $row[$i];
-        
+
         if ($escapeNext) {
             $current .= $char;
             $escapeNext = false;
             continue;
         }
-        
+
         if ($char === '\\') {
             $escapeNext = true;
             continue;
         }
-        
+
         if ($char === "'" && !$escapeNext) {
             $inQuotes = !$inQuotes;
             continue;
         }
-        
+
         if ($char === ',' && !$inQuotes) {
             $values[] = trim($current) === 'NULL' ? null : $current;
             $current = '';
             continue;
         }
-        
+
         $current .= $char;
     }
-    
+
     if ($current !== '') {
         $values[] = trim($current) === 'NULL' ? null : $current;
     }
-    
+
     return $values;
 }
 
@@ -160,7 +160,7 @@ foreach ($relationshipRows as $row) {
     if (count($values) >= 2) {
         $categoryId = $values[0];
         $productId = $values[1];
-        
+
         if (!isset($relationshipsFromSql[$productId])) {
             $relationshipsFromSql[$productId] = [];
         }
@@ -203,35 +203,35 @@ foreach ($relationshipsFromSql as $productId => $categoryIds) {
     if (!isset($productsFromSql[$productId])) {
         continue;
     }
-    
+
     $productName = $productsFromSql[$productId];
-    
+
     // Find matching product in database by name
     $dbProduct = $dbProducts->get($productName);
-    
+
     if (!$dbProduct) {
         $notFound['products'][] = $productName;
         continue;
     }
-    
+
     // For each category ID in SQL
     foreach ($categoryIds as $categoryId) {
         if (!isset($categoriesFromSql[$categoryId])) {
             continue;
         }
-        
+
         $categoryName = $categoriesFromSql[$categoryId];
-        
+
         // Find matching category in database by name
         $dbCategory = $dbCategories->get($categoryName);
-        
+
         if (!$dbCategory) {
             if (!in_array($categoryName, $notFound['categories'])) {
                 $notFound['categories'][] = $categoryName;
             }
             continue;
         }
-        
+
         // Store the correction
         if (!isset($corrections[$dbProduct->id])) {
             $corrections[$dbProduct->id] = [
@@ -239,7 +239,7 @@ foreach ($relationshipsFromSql as $productId => $categoryIds) {
                 'categories' => []
             ];
         }
-        
+
         $corrections[$dbProduct->id]['categories'][] = $dbCategory->id;
         $matched++;
     }
@@ -283,11 +283,11 @@ $sqlStatements[] = "";
 foreach ($corrections as $productId => $data) {
     $sqlStatements[] = "-- Product: {$data['name']} (ID: {$productId})";
     $sqlStatements[] = "DELETE FROM category_product WHERE product_id = {$productId};";
-    
+
     foreach ($data['categories'] as $categoryId) {
         $sqlStatements[] = "INSERT INTO category_product (category_id, product_id) VALUES ({$categoryId}, {$productId});";
     }
-    
+
     $sqlStatements[] = "";
 }
 
@@ -307,7 +307,7 @@ foreach ($corrections as $data) {
         $categoryName = $dbCategories->first(function($cat) use ($catId) {
             return $cat->id == $catId;
         })->name ?? 'Unknown';
-        
+
         if (!isset($categoryCount[$categoryName])) {
             $categoryCount[$categoryName] = 0;
         }
@@ -344,20 +344,20 @@ $choice = trim(fgets(STDIN));
 
 if ($choice === '1') {
     echo "\n🚀 Applying corrections...\n\n";
-    
+
     DB::beginTransaction();
-    
+
     try {
         $deletedCount = 0;
         $insertedCount = 0;
-        
+
         foreach ($corrections as $productId => $data) {
             // Remove old relationships
             $deleted = DB::table('category_product')
                 ->where('product_id', $productId)
                 ->delete();
             $deletedCount += $deleted;
-            
+
             // Add new relationships
             foreach ($data['categories'] as $categoryId) {
                 DB::table('category_product')->insert([
@@ -367,29 +367,29 @@ if ($choice === '1') {
                 $insertedCount++;
             }
         }
-        
+
         DB::commit();
-        
+
         echo "  ✓ Deleted {$deletedCount} old relationships\n";
         echo "  ✓ Inserted {$insertedCount} new relationships\n\n";
-        
+
         echo "✅ SUCCESS! All corrections applied!\n\n";
-        
+
         $finalStats = DB::table('category_product')->count();
         echo "Final Statistics:\n";
         echo "  • Total category-product relations: {$finalStats}\n";
         echo "  • Products updated: " . count($corrections) . "\n\n";
-        
+
         echo "🎉 Categories are now correctly mapped from your SQL files!\n";
         echo "   Products will appear in their correct categories on the homepage.\n\n";
-        
+
     } catch (\Exception $e) {
         DB::rollBack();
         echo "\n❌ ERROR: " . $e->getMessage() . "\n";
         echo "   No changes were made to the database.\n";
         echo "   Please review the SQL file manually: {$sqlFile}\n\n";
     }
-    
+
 } else {
     echo "\n✓ Corrections saved to {$sqlFile}\n";
     echo "  Review and apply manually when ready.\n\n";

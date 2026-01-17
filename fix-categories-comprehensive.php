@@ -128,10 +128,10 @@ $unmatchedProducts = [];
 foreach ($products as $product) {
     $productName = mb_strtolower($product->name);
     $matchedCategories = [];
-    
+
     foreach ($categoryRules as $categoryName => $rules) {
         $matches = false;
-        
+
         // Check keywords
         foreach ($rules['keywords'] as $keyword) {
             if (stripos($productName, mb_strtolower($keyword)) !== false) {
@@ -139,7 +139,7 @@ foreach ($products as $product) {
                 break;
             }
         }
-        
+
         // Check brands
         if (!$matches && isset($rules['brands'])) {
             foreach ($rules['brands'] as $brand) {
@@ -149,7 +149,7 @@ foreach ($products as $product) {
                 }
             }
         }
-        
+
         // Check exclusions
         if ($matches && isset($rules['exclude'])) {
             foreach ($rules['exclude'] as $exclude) {
@@ -159,12 +159,12 @@ foreach ($products as $product) {
                 }
             }
         }
-        
+
         if ($matches) {
             $matchedCategories[] = $categoryName;
         }
     }
-    
+
     if (count($matchedCategories) > 0) {
         $corrections[$product->id] = [
             'product' => $product,
@@ -237,15 +237,15 @@ $sqlStatements[] = "-- Step 2: Add correct category relationships";
 foreach ($corrections as $productId => $data) {
     $product = $data['product'];
     $categoryNames = $data['categories'];
-    
+
     $sqlStatements[] = "-- Product: {$product->name}";
-    
+
     foreach ($categoryNames as $catName) {
         // Find matching category in database
         $matchingCat = $categories->first(function($cat) use ($catName) {
             return stripos(mb_strtolower($cat->name), mb_strtolower($catName)) !== false;
         });
-        
+
         if ($matchingCat) {
             $sqlStatements[] = "INSERT IGNORE INTO category_product (category_id, product_id) VALUES ({$matchingCat->id}, {$productId});";
         } else {
@@ -285,10 +285,10 @@ $choice = trim(fgets($handle));
 
 if ($choice == '1') {
     echo "\n🚀 Applying corrections...\n\n";
-    
+
     try {
         DB::beginTransaction();
-        
+
         // Remove old relationships
         echo "  • Removing old relationships...\n";
         foreach ($chunks as $chunk) {
@@ -296,17 +296,17 @@ if ($choice == '1') {
                 ->whereIn('product_id', $chunk)
                 ->delete();
         }
-        
+
         // Add new relationships
         echo "  • Adding correct relationships...\n";
         $insertData = [];
-        
+
         foreach ($corrections as $productId => $data) {
             foreach ($data['categories'] as $catName) {
                 $matchingCat = $categories->first(function($cat) use ($catName) {
                     return stripos(mb_strtolower($cat->name), mb_strtolower($catName)) !== false;
                 });
-                
+
                 if ($matchingCat) {
                     $insertData[] = [
                         'category_id' => $matchingCat->id,
@@ -315,33 +315,33 @@ if ($choice == '1') {
                 }
             }
         }
-        
+
         // Insert in batches
         $batches = array_chunk($insertData, 500);
         foreach ($batches as $batch) {
             DB::table('category_product')->insertOrIgnore($batch);
         }
-        
+
         DB::commit();
-        
+
         echo "\n✅ SUCCESS! All corrections applied!\n\n";
-        
+
         // Final statistics
         $newRelations = DB::table('category_product')->count();
         echo "Final Statistics:\n";
         echo "  • Total category-product relations: $newRelations\n";
         echo "  • Products with categories: " . count($corrections) . "\n";
         echo "  • Average categories per product: " . round($newRelations / $products->count(), 2) . "\n\n";
-        
+
         echo "🎉 Your categories are now correctly organized!\n";
         echo "   Products will now appear in the correct categories on your homepage.\n\n";
-        
+
     } catch (\Exception $e) {
         DB::rollBack();
         echo "\n❌ ERROR: " . $e->getMessage() . "\n";
         echo "   No changes were made. Please check the error and try again.\n\n";
     }
-    
+
 } else {
     echo "\n📝 Exiting. Please review 'fix-categories.sql' and apply manually.\n\n";
 }

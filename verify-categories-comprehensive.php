@@ -27,7 +27,7 @@ $duplicates = $categoryNames->filter(function($group) {
 if ($duplicates->count() > 0) {
     echo "⚠️  WARNING: Found duplicate category names:\n";
     foreach ($duplicates as $name => $group) {
-        echo "  - '$name' appears " . $group->count() . " times (IDs: " . 
+        echo "  - '$name' appears " . $group->count() . " times (IDs: " .
              $group->pluck('id')->implode(', ') . ")\n";
     }
     echo "\n";
@@ -42,28 +42,28 @@ foreach ($categories as $category) {
     $products = $category->products()->where('status', 'published')->get();
     $productCount = $products->count();
     $totalProducts += $productCount;
-    
+
     // Get relationship count
     $relationshipCount = DB::table('category_product')
         ->where('category_id', $category->id)
         ->count();
     $totalRelationships += $relationshipCount;
-    
+
     echo "Category: {$category->name} (ID: {$category->id})\n";
     echo "  Products: $productCount\n";
     echo "  Parent ID: " . ($category->parent_id ?: 'None (Root category)') . "\n";
-    
+
     // Sample products in this category
     if ($productCount > 0) {
         echo "  Sample products:\n";
         $sampleProducts = $products->take(5);
         foreach ($sampleProducts as $product) {
             echo "    - {$product->name} (ID: {$product->id})\n";
-            
+
             // Check if product name matches category
             $productNameLower = mb_strtolower($product->name);
             $categoryNameLower = mb_strtolower($category->name);
-            
+
             // Define keyword mappings for validation
             $categoryKeywords = [
                 'خالي جلوتين' => ['شار', 'خالي', 'جلوتين', 'gluten'],
@@ -79,11 +79,11 @@ foreach ($categories as $category) {
                 'شاي' => ['شاي', 'يوغي', 'tea', 'yogi'],
                 'حليب' => ['حليب', 'ميلك', 'milk', 'لوز', 'شوفان', 'جوز'],
             ];
-            
+
             // Check if product seems misplaced
             $seemsMisplaced = false;
             $suggestedCategory = null;
-            
+
             foreach ($categoryKeywords as $catName => $keywords) {
                 if (stripos($categoryNameLower, $catName) !== false) {
                     // This is the category we're checking
@@ -107,7 +107,7 @@ foreach ($categories as $category) {
                     }
                 }
             }
-            
+
             if ($seemsMisplaced && $suggestedCategory) {
                 $issuesFound[] = [
                     'product_id' => $product->id,
@@ -134,17 +134,17 @@ if (count($issuesFound) > 0) {
         echo "  Current category: {$issue['current_category']} (ID: {$issue['current_category_id']})\n";
         echo "  Suggested category: {$issue['suggested_category']}\n\n";
     }
-    
+
     // Create correction SQL
     echo "\n=== Suggested Corrections (SQL) ===\n";
     echo "-- Review these carefully before executing!\n\n";
-    
+
     foreach ($issuesFound as $issue) {
         // Find the suggested category ID
         $suggestedCat = Category::where('name', 'like', '%' . $issue['suggested_category'] . '%')
             ->where('status', 'published')
             ->first();
-        
+
         if ($suggestedCat) {
             echo "-- Move '{$issue['product_name']}' from '{$issue['current_category']}' to '{$suggestedCat->name}'\n";
             echo "DELETE FROM category_product WHERE product_id = {$issue['product_id']} AND category_id = {$issue['current_category_id']};\n";

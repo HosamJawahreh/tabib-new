@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 
 /**
  * PROFESSIONAL LIVE DATABASE CATEGORY CORRECTION
- * 
+ *
  * This analyzes your CURRENT live database and fixes category assignments
  * based on product names, brands, and keywords.
  */
@@ -151,10 +151,10 @@ $unmatched = [];
 foreach ($products as $product) {
     $productName = mb_strtolower($product->name);
     $productCategories = [];
-    
+
     foreach ($categoryRules as $categoryId => $rule) {
         $matches = false;
-        
+
         // Check keywords
         foreach ($rule['keywords'] as $keyword) {
             if (mb_stripos($productName, mb_strtolower($keyword)) !== false) {
@@ -162,7 +162,7 @@ foreach ($products as $product) {
                 break;
             }
         }
-        
+
         // Check exclusions
         if ($matches) {
             foreach ($rule['exclusions'] as $exclusion) {
@@ -172,12 +172,12 @@ foreach ($products as $product) {
                 }
             }
         }
-        
+
         if ($matches) {
             $productCategories[] = $categoryId;
         }
     }
-    
+
     if (!empty($productCategories)) {
         $corrections[$product->id] = [
             'name' => $product->name,
@@ -235,11 +235,11 @@ $sqlStatements[] = "";
 foreach ($corrections as $productId => $data) {
     $sqlStatements[] = "-- Product: {$data['name']} (ID: {$productId})";
     $sqlStatements[] = "DELETE FROM category_product WHERE product_id = {$productId};";
-    
+
     foreach ($data['categories'] as $categoryId) {
         $sqlStatements[] = "INSERT INTO category_product (category_id, product_id) VALUES ({$categoryId}, {$productId});";
     }
-    
+
     $sqlStatements[] = "";
 }
 
@@ -270,22 +270,22 @@ $choice = trim(fgets(STDIN));
 
 if ($choice === '1') {
     echo "\n🚀 Applying corrections...\n\n";
-    
+
     DB::beginTransaction();
-    
+
     try {
         $deletedCount = 0;
         $insertedCount = 0;
-        
+
         echo "  • Processing " . count($corrections) . " products...\n";
-        
+
         foreach ($corrections as $productId => $data) {
             // Remove old relationships
             $deleted = DB::table('category_product')
                 ->where('product_id', $productId)
                 ->delete();
             $deletedCount += $deleted;
-            
+
             // Add new relationships
             foreach ($data['categories'] as $categoryId) {
                 DB::table('category_product')->insert([
@@ -295,34 +295,34 @@ if ($choice === '1') {
                 $insertedCount++;
             }
         }
-        
+
         DB::commit();
-        
+
         echo "  ✓ Deleted {$deletedCount} old relationships\n";
         echo "  ✓ Inserted {$insertedCount} new relationships\n\n";
-        
+
         echo "✅ SUCCESS! All corrections applied!\n\n";
-        
+
         $finalStats = DB::table('category_product')->count();
         $productsWithCategories = DB::table('category_product')
             ->distinct('product_id')
             ->count('product_id');
-            
+
         echo "Final Statistics:\n";
         echo "  • Total category-product relations: {$finalStats}\n";
         echo "  • Products with categories: {$productsWithCategories}\n";
         echo "  • Products updated: " . count($corrections) . "\n\n";
-        
+
         echo "🎉 Categories are now correctly assigned based on product names!\n";
         echo "   Products will appear in their correct categories on the homepage.\n\n";
-        
+
     } catch (\Exception $e) {
         DB::rollBack();
         echo "\n❌ ERROR: " . $e->getMessage() . "\n";
         echo "   No changes were made to the database.\n";
         echo "   Please review the SQL file manually: {$sqlFile}\n\n";
     }
-    
+
 } else {
     echo "\n✓ Corrections saved to {$sqlFile}\n";
     echo "  Review and apply manually when ready.\n\n";

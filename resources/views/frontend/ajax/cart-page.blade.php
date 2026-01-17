@@ -14,12 +14,12 @@ table.shop_table.cart td {
 
 /* MOBILE RESPONSIVE CART - INLINE STYLES */
 @media (max-width: 767px) {
-    .cartpage { 
+    .cartpage {
         padding: 20px 0 !important;
         margin-top: 70px !important; /* Account for fixed header */
     }
-    
-    .container { 
+
+    .container {
         padding: 0 15px !important;
         max-width: 100% !    /* Remove button - top right corner with black trash icon */
     table.shop_table.cart td.product-remove {
@@ -29,11 +29,11 @@ table.shop_table.cart td {
         min-width: auto !important;
         padding: 0 !important;
     }
-    
+
     table.shop_table.cart td.product-remove::before {
         display: none !important;
     }
-    
+
     table.shop_table.cart td.product-remove .remove {
         font-size: 0 !important; /* Hide the × character */
         color: #000 !important;
@@ -46,7 +46,7 @@ table.shop_table.cart td {
         background: #f8f9fa !important;
         transition: all 0.3s ease !important;
     }
-    
+
     table.shop_table.cart td.product-remove .remove:after {
         content: "\f2ed" !important; /* FontAwesome trash icon */
         font-family: "Font Awesome 5 Free" !important;
@@ -54,14 +54,14 @@ table.shop_table.cart td {
         font-size: 18px !important;
         color: #000 !important;
     }
-    
+
     table.shop_table.cart td.product-remove .remove:hover {
         background: #fff !important;
     }
-    
+
     table.shop_table.cart td.product-remove .remove:hover:after {
         color: #dc3545 !important;
-    }    
+    }
     /* Make cart table scrollable */
     .cart-table {
         overflow-x: auto !important;
@@ -70,14 +70,14 @@ table.shop_table.cart td {
         border-radius: 8px !important;
         box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
     }
-    
+
     /* Cart table mobile styling */
     table.shop_table.cart {
         min-width: 600px !important;
         font-size: 13px !important;
         background: #fff !important;
     }
-    
+
     table.shop_table.cart th {
         background: #f8f9fa !important;
         font-weight: 600 !important;
@@ -86,14 +86,14 @@ table.shop_table.cart td {
         text-transform: uppercase !important;
         border-bottom: 2px solid #e0e0e0 !important;
     }
-    
+
     table.shop_table.cart td {
         padding: 12px 8px !important;
         font-size: 13px !important;
         vertical-align: middle !important;
         border-bottom: 1px solid #f0f0f0 !important;
     }
-    
+
     /* Keep thumbnail visible but smaller */
     table.shop_table.cart th.product-thumbnail,
     table.shop_table.cart td.product-thumbnail {
@@ -102,7 +102,7 @@ table.shop_table.cart td {
         padding: 8px !important;
         text-align: center !important;
     }
-    
+
     table.shop_table.cart td.product-thumbnail img {
         max-width: 60px !important;
         height: 60px !important;
@@ -110,20 +110,20 @@ table.shop_table.cart td {
         border-radius: 8px !important;
         box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
     }
-    
+
     /* Product name */
     table.shop_table.cart td.product-name {
         min-width: 150px !important;
         max-width: 180px !important;
     }
-    
+
     table.shop_table.cart td.product-name a {
         font-size: 14px !important;
         line-height: 1.4 !important;
         font-weight: 500 !important;
         color: #333 !important;
     }
-    
+
     /* Price - NO EXTRA SPACE */
     table.shop_table.cart td.product-price {
         min-width: 80px !important;
@@ -132,17 +132,17 @@ table.shop_table.cart td {
         color: #2c5f2d !important;
         white-space: nowrap !important;
     }
-    
+
     table.shop_table.cart td.product-price span {
         display: inline !important;
         white-space: nowrap !important;
     }
-    
+
     /* Quantity */
     table.shop_table.cart td.product-quantity {
         min-width: 90px !important;
     }
-    
+
     table.shop_table.cart td.product-quantity input {
         width: 60px !important;
         height: 38px !important;
@@ -152,7 +152,7 @@ table.shop_table.cart td {
         border: 1px solid #ddd !important;
         border-radius: 6px !important;
     }
-    
+
     /* Subtotal */
     table.shop_table.cart td.product-subtotal {
         min-width: 80px !important;
@@ -160,13 +160,13 @@ table.shop_table.cart td {
         font-weight: 600 !important;
         color: #2c5f2d !important;
     }
-    
+
     /* Remove button - Black trash icon */
     table.shop_table.cart td.product-remove {
         min-width: 50px !important;
         text-align: center !important;
     }
-    
+
     table.shop_table.cart td.product-remove .remove {
         font-size: 0 !important; /* Hide the × character */
         padding: 8px !important;
@@ -179,7 +179,7 @@ table.shop_table.cart td {
         border-radius: 6px !important;
         transition: all 0.3s ease !important;
     }
-    
+
     table.shop_table.cart td.product-remove .remove:after {
         content: "\f2ed" !important; /* FontAwesome trash icon */
         font-family: "Font Awesome 5 Free" !important;
@@ -187,20 +187,20 @@ table.shop_table.cart td {
         font-size: 18px !important;
         color: #000 !important;
     }
-    
+
     table.shop_table.cart td.product-remove .remove:hover {
         background: #f0f0f0 !important;
     }
-    
+
     table.shop_table.cart td.product-remove .remove:hover:after {
         color: #dc3545 !important;
     }
-    
+
     /* Cart totals sidebar */
     .cart-collaterals {
         margin-top: 25px !important;
     }
-    
+
     .cart_totals {
         padding: 25px 20px !important;
         background: #f8f9fa !important;
@@ -208,27 +208,27 @@ table.shop_table.cart td {
         margin: 0 !important;
         box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
     }
-    
+
     .cart_totals h2 {
         font-size: 20px !important;
         margin-bottom: 20px !important;
         font-weight: 600 !important;
         color: #333 !important;
     }
-    
+
     .cart_totals table {
         width: 100% !important;
         font-size: 15px !important;
     }
-    
+
     .cart_totals table tr {
         border-bottom: 1px solid #e0e0e0 !important;
     }
-    
+
     .cart_totals table td {
         padding: 12px 0 !important;
     }
-    
+
     /* Proceed to checkout button */
     .wc-proceed-to-checkout a {
         width: 100% !important;
@@ -242,29 +242,29 @@ table.shop_table.cart td {
 
 /* Extra small screens - Card layout */
 @media (max-width: 480px) {
-    .cartpage { 
+    .cartpage {
         padding: 15px 0 !important;
         margin-top: 70px !important;
     }
-    
+
     .container {
         padding: 0 10px !important;
     }
-    
+
     /* Make table card-based for very small screens */
     table.shop_table.cart {
         display: block !important;
         min-width: 100% !important;
     }
-    
+
     table.shop_table.cart thead {
         display: none !important;
     }
-    
+
     table.shop_table.cart tbody {
         display: block !important;
     }
-    
+
     table.shop_table.cart tr {
         display: block !important;
         margin-bottom: 15px !important;
@@ -275,7 +275,7 @@ table.shop_table.cart td {
         border: 1px solid #e5e7eb !important;
         box-shadow: 0 2px 6px rgba(0,0,0,0.08) !important;
     }
-    
+
     table.shop_table.cart td {
         display: block !important;
         text-align: left !important;
@@ -284,21 +284,21 @@ table.shop_table.cart td {
         min-width: 100% !important;
         max-width: 100% !important;
     }
-    
+
     /* Product image - centered and bigger */
     table.shop_table.cart td.product-thumbnail {
         text-align: center !important;
         margin-bottom: 10px !important;
         padding: 10px 0 !important;
     }
-    
+
     table.shop_table.cart td.product-thumbnail img {
         max-width: 100px !important;
         height: 100px !important;
         margin: 0 auto !important;
         display: block !important;
     }
-    
+
     /* Show labels using data-label attribute */
     table.shop_table.cart td[data-label]:before {
         content: attr(data-label) !important;
@@ -308,11 +308,11 @@ table.shop_table.cart td {
         color: #555 !important;
         min-width: 80px !important;
     }
-    
+
     table.shop_table.cart td.product-thumbnail:before {
         display: none !important;
     }
-    
+
     /* Product name */
     table.shop_table.cart td.product-name {
         font-size: 16px !important;
@@ -322,25 +322,25 @@ table.shop_table.cart td {
         border-bottom: 1px solid #f0f0f0 !important;
         margin-bottom: 10px !important;
     }
-    
+
     table.shop_table.cart td.product-name:before {
         display: none !important;
     }
-    
+
     /* Price, Quantity, Subtotal */
     table.shop_table.cart td.product-price,
     table.shop_table.cart td.product-quantity,
     table.shop_table.cart td.product-subtotal {
         font-size: 15px !important;
     }
-    
+
     /* Quantity input - full width */
     table.shop_table.cart td.product-quantity input {
         width: 100% !important;
         max-width: 120px !important;
         margin-top: 5px !important;
     }
-    
+
     /* Remove button - top right corner */
     table.shop_table.cart td.product-remove {
         position: absolute !important;
@@ -348,29 +348,29 @@ table.shop_table.cart td {
         right: 10px !important;
         padding: 0 !important;
     }
-    
+
     table.shop_table.cart td.product-remove:before {
         display: none !important;
     }
-    
+
     table.shop_table.cart td.product-remove .remove {
         font-size: 24px !important;
         color: #dc3545 !important;
     }
-    
+
     /* Cart totals - full width */
     .cart_totals {
         padding: 20px 15px !important;
     }
-    
+
     .cart_totals h2 {
         font-size: 18px !important;
     }
-    
+
     .cart_totals table {
         font-size: 14px !important;
     }
-    
+
     table.shop_table.cart td::before {
         content: attr(data-label);
         font-weight: 600 !important;
@@ -378,23 +378,23 @@ table.shop_table.cart td {
         width: 80px !important;
         color: #374151 !important;
     }
-    
+
     /* Show thumbnail in card view */
     table.shop_table.cart td.product-thumbnail {
         display: block !important;
         text-align: center !important;
         margin-bottom: 10px !important;
     }
-    
+
     table.shop_table.cart td.product-thumbnail::before {
         display: none !important;
     }
-    
+
     table.shop_table.cart td.product-thumbnail img {
         max-width: 100px !important;
         border-radius: 8px !important;
     }
-    
+
     table.shop_table.cart td.product-name {
         font-size: 15px !important;
         font-weight: 600 !important;
@@ -402,12 +402,12 @@ table.shop_table.cart td {
         max-width: 100% !important;
         margin-bottom: 10px !important;
     }
-    
+
     table.shop_table.cart td.product-quantity input {
         width: 70px !important;
         height: 40px !important;
     }
-    
+
     /* Remove button absolute */
     table.shop_table.cart td.product-remove {
         position: absolute !important;
@@ -416,11 +416,11 @@ table.shop_table.cart td {
         min-width: auto !important;
         padding: 0 !important;
     }
-    
+
     table.shop_table.cart td.product-remove::before {
         display: none !important;
     }
-    
+
     table.shop_table.cart td.product-remove .remove {
         font-size: 24px !important;
         color: #ef4444 !important;

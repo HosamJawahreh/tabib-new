@@ -57,23 +57,23 @@ foreach ($lines as $line) {
     if (!preg_match("/^\((\d+),/", $line)) {
         continue;
     }
-    
+
     // Extract values using regex - handle quoted strings with escapes
     $values = [];
     $current = '';
     $inQuotes = false;
     $escaped = false;
     $parenCount = 0;
-    
+
     for ($i = 0; $i < strlen($line); $i++) {
         $char = $line[$i];
-        
+
         if ($char === '(' && !$inQuotes) {
             $parenCount++;
             if ($parenCount > 1) $current .= $char;
             continue;
         }
-        
+
         if ($char === ')' && !$inQuotes) {
             $parenCount--;
             if ($parenCount > 0) $current .= $char;
@@ -85,42 +85,42 @@ foreach ($lines as $line) {
             }
             continue;
         }
-        
+
         if ($char === '\\' && !$escaped) {
             $escaped = true;
             $current .= $char;
             continue;
         }
-        
+
         if ($char === "'" && !$escaped) {
             $inQuotes = !$inQuotes;
             $current .= $char;
             $escaped = false;
             continue;
         }
-        
+
         if ($char === ',' && !$inQuotes && $parenCount === 1) {
             $values[] = trim($current);
             $current = '';
             $escaped = false;
             continue;
         }
-        
+
         $current .= $char;
         $escaped = false;
     }
-    
+
     if (count($values) > max($idPos, $namePos, $pricePos, $salePricePos)) {
         $id = $values[$idPos];
         $name = trim($values[$namePos], "'");
         $name = str_replace("\\'", "'", $name);
-        
+
         $price = $values[$pricePos];
         $price = ($price === 'NULL' || $price === '') ? null : floatval($price);
-        
+
         $salePrice = $values[$salePricePos];
         $salePrice = ($salePrice === 'NULL' || $salePrice === '') ? null : floatval($salePrice);
-        
+
         // Only store if has meaningful price data
         if ($price !== null || $salePrice !== null) {
             $productsWithPrices[$id] = [
@@ -153,20 +153,20 @@ $notMatched = [];
 
 foreach ($productsWithPrices as $sqlId => $sqlData) {
     $dbProduct = $dbProducts->get($sqlData['name']);
-    
+
     if (!$dbProduct) {
         $notMatched[] = $sqlData['name'];
         continue;
     }
-    
+
     $matched++;
-    
+
     // Determine new prices
     // If there's a sale price in SQL, use it as the current price and regular price as previous
     // Otherwise, use regular price as current price
     $newPrice = null;
     $newPreviousPrice = null;
-    
+
     if ($sqlData['sale_price'] !== null && $sqlData['sale_price'] > 0) {
         // Product is on sale
         $newPrice = $sqlData['sale_price'];  // Current discounted price
@@ -176,16 +176,16 @@ foreach ($productsWithPrices as $sqlId => $sqlData) {
         $newPrice = $sqlData['regular_price'];
         $newPreviousPrice = null; // No discount
     }
-    
+
     // Only update if prices changed
     $needsUpdate = false;
     $changes = [];
-    
+
     if ($newPrice !== null && abs($dbProduct->price - $newPrice) > 0.01) {
         $needsUpdate = true;
         $changes['price'] = "DB: {$dbProduct->price} → SQL: $newPrice";
     }
-    
+
     if ($newPreviousPrice !== null) {
         $dbPrevPrice = $dbProduct->previous_price ?? 0;
         if (abs($dbPrevPrice - $newPreviousPrice) > 0.01) {
@@ -196,7 +196,7 @@ foreach ($productsWithPrices as $sqlId => $sqlData) {
         $needsUpdate = true;
         $changes['previous_price'] = "Remove (no discount)";
     }
-    
+
     if ($needsUpdate) {
         $priceUpdates[$dbProduct->id] = [
             'name' => $sqlData['name'],
@@ -249,38 +249,38 @@ $choice = trim(fgets(STDIN));
 
 if ($choice === '1') {
     echo "\n💰 Applying price updates...\n\n";
-    
+
     try {
         DB::beginTransaction();
-        
+
         $updated = 0;
         foreach ($priceUpdates as $productId => $data) {
             $updateData = ['price' => $data['new_price']];
-            
+
             if ($data['new_previous_price'] !== null) {
                 $updateData['previous_price'] = $data['new_previous_price'];
             } else {
                 $updateData['previous_price'] = null;
             }
-            
+
             DB::table('products')
                 ->where('id', $productId)
                 ->update($updateData);
-            
+
             $updated++;
         }
-        
+
         DB::commit();
-        
+
         echo "  ✓ Updated prices for $updated products\n\n";
         echo "✅ SUCCESS! All prices synced from SQL file!\n\n";
-        
+
     } catch (\Exception $e) {
         DB::rollBack();
         echo "\n❌ ERROR: " . $e->getMessage() . "\n";
         echo "   No changes were made.\n\n";
     }
-    
+
 } else {
     echo "\n✅ No changes made.\n\n";
 }

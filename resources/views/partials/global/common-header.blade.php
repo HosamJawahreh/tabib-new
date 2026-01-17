@@ -366,7 +366,7 @@
            width: 100% !important; /* Full width */
            padding: 0 !important;
        }
-       
+
        .main-nav .container-fluid {
            width: 100% !important;
            max-width: 100% !important;
@@ -380,7 +380,7 @@
            flex-wrap: nowrap !important;
            width: 100% !important;
        }
-       
+
        /* REORDERING: Logo Left (1), Icons Center (2), Language Right (3) */
        .logo-col {
            order: 1 !important;
@@ -388,13 +388,13 @@
            width: auto !important;
            text-align: left !important;
        }
-       
+
        .icons-col {
            order: 2 !important;
            flex: 1 1 auto !important;
            width: auto !important;
        }
-       
+
        .language-col {
            order: 3 !important;
            flex: 0 0 auto !important;
@@ -417,14 +417,14 @@
            align-items: center !important;
            height: 70px !important;
        }
-       
+
        /* Language column - align vertically */
        .language-col {
            display: flex !important;
            align-items: center !important;
            height: 70px !important;
        }
-       
+
        /* Icons column - align vertically */
        .icons-col {
            display: flex !important;
@@ -436,16 +436,16 @@
        .navbar-nav {
            gap: 3px !important;
        }
-       
+
        .navbar-nav .nav-link {
            font-size: 13px !important;
            padding: 8px 12px !important;
        }
-       
+
        .navbar-nav .nav-link i {
            font-size: 14px !important;
        }
-       
+
        /* Hide icon text on smaller screens, keep icons */
        .navbar-nav .nav-link {
            gap: 5px !important;
@@ -538,11 +538,11 @@
            font-size: 12px !important;
            padding: 6px 10px !important;
        }
-       
+
        .navbar-nav .nav-link i {
            font-size: 13px !important;
        }
-       
+
        .navbar-nav {
            gap: 2px !important;
        }
@@ -949,18 +949,18 @@
        display: none !important;
        visibility: hidden !important;
    }
-   
+
    /* PROFESSIONAL MENU ITEMS - Desktop & Mobile */
    .navbar-nav {
        display: flex !important;
        align-items: center !important;
        gap: 5px !important;
    }
-   
+
    .navbar-nav .nav-item {
        position: relative !important;
    }
-   
+
    .navbar-nav .nav-link {
        font-size: 15px !important;
        font-weight: 500 !important;
@@ -973,24 +973,24 @@
        gap: 8px !important;
        white-space: nowrap !important;
    }
-   
+
    .navbar-nav .nav-link i {
        font-size: 16px !important;
        color: #10b981 !important;
    }
-   
+
    .navbar-nav .nav-link:hover,
    .navbar-nav .nav-item.active .nav-link {
        background: #f0fdf4 !important;
        color: #10b981 !important;
    }
-   
+
    /* Dropdown arrow */
    .navbar-nav .dropdown-toggle::after {
        margin-left: 6px !important;
        font-size: 10px !important;
    }
-   
+
    /* PROFESSIONAL MEGA DROPDOWN MENU */
    .navbar-nav .mega-dropdown-menu {
        min-width: 800px !important;
@@ -1000,17 +1000,17 @@
        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1) !important;
        border: 1px solid #e5e7eb !important;
    }
-   
+
    .navbar-nav .category-column {
        padding: 15px !important;
    }
-   
+
    .navbar-nav .category-header {
        margin-bottom: 12px !important;
        padding-bottom: 10px !important;
        border-bottom: 2px solid #10b981 !important;
    }
-   
+
    .navbar-nav .category-title {
        font-size: 16px !important;
        font-weight: 600 !important;
@@ -1018,17 +1018,17 @@
        text-decoration: none !important;
        transition: color 0.2s ease !important;
    }
-   
+
    .navbar-nav .category-title:hover {
        color: #10b981 !important;
    }
-   
+
    .navbar-nav .subcategory-list {
        list-style: none !important;
        padding: 0 !important;
        margin: 0 !important;
    }
-   
+
    .navbar-nav .subcategory-item {
        font-size: 14px !important;
        padding: 8px 12px !important;
@@ -1038,13 +1038,13 @@
        border-radius: 6px !important;
        transition: all 0.2s ease !important;
    }
-   
+
    .navbar-nav .subcategory-item:hover {
        background: #f0fdf4 !important;
        color: #10b981 !important;
        padding-left: 16px !important;
    }
-   
+
    .navbar-nav .subcategory-item i {
        font-size: 12px !important;
        margin-right: 6px !important;
@@ -1542,7 +1542,7 @@ $pages = App\Models\Page::get();
                     </div>
                 </nav>
             </div>
-            
+
             <!-- Language Selector Column - Separate for mobile reordering -->
             @php
             $languges = App\Models\Language::all();
@@ -1558,7 +1558,7 @@ $pages = App\Models\Page::get();
                     </select>
                 </div>
             </div>
-            
+
             <!-- Icons Column - Search, Cart, Account -->
             <div class="col order-2 icons-col">
                 <div class="d-flex align-items-center justify-content-center h-100 col-icons">

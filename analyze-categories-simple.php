@@ -67,34 +67,34 @@ foreach ($categories as $category) {
     $productRelations = DB::table('category_product')
         ->where('category_id', $category->id)
         ->get();
-    
+
     $productCount = count($productRelations);
     $totalRelationships += $productCount;
-    
+
     echo "Category: {$category->name} (ID: {$category->id})\n";
     echo "  Products: $productCount\n";
     echo "  Parent ID: " . ($category->parent_id ?: 'Root') . "\n";
-    
+
     if ($productCount > 0) {
         // Sample 5 products
         $sampleRelations = array_slice($productRelations->toArray(), 0, 5);
         echo "  Sample products:\n";
-        
+
         foreach ($sampleRelations as $relation) {
             $product = DB::table('ec_products')
                 ->where('id', $relation->product_id)
                 ->first();
-            
+
             if ($product) {
                 echo "    - {$product->name} (ID: {$product->id})\n";
-                
+
                 // Check if product matches category keywords
                 $productNameLower = mb_strtolower($product->name);
                 $categoryNameLower = mb_strtolower($category->name);
-                
+
                 $matchesCategory = false;
                 $betterCategory = null;
-                
+
                 // Check current category
                 foreach ($categoryKeywords as $catKey => $keywords) {
                     if (stripos($categoryNameLower, mb_strtolower($catKey)) !== false) {
@@ -108,7 +108,7 @@ foreach ($categories as $category) {
                         break;
                     }
                 }
-                
+
                 // If doesn't match, find better category
                 if (!$matchesCategory) {
                     foreach ($categoryKeywords as $catKey => $keywords) {
@@ -119,7 +119,7 @@ foreach ($categories as $category) {
                             }
                         }
                     }
-                    
+
                     if ($betterCategory) {
                         $issuesFound[] = [
                             'product_id' => $product->id,
@@ -150,7 +150,7 @@ if (count($issuesFound) > 0) {
         echo "  Current category: {$issue['current_category']} (ID: {$issue['current_category_id']})\n";
         echo "  Better match: {$issue['suggested']}\n\n";
     }
-    
+
     // Group by suggested category
     $grouped = [];
     foreach ($issuesFound as $issue) {
@@ -159,7 +159,7 @@ if (count($issuesFound) > 0) {
         }
         $grouped[$issue['suggested']][] = $issue;
     }
-    
+
     echo "\n=== Issues Grouped by Suggested Category ===\n\n";
     foreach ($grouped as $suggestedCat => $issues) {
         echo "$suggestedCat (" . count($issues) . " products):\n";

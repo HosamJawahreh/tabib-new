@@ -1,7 +1,7 @@
 <?php
 /**
  * Test Script: Verify Multi-Category Products Retrieval
- * 
+ *
  * This script tests:
  * 1. Products have correct category relationships in database
  * 2. Categories can retrieve their products correctly
@@ -43,7 +43,7 @@ $products = Product::where('status', 1)
 
 foreach ($products as $product) {
     echo "   Product: {$product->name} (ID: {$product->id})\n";
-    
+
     if ($product->categories->count() > 0) {
         echo "   Categories: ";
         $catNames = $product->categories->pluck('name')->toArray();
@@ -69,7 +69,7 @@ $categories = Category::where('status', 1)
 foreach ($categories as $category) {
     echo "   Category: {$category->name} (ID: {$category->id})\n";
     echo "   Products count: {$category->products_count}\n";
-    
+
     // Show first 3 products in this category
     $categoryProducts = Product::where('status', 1)
         ->whereHas('categories', function($q) use ($category) {
@@ -77,7 +77,7 @@ foreach ($categories as $category) {
         })
         ->limit(3)
         ->get();
-    
+
     if ($categoryProducts->count() > 0) {
         echo "   Sample products:\n";
         foreach ($categoryProducts as $prod) {
@@ -97,7 +97,7 @@ $testCategory = Category::where('status', 1)->first();
 
 if ($testCategory) {
     echo "   Testing with category: {$testCategory->name}\n";
-    
+
     $filteredProducts = Product::where('status', 1)
         ->whereHas('categories', function($q) use ($testCategory) {
             $q->where('categories.id', $testCategory->id);
@@ -105,7 +105,7 @@ if ($testCategory) {
         ->with('categories')
         ->limit(5)
         ->get();
-    
+
     echo "   Found {$filteredProducts->count()} products:\n";
     foreach ($filteredProducts as $prod) {
         echo "      - {$prod->name}\n";

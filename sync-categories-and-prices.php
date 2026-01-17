@@ -39,13 +39,13 @@ echo "\n🔍 Step 2: Parsing SQL files...\n\n";
 function parseCategories($file) {
     $content = file_get_contents($file);
     $categories = [];
-    
+
     preg_match_all("/INSERT INTO `ec_product_categories`.*?VALUES\s*(.*?);/s", $content, $matches);
-    
+
     if (!empty($matches[1])) {
         foreach ($matches[1] as $valuesBlock) {
             preg_match_all("/\((\d+),\s*'([^']+)',[^)]+\)/", $valuesBlock, $tuples);
-            
+
             for ($i = 0; $i < count($tuples[1]); $i++) {
                 $id = $tuples[1][$i];
                 $name = $tuples[2][$i];
@@ -53,7 +53,7 @@ function parseCategories($file) {
             }
         }
     }
-    
+
     return $categories;
 }
 
@@ -61,33 +61,33 @@ function parseCategories($file) {
 function parseProducts($file) {
     $content = file_get_contents($file);
     $products = [];
-    
+
     // Find the INSERT statement with column definitions
     preg_match("/INSERT INTO `ec_products` \((.*?)\) VALUES/s", $content, $columnMatch);
     if (empty($columnMatch[1])) {
         return $products;
     }
-    
+
     // Parse column names
     $columns = array_map('trim', explode(',', $columnMatch[1]));
     $columns = array_map(function($col) {
         return trim($col, '` ');
     }, $columns);
-    
+
     // Find positions of important columns
     $idPos = array_search('id', $columns);
     $namePos = array_search('name', $columns);
     $pricePos = array_search('price', $columns);
     $salePricePos = array_search('sale_price', $columns);
-    
+
     // Extract all INSERT statements
     preg_match_all("/INSERT INTO `ec_products`.*?VALUES\s*(.*?);/s", $content, $matches);
-    
+
     if (!empty($matches[1])) {
         foreach ($matches[1] as $valuesBlock) {
             // Split by row - more sophisticated parsing needed
             preg_match_all("/\((\d+),\s*'([^']+)',[^(]*?,\s*([0-9.]+|NULL),\s*([0-9.]+|NULL)/", $valuesBlock, $tuples);
-            
+
             // This is a simplified parser - for full accuracy we'd need a proper SQL parser
             // Let's try a different approach: parse line by line
             $lines = explode("\n", $valuesBlock);
@@ -96,7 +96,7 @@ function parseProducts($file) {
                 if (preg_match("/^\((\d+),\s*'([^']*(?:\\'[^']*)*)'.*?$/", $line, $match)) {
                     $id = $match[1];
                     $name = str_replace("\\'", "'", $match[2]);
-                    
+
                     // Extract price and sale_price from the full row
                     // This is simplified - in production you'd want a proper SQL parser
                     $products[$id] = [
@@ -108,7 +108,7 @@ function parseProducts($file) {
             }
         }
     }
-    
+
     return $products;
 }
 
@@ -116,23 +116,23 @@ function parseProducts($file) {
 function parseProductsAdvanced($file) {
     $content = file_get_contents($file);
     $products = [];
-    
+
     // Read line by line to find product entries
     $lines = explode("\n", $content);
-    
+
     foreach ($lines as $line) {
         // Look for lines starting with product INSERT data
         if (preg_match("/^\((\d+),\s*'([^']*(?:\\'[^']*)*)'/", $line, $match)) {
             $id = $match[1];
             $name = str_replace("\\'", "'", $match[2]);
-            
+
             // Extract numeric values that look like prices
             // Price typically appears after several fields
             preg_match_all("/,\s*([0-9]+\.?[0-9]*)\s*,/", $line, $numbers);
-            
+
             $price = null;
             $salePrice = null;
-            
+
             // Try to find price values (typically between 0 and 10000)
             if (!empty($numbers[1])) {
                 foreach ($numbers[1] as $num) {
@@ -147,7 +147,7 @@ function parseProductsAdvanced($file) {
                     }
                 }
             }
-            
+
             $products[$id] = [
                 'name' => $name,
                 'price' => $price,
@@ -155,7 +155,7 @@ function parseProductsAdvanced($file) {
             ];
         }
     }
-    
+
     return $products;
 }
 
@@ -163,17 +163,17 @@ function parseProductsAdvanced($file) {
 function parseRelations($file) {
     $content = file_get_contents($file);
     $relations = [];
-    
+
     preg_match_all("/INSERT INTO `ec_product_category_product`.*?VALUES\s*(.*?);/s", $content, $matches);
-    
+
     if (!empty($matches[1])) {
         foreach ($matches[1] as $valuesBlock) {
             preg_match_all("/\((\d+),\s*(\d+)\)/", $valuesBlock, $tuples);
-            
+
             for ($i = 0; $i < count($tuples[1]); $i++) {
                 $categoryId = $tuples[1][$i];
                 $productId = $tuples[2][$i];
-                
+
                 if (!isset($relations[$productId])) {
                     $relations[$productId] = [];
                 }
@@ -181,7 +181,7 @@ function parseRelations($file) {
             }
         }
     }
-    
+
     return $relations;
 }
 
@@ -233,11 +233,11 @@ $productPriceUpdates = [];
 
 foreach ($products as $sqlId => $productData) {
     $productName = $productData['name'];
-    
+
     foreach ($dbProducts as $dbId => $dbName) {
         if (trim($dbName) === trim($productName)) {
             $productIdMap[$sqlId] = $dbId;
-            
+
             // Store price update data
             if ($productData['price'] !== null || $productData['sale_price'] !== null) {
                 $productPriceUpdates[$dbId] = [
@@ -265,21 +265,21 @@ foreach ($relations as $sqlProductId => $sqlCategoryIds) {
     if (!isset($productIdMap[$sqlProductId])) {
         continue;
     }
-    
+
     $dbProductId = $productIdMap[$sqlProductId];
-    
+
     foreach ($sqlCategoryIds as $sqlCategoryId) {
         if (!isset($categoryIdMap[$sqlCategoryId])) {
             continue;
         }
-        
+
         $dbCategoryId = $categoryIdMap[$sqlCategoryId];
-        
+
         $key = "$dbCategoryId-$dbProductId";
         if (isset($uniqueCheck[$key])) {
             continue;
         }
-        
+
         $uniqueCheck[$key] = true;
         $newRelations[] = [
             'category_id' => $dbCategoryId,
@@ -323,27 +323,27 @@ $choice = trim(fgets(STDIN));
 
 if (in_array($choice, ['1', '2', '3'])) {
     echo "\n🚀 Applying corrections...\n\n";
-    
+
     try {
         DB::beginTransaction();
-        
+
         // Apply category corrections
         if ($choice === '1' || $choice === '2') {
             echo "  📦 Syncing category relationships...\n";
             DB::table('category_product')->delete();
-            
+
             $chunks = array_chunk($newRelations, 1000);
             foreach ($chunks as $chunk) {
                 DB::table('category_product')->insert($chunk);
             }
             echo "  ✓ Synced " . count($newRelations) . " category relationships\n";
         }
-        
+
         // Apply price corrections
         if ($choice === '1' || $choice === '3') {
             echo "\n  💰 Syncing product prices...\n";
             $updatedCount = 0;
-            
+
             foreach ($productPriceUpdates as $productId => $data) {
                 $updateData = [];
                 if ($data['price'] !== null) {
@@ -352,7 +352,7 @@ if (in_array($choice, ['1', '2', '3'])) {
                 if ($data['sale_price'] !== null) {
                     $updateData['sale_price'] = $data['sale_price'];
                 }
-                
+
                 if (!empty($updateData)) {
                     DB::table('products')
                         ->where('id', $productId)
@@ -360,32 +360,32 @@ if (in_array($choice, ['1', '2', '3'])) {
                     $updatedCount++;
                 }
             }
-            
+
             echo "  ✓ Updated prices for $updatedCount products\n";
         }
-        
+
         DB::commit();
-        
+
         echo "\n✅ SUCCESS! All corrections applied!\n\n";
-        
+
         // Final statistics
         echo "Final Statistics:\n";
         echo "  • Total category relationships: " . DB::table('category_product')->count() . "\n";
         echo "  • Products with categories: " . DB::table('category_product')->distinct('product_id')->count('product_id') . "\n";
         echo "  • Categories in use: " . DB::table('category_product')->distinct('category_id')->count('category_id') . "\n";
-        
+
         if ($choice === '1' || $choice === '3') {
             echo "  • Products with updated prices: $updatedCount\n";
         }
-        
+
         echo "\n🎉 Your database is now synced with the SQL files!\n";
-        
+
     } catch (\Exception $e) {
         DB::rollBack();
         echo "\n❌ ERROR: " . $e->getMessage() . "\n";
         echo "   No changes were made to the database.\n\n";
     }
-    
+
 } else {
     echo "\n✅ No changes made.\n\n";
 }
