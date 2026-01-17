@@ -204,7 +204,7 @@ class CatalogController extends FrontBaseController
             'rating_count' => $product->ratings_count ?? 0,
           ];
         }
-        
+
         return response()->json([
           'products' => $products,
           'total' => $prods->total(),
@@ -212,7 +212,7 @@ class CatalogController extends FrontBaseController
           'current_page' => $prods->currentPage(),
         ]);
       }
-      
+
       // Regular AJAX request for category view
       $data['ajax_check'] = 1;
       return view('frontend.ajax.category', $data);

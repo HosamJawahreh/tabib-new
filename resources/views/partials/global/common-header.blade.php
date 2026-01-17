@@ -1033,35 +1033,35 @@
            transition: opacity 0.3s ease, visibility 0.3s ease !important;
            z-index: 9999 !important;
        }
-       
+
        /* Remove hover effect on mobile - use click instead */
        .header-cart-1:hover .cart-popup {
            display: none !important; /* Disable hover on mobile */
        }
-       
+
        /* No bridge needed on mobile - using click */
        .header-cart-1::after,
        .has-cart-data::after {
            display: none !important;
        }
-       
+
        /* Make cart icon clearly tappable */
        .header-cart-1 {
            cursor: pointer !important;
            -webkit-tap-highlight-color: rgba(16, 185, 129, 0.2) !important;
        }
-       
+
        /* Hide desktop search bar on mobile */
        .search-col {
            display: none !important;
        }
-       
+
        /* Mobile Search Icon Styling */
        .mobile-search-icon {
            padding: 8px !important;
            margin-right: 5px;
        }
-       
+
        .mobile-search-icon .search-icon-wrapper {
            width: 40px;
            height: 40px;
@@ -1072,18 +1072,18 @@
            border-radius: 50%;
            transition: all 0.3s ease;
        }
-       
+
        .mobile-search-icon .search-icon-wrapper i {
            color: #fff !important;
            font-size: 18px !important;
        }
-       
+
        .mobile-search-icon a:hover .search-icon-wrapper {
            transform: scale(1.1);
            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
        }
    }
-   
+
    /* Mobile Search Overlay - Professional Fullscreen Design */
    .mobile-search-overlay {
        position: fixed;
@@ -1097,12 +1097,12 @@
        opacity: 0;
        transition: opacity 0.3s ease;
    }
-   
+
    .mobile-search-overlay.active {
        display: block;
        opacity: 1;
    }
-   
+
    .mobile-search-container {
        width: 100%;
        height: 100%;
@@ -1111,7 +1111,7 @@
        background: #fff;
        animation: slideInFromTop 0.4s cubic-bezier(0.4, 0, 0.2, 1);
    }
-   
+
    @keyframes slideInFromTop {
        from {
            transform: translateY(-100%);
@@ -1120,7 +1120,7 @@
            transform: translateY(0);
        }
    }
-   
+
    .mobile-search-header {
        padding: 20px;
        background: #1a1a1a;
@@ -1130,7 +1130,7 @@
        justify-content: space-between;
        box-shadow: 0 2px 10px rgba(0,0,0,0.2);
    }
-   
+
    .mobile-search-title {
        margin: 0;
        font-size: 20px;
@@ -1139,7 +1139,7 @@
        text-align: center;
        color: #fff;
    }
-   
+
    .mobile-search-close {
        background: rgba(255, 255, 255, 0.15);
        border: none;
@@ -1154,23 +1154,23 @@
        justify-content: center;
        transition: all 0.3s ease;
    }
-   
+
    .mobile-search-close:hover {
        background: rgba(255, 255, 255, 0.25);
        transform: rotate(90deg);
    }
-   
+
    .mobile-search-body {
        flex: 1;
        padding: 20px;
        overflow-y: auto;
        background: #fff;
    }
-   
+
    .mobile-search-form {
        margin-bottom: 20px;
    }
-   
+
    .mobile-search-input-wrapper {
        position: relative;
        display: flex;
@@ -1182,19 +1182,19 @@
        padding: 5px;
        transition: all 0.3s ease;
    }
-   
+
    .mobile-search-input-wrapper:focus-within {
        border-color: #10b981;
        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
        transform: translateY(-2px);
    }
-   
+
    .mobile-search-icon-input {
        color: #10b981;
        font-size: 20px;
        padding: 0 15px;
    }
-   
+
    .mobile-search-input {
        flex: 1;
        border: none;
@@ -1204,11 +1204,11 @@
        background: transparent;
        color: #1a1a1a;
    }
-   
+
    .mobile-search-input::placeholder {
        color: #9ca3af;
    }
-   
+
    .mobile-search-submit {
        background: #10b981;
        border: none;
@@ -1224,13 +1224,13 @@
        transition: all 0.3s ease;
        box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
    }
-   
+
    .mobile-search-submit:hover {
        background: #059669;
        transform: scale(1.05);
        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
    }
-   
+
    .mobile-search-suggestions {
        background: #fff;
        border-radius: 12px;
@@ -1240,11 +1240,11 @@
        overflow-y: auto;
        display: none;
    }
-   
+
    .mobile-search-suggestions.active {
        display: block;
    }
-   
+
    .mobile-search-result-item {
        display: flex;
        align-items: center;
@@ -1255,16 +1255,16 @@
        text-decoration: none;
        color: inherit;
    }
-   
+
    .mobile-search-result-item:last-child {
        border-bottom: none;
    }
-   
+
    .mobile-search-result-item:hover {
        background: #f9fafb;
        padding-left: 20px;
    }
-   
+
    .mobile-search-result-image {
        width: 60px;
        height: 60px;
@@ -1273,11 +1273,11 @@
        margin-right: 12px;
        background: #f3f4f6;
    }
-   
+
    .mobile-search-result-info {
        flex: 1;
    }
-   
+
    .mobile-search-result-name {
        font-size: 14px;
        font-weight: 600;
@@ -1288,47 +1288,47 @@
        -webkit-box-orient: vertical;
        overflow: hidden;
    }
-   
+
    .mobile-search-result-price {
        font-size: 16px;
        font-weight: 700;
        color: #10b981;
        margin: 0;
    }
-   
+
    .mobile-search-no-results {
        padding: 40px 20px;
        text-align: center;
        color: #9ca3af;
    }
-   
+
    .mobile-search-no-results i {
        font-size: 48px;
        margin-bottom: 12px;
        opacity: 0.5;
    }
-   
+
    .mobile-search-no-results p {
        margin: 0;
        font-size: 16px;
    }
-   
+
    .mobile-search-loading {
        padding: 40px 20px;
        text-align: center;
        color: #10b981;
    }
-   
+
    .mobile-search-loading i {
        font-size: 32px;
        animation: spin 1s linear infinite;
    }
-   
+
    @keyframes spin {
        from { transform: rotate(0deg); }
        to { transform: rotate(360deg); }
    }
-   
+
    .mobile-search-view-all {
        display: block;
        text-align: center;
@@ -1340,32 +1340,32 @@
        border-radius: 0 0 12px 12px;
        transition: all 0.3s ease;
    }
-   
+
    .mobile-search-view-all:hover {
        background: #059669;
        color: #fff;
    }
-   
+
    /* RTL Support for search results */
    [dir="rtl"] .mobile-search-result-image {
        margin-right: 0;
        margin-left: 12px;
    }
-   
+
    [dir="rtl"] .mobile-search-result-item:hover {
        padding-left: 15px;
        padding-right: 20px;
    }
-   
+
    /* RTL Support for Mobile Search */
    [dir="rtl"] .mobile-search-header {
        flex-direction: row-reverse;
    }
-   
+
    [dir="rtl"] .mobile-search-input-wrapper {
        flex-direction: row-reverse;
    }
-   
+
    [dir="rtl"] .mobile-search-icon-input {
        padding: 0 10px 0 15px;
    }   /* RTL Support - Still centered */
@@ -1541,13 +1541,13 @@ $pages = App\Models\Page::get();
                 @endif
                 <div class="mobile-search-input-wrapper">
                     <i class="flaticon-search mobile-search-icon-input"></i>
-                    <input 
-                        type="text" 
-                        id="mobile_prod_name" 
-                        class="mobile-search-input" 
-                        name="search" 
-                        placeholder="@if(app()->getLocale() == 'ar' || app()->getLocale() == 'arabic')ابحث عن المنتجات...@else{{ __('Search for products...') }}@endif" 
-                        value="{{ request()->input('search') }}" 
+                    <input
+                        type="text"
+                        id="mobile_prod_name"
+                        class="mobile-search-input"
+                        name="search"
+                        placeholder="@if(app()->getLocale() == 'ar' || app()->getLocale() == 'arabic')ابحث عن المنتجات...@else{{ __('Search for products...') }}@endif"
+                        value="{{ request()->input('search') }}"
                         dir="auto"
                         autocomplete="off"
                         required
@@ -1607,20 +1607,20 @@ document.addEventListener('DOMContentLoaded', function() {
 
         console.log('✅ LTR MODE - Language:', htmlLang);
     }
-    
+
     // Mobile Search Overlay - Professional Implementation
     const mobileSearchToggle = document.getElementById('mobileSearchToggle');
     const mobileSearchOverlay = document.getElementById('mobileSearchOverlay');
     const mobileSearchClose = document.getElementById('mobileSearchClose');
     const mobileSearchInput = document.getElementById('mobile_prod_name');
-    
+
     if (mobileSearchToggle && mobileSearchOverlay) {
         // Open mobile search
         mobileSearchToggle.addEventListener('click', function(e) {
             e.preventDefault();
             mobileSearchOverlay.classList.add('active');
             document.body.style.overflow = 'hidden';
-            
+
             // Focus on input after animation
             setTimeout(function() {
                 if (mobileSearchInput) {
@@ -1628,7 +1628,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }, 400);
         });
-        
+
         // Close mobile search
         if (mobileSearchClose) {
             mobileSearchClose.addEventListener('click', function() {
@@ -1636,7 +1636,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 document.body.style.overflow = '';
             });
         }
-        
+
         // Close on overlay background click
         mobileSearchOverlay.addEventListener('click', function(e) {
             if (e.target === mobileSearchOverlay) {
@@ -1644,7 +1644,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 document.body.style.overflow = '';
             }
         });
-        
+
         // Close on ESC key
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape' && mobileSearchOverlay.classList.contains('active')) {
@@ -1652,25 +1652,25 @@ document.addEventListener('DOMContentLoaded', function() {
                 document.body.style.overflow = '';
             }
         });
-        
+
         // AJAX Live Search Implementation
         if (mobileSearchInput) {
             let searchTimeout;
             const suggestionsContainer = document.getElementById('mobileSearchSuggestions');
-            
+
             mobileSearchInput.addEventListener('input', function() {
                 const query = this.value.trim();
-                
+
                 // Clear previous timeout
                 clearTimeout(searchTimeout);
-                
+
                 // Clear results if query is too short
                 if (query.length < 2) {
                     suggestionsContainer.innerHTML = '';
                     suggestionsContainer.classList.remove('active');
                     return;
                 }
-                
+
                 // Show loading state
                 suggestionsContainer.innerHTML = `
                     <div class="mobile-search-loading">
@@ -1679,13 +1679,13 @@ document.addEventListener('DOMContentLoaded', function() {
                     </div>
                 `;
                 suggestionsContainer.classList.add('active');
-                
+
                 // Debounce search - wait 500ms after user stops typing
                 searchTimeout = setTimeout(function() {
                     performSearch(query);
                 }, 500);
             });
-            
+
             function performSearch(query) {
                 fetch(`{{ route('front.category') }}?search=${encodeURIComponent(query)}&ajax=1`, {
                     method: 'GET',
@@ -1708,7 +1708,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     `;
                 });
             }
-            
+
             function displayResults(data, query) {
                 if (!data.products || data.products.length === 0) {
                     suggestionsContainer.innerHTML = `
@@ -1719,12 +1719,12 @@ document.addEventListener('DOMContentLoaded', function() {
                     `;
                     return;
                 }
-                
+
                 let html = '';
                 data.products.forEach(product => {
                     const imageUrl = product.photo ? `{{ asset('assets/images/products/') }}/${product.photo}` : `{{ asset('assets/images/noimage.png') }}`;
                     const productUrl = `{{ url('/item') }}/${product.slug}`;
-                    
+
                     html += `
                         <a href="${productUrl}" class="mobile-search-result-item">
                             <img src="${imageUrl}" alt="${product.name}" class="mobile-search-result-image">
@@ -1735,7 +1735,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         </a>
                     `;
                 });
-                
+
                 // Add "View All Results" button if there are more products
                 if (data.total > data.products.length) {
                     html += `
@@ -1744,10 +1744,10 @@ document.addEventListener('DOMContentLoaded', function() {
                         </a>
                     `;
                 }
-                
+
                 suggestionsContainer.innerHTML = html;
             }
-            
+
             // Submit form on enter or button click
             const searchForm = document.getElementById('mobileSearchForm');
             if (searchForm) {
@@ -1761,28 +1761,28 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
     }
-    
+
     // Mobile Cart - Touch-Friendly Implementation (Click to Toggle, No Auto-Close)
     if (window.innerWidth <= 767) {
         const cartIcon = document.querySelector('.header-cart-1');
         const cartPopup = document.querySelector('.cart-popup');
-        
+
         if (cartIcon && cartPopup) {
             let cartOpen = false;
-            
+
             // Click anywhere on cart icon to toggle
             cartIcon.addEventListener('click', function(e) {
                 // If clicking on a link inside cart popup, let it work
                 if (e.target.closest('.cart-popup')) {
                     return;
                 }
-                
+
                 e.preventDefault();
                 e.stopPropagation();
-                
+
                 // Toggle cart
                 cartOpen = !cartOpen;
-                
+
                 if (cartOpen) {
                     cartPopup.style.display = 'block !important';
                     cartPopup.style.opacity = '1';
@@ -1795,17 +1795,17 @@ document.addEventListener('DOMContentLoaded', function() {
                     cartPopup.style.pointerEvents = 'none';
                 }
             });
-            
+
             // Keep cart open when interacting with it - IMPORTANT
             cartPopup.addEventListener('click', function(e) {
                 e.stopPropagation();
             });
-            
+
             // Prevent cart from closing when touching it
             cartPopup.addEventListener('touchstart', function(e) {
                 e.stopPropagation();
             });
-            
+
             cartPopup.addEventListener('touchmove', function(e) {
                 e.stopPropagation();
             });
