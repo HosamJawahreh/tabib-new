@@ -68,49 +68,61 @@
     }
 }
 
-/* Mobile Touch Zoom - Native Pinch-to-Zoom */
-.mobile-zoom-wrapper {
-    position: relative;
-    overflow: hidden;
-    -webkit-overflow-scrolling: touch;
-    touch-action: none;
-    -webkit-user-select: none;
-    user-select: none;
-    width: 100%;
-    -webkit-touch-callout: none;
-    -webkit-tap-highlight-color: transparent;
-}
-
+/* Mobile Touch Zoom - Smooth No-Shake Implementation */
 @media (max-width: 767px) {
-    /* Prevent body scroll on mobile when touching image */
+    .mobile-zoom-wrapper {
+        position: relative;
+        overflow: hidden;
+        touch-action: none;
+        -webkit-user-select: none;
+        user-select: none;
+        width: 100%;
+        height: auto;
+        -webkit-touch-callout: none;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    /* Prevent ALL page movement during zoom */
     body.zoom-active {
         overflow: hidden !important;
         position: fixed !important;
         width: 100% !important;
+        height: 100% !important;
+        top: 0 !important;
+        left: 0 !important;
+    }
+
+    #single-image-zoom {
+        display: block;
+        width: 100%;
+        height: auto;
+        max-width: 100%;
+        transform-origin: center center;
+        will-change: transform;
+    }
+
+    #single-image-zoom.zoomed {
+        cursor: grab;
+    }
+
+    #single-image-zoom.zoomed:active {
+        cursor: grabbing;
     }
 }
 
-#single-image-zoom {
-    display: block;
-    width: 100%;
-    height: auto;
-    max-width: 100%;
-    pointer-events: auto;
-}
-
-#single-image-zoom.zoomed {
-    cursor: grab;
-}
-
-#single-image-zoom.zoomed:active {
-    cursor: grabbing;
-}
-
-/* Hide mobile zoom controls on desktop */
+/* Desktop - keep normal behavior */
 @media (min-width: 768px) {
     .mobile-zoom-wrapper {
+        position: relative !important;
+        overflow: visible !important;
         touch-action: auto;
-        overflow: visible;
+    }
+
+    #single-image-zoom {
+        display: block;
+        width: 100%;
+        height: auto;
+        max-width: 100%;
     }
 }/* Professional Gallery Thumbnails - Grid Layout */
 #gallery_09 {
@@ -1027,165 +1039,204 @@
               </div>
 
               <script>
-              // Improved Mobile Pinch-to-Zoom - No Page Shake
+              // Simple, Smooth Mobile Pinch-to-Zoom - No Shake Guaranteed
               (function() {
-                  if (window.innerWidth <= 767) {
-                      const wrapper = document.querySelector('.mobile-zoom-wrapper');
-                      const mainImage = document.getElementById('single-image-zoom');
+                  // Only on mobile devices
+                  if (window.innerWidth > 767) return;
 
-                      if (!wrapper || !mainImage) return;
+                  const wrapper = document.querySelector('.mobile-zoom-wrapper');
+                  const mainImage = document.getElementById('single-image-zoom');
+                  
+                  if (!wrapper || !mainImage) return;
 
-                      let scale = 1;
-                      let posX = 0;
-                      let posY = 0;
-                      let isDragging = false;
-                      let startX = 0;
-                      let startY = 0;
-                      let initialDistance = 0;
-                      let initialScale = 1;
-                      let isZooming = false;
+                  // Zoom state
+                  let scale = 1;
+                  let posX = 0;
+                  let posY = 0;
+                  let lastScale = 1;
+                  let lastPosX = 0;
+                  let lastPosY = 0;
+                  
+                  // Touch state
+                  let initialDistance = 0;
+                  let isPinching = false;
+                  let isPanning = false;
+                  let lastTouchX = 0;
+                  let lastTouchY = 0;
 
-                      // Prevent page scroll when touching the image
-                      wrapper.style.touchAction = 'none';
-                      document.body.style.overscrollBehavior = 'contain';
+                  // Get distance between two touch points
+                  function getDistance(touches) {
+                      const dx = touches[0].clientX - touches[1].clientX;
+                      const dy = touches[0].clientY - touches[1].clientY;
+                      return Math.sqrt(dx * dx + dy * dy);
+                  }
+
+                  // Get center point between two touches
+                  function getCenter(touches) {
+                      return {
+                          x: (touches[0].clientX + touches[1].clientX) / 2,
+                          y: (touches[0].clientY + touches[1].clientY) / 2
+                      };
+                  }
+
+                  // Update image transform
+                  function updateTransform(animate = false) {
+                      mainImage.style.transition = animate ? 'transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)' : 'none';
+                      mainImage.style.transform = `translate(${posX}px, ${posY}px) scale(${scale})`;
                       
-                      // Lock body scroll during zoom
-                      function lockBodyScroll() {
-                          document.body.classList.add('zoom-active');
+                      if (scale > 1) {
+                          mainImage.classList.add('zoomed');
+                      } else {
+                          mainImage.classList.remove('zoomed');
                       }
+                  }
+
+                  // Constrain position to prevent image from going out of bounds
+                  function constrainPosition() {
+                      if (scale <= 1) {
+                          posX = 0;
+                          posY = 0;
+                          return;
+                      }
+
+                      const rect = mainImage.getBoundingClientRect();
+                      const wrapperRect = wrapper.getBoundingClientRect();
                       
-                      function unlockBodyScroll() {
-                          document.body.classList.remove('zoom-active');
-                      }
+                      const scaledWidth = rect.width / lastScale * scale;
+                      const scaledHeight = rect.height / lastScale * scale;
+                      
+                      const maxX = Math.max(0, (scaledWidth - wrapperRect.width) / 2);
+                      const maxY = Math.max(0, (scaledHeight - wrapperRect.height) / 2);
 
-                      function updateTransform() {
-                          mainImage.style.transform = `translate(${posX}px, ${posY}px) scale(${scale})`;
-                          mainImage.style.transformOrigin = 'center center';
-                          mainImage.style.transition = isDragging ? 'none' : 'transform 0.3s ease';
-                          mainImage.style.willChange = 'transform';
+                      posX = Math.max(-maxX, Math.min(maxX, posX));
+                      posY = Math.max(-maxY, Math.min(maxY, posY));
+                  }
 
-                          if (scale > 1) {
-                              mainImage.classList.add('zoomed');
-                          } else {
-                              mainImage.classList.remove('zoomed');
-                          }
-                      }
+                  // Lock body scroll
+                  function lockBody() {
+                      document.body.style.top = `-${window.scrollY}px`;
+                      document.body.classList.add('zoom-active');
+                  }
 
-                      function constrainPosition() {
-                          if (scale <= 1) {
-                              posX = 0;
-                              posY = 0;
-                              return;
-                          }
+                  // Unlock body scroll
+                  function unlockBody() {
+                      const scrollY = document.body.style.top;
+                      document.body.classList.remove('zoom-active');
+                      document.body.style.top = '';
+                      window.scrollTo(0, parseInt(scrollY || '0') * -1);
+                  }
 
-                          const rect = mainImage.getBoundingClientRect();
-                          const wrapperRect = wrapper.getBoundingClientRect();
-
-                          const maxX = Math.max(0, (rect.width * scale - wrapperRect.width) / 2);
-                          const maxY = Math.max(0, (rect.height * scale - wrapperRect.height) / 2);
-
-                          posX = Math.max(-maxX, Math.min(maxX, posX));
-                          posY = Math.max(-maxY, Math.min(maxY, posY));
-                      }
-
-                      wrapper.addEventListener('touchstart', (e) => {
-                          if (e.touches.length === 2) {
-                              // Two finger pinch zoom
-                              e.preventDefault();
-                              e.stopPropagation();
-                              isZooming = true;
-                              lockBodyScroll();
-                              initialDistance = Math.hypot(
-                                  e.touches[0].pageX - e.touches[1].pageX,
-                                  e.touches[0].pageY - e.touches[1].pageY
-                              );
-                              initialScale = scale;
-                          } else if (e.touches.length === 1 && scale > 1) {
-                              // One finger pan when zoomed
-                              e.preventDefault();
-                              e.stopPropagation();
-                              isDragging = true;
-                              lockBodyScroll();
-                              startX = e.touches[0].pageX - posX;
-                              startY = e.touches[0].pageY - posY;
-                          }
-                      }, { passive: false });
-
-                      wrapper.addEventListener('touchmove', (e) => {
-                          if (e.touches.length === 2) {
-                              // Pinch zoom
-                              e.preventDefault();
-                              e.stopPropagation();
-                              const distance = Math.hypot(
-                                  e.touches[0].pageX - e.touches[1].pageX,
-                                  e.touches[0].pageY - e.touches[1].pageY
-                              );
-                              scale = Math.max(1, Math.min(4, initialScale * (distance / initialDistance)));
-                              constrainPosition();
-                              updateTransform();
-                          } else if (isDragging && scale > 1) {
-                              // Pan when zoomed
-                              e.preventDefault();
-                              e.stopPropagation();
-                              posX = e.touches[0].pageX - startX;
-                              posY = e.touches[0].pageY - startY;
-                              constrainPosition();
-                              updateTransform();
-                          }
-                      }, { passive: false });
-
-                      wrapper.addEventListener('touchend', (e) => {
-                          isDragging = false;
-                          isZooming = false;
+                  // Touch start
+                  wrapper.addEventListener('touchstart', function(e) {
+                      if (e.touches.length === 2) {
+                          // Start pinch zoom
+                          e.preventDefault();
+                          e.stopPropagation();
                           
-                          if (scale === 1) {
+                          isPinching = true;
+                          initialDistance = getDistance(e.touches);
+                          lastScale = scale;
+                          
+                          lockBody();
+                      } else if (e.touches.length === 1 && scale > 1) {
+                          // Start pan
+                          e.preventDefault();
+                          e.stopPropagation();
+                          
+                          isPanning = true;
+                          lastTouchX = e.touches[0].clientX;
+                          lastTouchY = e.touches[0].clientY;
+                          lastPosX = posX;
+                          lastPosY = posY;
+                          
+                          lockBody();
+                      }
+                  }, { passive: false });
+
+                  // Touch move
+                  wrapper.addEventListener('touchmove', function(e) {
+                      if (e.touches.length === 2 && isPinching) {
+                          // Pinch zoom
+                          e.preventDefault();
+                          e.stopPropagation();
+                          
+                          const distance = getDistance(e.touches);
+                          const scaleChange = distance / initialDistance;
+                          
+                          scale = Math.max(1, Math.min(4, lastScale * scaleChange));
+                          
+                          constrainPosition();
+                          updateTransform(false);
+                          
+                      } else if (e.touches.length === 1 && isPanning && scale > 1) {
+                          // Pan
+                          e.preventDefault();
+                          e.stopPropagation();
+                          
+                          const deltaX = e.touches[0].clientX - lastTouchX;
+                          const deltaY = e.touches[0].clientY - lastTouchY;
+                          
+                          posX = lastPosX + deltaX;
+                          posY = lastPosY + deltaY;
+                          
+                          constrainPosition();
+                          updateTransform(false);
+                      }
+                  }, { passive: false });
+
+                  // Touch end
+                  wrapper.addEventListener('touchend', function(e) {
+                      if (e.touches.length === 0) {
+                          isPinching = false;
+                          isPanning = false;
+                          
+                          // If zoomed out completely, reset
+                          if (scale <= 1) {
+                              scale = 1;
                               posX = 0;
                               posY = 0;
-                              updateTransform();
-                              unlockBodyScroll();
-                          } else {
-                              // Keep body locked if still zoomed
-                              setTimeout(() => {
-                                  if (scale === 1) {
-                                      unlockBodyScroll();
-                                  }
-                              }, 100);
+                              updateTransform(true);
+                              unlockBody();
                           }
-                      });
+                      }
+                  }, { passive: false });
 
-                      // Double tap to reset
-                      let lastTap = 0;
-                      wrapper.addEventListener('touchend', (e) => {
-                          const currentTime = new Date().getTime();
-                          const tapLength = currentTime - lastTap;
-                          if (tapLength < 300 && tapLength > 0) {
+                  // Double tap to reset
+                  let lastTapTime = 0;
+                  wrapper.addEventListener('touchend', function(e) {
+                      if (e.touches.length === 0) {
+                          const now = Date.now();
+                          if (now - lastTapTime < 300) {
                               e.preventDefault();
                               scale = 1;
                               posX = 0;
                               posY = 0;
-                              updateTransform();
-                              unlockBodyScroll();
+                              updateTransform(true);
+                              unlockBody();
                           }
-                          lastTap = currentTime;
-                      });
+                          lastTapTime = now;
+                      }
+                  });
 
-                      // Update when thumbnail clicked
-                      document.querySelectorAll('#gallery_09 a').forEach(function(thumb) {
-                          thumb.addEventListener('click', function(e) {
-                              e.preventDefault();
-                              const newImage = this.getAttribute('data-image');
-                              if (mainImage && newImage) {
-                                  mainImage.src = newImage;
-                                  mainImage.setAttribute('data-zoom-image', this.getAttribute('data-zoom-image'));
-                                  scale = 1;
-                                  posX = 0;
-                                  posY = 0;
-                                  updateTransform();
-                                  unlockBodyScroll();
-                              }
-                          });
+                  // Thumbnail click handler - reset zoom
+                  document.querySelectorAll('#gallery_09 a').forEach(function(thumb) {
+                      thumb.addEventListener('click', function(e) {
+                          e.preventDefault();
+                          const newImage = this.getAttribute('data-image');
+                          if (mainImage && newImage) {
+                              mainImage.src = newImage;
+                              mainImage.setAttribute('data-zoom-image', this.getAttribute('data-zoom-image'));
+                              
+                              // Reset zoom
+                              scale = 1;
+                              posX = 0;
+                              posY = 0;
+                              lastScale = 1;
+                              updateTransform(true);
+                              unlockBody();
+                          }
                       });
-                  }
+                  });
               })();
               </script>
           </div>
