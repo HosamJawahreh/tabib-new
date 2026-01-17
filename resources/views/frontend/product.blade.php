@@ -58,18 +58,6 @@
             <h3 class="mb-2 text-white">{{ __('Product Details') }}</h3>
          </div>
          <div class="col-12">
-            <nav aria-label="breadcrumb">
-               <ol class="breadcrumb mb-0 d-inline-flex bg-transparent p-0">
-                  <li class="breadcrumb-item"><a href="{{ route('front.index') }}">{{ __('Home') }}</a></li>
-                  @if($productt->categories->count() > 0)
-                     @foreach($productt->categories as $index => $category)
-                        <li class="breadcrumb-item text-white">{{ $category->name }}</li>
-                     @endforeach
-                  @endif
-                  <li class="breadcrumb-item active" aria-current="page">{{ $productt->name }}</li>
-               </ol>
-            </nav>
-
             @if($productt->categories->count() > 0)
             <div class="breadcrumb-categories-wrapper">
                @foreach($productt->categories as $index => $category)
@@ -317,20 +305,27 @@ lazy();
          //initiate the plugin and pass the id of the div containing gallery images
       $("#single-image-zoom").elevateZoom({
          gallery: 'gallery_09',
-         zoomType: "lens",
+         zoomType: "inner",
          lensShape: "round",
          lensSize: 200,
          cursor: "crosshair",
          galleryActiveClass: 'active',
          imageCrossfade: true,
-         borderSize: 2,
+         borderSize: 3,
          borderColour: "#10b981",
          responsive: true,
          easing: true,
          lensFadeIn: 300,
          lensFadeOut: 300,
          zoomWindowFadeIn: 300,
-         zoomWindowFadeOut: 300
+         zoomWindowFadeOut: 300,
+         zoomWindowWidth: 500,
+         zoomWindowHeight: 500,
+         zoomWindowPosition: 1,
+         scrollZoom: true,
+         tint: false,
+         tintColour: '#10b981',
+         tintOpacity: 0.5
       });
 
       // Gallery thumbnail click handler
@@ -349,7 +344,7 @@ lazy();
       });
 
       // Initialize gallery carousel
-      $('#gallery_09 .owl-carousel').owlCarousel({
+      var galleryCarousel = $('#gallery_09 .owl-carousel').owlCarousel({
           items: 4,
           margin: 10,
           nav: true,
@@ -361,27 +356,39 @@ lazy();
               0: {
                   items: 3,
                   margin: 8,
-                  stagePadding: 0
+                  stagePadding: 0,
+                  nav: true
               },
               576: {
                   items: 3,
-                  margin: 10
+                  margin: 10,
+                  nav: true
               },
               768: {
                   items: 3,
-                  margin: 12
+                  margin: 12,
+                  nav: true
               },
               992: {
                   items: 4,
-                  margin: 12
+                  margin: 12,
+                  nav: true
               },
               1200: {
                   items: 4,
-                  margin: 15
+                  margin: 15,
+                  nav: true
               }
           },
-          onInitialized: function() {
+          onInitialized: function(event) {
               console.log('Gallery carousel initialized');
+              // Ensure nav is visible
+              setTimeout(function() {
+                  $('#gallery_09 .owl-nav').css('display', 'flex');
+              }, 100);
+          },
+          onRefreshed: function(event) {
+              $('#gallery_09 .owl-nav').css('display', 'flex');
           }
       });
 

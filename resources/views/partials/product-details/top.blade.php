@@ -26,62 +26,125 @@
     display: block !important;
 }
 
-/* Desktop Zoom Lens */
+/* Professional Desktop Zoom with Inner Window */
 .zoomLens {
-    border: 2px solid #10b981 !important;
+    border: 3px solid #10b981 !important;
     cursor: crosshair !important;
+    opacity: 0.4 !important;
+    background: #10b981 !important;
+    box-shadow: 0 0 20px rgba(16, 185, 129, 0.5) !important;
 }
 
 .zoomWindow {
-    border: 2px solid #10b981 !important;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15) !important;
-    border-radius: 8px !important;
+    border: 3px solid #10b981 !important;
+    border-radius: 0 !important;
+    box-shadow: inset 0 0 40px rgba(16, 185, 129, 0.1) !important;
+    z-index: 999 !important;
+    background: #ffffff !important;
 }
 
-/* Professional Gallery Thumbnails */
+.zoomWindowContainer {
+    z-index: 998 !important;
+}
+
+.zoomContainer {
+    position: relative !important;
+}
+
+/* Main image container for desktop zoom */
+#single-image-zoom {
+    position: relative !important;
+    z-index: 1 !important;
+}
+
+@media (min-width: 768px) {
+    .mobile-zoom-wrapper {
+        position: relative !important;
+        overflow: visible !important;
+    }
+
+    #single-image-zoom {
+        cursor: crosshair !important;
+    }
+}
+
+/* Mobile Touch Zoom - Native Pinch-to-Zoom */
+.mobile-zoom-wrapper {
+    position: relative;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-x pan-y pinch-zoom;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+#single-image-zoom.zoomed {
+    cursor: grab;
+}
+
+#single-image-zoom.zoomed:active {
+    cursor: grabbing;
+}
+
+/* Hide mobile zoom controls on desktop */
+@media (min-width: 768px) {
+    .mobile-zoom-wrapper {
+        touch-action: auto;
+        overflow: visible;
+    }
+}/* Professional Gallery Thumbnails - Grid Layout */
 #gallery_09 {
-    margin-top: 20px;
+    margin-top: 0;
     position: relative;
+    clear: both;
 }
 
-#gallery_09 .owl-carousel {
-    position: relative;
-    padding: 0 50px;
+.gallery-grid {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+    margin-top: 0 !important;
 }
 
-#gallery_09 .item {
-    padding: 5px !important;
+.gallery-item {
+    width: 100px;
+    flex: 0 0 auto;
 }
 
 #gallery_09 a {
     display: block;
     position: relative;
     overflow: hidden;
-    border-radius: 10px;
-    border: 3px solid #e5e7eb;
+    border-radius: 8px;
+    border: 2px solid #e5e7eb;
     transition: all 0.3s ease;
     background: #fff;
-    padding: 5px;
+    padding: 3px;
+    width: 100%;
+    height: 100%;
 }
 
 #gallery_09 a:hover {
     border-color: #10b981;
-    transform: translateY(-3px);
-    box-shadow: 0 6px 16px rgba(16, 185, 129, 0.3) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3) !important;
 }
 
 #gallery_09 a.active {
     border-color: #10b981;
-    box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.2);
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
     background: #f0fdf4;
 }
 
 #gallery_09 img {
     height: 100px !important;
-    object-fit: cover;
+    max-height: 100px !important;
     width: 100%;
+    max-width: 100% !important;
+    object-fit: cover;
     transition: transform 0.3s ease;
-    border-radius: 6px;
+    border-radius: 5px;
     display: block;
 }
 
@@ -89,92 +152,33 @@
     transform: scale(1.05);
 }
 
-/* Owl Carousel Navigation */
-#gallery_09 {
-    position: relative;
-}
-
-#gallery_09 .owl-carousel {
-    position: relative;
-    padding: 0 50px;
-}
-
+/* Owl Carousel Navigation - Hidden (Not Used) */
 #gallery_09 .owl-nav {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 100%;
-    left: 0;
-    right: 0;
-    display: flex;
-    justify-content: space-between;
-    pointer-events: none;
-    z-index: 10;
-}
-
-#gallery_09 .owl-nav button {
-    pointer-events: all !important;
-    width: 40px !important;
-    height: 40px !important;
-    background: rgba(255, 255, 255, 0.95) !important;
-    border-radius: 50% !important;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.2) !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    transition: all 0.3s ease !important;
-    border: 2px solid #e5e7eb !important;
-    cursor: pointer !important;
-    position: relative !important;
-}
-
-#gallery_09 .owl-nav button:hover {
-    background: #10b981 !important;
-    border-color: #10b981 !important;
-    transform: scale(1.15) !important;
-    box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4) !important;
-}
-
-#gallery_09 .owl-nav button span {
-    font-size: 26px !important;
-    line-height: 1 !important;
-    color: #1f2937 !important;
-    font-weight: bold !important;
-}
-
-#gallery_09 .owl-nav button:hover span {
-    color: #fff !important;
-}
-
-#gallery_09 .owl-nav .owl-prev {
-    position: absolute !important;
-    left: 5px !important;
-}
-
-#gallery_09 .owl-nav .owl-next {
-    position: absolute !important;
-    right: 5px !important;
-}
-
-#gallery_09 .owl-nav button.disabled {
-    opacity: 0.4 !important;
-    cursor: not-allowed !important;
+    display: none !important;
 }
 
 /* Main Image Container Enhancement */
 .bg-light.rounded.shadow-sm {
-    background: #ffffff !important;
-    border: 2px solid #e5e7eb !important;
+    background: transparent !important;
+    border: none !important;
     position: relative;
     overflow: hidden;
-    padding: 15px !important;
+    padding: 0 !important;
+    box-shadow: none !important;
 }
 
 .bg-light.rounded.shadow-sm img {
-    border-radius: 8px !important;
     width: 100% !important;
     height: auto !important;
     display: block !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+#single-image-zoom {
+    border: none !important;
+    box-shadow: none !important;
+    outline: none !important;
 }
 
 /* Zoom Hint for Desktop */
@@ -211,28 +215,56 @@
 @media (min-width: 768px) {
     #gallery_09 img {
         height: 110px !important;
+        max-height: 110px !important;
+        max-width: 110px !important;
+        width: 110px !important;
+    }
+
+    .gallery-grid {
+        flex-wrap: wrap !important;
+        gap: 10px !important;
+    }
+
+    .gallery-item {
+        width: 110px;
     }
 }
 
 @media (min-width: 992px) {
     #gallery_09 img {
-        height: 120px !important;
+        height: 110px !important;
+        max-height: 110px !important;
+        max-width: 110px !important;
+        width: 110px !important;
+    }
+
+    .gallery-grid {
+        flex-wrap: wrap !important;
+        gap: 12px !important;
+    }
+
+    .gallery-item {
+        width: 110px;
     }
 }
 
-/* Mobile Image Zoom - Professional Implementation */
+/* Mobile Image Zoom - Simple Native Implementation */
 @media (max-width: 767px) {
     .product-images {
         position: relative !important;
         overflow: visible !important;
-        touch-action: pan-x pan-y pinch-zoom !important;
+    }
+
+    .bg-light.rounded.shadow-sm {
+        overflow: visible !important;
+        touch-action: manipulation !important;
     }
 
     #single-image-zoom {
-        cursor: zoom-in !important;
-        user-select: none !important;
-        -webkit-user-select: none !important;
-        -webkit-touch-callout: none !important;
+        cursor: pointer !important;
+        touch-action: manipulation !important;
+        max-width: 100% !important;
+        height: auto !important;
     }
 
     /* Mobile gallery navigation adjustments */
@@ -256,153 +288,67 @@
     #gallery_09 .owl-nav button span {
         font-size: 24px !important;
     }
+}
 
-    /* Fullscreen image viewer for mobile - Modern Design */
-    .mobile-image-viewer {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        background: linear-gradient(135deg, rgba(0, 0, 0, 0.97) 0%, rgba(0, 0, 0, 0.92) 100%);
-        backdrop-filter: blur(10px);
-        z-index: 99999;
-        overflow: hidden;
-        touch-action: none;
-        animation: fadeIn 0.3s ease;
-    }
+/* Simple Mobile Image Lightbox */
+.mobile-image-viewer {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.95);
+    z-index: 99999;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+}
 
-    @keyframes fadeIn {
-        from { opacity: 0; }
-        to { opacity: 1; }
-    }
+.mobile-image-viewer.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
 
+.mobile-image-viewer img {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+}
+
+.mobile-viewer-close {
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    width: 44px;
+    height: 44px;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 100000;
+    font-size: 24px;
+    color: #1f2937;
+    font-weight: bold;
+    border: none;
+}
+
+@media (max-width: 767px) {
     .mobile-image-viewer.active {
         display: block;
+        overflow: auto;
     }
 
     .mobile-image-viewer img {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        max-width: none;
-        width: auto;
+        width: 100%;
         height: auto;
-        transition: none;
-        user-select: none;
-        -webkit-user-select: none;
-        filter: drop-shadow(0 8px 32px rgba(0, 0, 0, 0.3));
-    }
-
-    .mobile-viewer-close {
-        position: absolute;
-        top: 20px;
-        right: 20px;
-        width: 48px;
-        height: 48px;
-        background: rgba(255, 255, 255, 0.95);
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        z-index: 100000;
-        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
-        font-size: 26px;
-        color: #1f2937;
-        font-weight: 600;
-        line-height: 1;
-        transition: all 0.2s ease;
-        border: 2px solid rgba(16, 185, 129, 0.3);
-    }
-
-    .mobile-viewer-close:active {
-        transform: scale(0.92);
-        background: #10b981;
-        color: white;
-        border-color: #10b981;
-    }
-
-    .mobile-zoom-controls {
-        position: absolute;
-        bottom: 30px;
-        right: 20px;
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
-        z-index: 100000;
-    }
-
-    .mobile-zoom-btn {
-        width: 52px;
-        height: 52px;
-        background: rgba(255, 255, 255, 0.95);
-        border-radius: 16px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
-        font-size: 22px;
-        color: #1f2937;
-        font-weight: 700;
-        transition: all 0.2s ease;
-        border: 2px solid rgba(16, 185, 129, 0.3);
-    }
-
-    .mobile-zoom-btn:active {
-        transform: scale(0.92);
-        background: #10b981;
-        color: white;
-        border-color: #10b981;
-    }
-
-    .mobile-zoom-level {
-        position: absolute;
-        top: 25px;
-        left: 50%;
-        transform: translateX(-50%);
-        background: rgba(16, 185, 129, 0.95);
-        padding: 10px 20px;
-        border-radius: 24px;
-        color: white;
-        font-size: 15px;
-        font-weight: 700;
-        pointer-events: none;
-        opacity: 0;
-        transition: opacity 0.3s ease;
-        z-index: 100000;
-        box-shadow: 0 4px 16px rgba(16, 185, 129, 0.4);
-        letter-spacing: 0.5px;
-    }
-
-    .mobile-zoom-level.show {
-        opacity: 1;
-    }
-
-    .mobile-viewer-hint {
-        position: absolute;
-        bottom: 100px;
-        left: 50%;
-        transform: translateX(-50%);
-        background: rgba(255, 255, 255, 0.95);
-        padding: 12px 24px;
-        border-radius: 24px;
-        color: #1f2937;
-        font-size: 13px;
-        font-weight: 600;
-        pointer-events: none;
-        opacity: 0;
-        animation: hintFadeInOut 4s ease;
-        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
-        border: 2px solid rgba(16, 185, 129, 0.3);
-    }
-
-    @keyframes hintFadeInOut {
-        0%, 100% { opacity: 0; transform: translateX(-50%) translateY(10px); }
-        10%, 90% { opacity: 1; transform: translateX(-50%) translateY(0); }
+        max-width: none;
+        display: block;
     }
 }
 
@@ -416,6 +362,50 @@
 .color-list li:hover .box {
     transform: scale(1.05);
     border-color: #10b981 !important;
+}
+
+/* Share Section - Single Row on All Devices */
+.share-section {
+    text-align: center;
+    width: 100%;
+}
+
+.share-section h5 {
+    font-size: 0.95rem !important;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #6b7280 !important;
+    font-weight: 600 !important;
+}
+
+.social-linkss .social-icons {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    gap: 10px !important;
+    align-items: center !important;
+    justify-content: center !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    scrollbar-width: thin;
+    padding: 5px 0;
+}
+
+.social-linkss .social-icons::-webkit-scrollbar {
+    height: 4px;
+}
+
+.social-linkss .social-icons::-webkit-scrollbar-thumb {
+    background: #e5e7eb;
+    border-radius: 10px;
+}
+
+.social-linkss .social-icons li {
+    flex-shrink: 0 !important;
+}
+
+.social-linkss .social-icons a:hover {
+    transform: translateY(-4px) scale(1.08);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2) !important;
 }
 
 .social-icons a:hover {
@@ -556,26 +546,89 @@
         top: 0 !important;
     }
 
-    /* Mobile Quantity Selector - Centered and Larger */
-    .qty-selector {
-        max-width: 100% !important;
+    /* Share Section Responsive */
+    .social-linkss .social-icons {
         justify-content: center !important;
-        margin: 0 auto 20px !important;
-        padding: 8px !important;
+        gap: 8px !important;
+        flex-wrap: wrap !important;
+        overflow-x: visible !important;
+        -webkit-overflow-scrolling: touch !important;
+        padding-bottom: 5px !important;
+    }
+
+    .social-linkss .social-icons::-webkit-scrollbar {
+        height: 3px;
+    }
+
+    .social-linkss .social-icons::-webkit-scrollbar-thumb {
+        background: #e5e7eb;
+        border-radius: 10px;
+    }
+
+    .social-linkss .social-icons li {
+        margin: 0 !important;
+        flex-shrink: 0 !important;
+    }
+
+    .social-linkss .social-icons a {
+        width: 42px !important;
+        height: 42px !important;
+        font-size: 16px !important;
+    }
+
+    /* Gallery spacing for mobile */
+    .gallery-grid {
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: wrap !important;
+        gap: 6px !important;
+    }
+
+    .gallery-item {
+        width: calc(33.333% - 4px);
+        flex: 0 0 auto;
+    }
+
+    #gallery_09 img {
+        height: 90px !important;
+        width: 100% !important;
+    }
+
+    /* Ensure proper spacing */
+    .summary.entry-summary {
+        padding: 15px !important;
+    }
+
+    /* Mobile Quantity Selector - Centered and Full Width */
+    .qty-selector {
+        width: 100% !important;
+        max-width: 100% !important;
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        margin: 0 0 15px 0 !important;
+        padding: 12px 20px !important;
         box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
+        background: #1f2937 !important;
+        border-radius: 12px !important;
+        gap: 15px !important;
     }
 
     .qty-selector .qtminus,
     .qty-selector .qtplus {
-        width: 48px !important;
-        height: 48px !important;
-        font-size: 1.3rem !important;
+        width: 50px !important;
+        height: 50px !important;
+        font-size: 1.5rem !important;
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
-        background: #f3f4f6 !important;
-        border-radius: 8px !important;
+        background: #374151 !important;
+        border: none !important;
+        color: #ffffff !important;
+        border-radius: 10px !important;
         transition: all 0.2s ease !important;
+        font-weight: 700 !important;
+        flex-shrink: 0 !important;
     }
 
     .qty-selector .qtminus:active,
@@ -586,36 +639,48 @@
     }
 
     .qty-selector .qttotal {
-        width: 80px !important;
-        font-size: 1.2rem !important;
+        width: 70px !important;
+        font-size: 1.4rem !important;
         font-weight: 700 !important;
-        padding: 12px 8px !important;
+        padding: 12px 10px !important;
         text-align: center !important;
+        border: 2px solid #4b5563 !important;
+        border-radius: 10px !important;
+        background: #374151 !important;
+        color: #ffffff !important;
+        margin: 0 !important;
+        flex-shrink: 0 !important;
     }
 
     /* Mobile Action Buttons - Full Width and Centered */
     .action-buttons {
         width: 100% !important;
+        max-width: 100% !important;
         flex-direction: column !important;
         gap: 12px !important;
-        margin-top: 20px !important;
+        margin-top: 15px !important;
+        padding: 0 !important;
+        display: flex !important;
     }
 
     .add-to-cart-btn,
     .buy-now-btn,
     .contact-seller-btn {
         width: 100% !important;
-        padding: 16px 24px !important;
+        max-width: 100% !important;
+        flex: none !important;
+        padding: 18px 20px !important;
         font-size: 1.1rem !important;
-        min-height: 54px !important;
+        min-height: 56px !important;
         border-radius: 12px !important;
         font-weight: 600 !important;
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
         gap: 10px !important;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2) !important;
         transition: all 0.3s ease !important;
+        margin: 0 !important;
     }
 
     .add-to-cart-btn i,
@@ -634,14 +699,57 @@
     .buy-now-btn {
         background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
         border: none !important;
+        color: #ffffff !important;
         box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4) !important;
     }
 
-    /* Add to Cart Button */
+    /* Add to Cart Button - Dark */
     .add-to-cart-btn {
-        background: white !important;
-        border: 2px solid #10b981 !important;
-        color: #10b981 !important;
+        background: #1f2937 !important;
+        border: 2px solid #374151 !important;
+        color: #ffffff !important;
+    }
+
+    .add-to-cart-btn:hover {
+        background: #374151 !important;
+        border-color: #4b5563 !important;
+    }
+
+    /* Responsive fixes for all screen sizes */
+    .product-purchase-section {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 20px;
+    }
+
+    .quantity-wrapper {
+        flex: 0 0 auto;
+        display: flex;
+        justify-content: center;
+        width: 100%;
+    }
+
+    .qty-selector {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        background: #f9fafb;
+        padding: 6px 10px;
+        border-radius: 10px;
+        border: 2px solid #e5e7eb;
+        margin: 0 auto;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 12px;
+        flex: 1 1 auto;
+        width: 100%;
+        justify-content: center;
     }
 
     /* Product Info Section - Better Spacing */
@@ -653,17 +761,215 @@
         padding: 0 15px !important;
     }
 }
+
+/* Desktop Responsive Styles (768px and up) */
+@media (min-width: 768px) {
+    /* Make image column smaller (80% of original = 20% smaller) */
+    .single-product-wrapper .col-md-6:first-child {
+        flex: 0 0 40% !important;
+        max-width: 40% !important;
+    }
+
+    .single-product-wrapper .col-md-6:last-child {
+        flex: 0 0 60% !important;
+        max-width: 60% !important;
+    }
+
+    .product-purchase-section {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 15px;
+        flex-wrap: nowrap;
+        margin-bottom: 20px;
+    }
+
+    /* Add to Cart and Buy Now buttons come first on desktop */
+    .action-buttons {
+        order: 1;
+        flex: 1 1 auto !important;
+        width: auto !important;
+        flex-direction: row !important;
+        justify-content: flex-start !important;
+        gap: 15px !important;
+        flex-wrap: nowrap !important;
+        margin-bottom: 0 !important;
+    }
+
+    .add-to-cart-btn,
+    .buy-now-btn {
+        flex: 1 1 0 !important;
+        max-width: 220px !important;
+        width: auto !important;
+        padding: 16px 20px !important;
+        font-size: 1rem !important;
+        white-space: nowrap !important;
+        border-radius: 12px;
+        font-weight: 600;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        transition: all 0.3s ease;
+    }
+
+    .add-to-cart-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Buy Now button - White text on hover */
+    .buy-now-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 24px rgba(16, 185, 129, 0.5);
+        color: #ffffff !important;
+        background: linear-gradient(135deg, #059669 0%, #047857 100%) !important;
+    }
+
+    /* Quantity comes AFTER buttons (behind them) on desktop */
+    .quantity-wrapper {
+        order: 2;
+        width: auto;
+        flex: 0 0 auto;
+        margin-bottom: 0 !important;
+    }
+
+    .qty-selector {
+        padding: 10px 14px;
+        gap: 12px;
+        background: #ffffff;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+        border-radius: 12px;
+    }
+
+    .qty-selector .qtminus,
+    .qty-selector .qtplus {
+        width: 44px;
+        height: 44px;
+        font-size: 1.2rem;
+        border-radius: 10px;
+        background: #f9fafb;
+        border: 2px solid #e5e7eb;
+        transition: all 0.2s ease;
+        font-weight: 600;
+    }
+
+    .qty-selector .qtminus:hover,
+    .qty-selector .qtplus:hover {
+        background: #10b981;
+        color: white;
+        border-color: #10b981;
+        transform: scale(1.05);
+    }
+
+    .qty-selector .qttotal {
+        width: 80px;
+        font-size: 1.15rem;
+        font-weight: 700;
+        border: 2px solid #e5e7eb;
+        border-radius: 8px;
+    }
+
+    /* Share Section Desktop - New Row */
+    .share-section {
+        order: 3;
+        text-align: center !important;
+        width: 100%;
+        margin-top: 20px;
+        padding-top: 20px;
+        border-top: 1px solid #e5e7eb;
+    }
+
+    .share-section h5 {
+        text-align: center !important;
+        margin-bottom: 12px !important;
+    }
+
+    .social-linkss .social-icons {
+        justify-content: center !important;
+        flex-wrap: nowrap !important;
+        gap: 12px !important;
+        overflow-x: visible !important;
+    }
+
+    /* Gallery Grid - Horizontal Row */
+    .gallery-grid {
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: wrap !important;
+        grid-template-columns: none !important;
+        gap: 10px !important;
+    }
+
+    .gallery-item {
+        flex: 0 0 auto;
+        width: 110px;
+    }
+
+    #gallery_09 img {
+        height: 110px !important;
+        width: 110px !important;
+    }
+}
+
+/* Large Desktop (1200px and up) */
+@media (min-width: 1200px) {
+    .product-purchase-section {
+        gap: 25px;
+    }
+
+    .qty-selector {
+        padding: 10px 15px;
+        gap: 12px;
+    }
+
+    .qty-selector .qtminus,
+    .qty-selector .qtplus {
+        width: 44px;
+        height: 44px;
+    }
+
+    .qty-selector .qttotal {
+        width: 80px;
+        font-size: 1.15rem;
+    }
+
+    .action-buttons {
+        gap: 18px;
+    }
+
+    .add-to-cart-btn,
+    .buy-now-btn {
+        max-width: 240px;
+        padding: 16px 24px;
+        font-size: 1.05rem;
+    }
+
+    /* Gallery Grid - Larger on big screens */
+    .gallery-item {
+        width: 120px;
+    }
+
+    #gallery_09 img {
+        height: 120px !important;
+        width: 120px !important;
+    }
+
+    .social-linkss .social-icons {
+        gap: 14px !important;
+    }
+}
 </style>
 
 <div class="full-row pb-0">
   <div class="container">
       <div class="row single-product-wrapper">
           <div class="col-md-6 mb-4">
-              <div class="product-images position-relative" style="top: 20px;">
+              <div class="product-images position-relative" style="top: 0; padding-top: 0; margin-top: 0;">
                   <div class="woocommerce-product-gallery woocommerce-product-gallery--with-images woocommerce-product-gallery--columns-4 images" data-columns="4">
                       <figure class="woocommerce-product-gallery__wrapper" style="margin: 0;">
-                          <div class="bg-light rounded shadow-sm p-3 mb-4" style="position: relative;">
-                              <img id="single-image-zoom" src="{{filter_var($productt->photo, FILTER_VALIDATE_URL) ?$productt->photo:asset('assets/images/products/'.$productt->photo)}}" alt="Product Image" data-zoom-image="{{filter_var($productt->photo, FILTER_VALIDATE_URL) ?$productt->photo:asset('assets/images/products/'.$productt->photo)}}" style="border-radius: 8px; width: 100%; height: auto; display: block;" />
+                          <div class="mobile-zoom-wrapper" style="position: relative; background: transparent; padding: 0; border: none;">
+                              <img id="single-image-zoom" src="{{filter_var($productt->photo, FILTER_VALIDATE_URL) ?$productt->photo:asset('assets/images/products/'.$productt->photo)}}" alt="Product Image" data-zoom-image="{{filter_var($productt->photo, FILTER_VALIDATE_URL) ?$productt->photo:asset('assets/images/products/'.$productt->photo)}}" style="width: 100%; height: auto; display: block; border: none; box-shadow: none;" />
+
+                              {{-- Desktop Zoom Hint --}}
                               <div class="zoom-hint d-none d-md-flex">
                                   <i class="fas fa-search-plus"></i>
                                   <span>Hover to zoom</span>
@@ -671,16 +977,16 @@
                           </div>
 
                           <div id="gallery_09" class="product-slide-thumb">
-                              <div class="owl-carousel three-carousel">
+                              <div class="gallery-grid" style="display: flex; flex-direction: row; flex-wrap: wrap; gap: 8px; margin-top: 0;">
                                   {{-- Main Product Image --}}
-                                  <div class="item">
+                                  <div class="gallery-item">
                                       <a class="active" href="{{filter_var($productt->photo, FILTER_VALIDATE_URL) ?$productt->photo:asset('assets/images/products/'.$productt->photo)}}" data-image="{{filter_var($productt->photo, FILTER_VALIDATE_URL) ?$productt->photo:asset('assets/images/products/'.$productt->photo)}}" data-zoom-image="{{filter_var($productt->photo, FILTER_VALIDATE_URL) ?$productt->photo:asset('assets/images/products/'.$productt->photo)}}">
                                           <img src="{{filter_var($productt->photo, FILTER_VALIDATE_URL) ?$productt->photo:asset('assets/images/products/'.$productt->photo)}}" alt="Main Product Image" />
                                       </a>
                                   </div>
                                   {{-- Gallery Images --}}
                                   @foreach($productt->galleries as $gal)
-                                  <div class="item">
+                                  <div class="gallery-item">
                                       <a href="{{asset('assets/images/galleries/'.$gal->photo)}}" data-image="{{asset('assets/images/galleries/'.$gal->photo)}}" data-zoom-image="{{asset('assets/images/galleries/'.$gal->photo)}}">
                                           <img src="{{asset('assets/images/galleries/'.$gal->photo)}}" alt="Gallery Image" />
                                       </a>
@@ -691,211 +997,107 @@
                       </figure>
                   </div>
 
-                  {{-- Mobile Image Viewer with Pinch Zoom --}}
+                  {{-- Simple Mobile Image Viewer --}}
                   <div class="mobile-image-viewer" id="mobileImageViewer">
-                      <div class="mobile-viewer-close" id="closeViewer">&times;</div>
-                      <div class="mobile-zoom-level" id="zoomLevel">100%</div>
-                      <div class="mobile-zoom-controls">
-                          <div class="mobile-zoom-btn" id="zoomIn">+</div>
-                          <div class="mobile-zoom-btn" id="zoomOut">−</div>
-                          <div class="mobile-zoom-btn" id="zoomReset" style="font-size: 16px;">⟲</div>
-                      </div>
+                      <button class="mobile-viewer-close" id="closeViewer">&times;</button>
                       <img id="viewerImage" src="" alt="Product Image" />
-                      <div class="mobile-viewer-hint">Pinch to zoom • Drag to pan • Double tap</div>
                   </div>
               </div>
 
               <script>
-              // Professional Mobile Image Zoom Implementation
+              // Native Mobile Pinch-to-Zoom Implementation
               (function() {
                   if (window.innerWidth <= 767) {
+                      const wrapper = document.querySelector('.mobile-zoom-wrapper');
                       const mainImage = document.getElementById('single-image-zoom');
-                      const viewer = document.getElementById('mobileImageViewer');
-                      const viewerImage = document.getElementById('viewerImage');
-                      const closeBtn = document.getElementById('closeViewer');
-                      const zoomInBtn = document.getElementById('zoomIn');
-                      const zoomOutBtn = document.getElementById('zoomOut');
-                      const zoomResetBtn = document.getElementById('zoomReset');
-                      const zoomLevel = document.getElementById('zoomLevel');
+
+                      if (!wrapper || !mainImage) return;
 
                       let scale = 1;
                       let posX = 0;
                       let posY = 0;
-                      let lastDistance = 0;
-                      let lastPosX = 0;
-                      let lastPosY = 0;
                       let isDragging = false;
-                      let zoomLevelTimeout;
+                      let startX = 0;
+                      let startY = 0;
 
-                      // Show zoom level indicator
-                      function showZoomLevel() {
-                          zoomLevel.textContent = Math.round(scale * 100) + '%';
-                          zoomLevel.classList.add('show');
-                          clearTimeout(zoomLevelTimeout);
-                          zoomLevelTimeout = setTimeout(() => {
-                              zoomLevel.classList.remove('show');
-                          }, 1500);
+                      function updateTransform() {
+                          mainImage.style.transform = `translate(${posX}px, ${posY}px) scale(${scale})`;
+                          mainImage.style.transformOrigin = 'center center';
+                          mainImage.style.transition = isDragging ? 'none' : 'transform 0.3s ease';
                       }
 
-                      // Open viewer on image tap
-                      mainImage.addEventListener('click', function(e) {
-                          e.preventDefault();
-                          const imgSrc = this.getAttribute('data-zoom-image') || this.src;
-                          viewerImage.src = imgSrc;
-                          viewer.classList.add('active');
-                          document.body.style.overflow = 'hidden';
-                          resetTransform();
-                      });
+                      // Pinch zoom handling
+                      let initialDistance = 0;
+                      let initialScale = 1;
 
-                      // Gallery thumbnails tap
-                      document.querySelectorAll('#gallery_09 a').forEach(function(thumb) {
-                          thumb.addEventListener('click', function(e) {
+                      wrapper.addEventListener('touchstart', (e) => {
+                          if (e.touches.length === 2) {
                               e.preventDefault();
-                              const imgSrc = this.getAttribute('data-zoom-image') || this.getAttribute('href');
-                              mainImage.src = imgSrc;
-                              mainImage.setAttribute('data-zoom-image', imgSrc);
-                          });
-                      });
-
-                      // Close viewer
-                      closeBtn.addEventListener('click', function() {
-                          viewer.classList.remove('active');
-                          document.body.style.overflow = '';
-                      });
-
-                      viewer.addEventListener('click', function(e) {
-                          if (e.target === viewer) {
-                              viewer.classList.remove('active');
-                              document.body.style.overflow = '';
+                              initialDistance = Math.hypot(
+                                  e.touches[0].pageX - e.touches[1].pageX,
+                                  e.touches[0].pageY - e.touches[1].pageY
+                              );
+                              initialScale = scale;
+                          } else if (e.touches.length === 1 && scale > 1) {
+                              isDragging = true;
+                              startX = e.touches[0].pageX - posX;
+                              startY = e.touches[0].pageY - posY;
                           }
                       });
 
-                      // Zoom controls
-                      zoomInBtn.addEventListener('click', function() {
-                          scale = Math.min(scale + 0.5, 5);
-                          updateTransform();
-                          showZoomLevel();
+                      wrapper.addEventListener('touchmove', (e) => {
+                          if (e.touches.length === 2) {
+                              e.preventDefault();
+                              const distance = Math.hypot(
+                                  e.touches[0].pageX - e.touches[1].pageX,
+                                  e.touches[0].pageY - e.touches[1].pageY
+                              );
+                              scale = Math.max(1, Math.min(4, initialScale * (distance / initialDistance)));
+                              updateTransform();
+                          } else if (isDragging && scale > 1) {
+                              e.preventDefault();
+                              posX = e.touches[0].pageX - startX;
+                              posY = e.touches[0].pageY - startY;
+                              updateTransform();
+                          }
                       });
 
-                      zoomOutBtn.addEventListener('click', function() {
-                          scale = Math.max(scale - 0.5, 1);
+                      wrapper.addEventListener('touchend', () => {
+                          isDragging = false;
                           if (scale === 1) {
                               posX = 0;
                               posY = 0;
-                          }
-                          updateTransform();
-                          showZoomLevel();
-                      });
-
-                      zoomResetBtn.addEventListener('click', function() {
-                          resetTransform();
-                          showZoomLevel();
-                      });
-
-                      // Reset transform
-                      function resetTransform() {
-                          scale = 1;
-                          posX = 0;
-                          posY = 0;
-                          updateTransform();
-                      }
-
-                      // Update image transform
-                      function updateTransform() {
-                          viewerImage.style.transform = `translate(-50%, -50%) translate(${posX}px, ${posY}px) scale(${scale})`;
-                          viewerImage.style.transition = 'transform 0.2s ease-out';
-                          setTimeout(() => {
-                              viewerImage.style.transition = 'none';
-                          }, 200);
-                      }
-
-                      // Get distance between two touch points
-                      function getDistance(touch1, touch2) {
-                          const dx = touch1.clientX - touch2.clientX;
-                          const dy = touch1.clientY - touch2.clientY;
-                          return Math.sqrt(dx * dx + dy * dy);
-                      }
-
-                      // Touch start
-                      viewerImage.addEventListener('touchstart', function(e) {
-                          if (e.touches.length === 2) {
-                              // Pinch zoom start
-                              lastDistance = getDistance(e.touches[0], e.touches[1]);
-                          } else if (e.touches.length === 1) {
-                              // Drag start
-                              isDragging = true;
-                              lastPosX = e.touches[0].clientX;
-                              lastPosY = e.touches[0].clientY;
-                          }
-                      });
-
-                      // Touch move
-                      viewerImage.addEventListener('touchmove', function(e) {
-                          e.preventDefault();
-
-                          if (e.touches.length === 2) {
-                              // Pinch zoom
-                              const distance = getDistance(e.touches[0], e.touches[1]);
-                              const delta = distance - lastDistance;
-                              scale += delta * 0.01;
-                              scale = Math.max(1, Math.min(scale, 5)); // Limit zoom between 1x and 5x
-                              lastDistance = distance;
                               updateTransform();
-                              showZoomLevel();
-                          } else if (e.touches.length === 1 && isDragging && scale > 1) {
-                              // Drag to pan (only when zoomed in)
-                              const deltaX = e.touches[0].clientX - lastPosX;
-                              const deltaY = e.touches[0].clientY - lastPosY;
-                              posX += deltaX;
-                              posY += deltaY;
-
-                              // Constrain panning
-                              const maxPanX = (viewerImage.width * scale - window.innerWidth) / 2;
-                              const maxPanY = (viewerImage.height * scale - window.innerHeight) / 2;
-                              posX = Math.max(-maxPanX, Math.min(posX, maxPanX));
-                              posY = Math.max(-maxPanY, Math.min(posY, maxPanY));
-
-                              lastPosX = e.touches[0].clientX;
-                              lastPosY = e.touches[0].clientY;
-                              viewerImage.style.transform = `translate(-50%, -50%) translate(${posX}px, ${posY}px) scale(${scale})`;
                           }
                       });
 
-                      // Touch end
-                      viewerImage.addEventListener('touchend', function(e) {
-                          if (e.touches.length < 2) {
-                              lastDistance = 0;
+                      // Double tap to reset
+                      let lastTap = 0;
+                      wrapper.addEventListener('touchend', (e) => {
+                          const currentTime = new Date().getTime();
+                          const tapLength = currentTime - lastTap;
+                          if (tapLength < 300 && tapLength > 0) {
+                              scale = 1;
+                              posX = 0;
+                              posY = 0;
+                              updateTransform();
                           }
-                          if (e.touches.length === 0) {
-                              isDragging = false;
+                          lastTap = currentTime;
+                      });
 
-                              // Reset if zoomed out beyond 1x
-                              if (scale < 1) {
+                      // Update when thumbnail clicked
+                      document.querySelectorAll('#gallery_09 a').forEach(function(thumb) {
+                          thumb.addEventListener('click', function(e) {
+                              const newImage = this.getAttribute('data-image');
+                              if (mainImage && newImage) {
+                                  mainImage.src = newImage;
+                                  mainImage.setAttribute('data-zoom-image', this.getAttribute('data-zoom-image'));
                                   scale = 1;
                                   posX = 0;
                                   posY = 0;
                                   updateTransform();
                               }
-                          }
-                      });
-
-                      // Double tap to zoom
-                      let lastTap = 0;
-                      viewerImage.addEventListener('touchend', function(e) {
-                          const currentTime = new Date().getTime();
-                          const tapLength = currentTime - lastTap;
-                          if (tapLength < 300 && tapLength > 0) {
-                              // Double tap detected
-                              if (scale === 1) {
-                                  scale = 2.5;
-                              } else {
-                                  scale = 1;
-                                  posX = 0;
-                                  posY = 0;
-                              }
-                              updateTransform();
-                          }
-                          lastTap = currentTime;
+                          });
                       });
                   }
               })();
@@ -905,29 +1107,7 @@
           <div class="col-md-6">
               <div class="summary entry-summary">
                   <div class="summary-inner">
-                      <div class="entry-breadcrumbs w-100 mb-3">
-                          <nav class="breadcrumb-divider-slash" aria-label="breadcrumb">
-                              <ol class="breadcrumb pro-bread mb-0" style="background: transparent; padding: 0;">
-                                  <li class="breadcrumb-item"><a href="{{route('front.index')}}" class="text-muted">{{__('Home')}}</a></li>
-                                  <li class="breadcrumb-item"><a href="{{route('front.category',$productt->category->slug)}}" class="text-muted">{{$productt->category->translated_name}}</a></li>
-                                  @if($productt->subcategory_id != null)
-                                  <li class="breadcrumb-item">
-                                      <a href="{{ route('front.category',[$productt->category->slug, $productt->subcategory->slug]) }}" class="text-muted">
-                                      {{$productt->subcategory->translated_name}}
-                                      </a>
-                                  </li>
-                                  @endif
-                                  @if($productt->childcategory_id != null)
-                                  <li class="breadcrumb-item">
-                                      <a href="{{ route('front.category',[ $productt->category->slug,$productt->subcategory->slug,$productt->childcategory->slug]) }}" class="text-muted">
-                                      {{$productt->childcategory->translated_name}}
-                                      </a>
-                                  </li>
-                                  @endif
 
-                              </ol>
-                          </nav>
-                      </div>
                       <h1 class="product_title entry-title mb-3" style="font-size: 2rem; font-weight: 700; color: #2d3748;">{{ $productt->translated_name }}</h1>
 
                       {{-- Rating Section - Only show if ratings exist --}}
@@ -1117,17 +1297,17 @@
 
     @endif
     {{-- PRODUCT STOCK CONDITION SECTION ENDS --}}
-                         <div class="product-purchase-section mt-4">
+                         <div class="product-purchase-section mt-4" style="display: flex; flex-wrap: wrap; gap: 15px; align-items: center; justify-content: center; margin-bottom: 20px;">
                             @if($productt->product_type != "affiliate" && $productt->type == 'Physical')
-                               <div class="quantity-wrapper mb-3 d-flex justify-content-center">
-                                   <div class="qty-selector border rounded d-flex align-items-center" style="background: #ffffff; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-                                      <button type="button" class="qtminus btn btn-light border-0 px-3 py-2" style="font-size: 1.2rem;">
+                               <div class="quantity-wrapper mb-3 d-flex justify-content-center" style="width: 100%; flex: 0 0 auto;">
+                                   <div class="qty-selector border rounded d-flex align-items-center justify-content-center" style="background: #ffffff; box-shadow: 0 2px 12px rgba(0,0,0,0.08); padding: 10px 14px; gap: 12px; border-radius: 12px; border: 2px solid #e5e7eb;">
+                                      <button type="button" class="qtminus btn btn-light border-0" style="font-size: 1.2rem; width: 44px; height: 44px; border-radius: 10px; background: #f9fafb; border: 2px solid #e5e7eb !important; font-weight: 600; display: flex; align-items: center; justify-content: center;">
                                          <i class="icofont-minus"></i>
                                       </button>
-                                      <input class="qttotal form-control border-0 text-center" type="text" id="order-qty" value="{{ $productt->minimum_qty == null ? '1' : (int)$productt->minimum_qty }}" style="width: 70px; font-weight: 600;">
+                                      <input class="qttotal form-control border-0 text-center" type="text" id="order-qty" value="{{ $productt->minimum_qty == null ? '1' : (int)$productt->minimum_qty }}" style="width: 80px; font-weight: 700; font-size: 1.15rem; border: 2px solid #e5e7eb !important; border-radius: 8px; padding: 12px 10px;">
                                       <input type="hidden" id="affilate_user" value="{{ $affilate_user }}">
                                       <input type="hidden" id="product_minimum_qty" value="{{ $productt->minimum_qty == null ? '0' : $productt->minimum_qty }}">
-                                      <button type="button" class="qtplus btn btn-light border-0 px-3 py-2" style="font-size: 1.2rem;">
+                                      <button type="button" class="qtplus btn btn-light border-0" style="font-size: 1.2rem; width: 44px; height: 44px; border-radius: 10px; background: #f9fafb; border: 2px solid #e5e7eb !important; font-weight: 600; display: flex; align-items: center; justify-content: center;">
                                          <i class="icofont-plus"></i>
                                       </button>
                                    </div>
@@ -1136,7 +1316,7 @@
 
 
                           {{-- PRODUCT QUANTITY SECTION ENDS --}}
-                          <div class="action-buttons d-flex flex-wrap gap-3">
+                          <div class="action-buttons d-flex flex-wrap gap-3" style="width: 100%; flex-direction: column; justify-content: center;">
                           @if($productt->product_type == "affiliate")
 
                               <a href="javascript:;" class="btn btn-primary affilate-btn add-to-cart-btn" data-href="{{ $productt->affiliate_link }}" target="_blank">
@@ -1145,13 +1325,13 @@
                               </a>
                               @else
                               @if($productt->emptyStock())
-                              <a href="javascript:;" class="btn btn-secondary cart-out-of-stock add-to-cart-btn" style="cursor: not-allowed;">
+                              <a href="javascript:;" class="btn btn-secondary cart-out-of-stock add-to-cart-btn" style="cursor: not-allowed; width: 100%; max-width: 100%; padding: 18px 20px; font-size: 1.1rem; min-height: 56px; border-radius: 12px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.2);">
                                   <i class="icofont-close-line me-2"></i>
                                   <span>{{ __('Out Of Stock') }}</span>
                               </a>
                               @else
                               @if ($productt->type != "Listing")
-                                <button type="button" id="addcrt" class="btn btn-outline-primary add-to-cart-btn flex-grow-1">
+                                <button type="button" id="addcrt" class="btn btn-outline-primary add-to-cart-btn flex-grow-1" style="width: 100%; max-width: 100%; flex: 1 1 0; padding: 18px 20px; font-size: 1.1rem; min-height: 56px; border-radius: 12px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.2); background: #1f2937; border: 2px solid #374151; color: #ffffff;">
                                     <i class="icofont-cart me-2"></i>
                                     <span>{{ __('Add to Cart')}}</span>
                                     <span class="btn-loader" style="display: none;">
@@ -1159,7 +1339,7 @@
                                     </span>
                                 </button>
 
-                                <button type="button" id="qaddcrt" class="btn btn-primary buy-now-btn flex-grow-1">
+                                <button type="button" id="qaddcrt" class="btn btn-primary buy-now-btn flex-grow-1" style="width: 100%; max-width: 100%; flex: 1 1 0; padding: 18px 20px; font-size: 1.1rem; min-height: 56px; border-radius: 12px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 10px; box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4); background: linear-gradient(135deg, #10b981 0%, #059669 100%); border: none; color: #ffffff;">
                                     <i class="icofont-check-circled me-2"></i>
                                     <span>{{ __('Buy Now') }}</span>
                                     <span class="btn-loader" style="display: none;">
@@ -1192,43 +1372,42 @@
                               @endif
                           </div>
                          @endif
-                   </div>
 
-
-                       <div class="my-5 pt-4 border-top">
-                              <h5 class="mb-3" style="font-weight: 600; color: #374151;">{{ __('Share This Product') }}</h5>
+                          {{-- Share This Product Section - Moved Outside action-buttons --}}
+                          <div class="share-section" style="width: 100%; text-align: center; margin-top: 20px; padding-top: 20px; border-top: 1px solid #e5e7eb;">
+                              <h5 class="mb-3" style="font-weight: 600; color: #6b7280; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.5px; text-align: center;">{{ __('Share This Product') }}</h5>
                               <div class="social-linkss social-sharing a2a_kit a2a_kit_size_32">
-                              <ul class="social-icons d-flex flex-wrap gap-2 list-unstyled mb-0">
-                                  <li>
-                                  <a class="facebook a2a_button_facebook d-flex align-items-center justify-content-center rounded-circle" href="" style="width: 45px; height: 45px; background: #1877f2; color: white; transition: all 0.3s ease;">
-                                      <i class="fab fa-facebook-f"></i>
+                              <ul class="social-icons d-flex flex-wrap gap-2 list-unstyled mb-0" style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: center; padding: 5px 0;">
+                                  <li style="flex-shrink: 0;">
+                                  <a class="facebook a2a_button_facebook d-flex align-items-center justify-content-center rounded-circle" href="" style="width: 48px; height: 48px; background: #1877f2; color: white; transition: all 0.3s ease; flex-shrink: 0; box-shadow: 0 2px 8px rgba(24, 119, 242, 0.3); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                      <i class="fab fa-facebook-f" style="font-size: 18px;"></i>
                                   </a>
                                   </li>
-                                  <li>
-                                  <a class="twitter a2a_button_twitter d-flex align-items-center justify-content-center rounded-circle" href="" style="width: 45px; height: 45px; background: #1da1f2; color: white; transition: all 0.3s ease;">
-                                      <i class="fab fa-twitter"></i>
+                                  <li style="flex-shrink: 0;">
+                                  <a class="twitter a2a_button_twitter d-flex align-items-center justify-content-center rounded-circle" href="" style="width: 48px; height: 48px; background: #1da1f2; color: white; transition: all 0.3s ease; flex-shrink: 0; box-shadow: 0 2px 8px rgba(29, 161, 242, 0.3); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                      <i class="fab fa-twitter" style="font-size: 18px;"></i>
                                   </a>
                                   </li>
-                                  <li>
-                                  <a class="linkedin a2a_button_linkedin d-flex align-items-center justify-content-center rounded-circle" href="" style="width: 45px; height: 45px; background: #0077b5; color: white; transition: all 0.3s ease;">
-                                      <i class="fab fa-linkedin-in"></i>
+                                  <li style="flex-shrink: 0;">
+                                  <a class="linkedin a2a_button_linkedin d-flex align-items-center justify-content-center rounded-circle" href="" style="width: 48px; height: 48px; background: #0077b5; color: white; transition: all 0.3s ease; flex-shrink: 0; box-shadow: 0 2px 8px rgba(0, 119, 181, 0.3); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                      <i class="fab fa-linkedin-in" style="font-size: 18px;"></i>
                                   </a>
                                   </li>
-                                  <li>
-                                  <a class="pinterest a2a_button_pinterest d-flex align-items-center justify-content-center rounded-circle" href="" style="width: 45px; height: 45px; background: #e60023; color: white; transition: all 0.3s ease;">
-                                      <i class="fab fa-pinterest-p"></i>
+                                  <li style="flex-shrink: 0;">
+                                  <a class="pinterest a2a_button_pinterest d-flex align-items-center justify-content-center rounded-circle" href="" style="width: 48px; height: 48px; background: #e60023; color: white; transition: all 0.3s ease; flex-shrink: 0; box-shadow: 0 2px 8px rgba(230, 0, 35, 0.3); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                      <i class="fab fa-pinterest-p" style="font-size: 18px;"></i>
                                   </a>
                                   </li>
-                                  <li>
-                                      <a class="instagram a2a_button_whatsapp d-flex align-items-center justify-content-center rounded-circle" href="" style="width: 45px; height: 45px; background: #25d366; color: white; transition: all 0.3s ease;">
-                                      <i class="fab fa-whatsapp"></i>
+                                  <li style="flex-shrink: 0;">
+                                      <a class="instagram a2a_button_whatsapp d-flex align-items-center justify-content-center rounded-circle" href="" style="width: 48px; height: 48px; background: #25d366; color: white; transition: all 0.3s ease; flex-shrink: 0; box-shadow: 0 2px 8px rgba(37, 211, 102, 0.3); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                      <i class="fab fa-whatsapp" style="font-size: 18px;"></i>
                                       </a>
                                   </li>
                               </ul>
                               </div>
-
                           </div>
                           <script async src="https://static.addtoany.com/menu/page.js"></script>
+                   </div>
 
                           @if (!empty($productt->attributes))
                       @php

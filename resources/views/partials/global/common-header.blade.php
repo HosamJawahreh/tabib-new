@@ -758,8 +758,8 @@
        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
    }
    .enhanced-search-form:focus-within {
-       border-color: #4299e1 !important;
-       box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1), 0 4px 12px rgba(0,0,0,0.1);
+       border-color: #9ca3af !important;
+       box-shadow: 0 0 0 3px rgba(156, 163, 175, 0.1), 0 4px 12px rgba(0,0,0,0.1);
    }
 
    .enhanced-search-form .search-field {
@@ -858,7 +858,7 @@
    .language-flag-selector {
        display: flex;
        align-items: center;
-       justify-content: flex-end;
+       justify-content: center;
        padding: 0 !important;
    }
 
@@ -866,33 +866,40 @@
        display: inline-flex;
        align-items: center;
        justify-content: center;
-       padding: 0;
-       border-radius: 6px;
+       padding: 6px;
+       border-radius: 8px;
        transition: all 0.3s ease;
-       background: transparent;
-       border: none;
-       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+       background: #f8fafc;
+       border: 2px solid #e2e8f0;
+       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
    }
 
    .language-flag-selector .flag-link:hover {
-       transform: scale(1.05);
-       box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+       transform: translateY(-2px) scale(1.05);
+       box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+       border-color: #10b981;
+       background: #f0fdf4;
    }
 
    .language-flag-selector .flag-icon {
        width: 36px;
        height: 27px;
        object-fit: cover;
-       border-radius: 6px;
+       border-radius: 5px;
        display: block;
-       border: 1px solid rgba(0, 0, 0, 0.08);
+       border: none;
    }
 
-   /* Desktop - Slightly larger but still compact */
+   /* Desktop - Larger and more prominent */
    @media (min-width: 992px) {
+       .language-flag-selector .flag-link {
+           padding: 8px;
+           border-radius: 10px;
+       }
+
        .language-flag-selector .flag-icon {
-           width: 40px;
-           height: 30px;
+           width: 48px;
+           height: 36px;
            border-radius: 6px;
        }
    }
@@ -1608,9 +1615,9 @@
    }
 
    .mobile-search-input-wrapper:focus-within {
-       border-color: #10b981;
-       box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
-       transform: translateY(-2px);
+       border-color: #cbd5e0;
+       box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+       transform: translateY(-1px);
    }
 
    .mobile-search-icon-input {
@@ -1932,6 +1939,8 @@
        .main-nav-row {
            display: flex !important;
            justify-content: space-between !important;
+           align-items: center !important;
+           gap: 20px !important;
        }
 
        .logo-col {
@@ -1941,7 +1950,8 @@
 
        .search-col {
            order: 2 !important;
-           flex: 1 1 auto !important;
+           flex: 0 1 auto !important;
+           max-width: 500px !important;
        }
 
        .icons-col {
@@ -1949,18 +1959,35 @@
            flex: 0 0 auto !important;
        }
 
-       .language-phone-col,
-       .language-col {
+       .phone-flag-col {
            order: 4 !important;
            flex: 0 0 auto !important;
            margin-left: auto !important;
-       }
-
-       .phone-flag-col {
            display: flex !important;
            align-items: center !important;
-           gap: 12px !important;
-           margin-left: auto !important;
+           gap: 15px !important;
+           padding-right: 20px !important;
+       }
+
+       /* Phone Link Styling */
+       .header-phone-link {
+           font-size: 15px !important;
+           font-weight: 600 !important;
+           color: #10b981 !important;
+           text-decoration: none !important;
+           padding: 8px 15px !important;
+           border-radius: 8px !important;
+           background: #f0fdf4 !important;
+           border: 2px solid #10b981 !important;
+           transition: all 0.3s ease !important;
+           white-space: nowrap !important;
+       }
+
+       .header-phone-link:hover {
+           background: #10b981 !important;
+           color: white !important;
+           transform: translateY(-2px) !important;
+           box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3) !important;
        }
    }
 
