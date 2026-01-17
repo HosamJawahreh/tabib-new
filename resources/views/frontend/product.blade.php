@@ -69,7 +69,7 @@
                   <li class="breadcrumb-item active" aria-current="page">{{ $productt->name }}</li>
                </ol>
             </nav>
-            
+
             @if($productt->categories->count() > 0)
             <div class="breadcrumb-categories-wrapper">
                @foreach($productt->categories as $index => $category)
@@ -332,22 +332,22 @@ lazy();
          zoomWindowFadeIn: 300,
          zoomWindowFadeOut: 300
       });
-      
+
       // Gallery thumbnail click handler
       $('#gallery_09 a').on('click', function(e) {
           e.preventDefault();
           $('#gallery_09 a').removeClass('active');
           $(this).addClass('active');
-          
+
           var ez = $('#single-image-zoom').data('elevateZoom');
           if (ez) {
               $('#single-image-zoom').data('elevateZoom').swaptheimage(
-                  $(this).data('image'), 
+                  $(this).data('image'),
                   $(this).data('zoom-image')
               );
           }
       });
-      
+
       // Initialize gallery carousel
       $('#gallery_09 .owl-carousel').owlCarousel({
           items: 4,
@@ -384,7 +384,7 @@ lazy();
               console.log('Gallery carousel initialized');
           }
       });
-      
+
       //pass the images to Fancybox on click
       $("#single-image-zoom").bind("click", function(e) {
          var ez = $('#single-image-zoom').data('elevateZoom');

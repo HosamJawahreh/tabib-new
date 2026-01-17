@@ -923,32 +923,32 @@
    .language-phone-col {
        padding-left: 20px !important;
    }
-   
+
    @media (max-width: 991px) {
        .language-phone-col {
            order: 3 !important;
            padding-left: 10px !important;
        }
    }
-   
+
    /* Ensure proper alignment on desktop */
    @media (min-width: 992px) {
        .main-nav-row {
            justify-content: space-between;
        }
-       
+
        .language-phone-col {
            order: 1 !important;
        }
-       
+
        .logo-col {
            order: 2 !important;
        }
-       
+
        .icons-col {
            order: 3 !important;
        }
-       
+
        .col-icons {
            justify-content: flex-end !important;
        }
@@ -1985,7 +1985,7 @@ $pages = App\Models\Page::get();
 <div class="main-nav">
     <div class="container-fluid">
         <div class="row align-items-center main-nav-row">
-            
+
             <!-- Logo Column - FAR LEFT -->
             <div class="col-lg-2 col-md-3 col-4 order-1 text-start logo-col">
                 <nav class="navbar navbar-expand-lg nav-dark nav-primary-hover nav-line-active p-0">
@@ -2372,16 +2372,16 @@ document.addEventListener('DOMContentLoaded', function() {
 // Language Flag Switcher - Ensure it works on desktop and mobile
 document.addEventListener('DOMContentLoaded', function() {
     const flagLinks = document.querySelectorAll('.language-flag-selector .flag-link');
-    
+
     flagLinks.forEach(function(link) {
         link.addEventListener('click', function(e) {
             e.preventDefault();
             const url = this.getAttribute('href');
-            
+
             // Add a small loading indicator (optional)
             this.style.opacity = '0.6';
             this.style.pointerEvents = 'none';
-            
+
             // Navigate to the language switch URL
             window.location.href = url;
         });
