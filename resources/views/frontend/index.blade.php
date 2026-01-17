@@ -8,11 +8,11 @@
         margin-top: 0 !important;
     }
 
-    /* Body spacing for sticky header */
+    /* Body spacing for sticky header - reduced to actual header height */
     body {
         margin: 0 !important;
         padding: 0 !important;
-        padding-top: 50px !important;
+        padding-top: 0px !important; /* No padding - header is sticky */
         overflow-x: hidden;
         position: relative;
     }
@@ -20,7 +20,7 @@
     /* Mobile body padding for sticky header */
     @media (max-width: 991px) {
         body {
-            padding-top: 48px !important;
+            padding-top: 0px !important; /* No padding on mobile */
         }
     }
 

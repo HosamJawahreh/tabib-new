@@ -5,6 +5,93 @@
     box-shadow: 0 6px 12px rgba(0,0,0,0.15) !important;
 }
 
+/* Mobile Image Zoom - Professional Implementation */
+@media (max-width: 767px) {
+    .product-images {
+        position: relative !important;
+        overflow: visible !important;
+        touch-action: pan-x pan-y pinch-zoom !important;
+    }
+    
+    #single-image-zoom {
+        cursor: zoom-in !important;
+        user-select: none !important;
+        -webkit-user-select: none !important;
+        -webkit-touch-callout: none !important;
+    }
+    
+    /* Fullscreen image viewer for mobile */
+    .mobile-image-viewer {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.95);
+        z-index: 99999;
+        overflow: hidden;
+        touch-action: none;
+    }
+    
+    .mobile-image-viewer.active {
+        display: block;
+    }
+    
+    .mobile-image-viewer img {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        max-width: none;
+        width: auto;
+        height: auto;
+        transition: none;
+        user-select: none;
+        -webkit-user-select: none;
+    }
+    
+    .mobile-viewer-close {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        width: 44px;
+        height: 44px;
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        z-index: 100000;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        font-size: 24px;
+        color: #333;
+        font-weight: bold;
+        line-height: 1;
+    }
+    
+    .mobile-viewer-hint {
+        position: absolute;
+        bottom: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(255, 255, 255, 0.9);
+        padding: 10px 20px;
+        border-radius: 20px;
+        color: #333;
+        font-size: 14px;
+        pointer-events: none;
+        opacity: 0;
+        animation: fadeInOut 3s ease-in-out;
+    }
+    
+    @keyframes fadeInOut {
+        0%, 100% { opacity: 0; }
+        10%, 90% { opacity: 1; }
+    }
+}
+
 .siz-list li.active .box,
 .color-list li.active .box {
     border: 2px solid #10b981 !important;
@@ -179,7 +266,168 @@
                           </figure>
                       </div>
                   </div>
+                  
+                  {{-- Mobile Image Viewer with Pinch Zoom --}}
+                  <div class="mobile-image-viewer" id="mobileImageViewer">
+                      <div class="mobile-viewer-close" id="closeViewer">&times;</div>
+                      <img id="viewerImage" src="" alt="Product Image" />
+                      <div class="mobile-viewer-hint">Pinch to zoom • Drag to pan</div>
+                  </div>
               </div>
+              
+              <script>
+              // Professional Mobile Image Zoom Implementation
+              (function() {
+                  if (window.innerWidth <= 767) {
+                      const mainImage = document.getElementById('single-image-zoom');
+                      const viewer = document.getElementById('mobileImageViewer');
+                      const viewerImage = document.getElementById('viewerImage');
+                      const closeBtn = document.getElementById('closeViewer');
+                      
+                      let scale = 1;
+                      let posX = 0;
+                      let posY = 0;
+                      let lastDistance = 0;
+                      let lastPosX = 0;
+                      let lastPosY = 0;
+                      let isDragging = false;
+                      
+                      // Open viewer on image tap
+                      mainImage.addEventListener('click', function(e) {
+                          e.preventDefault();
+                          const imgSrc = this.getAttribute('data-zoom-image') || this.src;
+                          viewerImage.src = imgSrc;
+                          viewer.classList.add('active');
+                          document.body.style.overflow = 'hidden';
+                          resetTransform();
+                      });
+                      
+                      // Gallery thumbnails tap
+                      document.querySelectorAll('#gallery_09 a').forEach(function(thumb) {
+                          thumb.addEventListener('click', function(e) {
+                              e.preventDefault();
+                              const imgSrc = this.getAttribute('data-zoom-image') || this.getAttribute('href');
+                              mainImage.src = imgSrc;
+                              mainImage.setAttribute('data-zoom-image', imgSrc);
+                          });
+                      });
+                      
+                      // Close viewer
+                      closeBtn.addEventListener('click', function() {
+                          viewer.classList.remove('active');
+                          document.body.style.overflow = '';
+                      });
+                      
+                      viewer.addEventListener('click', function(e) {
+                          if (e.target === viewer) {
+                              viewer.classList.remove('active');
+                              document.body.style.overflow = '';
+                          }
+                      });
+                      
+                      // Reset transform
+                      function resetTransform() {
+                          scale = 1;
+                          posX = 0;
+                          posY = 0;
+                          updateTransform();
+                      }
+                      
+                      // Update image transform
+                      function updateTransform() {
+                          viewerImage.style.transform = `translate(-50%, -50%) translate(${posX}px, ${posY}px) scale(${scale})`;
+                      }
+                      
+                      // Get distance between two touch points
+                      function getDistance(touch1, touch2) {
+                          const dx = touch1.clientX - touch2.clientX;
+                          const dy = touch1.clientY - touch2.clientY;
+                          return Math.sqrt(dx * dx + dy * dy);
+                      }
+                      
+                      // Touch start
+                      viewerImage.addEventListener('touchstart', function(e) {
+                          if (e.touches.length === 2) {
+                              // Pinch zoom start
+                              lastDistance = getDistance(e.touches[0], e.touches[1]);
+                          } else if (e.touches.length === 1) {
+                              // Drag start
+                              isDragging = true;
+                              lastPosX = e.touches[0].clientX;
+                              lastPosY = e.touches[0].clientY;
+                          }
+                      });
+                      
+                      // Touch move
+                      viewerImage.addEventListener('touchmove', function(e) {
+                          e.preventDefault();
+                          
+                          if (e.touches.length === 2) {
+                              // Pinch zoom
+                              const distance = getDistance(e.touches[0], e.touches[1]);
+                              const delta = distance - lastDistance;
+                              scale += delta * 0.01;
+                              scale = Math.max(1, Math.min(scale, 5)); // Limit zoom between 1x and 5x
+                              lastDistance = distance;
+                              updateTransform();
+                          } else if (e.touches.length === 1 && isDragging && scale > 1) {
+                              // Drag to pan (only when zoomed in)
+                              const deltaX = e.touches[0].clientX - lastPosX;
+                              const deltaY = e.touches[0].clientY - lastPosY;
+                              posX += deltaX;
+                              posY += deltaY;
+                              
+                              // Constrain panning
+                              const maxPanX = (viewerImage.width * scale - window.innerWidth) / 2;
+                              const maxPanY = (viewerImage.height * scale - window.innerHeight) / 2;
+                              posX = Math.max(-maxPanX, Math.min(posX, maxPanX));
+                              posY = Math.max(-maxPanY, Math.min(posY, maxPanY));
+                              
+                              lastPosX = e.touches[0].clientX;
+                              lastPosY = e.touches[0].clientY;
+                              updateTransform();
+                          }
+                      });
+                      
+                      // Touch end
+                      viewerImage.addEventListener('touchend', function(e) {
+                          if (e.touches.length < 2) {
+                              lastDistance = 0;
+                          }
+                          if (e.touches.length === 0) {
+                              isDragging = false;
+                              
+                              // Reset if zoomed out beyond 1x
+                              if (scale < 1) {
+                                  scale = 1;
+                                  posX = 0;
+                                  posY = 0;
+                                  updateTransform();
+                              }
+                          }
+                      });
+                      
+                      // Double tap to zoom
+                      let lastTap = 0;
+                      viewerImage.addEventListener('touchend', function(e) {
+                          const currentTime = new Date().getTime();
+                          const tapLength = currentTime - lastTap;
+                          if (tapLength < 300 && tapLength > 0) {
+                              // Double tap detected
+                              if (scale === 1) {
+                                  scale = 2.5;
+                              } else {
+                                  scale = 1;
+                                  posX = 0;
+                                  posY = 0;
+                              }
+                              updateTransform();
+                          }
+                          lastTap = currentTime;
+                      });
+                  }
+              })();
+              </script>
           </div>
 
           <div class="col-md-6">

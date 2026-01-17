@@ -39,8 +39,13 @@
          <div class="col-12">
             <div class="products product-style-1 owl-mx-5">
                <div class="five-carousel owl-carousel nav-top-right e-title-hover-primary e-image-bg-light e-hover-image-zoom e-info-center">
-                  @foreach (App\Models\Product::where('type',$productt->type)->where('product_type',$productt->product_type)->withCount('ratings')
-                  ->withAvg('ratings','rating')->take(12)->get() as $item)
+                  @foreach (App\Models\Product::where('category_id', $productt->category_id)
+                  ->where('id', '!=', $productt->id)
+                  ->where('status', 1)
+                  ->withCount('ratings')
+                  ->withAvg('ratings','rating')
+                  ->inRandomOrder()
+                  ->take(12)->get() as $item)
                   <div class="item">
                      <div class="product type-product">
                         <div class="product-wrapper">

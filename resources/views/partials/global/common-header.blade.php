@@ -234,28 +234,24 @@
    }
 
    /* DISABLE any fixed-top or alternate headers */
-   .fixed-top,
-   header.fixed-top,
-   .header.fixed-top,
-   .nav-sticky,
-   .menu-sticky {
-       display: none !important;
-       visibility: hidden !important;
-       opacity: 0 !important;
-       height: 0 !important;
-       overflow: hidden !important;
-   }
-
-   /* Keep OUR header static (not sticky) */
+   /* Make header sticky on scroll */
    .ecommerce-header {
-       position: relative !important;
-       z-index: 999 !important;
+       position: fixed !important;
+       top: 0 !important;
+       left: 0 !important;
+       right: 0 !important;
+       z-index: 1000 !important;
        background: #fff !important;
        display: block !important;
        visibility: visible !important;
        opacity: 1 !important;
        overflow: visible !important;
+       width: 100% !important;
+       box-shadow: 0 2px 5px rgba(0,0,0,0.1) !important;
    }
+
+   /* Minimal padding to body - just enough for header */
+   /* Note: index.blade.php also sets padding, this is a fallback */
 
    /* Prevent header row from scrolling */
    .main-nav-row,
@@ -948,17 +944,30 @@
    .has-cart-data .cart-popup,
    .cart-popup {
        position: fixed !important;
-       top: 120px !important;
+       top: 75px !important; /* Right below header - no gap */
        left: 50% !important;
        right: auto !important;
        margin-left: -190px !important; /* Half of 380px width */
-       transform: translateY(-10px) !important;
        width: 380px !important;
        max-width: 90vw !important;
        z-index: 999999 !important;
        opacity: 0 !important;
        visibility: hidden !important;
        pointer-events: none !important;
+       transition: opacity 0.2s ease, visibility 0.2s ease !important;
+   }
+
+   /* Add invisible bridge area to prevent dropdown from closing */
+   .header-cart-1::after,
+   .has-cart-data::after {
+       content: '' !important;
+       position: absolute !important;
+       bottom: -15px !important;
+       left: 0 !important;
+       right: 0 !important;
+       height: 15px !important;
+       background: transparent !important;
+       z-index: 999998 !important;
    }
 
    /* When cart is hovered/visible */
@@ -967,13 +976,18 @@
        opacity: 1 !important;
        visibility: visible !important;
        pointer-events: auto !important;
-       transform: translateY(0) !important;
    }
 
-   /* Also show when hovering the cart popup itself */
+   /* Keep dropdown visible when hovering the cart popup itself */
    .cart-popup:hover {
        opacity: 1 !important;
        visibility: visible !important;
+       pointer-events: auto !important;
+   }
+
+   /* Alternative: Keep dropdown open when mouse moves from icon to dropdown */
+   .header-cart-1:hover::after,
+   .has-cart-data:hover::after {
        pointer-events: auto !important;
    }
 
@@ -1006,17 +1020,72 @@
        .header-cart-1 .cart-popup,
        .has-cart-data .cart-popup,
        .cart-popup {
+           top: 58px !important; /* Minimal gap for mobile */
            width: 320px !important;
            max-width: 90vw !important;
            left: 50% !important;
            right: auto !important;
            margin-left: -160px !important; /* Half of 320px width */
-           transform: translateY(-10px) !important;
        }
-
-       .header-cart-1:hover .cart-popup,
-       .has-cart-data:hover .cart-popup {
-           transform: translateY(0) !important;
+       
+       /* Mobile bridge area */
+       .header-cart-1::after,
+       .has-cart-data::after {
+           bottom: -8px !important;
+           height: 8px !important;
+       }
+       
+       /* Professional mobile search styling */
+       .search-col {
+           padding: 8px 10px !important;
+           order: 3 !important;
+       }
+       
+       .product-search-one {
+           margin: 0 !important;
+       }
+       
+       .search-form.enhanced-search-form {
+           display: flex !important;
+           align-items: center !important;
+           width: 100% !important;
+           margin: 0 !important;
+           background: #f8f9fa !important;
+           border-radius: 25px !important;
+           overflow: hidden !important;
+           box-shadow: 0 2px 6px rgba(0,0,0,0.08) !important;
+       }
+       
+       .search-field {
+           flex: 1 !important;
+           border: none !important;
+           background: transparent !important;
+           padding: 10px 15px !important;
+           font-size: 14px !important;
+           outline: none !important;
+           height: 38px !important;
+       }
+       
+       .search-submit {
+           background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+           border: none !important;
+           padding: 10px 18px !important;
+           cursor: pointer !important;
+           display: flex !important;
+           align-items: center !important;
+           justify-content: center !important;
+           min-width: 45px !important;
+           height: 38px !important;
+           transition: all 0.3s ease !important;
+       }
+       
+       .search-submit:hover {
+           background: linear-gradient(135deg, #764ba2 0%, #667eea 100%) !important;
+       }
+       
+       .search-submit i {
+           font-size: 16px !important;
+           color: #fff !important;
        }
    }
 
@@ -1106,7 +1175,7 @@ $pages = App\Models\Page::get();
                     </div>
                 </nav>
             </div>
-            <div class="col-lg-7 col-md-6 d-none d-md-block order-md-2 order-3 search-col">
+            <div class="col-lg-7 col-md-6 col-12 d-block order-md-2 order-3 search-col">
                 <div class="d-flex align-items-center justify-content-center h-100">
                     <div class="product-search-one w-100 global-search touch-screen-view">
                         <form id="searchForm" class="search-form form-inline enhanced-search-form" action="{{ route('front.category', [Request::route('category'),Request::route('subcategory'),Request::route('childcategory')]) }}" method="GET">
@@ -1132,6 +1201,15 @@ $pages = App\Models\Page::get();
             </div>
             <div class="col-lg-3 col-md-3 col-8 order-md-3 order-2 icons-col">
                 <div class="d-flex align-items-center justify-content-end h-100 col-icons">
+
+                    <!-- Mobile Search Icon -->
+                    <div class="header-icon-enhanced mobile-search-icon d-md-none">
+                        <a href="javascript:;" id="mobileSearchToggle" title="Search">
+                            <div class="search-icon-wrapper">
+                                <i class="flaticon-search flat-mini"></i>
+                            </div>
+                        </a>
+                    </div>
 
                     <!-- Wishlist Icon - REMOVED as requested -->
 
