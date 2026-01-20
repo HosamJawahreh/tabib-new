@@ -1222,12 +1222,12 @@
                   zoomInBtn.addEventListener('click', function(e) {
                       e.preventDefault();
                       e.stopPropagation();
-                      
+
                       if (scale < maxScale) {
                           scale = Math.min(maxScale, scale + zoomStep);
                           constrainPosition();
                           updateTransform(true);
-                          
+
                           if (scale > 1) {
                               lockBody();
                           }
@@ -1238,16 +1238,16 @@
                   zoomOutBtn.addEventListener('click', function(e) {
                       e.preventDefault();
                       e.stopPropagation();
-                      
+
                       if (scale > minScale) {
                           scale = Math.max(minScale, scale - zoomStep);
-                          
+
                           if (scale === 1) {
                               posX = 0;
                               posY = 0;
                               unlockBody();
                           }
-                          
+
                           constrainPosition();
                           updateTransform(true);
                       }

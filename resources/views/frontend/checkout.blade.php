@@ -535,7 +535,7 @@
                               </span>
                            </div>
                         </div>
-                        <button type="button" class="remove-from-checkout" 
+                        <button type="button" class="remove-from-checkout"
                                 data-href="{{ route('product.cart.remove',$product['item']['id'].$product['size'].$product['color'].str_replace(str_split(' ,'),'',$product['values'])) }}"
                                 title="{{ __('Remove this item') }}"
                                 style="position: absolute; top: 5px; right: 5px; background: transparent; border: none; color: #dc3545; font-size: 18px; line-height: 1; padding: 0; width: 20px; height: 20px; cursor: pointer; opacity: 0.7; transition: opacity 0.2s;">
@@ -1450,7 +1450,7 @@
       e.preventDefault();
       var $button = $(this);
       var removeUrl = $button.data('href');
-      
+
       if (confirm('{{ __("Are you sure you want to remove this item from cart?") }}')) {
          $.ajax({
             url: removeUrl,
