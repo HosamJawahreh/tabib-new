@@ -1170,7 +1170,7 @@
                   // Touch handlers (defined once, attached/removed dynamically)
                   function handleTouchStart(e) {
                       if (scale <= 1) return;
-                      
+
                       if (e.touches.length === 1) {
                           e.preventDefault();
                           e.stopPropagation();
