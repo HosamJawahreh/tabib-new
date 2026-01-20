@@ -1134,7 +1134,7 @@
               </div>
 
               <script>
-              // BUTTON-CONTROLLED ZOOM with SMOOTH SCROLL - Professional Mobile Implementation
+              // SIMPLE BUTTON-ONLY ZOOM - No Gesture Interference
               (function() {
                   // Only on mobile devices
                   if (window.innerWidth > 767) return;
@@ -1150,12 +1150,9 @@
                   let scale = 1;
                   let posX = 0;
                   let posY = 0;
-                  let lastPosX = 0;
-                  let lastPosY = 0;
                   let isPanning = false;
                   let lastTouchX = 0;
                   let lastTouchY = 0;
-                  let isZoomActive = false; // Track if zoom mode is active
 
                   const minScale = 1;
                   const maxScale = 4;
@@ -1163,15 +1160,13 @@
 
                   // Update image transform
                   function updateTransform(animate = false) {
-                      mainImage.style.transition = animate ? 'transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)' : 'none';
+                      mainImage.style.transition = animate ? 'transform 0.3s ease' : 'none';
                       mainImage.style.transform = `translate(${posX}px, ${posY}px) scale(${scale})`;
 
                       if (scale > 1) {
                           mainImage.classList.add('zoomed');
-                          isZoomActive = true;
                       } else {
                           mainImage.classList.remove('zoomed');
-                          isZoomActive = false;
                       }
 
                       updateButtonStates();
@@ -1194,31 +1189,17 @@
                       const rect = mainImage.getBoundingClientRect();
                       const wrapperRect = wrapper.getBoundingClientRect();
 
-                      const scaledWidth = rect.width / scale * scale;
-                      const scaledHeight = rect.height / scale * scale;
+                      const scaledWidth = rect.width;
+                      const scaledHeight = rect.height;
 
-                      const maxX = Math.max(0, (scaledWidth - wrapperRect.width) / 2);
-                      const maxY = Math.max(0, (scaledHeight - wrapperRect.height) / 2);
+                      const maxX = Math.max(0, (scaledWidth * scale - wrapperRect.width) / 2);
+                      const maxY = Math.max(0, (scaledHeight * scale - wrapperRect.height) / 2);
 
                       posX = Math.max(-maxX, Math.min(maxX, posX));
                       posY = Math.max(-maxY, Math.min(maxY, posY));
                   }
 
-                  // Lock body scroll
-                  function lockBody() {
-                      document.body.style.top = `-${window.scrollY}px`;
-                      document.body.classList.add('zoom-active');
-                  }
-
-                  // Unlock body scroll
-                  function unlockBody() {
-                      const scrollY = document.body.style.top;
-                      document.body.classList.remove('zoom-active');
-                      document.body.style.top = '';
-                      window.scrollTo(0, parseInt(scrollY || '0') * -1);
-                  }
-
-                  // Zoom In Button
+                  // Zoom In Button - ONLY way to activate zoom
                   zoomInBtn.addEventListener('click', function(e) {
                       e.preventDefault();
                       e.stopPropagation();
@@ -1227,68 +1208,55 @@
                           scale = Math.min(maxScale, scale + zoomStep);
                           constrainPosition();
                           updateTransform(true);
-
-                          if (scale > 1) {
-                              lockBody();
-                          }
                       }
                   });
 
-                  // Zoom Out Button
+                  // Zoom Out Button - Can disable zoom completely
                   zoomOutBtn.addEventListener('click', function(e) {
                       e.preventDefault();
                       e.stopPropagation();
 
                       if (scale > minScale) {
                           scale = Math.max(minScale, scale - zoomStep);
-
+                          
                           if (scale === 1) {
                               posX = 0;
                               posY = 0;
-                              unlockBody();
                           }
-
+                          
                           constrainPosition();
                           updateTransform(true);
                       }
                   });
 
-                  // Touch handling - ONLY when zoomed (buttons clicked)
+                  // Touch handling - ONLY when zoomed via buttons
                   mainImage.addEventListener('touchstart', function(e) {
-                      if (!isZoomActive || scale <= 1) {
-                          // NOT zoomed = Allow normal page scrolling
-                          return;
-                      }
+                      // Only handle panning if zoomed in
+                      if (scale <= 1) return;
 
-                      // Zoomed = Pan the image
                       if (e.touches.length === 1) {
                           e.preventDefault();
-                          e.stopPropagation();
-
                           isPanning = true;
                           lastTouchX = e.touches[0].clientX;
                           lastTouchY = e.touches[0].clientY;
-                          lastPosX = posX;
-                          lastPosY = posY;
                       }
                   }, { passive: false });
 
                   mainImage.addEventListener('touchmove', function(e) {
-                      if (!isZoomActive || scale <= 1 || !isPanning) {
-                          // NOT zoomed or not panning = Allow page scroll
-                          return;
-                      }
+                      // Only handle panning if zoomed in and panning started
+                      if (scale <= 1 || !isPanning) return;
 
-                      // Zoomed and panning = Pan the image
                       if (e.touches.length === 1) {
                           e.preventDefault();
-                          e.stopPropagation();
-
+                          
                           const deltaX = e.touches[0].clientX - lastTouchX;
                           const deltaY = e.touches[0].clientY - lastTouchY;
 
-                          posX = lastPosX + deltaX;
-                          posY = lastPosY + deltaY;
+                          posX += deltaX;
+                          posY += deltaY;
+
+                          lastTouchX = e.touches[0].clientX;
+                          lastTouchY = e.touches[0].clientY;
 
                           constrainPosition();
                           updateTransform(false);
@@ -1317,270 +1285,13 @@
                               posX = 0;
                               posY = 0;
                               isPanning = false;
-                              isZoomActive = false;
                               updateTransform(true);
-                              unlockBody();
                           }
                       });
                   });
 
-                  // Initialize button states
+                  // Initialize
                   updateButtonStates();
-              })();
-              </script>
-
-              <script>
-              // COMPLEMENTARY TOUCH GESTURES - Pinch & Double-Tap (Works with Button Controls)
-              (function() {
-                  // Only on mobile devices
-                  if (window.innerWidth > 767) return;
-
-                  const wrapper = document.querySelector('.mobile-zoom-wrapper');
-                  const mainImage = document.getElementById('single-image-zoom');
-
-                  if (!wrapper || !mainImage) return;
-
-                  // Zoom state
-                  let scale = 1;
-                  let posX = 0;
-                  let posY = 0;
-                  let lastScale = 1;
-                  let lastPosX = 0;
-                  let lastPosY = 0;
-
-                  // Touch state
-                  let initialDistance = 0;
-                  let isPinching = false;
-                  let isPanning = false;
-                  let lastTouchX = 0;
-                  let lastTouchY = 0;
-                  let touchStarted = false;
-                  let lastTapTime = 0;
-
-                  // Get distance between two touch points
-                  function getDistance(touches) {
-                      const dx = touches[0].clientX - touches[1].clientX;
-                      const dy = touches[0].clientY - touches[1].clientY;
-                      return Math.sqrt(dx * dx + dy * dy);
-                  }
-
-                  // Get center point between two touches
-                  function getCenter(touches) {
-                      return {
-                          x: (touches[0].clientX + touches[1].clientX) / 2,
-                          y: (touches[0].clientY + touches[1].clientY) / 2
-                      };
-                  }
-
-                  // Update image transform
-                  function updateTransform(animate = false) {
-                      mainImage.style.transition = animate ? 'transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)' : 'none';
-                      mainImage.style.transform = `translate(${posX}px, ${posY}px) scale(${scale})`;
-
-                      if (scale > 1) {
-                          mainImage.classList.add('zoomed');
-                      } else {
-                          mainImage.classList.remove('zoomed');
-                      }
-                  }
-
-                  // Constrain position to prevent image from going out of bounds
-                  function constrainPosition() {
-                      if (scale <= 1) {
-                          posX = 0;
-                          posY = 0;
-                          return;
-                      }
-
-                      const rect = mainImage.getBoundingClientRect();
-                      const wrapperRect = wrapper.getBoundingClientRect();
-
-                      const scaledWidth = rect.width / lastScale * scale;
-                      const scaledHeight = rect.height / lastScale * scale;
-
-                      const maxX = Math.max(0, (scaledWidth - wrapperRect.width) / 2);
-                      const maxY = Math.max(0, (scaledHeight - wrapperRect.height) / 2);
-
-                      posX = Math.max(-maxX, Math.min(maxX, posX));
-                      posY = Math.max(-maxY, Math.min(maxY, posY));
-                  }
-
-                  // Lock body scroll ONLY when actively zooming
-                  function lockBody() {
-                      document.body.style.top = `-${window.scrollY}px`;
-                      document.body.classList.add('zoom-active');
-                  }
-
-                  // Unlock body scroll
-                  function unlockBody() {
-                      const scrollY = document.body.style.top;
-                      document.body.classList.remove('zoom-active');
-                      document.body.style.top = '';
-                      window.scrollTo(0, parseInt(scrollY || '0') * -1);
-                  }
-
-                  // Touch start - CRITICAL: Only handle two-finger touches or zoomed state on IMAGE only
-                  mainImage.addEventListener('touchstart', function(e) {
-                      touchStarted = true;
-
-                      if (e.touches.length === 2) {
-                          // TWO FINGERS = Start pinch zoom
-                          e.preventDefault();
-                          e.stopPropagation();
-
-                          isPinching = true;
-                          initialDistance = getDistance(e.touches);
-                          lastScale = scale;
-
-                          lockBody();
-                      } else if (e.touches.length === 1 && scale > 1) {
-                          // ONE FINGER + Already zoomed = Pan the zoomed image
-                          e.preventDefault();
-                          e.stopPropagation();
-
-                          isPanning = true;
-                          lastTouchX = e.touches[0].clientX;
-                          lastTouchY = e.touches[0].clientY;
-                          lastPosX = posX;
-                          lastPosY = posY;
-
-                          lockBody();
-                      } else if (e.touches.length === 1 && scale === 1) {
-                          // ONE FINGER + Not zoomed = Check for double tap, otherwise allow scroll
-                          const now = Date.now();
-                          const timeSinceLastTap = now - lastTapTime;
-
-                          if (timeSinceLastTap < 300 && timeSinceLastTap > 0) {
-                              // Double tap detected - zoom in
-                              e.preventDefault();
-                              e.stopPropagation();
-
-                              const rect = mainImage.getBoundingClientRect();
-                              const touchX = e.touches[0].clientX - rect.left;
-                              const touchY = e.touches[0].clientY - rect.top;
-
-                              scale = 2;
-                              posX = 0;
-                              posY = 0;
-                              lastScale = 2;
-
-                              updateTransform(true);
-                              lockBody();
-                          }
-
-                          lastTapTime = now;
-                      }
-                      // ONE FINGER + Not zoomed + Not double tap = Let page scroll normally (do nothing)
-                  }, { passive: false });
-
-                  // Touch move - CRITICAL: Only prevent default for two-finger or when panning zoomed image
-                  mainImage.addEventListener('touchmove', function(e) {
-                      if (e.touches.length === 2 && isPinching) {
-                          // TWO FINGERS = Pinch zoom
-                          e.preventDefault();
-                          e.stopPropagation();
-
-                          const distance = getDistance(e.touches);
-                          const scaleChange = distance / initialDistance;
-
-                          scale = Math.max(1, Math.min(4, lastScale * scaleChange));
-
-                          constrainPosition();
-                          updateTransform(false);
-
-                      } else if (e.touches.length === 1 && isPanning && scale > 1) {
-                          // ONE FINGER + Already zoomed = Pan
-                          e.preventDefault();
-                          e.stopPropagation();
-
-                          const deltaX = e.touches[0].clientX - lastTouchX;
-                          const deltaY = e.touches[0].clientY - lastTouchY;
-
-                          posX = lastPosX + deltaX;
-                          posY = lastPosY + deltaY;
-
-                          constrainPosition();
-                          updateTransform(false);
-                      }
-                      // ONE FINGER + Not zoomed = Allow normal page scrolling (do nothing, no preventDefault)
-                  }, { passive: false });
-
-                  // Touch end
-                  mainImage.addEventListener('touchend', function(e) {
-                      if (e.touches.length === 0) {
-                          isPinching = false;
-                          isPanning = false;
-                          touchStarted = false;
-
-                          // If zoomed out completely, reset and unlock scroll
-                          if (scale <= 1) {
-                              scale = 1;
-                              posX = 0;
-                              posY = 0;
-                              updateTransform(true);
-                              unlockBody();
-                          } else if (scale > 1 && !isPinching && !isPanning) {
-                              // Still zoomed but not actively manipulating - unlock to allow page scroll
-                              unlockBody();
-                          }
-                      }
-                  }, { passive: false });
-
-                  // Touch cancel - cleanup
-                  mainImage.addEventListener('touchcancel', function(e) {
-                      isPinching = false;
-                      isPanning = false;
-                      touchStarted = false;
-
-                      if (scale <= 1) {
-                          scale = 1;
-                          posX = 0;
-                          posY = 0;
-                          updateTransform(true);
-                      }
-                      unlockBody();
-                  }, { passive: false });
-
-                  // Double tap when zoomed to reset
-                  mainImage.addEventListener('touchend', function(e) {
-                      if (e.touches.length === 0 && scale > 1 && !isPinching && !isPanning) {
-                          const now = Date.now();
-                          const timeSinceLastTap = now - lastTapTime;
-
-                          if (timeSinceLastTap < 300 && timeSinceLastTap > 0) {
-                              // Double tap while zoomed - reset zoom
-                              e.preventDefault();
-                              scale = 1;
-                              posX = 0;
-                              posY = 0;
-                              lastScale = 1;
-                              updateTransform(true);
-                              unlockBody();
-                          }
-                      }
-                  });
-
-                  // Thumbnail click handler - reset zoom
-                  document.querySelectorAll('#gallery_09 a').forEach(function(thumb) {
-                      thumb.addEventListener('click', function(e) {
-                          e.preventDefault();
-                          const newImage = this.getAttribute('data-image');
-                          if (mainImage && newImage) {
-                              mainImage.src = newImage;
-                              mainImage.setAttribute('data-zoom-image', this.getAttribute('data-zoom-image'));
-
-                              // Reset zoom
-                              scale = 1;
-                              posX = 0;
-                              posY = 0;
-                              lastScale = 1;
-                              isPinching = false;
-                              isPanning = false;
-                              updateTransform(true);
-                              unlockBody();
-                          }
-                      });
-                  });
               })();
               </script>
           </div>
