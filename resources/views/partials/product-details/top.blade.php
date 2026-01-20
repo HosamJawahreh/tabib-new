@@ -68,7 +68,7 @@
     }
 }
 
-/* Mobile Touch Zoom - Two-Finger Pinch Only */
+/* Mobile Touch Zoom - Two-Finger Pinch + Double Tap */
 @media (max-width: 767px) {
     .mobile-zoom-wrapper {
         position: relative;
@@ -80,6 +80,7 @@
         height: auto;
         -webkit-touch-callout: none;
         -webkit-tap-highlight-color: transparent;
+        cursor: pointer;
     }
 
     /* Lock body ONLY when actively zooming with two fingers */
@@ -1086,6 +1087,8 @@
                   let lastTouchX = 0;
                   let lastTouchY = 0;
                   let touchStarted = false;
+                  let doubleTapTimer = null;
+                  let lastTapTime = 0;
 
                   // Get distance between two touch points
                   function getDistance(touches) {
@@ -1149,7 +1152,7 @@
                       window.scrollTo(0, parseInt(scrollY || '0') * -1);
                   }
 
-                  // Touch start - CRITICAL: Only handle two-finger touches for zoom
+                  // Touch start - CRITICAL: Only handle two-finger touches or zoomed state
                   wrapper.addEventListener('touchstart', function(e) {
                       touchStarted = true;
 
@@ -1175,8 +1178,32 @@
                           lastPosY = posY;
 
                           lockBody();
+                      } else if (e.touches.length === 1 && scale === 1) {
+                          // ONE FINGER + Not zoomed = Check for double tap, otherwise allow scroll
+                          const now = Date.now();
+                          const timeSinceLastTap = now - lastTapTime;
+                          
+                          if (timeSinceLastTap < 300 && timeSinceLastTap > 0) {
+                              // Double tap detected - zoom in
+                              e.preventDefault();
+                              e.stopPropagation();
+                              
+                              const rect = wrapper.getBoundingClientRect();
+                              const touchX = e.touches[0].clientX - rect.left;
+                              const touchY = e.touches[0].clientY - rect.top;
+                              
+                              scale = 2;
+                              posX = 0;
+                              posY = 0;
+                              lastScale = 2;
+                              
+                              updateTransform(true);
+                              lockBody();
+                          }
+                          
+                          lastTapTime = now;
                       }
-                      // ONE FINGER + Not zoomed = Let page scroll normally (do nothing)
+                      // ONE FINGER + Not zoomed + Not double tap = Let page scroll normally (do nothing)
                   }, { passive: false });
 
                   // Touch move - CRITICAL: Only prevent default for two-finger or when panning zoomed image
@@ -1247,20 +1274,22 @@
                       unlockBody();
                   }, { passive: false });
 
-                  // Double tap to reset
-                  let lastTapTime = 0;
+                  // Double tap when zoomed to reset
                   wrapper.addEventListener('touchend', function(e) {
-                      if (e.touches.length === 0 && !isPinching && !isPanning) {
+                      if (e.touches.length === 0 && scale > 1 && !isPinching && !isPanning) {
                           const now = Date.now();
-                          if (now - lastTapTime < 300) {
+                          const timeSinceLastTap = now - lastTapTime;
+                          
+                          if (timeSinceLastTap < 300 && timeSinceLastTap > 0) {
+                              // Double tap while zoomed - reset zoom
                               e.preventDefault();
                               scale = 1;
                               posX = 0;
                               posY = 0;
+                              lastScale = 1;
                               updateTransform(true);
                               unlockBody();
                           }
-                          lastTapTime = now;
                       }
                   });
 
