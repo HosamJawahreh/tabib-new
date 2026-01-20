@@ -1076,7 +1076,7 @@
               // PROFESSIONAL MOBILE ZOOM - Smooth, Stable, Shake-Free
               (function() {
                   'use strict';
-                  
+
                   // Only on mobile devices
                   if (window.innerWidth > 767) return;
 
@@ -1227,7 +1227,7 @@
                           isPinching = true;
                           initialDistance = getDistance(e.touches);
                           initialScale = scale;
-                          
+
                           const center = getCenter(e.touches);
                           const rect = wrapper.getBoundingClientRect();
                           centerX = center.x - rect.left;
@@ -1253,27 +1253,27 @@
                           // ONE FINGER + Not zoomed = Track for double tap, but ALLOW PAGE SCROLL
                           const now = Date.now();
                           const timeSinceLastTap = now - lastTapTime;
-                          
+
                           if (timeSinceLastTap < DOUBLE_TAP_THRESHOLD && timeSinceLastTap > 0) {
                               // Double tap detected - zoom in smoothly (BLOCK PAGE SCROLL)
                               e.preventDefault();
                               e.stopPropagation();
-                              
+
                               const rect = wrapper.getBoundingClientRect();
                               const touchX = e.touches[0].clientX - rect.left;
                               const touchY = e.touches[0].clientY - rect.top;
-                              
+
                               targetScale = 2.5;
                               scale = 2.5;
                               targetPosX = 0;
                               targetPosY = 0;
                               posX = 0;
                               posY = 0;
-                              
+
                               updateTransform(true, false);
                               lockBody();
                           }
-                          
+
                           lastTapTime = now;
                       }
                       // ONE FINGER + Not zoomed + Not double tap = ALLOW PAGE SCROLL (no preventDefault)
@@ -1286,20 +1286,20 @@
 
                           const currentDistance = getDistance(e.touches);
                           const scaleChange = currentDistance / initialDistance;
-                          
+
                           // Calculate new scale with smooth clamping
                           const newScale = Math.max(MIN_SCALE, Math.min(MAX_SCALE, initialScale * scaleChange));
-                          
+
                           // Smooth scale transition
                           targetScale = newScale;
                           scale = newScale;
-                          
+
                           // Get current center and adjust position to zoom towards center
                           const currentCenter = getCenter(e.touches);
                           const rect = wrapper.getBoundingClientRect();
                           const currentCenterX = currentCenter.x - rect.left;
                           const currentCenterY = currentCenter.y - rect.top;
-                          
+
                           constrainPosition();
                           updateTransform(false, false);
 
@@ -1316,7 +1316,7 @@
                       if (e.touches.length === 0) {
                           const wasPinching = isPinching;
                           const wasPanning = isPanning;
-                          
+
                           isPinching = false;
                           isPanning = false;
                           touchStarted = false;
@@ -1352,7 +1352,7 @@
                           if (scale > 1 && !wasPinching && !wasPanning) {
                               const now = Date.now();
                               const timeSinceLastTap = now - lastTapTime;
-                              
+
                               if (timeSinceLastTap < DOUBLE_TAP_THRESHOLD && timeSinceLastTap > 0) {
                                   // Double tap while zoomed - reset zoom
                                   e.preventDefault();
@@ -1385,11 +1385,11 @@
                               // Smooth fade transition
                               mainImage.style.opacity = '0.7';
                               mainImage.style.transition = 'opacity 0.2s ease';
-                              
+
                               setTimeout(() => {
                                   mainImage.src = newImage;
                                   mainImage.setAttribute('data-zoom-image', this.getAttribute('data-zoom-image'));
-                                  
+
                                   // Reset zoom smoothly
                                   targetScale = 1;
                                   scale = 1;
@@ -1400,7 +1400,7 @@
                                   isPinching = false;
                                   isPanning = false;
                                   isAnimating = false;
-                                  
+
                                   mainImage.classList.remove('zoomed', 'zooming');
                                   mainImage.style.opacity = '1';
                                   updateTransform(true, false);
@@ -1426,29 +1426,6 @@
                   // Initial setup
                   mainImage.style.transformOrigin = 'center center';
                   mainImage.style.transform = 'translate3d(0, 0, 0) scale(1)';
-              })();
-              </script>
-                  // Thumbnail click handler - reset zoom
-                  document.querySelectorAll('#gallery_09 a').forEach(function(thumb) {
-                      thumb.addEventListener('click', function(e) {
-                          e.preventDefault();
-                          const newImage = this.getAttribute('data-image');
-                          if (mainImage && newImage) {
-                              mainImage.src = newImage;
-                              mainImage.setAttribute('data-zoom-image', this.getAttribute('data-zoom-image'));
-
-                              // Reset zoom
-                              scale = 1;
-                              posX = 0;
-                              posY = 0;
-                              lastScale = 1;
-                              isPinching = false;
-                              isPanning = false;
-                              updateTransform(true);
-                              unlockBody();
-                          }
-                      });
-                  });
               })();
               </script>
           </div>
