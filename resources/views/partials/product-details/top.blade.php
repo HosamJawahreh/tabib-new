@@ -97,6 +97,7 @@
         gap: 8px;
         z-index: 10;
         opacity: 0.9;
+        pointer-events: auto !important;
     }
 
     .zoom-btn {
@@ -108,6 +109,7 @@
         color: white;
         font-size: 20px;
         display: flex;
+        pointer-events: auto !important;
         align-items: center;
         justify-content: center;
         cursor: pointer;
@@ -144,13 +146,15 @@
         max-width: 100%;
         transform-origin: center center;
         will-change: transform;
-        touch-action: auto;
-        pointer-events: auto;
+        touch-action: auto !important;
+        pointer-events: none !important;
+        user-select: none;
     }
 
     #single-image-zoom.zoomed {
         cursor: grab;
-        touch-action: none;
+        touch-action: none !important;
+        pointer-events: auto !important;
         overflow: hidden;
     }
 
@@ -340,14 +344,19 @@
 
     .bg-light.rounded.shadow-sm {
         overflow: visible !important;
-        touch-action: manipulation !important;
+        touch-action: auto !important;
     }
 
     #single-image-zoom {
         cursor: pointer !important;
-        touch-action: manipulation !important;
+        touch-action: auto !important;
+        pointer-events: none !important;
         max-width: 100% !important;
         height: auto !important;
+    }
+
+    #single-image-zoom.zoomed {
+        pointer-events: auto !important;
     }
 
     /* Mobile gallery navigation adjustments */
@@ -1216,8 +1225,6 @@
                       mainImage.removeEventListener('touchcancel', handleTouchEnd);
                       touchHandlersAttached = false;
                       wrapper.style.overflow = 'visible';
-                  }
-
                   // Update image transform
                   function updateTransform(animate = false) {
                       mainImage.style.transition = animate ? 'transform 0.3s ease' : 'none';
@@ -1225,12 +1232,16 @@
 
                       if (scale > 1) {
                           mainImage.classList.add('zoomed');
+                          mainImage.style.pointerEvents = 'auto';
                           attachTouchListeners();
                       } else {
                           mainImage.classList.remove('zoomed');
+                          mainImage.style.pointerEvents = 'none';
                           removeTouchListeners();
                       }
 
+                      updateButtonStates();
+                  }
                       updateButtonStates();
                   }
 
