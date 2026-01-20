@@ -1,0 +1,231 @@
+/**
+ * Mobile Search Icon - Force Styling
+ * Match cart and account icon design with green background
+ * High specificity with !important flags to ensure proper application
+ */
+
+/* ============================================
+   MOBILE SEARCH ICON - ENHANCED STYLING
+   ============================================ */
+
+/* Base mobile search icon container */
+.header-icon-enhanced.mobile-search-icon {
+    display: none !important;
+    position: relative !important;
+    margin: 0 8px !important;
+}
+
+@media (max-width: 767px) {
+    .header-icon-enhanced.mobile-search-icon {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+}
+
+/* Search icon wrapper - match cart/account styling */
+.header-icon-enhanced.mobile-search-icon .search-icon-wrapper,
+.mobile-search-icon .search-icon-wrapper {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 50px !important;
+    height: 50px !important;
+    border-radius: 100% !important;
+    background-color: var(--theme-light-color) !important;
+    background: var(--theme-light-color) !important;
+    transition: all 0.3s ease !important;
+    cursor: pointer !important;
+    position: relative !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+/* Search icon wrapper hover effect */
+.header-icon-enhanced.mobile-search-icon .search-icon-wrapper:hover,
+.mobile-search-icon .search-icon-wrapper:hover,
+.header-icon-enhanced.mobile-search-icon a:hover .search-icon-wrapper,
+.mobile-search-icon a:hover .search-icon-wrapper {
+    background-color: var(--theme-light-color) !important;
+    background: var(--theme-light-color) !important;
+    transform: scale(1.05) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Icon color stays dark on hover - matching cart behavior */
+.header-icon-enhanced.mobile-search-icon .search-icon-wrapper:hover i,
+.mobile-search-icon .search-icon-wrapper:hover i,
+.header-icon-enhanced.mobile-search-icon a:hover .search-icon-wrapper i,
+.mobile-search-icon a:hover .search-icon-wrapper i {
+    color: var(--theme-dark-color) !important;
+}
+
+/* Search icon itself */
+.header-icon-enhanced.mobile-search-icon .search-icon-wrapper i,
+.mobile-search-icon .search-icon-wrapper i,
+.header-icon-enhanced.mobile-search-icon .search-icon-wrapper .flaticon-search,
+.mobile-search-icon .search-icon-wrapper .flaticon-search {
+    color: var(--theme-dark-color) !important;
+    font-size: 20px !important;
+    line-height: 1 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100% !important;
+    height: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Remove any link styling */
+.header-icon-enhanced.mobile-search-icon a,
+.mobile-search-icon a {
+    text-decoration: none !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: auto !important;
+    height: auto !important;
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+/* Active/pressed state */
+.header-icon-enhanced.mobile-search-icon .search-icon-wrapper:active,
+.mobile-search-icon .search-icon-wrapper:active {
+    transform: scale(0.95) !important;
+    background-color: var(--theme-light-color) !important;
+}
+
+/* ============================================
+   RESPONSIVE SIZING
+   ============================================ */
+
+/* Tablets and smaller */
+@media screen and (max-width: 991px) {
+    .header-icon-enhanced.mobile-search-icon .search-icon-wrapper,
+    .mobile-search-icon .search-icon-wrapper {
+        width: 45px !important;
+        height: 45px !important;
+    }
+    
+    .header-icon-enhanced.mobile-search-icon .search-icon-wrapper i,
+    .mobile-search-icon .search-icon-wrapper i {
+        font-size: 18px !important;
+    }
+}
+
+/* Mobile devices */
+@media screen and (max-width: 767px) {
+    .header-icon-enhanced.mobile-search-icon .search-icon-wrapper,
+    .mobile-search-icon .search-icon-wrapper {
+        width: 42px !important;
+        height: 42px !important;
+    }
+    
+    .header-icon-enhanced.mobile-search-icon .search-icon-wrapper i,
+    .mobile-search-icon .search-icon-wrapper i {
+        font-size: 17px !important;
+    }
+}
+
+/* Small mobile devices */
+@media screen and (max-width: 575px) {
+    .header-icon-enhanced.mobile-search-icon .search-icon-wrapper,
+    .mobile-search-icon .search-icon-wrapper {
+        width: 40px !important;
+        height: 40px !important;
+    }
+    
+    .header-icon-enhanced.mobile-search-icon .search-icon-wrapper i,
+    .mobile-search-icon .search-icon-wrapper i {
+        font-size: 16px !important;
+    }
+    
+    .header-icon-enhanced.mobile-search-icon {
+        margin: 0 5px !important;
+    }
+}
+
+/* Extra small devices */
+@media screen and (max-width: 480px) {
+    .header-icon-enhanced.mobile-search-icon .search-icon-wrapper,
+    .mobile-search-icon .search-icon-wrapper {
+        width: 38px !important;
+        height: 38px !important;
+    }
+    
+    .header-icon-enhanced.mobile-search-icon .search-icon-wrapper i,
+    .mobile-search-icon .search-icon-wrapper i {
+        font-size: 15px !important;
+    }
+}
+
+/* ============================================
+   ENSURE CONSISTENCY WITH CART/ACCOUNT ICONS
+   ============================================ */
+
+/* Make sure all header icons are consistent */
+.header-icon-enhanced .search-icon-wrapper,
+.header-icon-enhanced .cart-icon {
+    width: 50px !important;
+    height: 50px !important;
+    border-radius: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: all 0.3s ease !important;
+}
+
+/* Override any conflicting styles */
+.col-icons .header-icon-enhanced {
+    margin: 0 8px !important;
+}
+
+@media (max-width: 767px) {
+    .col-icons .header-icon-enhanced {
+        margin: 0 5px !important;
+    }
+}
+
+/* ============================================
+   RTL SUPPORT
+   ============================================ */
+
+html[dir="rtl"] .header-icon-enhanced.mobile-search-icon,
+html[dir="rtl"] .mobile-search-icon {
+    margin: 0 8px !important;
+}
+
+html[dir="rtl"] .header-icon-enhanced.mobile-search-icon .search-icon-wrapper i,
+html[dir="rtl"] .mobile-search-icon .search-icon-wrapper i {
+    transform: scaleX(-1) !important;
+}
+
+/* ============================================
+   FOCUS STATES FOR ACCESSIBILITY
+   ============================================ */
+
+.header-icon-enhanced.mobile-search-icon a:focus,
+.mobile-search-icon a:focus {
+    outline: 2px solid #10b981 !important;
+    outline-offset: 2px !important;
+}
+
+.header-icon-enhanced.mobile-search-icon a:focus .search-icon-wrapper,
+.mobile-search-icon a:focus .search-icon-wrapper {
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.3) !important;
+}
+
+/* ============================================
+   PRINT STYLES
+   ============================================ */
+
+@media print {
+    .header-icon-enhanced.mobile-search-icon,
+    .mobile-search-icon {
+        display: none !important;
+    }
+}

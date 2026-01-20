@@ -353,12 +353,6 @@
                                     <i class="fas fa-filter"></i>
                                     {{ __('Filter Orders') }}
                                 </h3>
-                                <div class="quick-actions">
-                                    <a href="{{route('admin-order-create')}}" class="quick-action-btn">
-                                        <i class="fas fa-plus"></i>
-                                        <span>{{ __('New Order (POS)') }}</span>
-                                    </a>
-                                </div>
                             </div>
 
                             <div class="status-filters">
@@ -635,8 +629,8 @@
             // Add active class to clicked button
             $(this).addClass('active');
 
-            // Update URL without reload (optional - for bookmark support)
-            var newUrl = '{{ route('admin-orders-all') }}' + (status !== 'all' ? '?status=' + status : '');
+            // Keep URL as /orders without query parameters
+            var newUrl = '{{ route('admin-orders-all') }}';
             window.history.pushState({}, '', newUrl);
 
             // Update DataTable ajax URL and reload

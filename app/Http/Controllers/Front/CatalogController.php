@@ -74,7 +74,8 @@ class CatalogController extends FrontBaseController
       ->get()
       ->chunk(4);;
 
-    $prods = Product::when($cat, function ($query, $cat) {
+    $prods = Product::whereStatus(1)
+      ->when($cat, function ($query, $cat) {
       // Use whereHas to query the many-to-many relationship
       return $query->whereHas('categories', function($q) use ($cat) {
         $q->where('categories.id', $cat->id);

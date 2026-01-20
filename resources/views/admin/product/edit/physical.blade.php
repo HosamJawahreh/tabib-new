@@ -43,7 +43,7 @@
 										<div class="body-area" style="padding: 30px;">
 											<div class="gocover" style="background: url({{asset('assets/images/'.$gs->admin_loader)}}) no-repeat scroll center center rgba(45, 45, 45, 0.5);"></div>
 
-											{{-- PRODUCT NAME SECTION (2 COLUMNS: ENGLISH & ARABIC) --}}
+											{{-- PRODUCT NAME SECTION (2 COLUMNS: ARABIC & ENGLISH) --}}
 											<div class="row">
 												<div class="col-lg-12 mb-3">
 													<h4 class="heading" style="color: #2d3748; font-size: 16px; border-bottom: 2px solid #4299e1; padding-bottom: 8px; margin-bottom: 15px;">
@@ -51,49 +51,50 @@
 													</h4>
 												</div>
 
-												{{-- English Name --}}
+												{{-- Arabic Name (from products table) --}}
 												<div class="col-lg-6">
 													<div class="form-group">
 														<label style="font-weight: 600; color: #2d3748; font-size: 14px; display: flex; align-items: center; margin-bottom: 8px;">
-															<img src="{{ asset('assets/images/uk.png') }}"
-																 alt="English"
+															<img src="{{ asset('assets/images/ar.png') }}"
+																 alt="Arabic"
 																 style="width: 24px; height: 18px; margin-right: 10px; border-radius: 3px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);"
 																 onerror="this.style.display='none'">
-															{{ __('Product Name (English)') }} *
+															{{ __('Product Name (Arabic)') }} *
 														</label>
 														<input type="text"
 															   class="input-field"
-															   placeholder="Enter product name in English"
+															   placeholder="أدخل اسم المنتج بالعربية"
 															   name="name"
 															   required=""
 															   value="{{ $data->name }}"
-															   style="border: 2px solid #e2e8f0; border-radius: 6px; padding: 12px; font-size: 14px;">
+															   style="border: 2px solid #e2e8f0; border-radius: 6px; padding: 12px; font-size: 14px; direction: rtl; text-align: right;">
 													</div>
 												</div>
 
-												{{-- Arabic Name --}}
+												{{-- English Name (from product_translations table) --}}
 												@if(isset($languages) && count($languages) > 0)
 													@foreach($languages as $language)
+														@php
+														// English language (ID 1) maps to en_US in translations table
+															$langCode = 'en_US';
+															$translation = $data->translations->where('lang_code', $langCode)->first();
+														@endphp
 														<div class="col-lg-6">
 															<div class="form-group">
 																<label style="font-weight: 600; color: #2d3748; font-size: 14px; display: flex; align-items: center; margin-bottom: 8px;">
-																	@php
-																		$flagMap = ['arabic' => 'ar', 'english' => 'uk'];
-																		$flagCode = $flagMap[strtolower($language->language)] ?? strtolower(substr($language->language, 0, 2));
-																	@endphp
-																	<img src="{{ asset('assets/images/'.$flagCode.'.png') }}"
-																		 alt="{{ $language->language }}"
+																	<img src="{{ asset('assets/images/uk.png') }}"
+																		 alt="English"
 																		 style="width: 24px; height: 18px; margin-right: 10px; border-radius: 3px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);"
 																		 onerror="this.style.display='none'">
-																	{{ __('Product Name (Arabic)') }} *
+																	{{ __('Product Name (English)') }} *
 																</label>
 																<input type="text"
 																	   class="input-field"
 																	   name="translations[{{$language->id}}][name]"
-																	   placeholder="أدخل اسم المنتج بالعربية"
-																	   value="{{ $data->translations->where('lang_id', $language->id)->first() ? $data->translations->where('lang_id', $language->id)->first()->name : '' }}"
-																	   style="border: 2px solid #e2e8f0; border-radius: 6px; padding: 12px; font-size: 14px; direction: rtl; text-align: right;">
-																<input type="hidden" name="translations[{{$language->id}}][lang_code]" value="{{$language->language}}">
+																	   placeholder="Enter product name in English"
+																	   value="{{ $translation ? $translation->name : '' }}"
+																	   style="border: 2px solid #e2e8f0; border-radius: 6px; padding: 12px; font-size: 14px;">
+																<input type="hidden" name="translations[{{$language->id}}][lang_code]" value="{{$langCode}}">
 															</div>
 														</div>
 													@endforeach
@@ -134,7 +135,7 @@
 															   type="number"
 															   class="input-field"
 															   placeholder="20.00"
-															   step="0.1"
+															   step="0.01"
 															   required=""
 															   min="0"
 															   value="{{ round($data->price * $sign->value, 2) }}"
@@ -149,7 +150,7 @@
 															{{ __('Discount Price') }} <small style="color: #718096;">({{ __('Optional') }})</small>
 														</label>
 														<input name="previous_price"
-															   step="0.1"
+															   step="0.01"
 															   type="number"
 															   class="input-field"
 															   placeholder="15.00"
@@ -289,10 +290,17 @@
 													</div>
 													<div class="panel panel-body">
 														<div class="span4 cropme text-center" id="landscape"
-															style="width: 100%; height: 285px; border: 1px dashed #ddd; background: #f1f1f1;">
-															<a href="javascript:;" id="crop-image" class="mybtn1" style="">
-																<i class="icofont-upload-alt"></i> {{ __('Upload Image Here') }}
-															</a>
+															style="width: 100%; height: 285px; border: 1px dashed #ddd; background: #f1f1f1; overflow: hidden; display: flex; align-items: center; justify-content: center;">
+															@if($data->photo)
+																<img src="{{ $data->photo ? asset('assets/images/products/'.$data->photo) : asset('assets/images/noimage.png') }}"
+																	 id="feature-img-preview"
+																	 alt="Feature Image"
+																	 style="max-width: 100%; max-height: 100%; object-fit: contain;">
+															@else
+																<a href="javascript:;" id="crop-image" class="mybtn1" style="">
+																	<i class="icofont-upload-alt"></i> {{ __('Upload Image Here') }}
+																</a>
+															@endif
 														</div>
 													</div>
 												</div>
@@ -302,17 +310,38 @@
 													<div class="left-area">
 														<h4 class="heading">{{ __('Product Gallery Images') }} *</h4>
 													</div>
-													<div class="panel panel-body" style="min-height: 285px; display: flex; align-items: center; justify-content: center; border: 1px dashed #ddd; background: #f1f1f1;">
-														<a href="#" class="set-gallery btn btn-primary" data-toggle="modal" data-target="#setgallery" style="padding: 12px 30px; font-size: 14px; font-weight: 600;">
-															<i class="icofont-plus"></i> {{ __('Set Gallery') }}
-														</a>
+													<div class="panel panel-body" style="min-height: 285px; border: 1px dashed #ddd; background: #f1f1f1; padding: 15px;">
+														@if($data->galleries && $data->galleries->count() > 0)
+															<div class="row">
+																@foreach($data->galleries as $gallery)
+																	<div class="col-sm-6 mb-3">
+																		<div class="img gallery-img" style="position: relative;">
+																			<span class="remove-img" style="position: absolute; top: 5px; right: 5px; background: #e53e3e; color: white; width: 25px; height: 25px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10;">
+																				<i class="fas fa-times"></i>
+																				<input type="hidden" value="{{ $gallery->id }}">
+																			</span>
+																			<a href="{{ asset('assets/images/galleries/'.$gallery->photo) }}" target="_blank">
+																				<img src="{{ asset('assets/images/galleries/'.$gallery->photo) }}"
+																					 alt="gallery image"
+																					 style="width: 100%; height: 150px; object-fit: cover; border-radius: 4px;">
+																			</a>
+																		</div>
+																	</div>
+																@endforeach
+															</div>
+														@endif
+														<div style="text-align: center; margin-top: 10px;">
+															<a href="#" class="set-gallery btn btn-primary" data-toggle="modal" data-target="#setgallery" style="padding: 12px 30px; font-size: 14px; font-weight: 600;">
+																<i class="icofont-plus"></i> {{ __('Add More Images') }}
+															</a>
+														</div>
 													</div>
 												</div>
 											</div>
-											<input type="hidden" id="feature_photo" name="photo" value="">
+											<input type="hidden" id="feature_photo" name="photo" value="{{ $data->photo }}">
 											<input type="file" name="gallery[]" class="hidden" id="uploadgallery" accept="image/*" multiple>
 
-											{{-- PRODUCT DESCRIPTION SECTION (2 COLUMNS: ENGLISH & ARABIC) --}}
+											{{-- PRODUCT DESCRIPTION SECTION (2 COLUMNS: ARABIC & ENGLISH) --}}
 											<div class="row">
 												<div class="col-lg-12 mb-3 mt-4">
 													<h4 class="heading" style="color: #2d3748; font-size: 16px; border-bottom: 2px solid #38b2ac; padding-bottom: 8px; margin-bottom: 15px;">
@@ -320,43 +349,44 @@
 													</h4>
 												</div>
 
-												{{-- English Description --}}
+												{{-- Arabic Description (from products table) --}}
 												<div class="col-lg-6">
 													<label style="font-weight: 600; color: #2d3748; font-size: 14px; display: flex; align-items: center; margin-bottom: 10px;">
-														<img src="{{ asset('assets/images/uk.png') }}"
-															 alt="English"
+														<img src="{{ asset('assets/images/ar.png') }}"
+															 alt="Arabic"
 															 style="width: 24px; height: 18px; margin-right: 10px; border-radius: 3px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);"
 															 onerror="this.style.display='none'">
-														{{ __('Description (English)') }} *
+														{{ __('Description (Arabic)') }} *
 													</label>
 													<div class="text-editor">
 														<textarea class="nic-edit-p"
 																  name="details"
-																  placeholder="Enter product description in English"
-																  style="min-height: 250px;"></textarea>
+																  placeholder="أدخل وصف المنتج بالعربية"
+																  style="min-height: 250px; direction: rtl; text-align: right;">{{ $data->details }}</textarea>
 													</div>
 												</div>
 
-												{{-- Arabic Description --}}
+												{{-- English Description (from product_translations table) --}}
 												@if(isset($languages) && count($languages) > 0)
 													@foreach($languages as $language)
+														@php
+															// English language (ID 1) maps to en_US in translations table
+															$langCode = 'en_US';
+															$translation = $data->translations->where('lang_code', $langCode)->first();
+														@endphp
 														<div class="col-lg-6">
 															<label style="font-weight: 600; color: #2d3748; font-size: 14px; display: flex; align-items: center; margin-bottom: 10px;">
-																@php
-																	$flagMap = ['arabic' => 'ar', 'english' => 'uk'];
-																	$flagCode = $flagMap[strtolower($language->language)] ?? strtolower(substr($language->language, 0, 2));
-																@endphp
-																<img src="{{ asset('assets/images/'.$flagCode.'.png') }}"
-																	 alt="{{ $language->language }}"
+																<img src="{{ asset('assets/images/uk.png') }}"
+																	 alt="English"
 																	 style="width: 24px; height: 18px; margin-right: 10px; border-radius: 3px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);"
 																	 onerror="this.style.display='none'">
-																{{ __('Description (Arabic)') }} *
+																{{ __('Description (English)') }} *
 															</label>
 															<div class="text-editor">
 																<textarea class="nic-edit-p"
 																		  name="translations[{{$language->id}}][description]"
-																		  placeholder="أدخل وصف المنتج بالعربية"
-																		  style="min-height: 250px; direction: rtl; text-align: right;"></textarea>
+																		  placeholder="Enter product description in English"
+																		  style="min-height: 250px;">{{ $translation ? $translation->description : '' }}</textarea>
 															</div>
 														</div>
 													@endforeach
@@ -819,11 +849,97 @@
 																	  name="meta_description"
 																	  rows="4"
 																	  placeholder="{{ __('Enter meta description') }}"
-																	  style="border: 2px solid #e2e8f0; border-radius: 6px; padding: 12px; font-size: 14px; resize: vertical;"></textarea>
+																	  style="border: 2px solid #e2e8f0; border-radius: 6px; padding: 12px; font-size: 14px; resize: vertical;">{{ $data->meta_description }}</textarea>
 														</div>
 													</div>
 												</div>
 											</div>
+
+											{{-- PRODUCT STATUS SECTION --}}
+											<div class="row">
+												<div class="col-lg-12 mb-3 mt-4">
+													<h4 class="heading" style="color: #2d3748; font-size: 16px; border-bottom: 2px solid #10b981; padding-bottom: 8px; margin-bottom: 15px;">
+														<i class="fas fa-toggle-on"></i> {{ __('Product Status') }}
+													</h4>
+												</div>
+
+												<div class="col-lg-12">
+													<div class="form-group">
+														<label style="font-weight: 600; color: #2d3748; font-size: 14px; margin-bottom: 10px; display: flex; align-items: center;">
+															{{ __('Product Visibility') }} *
+															<span id="status-text" style="margin-left: 10px; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; {{ $data->status == 1 ? 'background-color: #d4edda; color: #155724;' : 'background-color: #f8d7da; color: #721c24;' }}">
+																{{ $data->status == 1 ? __('Activated') : __('Deactivated') }}
+															</span>
+														</label>
+
+														<div style="display: flex; align-items: center; gap: 15px; padding: 15px; background: #f9fafb; border-radius: 8px; border: 2px solid #e2e8f0;">
+															<label class="switch" style="position: relative; display: inline-block; width: 60px; height: 34px; margin: 0;">
+																<input type="checkbox" id="status-toggle" name="status" value="1" {{ $data->status == 1 ? 'checked' : '' }} style="opacity: 0; width: 0; height: 0;">
+																<span class="slider round" style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 34px;"></span>
+															</label>
+															<div>
+																<div style="font-weight: 600; color: #2d3748; font-size: 14px;">{{ __('Enable Product') }}</div>
+																<small class="form-text text-muted" style="margin: 0;">
+																	<i class="fas fa-info-circle"></i> <span id="status-help">{{ $data->status == 1 ? __('Product is visible to customers') : __('Product is hidden from customers') }}</span>
+																</small>
+															</div>
+														</div>
+
+														<input type="hidden" id="status-hidden" name="status" value="{{ $data->status }}">
+													</div>
+												</div>
+											</div>
+
+											<style>
+												.switch input:checked + .slider {
+													background-color: #10b981;
+												}
+
+												.switch input:focus + .slider {
+													box-shadow: 0 0 1px #10b981;
+												}
+
+												.switch input:checked + .slider:before {
+													transform: translateX(26px);
+												}
+
+												.slider:before {
+													position: absolute;
+													content: "";
+													height: 26px;
+													width: 26px;
+													left: 4px;
+													bottom: 4px;
+													background-color: white;
+													transition: .4s;
+													border-radius: 50%;
+												}
+											</style>
+
+											<script>
+												document.addEventListener('DOMContentLoaded', function() {
+													const toggle = document.getElementById('status-toggle');
+													const hidden = document.getElementById('status-hidden');
+													const statusText = document.getElementById('status-text');
+													const statusHelp = document.getElementById('status-help');
+
+													toggle.addEventListener('change', function() {
+														if (this.checked) {
+															hidden.value = '1';
+															statusText.textContent = '{{ __("Activated") }}';
+															statusText.style.backgroundColor = '#d4edda';
+															statusText.style.color = '#155724';
+															statusHelp.textContent = '{{ __("Product is visible to customers") }}';
+														} else {
+															hidden.value = '0';
+															statusText.textContent = '{{ __("Deactivated") }}';
+															statusText.style.backgroundColor = '#f8d7da';
+															statusText.style.color = '#721c24';
+															statusHelp.textContent = '{{ __("Product is hidden from customers") }}';
+														}
+													});
+												});
+											</script>
 
 											{{-- Submit Button --}}
 											<div class="row mt-5 mb-4">
@@ -839,8 +955,8 @@
 																   border-radius: 8px;
 																   box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
 																   transition: all 0.3s ease;">
-														<i class="fas fa-check-circle" style="margin-right: 8px;"></i>
-														{{ __('Create Product') }}
+														<i class="fas fa-save" style="margin-right: 8px;"></i>
+														{{ __('Update Product') }}
 													</button>
 												</div>
 											</div>
@@ -1004,6 +1120,19 @@ $(document).ready(function() {
     var id = $(this).find('input[type=hidden]').val();
     $('#galval'+id).remove();
     $(this).parent().parent().remove();
+
+    // Send AJAX request to delete from database
+    $.ajax({
+        type: "GET",
+        url:"{{ route('admin-gallery-delete') }}",
+        data:{id:id},
+        success:function(data) {
+            console.log('Gallery image deleted successfully');
+        },
+        error:function(error) {
+            console.error('Error deleting gallery image:', error);
+        }
+    });
   });
 
   $(document).on('click', '#prod_gallery' ,function() {
@@ -1056,6 +1185,48 @@ $(document).on('click','#size-check',function(){
 		$('#default_stock').removeClass('d-none');
 	}
 })
+
+// Initialize meta tags with existing data
+$(document).ready(function() {
+	@if($data->meta_tag)
+		@php
+			$metaTags = is_array($data->meta_tag) ? $data->meta_tag : explode(',', $data->meta_tag);
+		@endphp
+		@foreach($metaTags as $tag)
+			$("#metatags").tagit("createTag", "{{ trim($tag) }}");
+		@endforeach
+	@endif
+
+	// Pre-select existing categories
+	var selectedCategories = [
+		@if($data->category_id)
+			{{ $data->category_id }},
+		@endif
+		@if($data->subcategory_id)
+			{{ $data->subcategory_id }},
+		@endif
+		@if($data->childcategory_id)
+			{{ $data->childcategory_id }},
+		@endif
+		@if($data->categories && $data->categories->count() > 0)
+			@foreach($data->categories as $category)
+				{{ $category->id }},
+			@endforeach
+		@endif
+	];
+
+	// Check the categories
+	selectedCategories.forEach(function(catId) {
+		if (catId) {
+			$('.category-checkbox[value="' + catId + '"]').prop('checked', true);
+			// Expand parent categories
+			$('.category-checkbox[value="' + catId + '"]').closest('.subcategories, .childcategories').show();
+		}
+	});
+
+	// Update the selected categories display
+	updateSelectedCategories();
+});
 </script>
 
 

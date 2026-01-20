@@ -25,29 +25,31 @@
 
 		<link href="{{asset('assets/admin/css/jquery.tagit.css')}}" rel="stylesheet" />
     	<link rel="stylesheet" href="{{ asset('assets/admin/css/bootstrap-coloroicker.css') }}">
-		<!-- Main Css -->
+	<!-- Main Css -->
 
-		<!-- stylesheet -->
-		@if(DB::table('admin_languages')->where('is_default','=',1)->first()->rtl == 1)
+	<!-- stylesheet -->
+	@if(DB::table('admin_languages')->where('is_default','=',1)->first()->rtl == 1)
 
-		<link href="{{asset('assets/admin/css/rtl/style.css')}}" rel="stylesheet"/>
-		<link href="{{asset('assets/admin/css/rtl/custom.css')}}" rel="stylesheet"/>
-		<link href="{{asset('assets/admin/css/rtl/responsive.css')}}" rel="stylesheet" />
-		<link href="{{asset('assets/admin/css/common.css')}}" rel="stylesheet" />
-		<link href="{{asset('assets/admin/css/sidebar-custom.css')}}" rel="stylesheet" />
+	<link href="{{asset('assets/admin/css/rtl/style.css')}}" rel="stylesheet"/>
+	<link href="{{asset('assets/admin/css/rtl/custom.css')}}" rel="stylesheet"/>
+	<link href="{{asset('assets/admin/css/rtl/responsive.css')}}" rel="stylesheet" />
+	<link href="{{asset('assets/admin/css/common.css')}}" rel="stylesheet" />
+	<link href="{{asset('assets/admin/css/sidebar-custom.css')}}?v={{time()}}" rel="stylesheet" />
+	<link href="{{asset('assets/admin/css/modern-sidebar.css')}}?v={{time()}}" rel="stylesheet" />
+	<link href="{{asset('assets/admin/css/mobile-sidebar-force.css')}}?v={{time()}}" rel="stylesheet" />
 
-		@else
+	@else
 
-		<link href="{{asset('assets/admin/css/style.css')}}" rel="stylesheet"/>
-		<link href="{{asset('assets/admin/css/custom.css')}}" rel="stylesheet"/>
-		<link href="{{asset('assets/admin/css/responsive.css')}}" rel="stylesheet" />
-		<link href="{{asset('assets/admin/css/common.css')}}" rel="stylesheet" />
-		<link href="{{asset('assets/admin/css/sidebar-custom.css')}}" rel="stylesheet" />
-		@endif
+	<link href="{{asset('assets/admin/css/style.css')}}" rel="stylesheet"/>
+	<link href="{{asset('assets/admin/css/custom.css')}}" rel="stylesheet"/>
+	<link href="{{asset('assets/admin/css/responsive.css')}}" rel="stylesheet" />
+	<link href="{{asset('assets/admin/css/common.css')}}" rel="stylesheet" />
+	<link href="{{asset('assets/admin/css/sidebar-custom.css')}}?v={{time()}}" rel="stylesheet" />
+	<link href="{{asset('assets/admin/css/modern-sidebar.css')}}?v={{time()}}" rel="stylesheet" />
+	<link href="{{asset('assets/admin/css/mobile-sidebar-force.css')}}?v={{time()}}" rel="stylesheet" />
+	@endif
 
-		@yield('styles')
-
-<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+	@yield('styles')<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
 <!-- Onset Font -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -214,27 +216,40 @@
 				<!-- Header Menu Area End -->
 				<div class="wrapper">
 					<!-- Side Menu Area Start -->
-					<nav id="sidebar" class="nav-sidebar">
-						<ul class="list-unstyled components" id="accordion">
-							<li>
-								<a href="{{ route('admin.dashboard') }}" class="wave-effect"><i class="fa fa-home mr-2"></i>{{ __('Dashboard') }}</a>
-							</li>
-							@if(Auth::guard('admin')->user()->IsSuper())
-								@include('partials.admin-role.super')
+					<nav id="sidebar" class="nav-sidebar modern-sidebar">
+						<div class="sidebar-header">
+							<div class="brand-section">
+								<div class="brand-icon">
+									<i class="fas fa-store"></i>
+								</div>
+								<div class="brand-text">
+									<h4>{{ __('Admin Panel') }}</h4>
+									<p>{{ __('Management System') }}</p>
+								</div>
+							</div>
+						</div>
 
-								{{-- VERSION TEXT HIDDEN --}}
-								{{--
-								<li class="mt-3 text-dark text-center">
-									Version 4.1
+						<div class="sidebar-menu-wrapper">
+							<ul class="list-unstyled components modern-menu" id="accordion">
+								<li class="menu-item">
+									<a href="{{ route('admin.dashboard') }}" class="menu-link wave-effect">
+										<span class="icon-wrapper">
+											<i class="fa fa-home"></i>
+										</span>
+										<span class="menu-text">{{ __('Dashboard') }}</span>
+									</a>
 								</li>
-								--}}
-							@else
-								@include('partials.admin-role.normal')
-							@endif
 
-						</ul>
+								@if(Auth::guard('admin')->user()->IsSuper())
+									@include('partials.admin-role.super')
+								@else
+									@include('partials.admin-role.normal')
+								@endif
 
+							</ul>
+						</div>
 					</nav>
+
 					<!-- Main Content Area Start -->
 					@yield('content')
 					<!-- Main Content Area End -->
@@ -274,14 +289,14 @@
         <script src="{{asset('assets/admin/js/jquery.canvasjs.min.js')}}"></script>
 		<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
-		<script src="{{asset('assets/admin/js/load.js')}}"></script>
-		<!-- Custom Js-->
-		<script src="{{asset('assets/admin/js/custom.js')}}"></script>
-		<!-- AJAX Js-->
-		<script src="{{asset('assets/admin/js/myscript.js')}}"></script>
-		@yield('scripts')
-
-@if($gs->is_admin_loader == 0)
+	<script src="{{asset('assets/admin/js/load.js')}}"></script>
+	<!-- Custom Js-->
+	<script src="{{asset('assets/admin/js/custom.js')}}"></script>
+	<!-- Modern Sidebar Js-->
+	<script src="{{asset('assets/admin/js/modern-sidebar.js')}}?v={{time()}}"></script>
+	<!-- AJAX Js-->
+	<script src="{{asset('assets/admin/js/myscript.js')}}"></script>
+	@yield('scripts')@if($gs->is_admin_loader == 0)
 <style>
 	div#geniustable_processing {
 		display: none !important;

@@ -1,0 +1,288 @@
+/**
+ * SLIDER SIZE ADJUSTMENTS - FORCED OVERRIDES
+ * Desktop: +25% larger
+ * Mobile: -25% smaller
+ * Ultra high specificity to override all existing styles
+ */
+
+/* ============================================
+   BASE DESKTOP SIZE - +25% (300px → 375px)
+   ============================================ */
+
+.slider-item,
+.home-slider .slider-item,
+.home-slider .owl-item .slider-item,
+.owl-carousel .owl-item .slider-item,
+.owl-item > .slider-item,
+div.slider-item,
+div.home-slider div.slider-item,
+.owl-carousel.home-slider .owl-item .slider-item {
+    min-height: 375px !important;
+    max-height: 375px !important;
+    height: 375px !important;
+}
+
+/* ============================================
+   DESKTOP SIZES - ALL +25% INCREASE
+   ============================================ */
+
+/* Desktop XL (1400px+): 400px → 500px */
+@media (min-width: 1400px) {
+    .slider-item,
+    .home-slider .slider-item,
+    .home-slider .owl-item .slider-item,
+    .owl-carousel .owl-item .slider-item,
+    .owl-item > .slider-item,
+    div.slider-item,
+    div.home-slider div.slider-item,
+    .owl-carousel.home-slider .owl-item .slider-item {
+        min-height: 500px !important;
+        max-height: 500px !important;
+        height: 500px !important;
+    }
+
+    .home-slider,
+    .home-slider.owl-carousel,
+    .owl-carousel.home-slider,
+    div.home-slider {
+        min-height: 500px !important;
+        max-height: 500px !important;
+    }
+
+    .home-slider .owl-stage-outer,
+    .home-slider .owl-stage {
+        min-height: 500px !important;
+        max-height: 500px !important;
+    }
+}
+
+/* Desktop Large (1200-1399px): 350px → 438px (rounded from 437.5px) */
+@media (min-width: 1200px) and (max-width: 1399px) {
+    .slider-item,
+    .home-slider .slider-item,
+    .home-slider .owl-item .slider-item,
+    .owl-carousel .owl-item .slider-item,
+    .owl-item > .slider-item,
+    div.slider-item,
+    div.home-slider div.slider-item,
+    .owl-carousel.home-slider .owl-item .slider-item {
+        min-height: 438px !important;
+        max-height: 438px !important;
+        height: 438px !important;
+    }
+
+    .home-slider,
+    .home-slider.owl-carousel,
+    .owl-carousel.home-slider,
+    div.home-slider {
+        min-height: 438px !important;
+        max-height: 438px !important;
+    }
+
+    .home-slider .owl-stage-outer,
+    .home-slider .owl-stage {
+        min-height: 438px !important;
+        max-height: 438px !important;
+    }
+}
+
+/* Desktop Small (992-1199px): 320px → 400px */
+@media (min-width: 992px) and (max-width: 1199px) {
+    .slider-item,
+    .home-slider .slider-item,
+    .home-slider .owl-item .slider-item,
+    .owl-carousel .owl-item .slider-item,
+    .owl-item > .slider-item,
+    div.slider-item,
+    div.home-slider div.slider-item,
+    .owl-carousel.home-slider .owl-item .slider-item {
+        min-height: 400px !important;
+        max-height: 400px !important;
+        height: 400px !important;
+    }
+
+    .home-slider,
+    .home-slider.owl-carousel,
+    .owl-carousel.home-slider,
+    div.home-slider {
+        min-height: 400px !important;
+        max-height: 400px !important;
+    }
+
+    .home-slider .owl-stage-outer,
+    .home-slider .owl-stage {
+        min-height: 400px !important;
+        max-height: 400px !important;
+    }
+}
+
+/* Tablet (768-991px): 280px → 350px */
+@media (min-width: 768px) and (max-width: 991px) {
+    .slider-item,
+    .home-slider .slider-item,
+    .home-slider .owl-item .slider-item,
+    .owl-carousel .owl-item .slider-item,
+    .owl-item > .slider-item,
+    div.slider-item,
+    div.home-slider div.slider-item,
+    .owl-carousel.home-slider .owl-item .slider-item {
+        min-height: 350px !important;
+        max-height: 350px !important;
+        height: 350px !important;
+    }
+
+    .home-slider,
+    .home-slider.owl-carousel,
+    .owl-carousel.home-slider,
+    div.home-slider {
+        min-height: 350px !important;
+        max-height: 350px !important;
+    }
+
+    .home-slider .owl-stage-outer,
+    .home-slider .owl-stage {
+        min-height: 350px !important;
+        max-height: 350px !important;
+    }
+}
+
+/* ============================================
+   MOBILE SIZES - ALL -35% DECREASE (was -25%, now additional -10%)
+   ============================================ */
+
+/* Mobile Large (576-767px): 250px → 163px (250 * 0.65) */
+@media (min-width: 576px) and (max-width: 767px) {
+    .slider-item,
+    .home-slider .slider-item,
+    .home-slider .owl-item .slider-item,
+    .owl-carousel .owl-item .slider-item,
+    .owl-item > .slider-item,
+    div.slider-item,
+    div.home-slider div.slider-item,
+    .owl-carousel.home-slider .owl-item .slider-item {
+        min-height: 163px !important;
+        max-height: 163px !important;
+        height: 163px !important;
+    }
+
+    .home-slider,
+    .home-slider.owl-carousel,
+    .owl-carousel.home-slider,
+    div.home-slider {
+        min-height: 163px !important;
+        max-height: 163px !important;
+    }
+
+    .home-slider .owl-stage-outer,
+    .home-slider .owl-stage {
+        min-height: 163px !important;
+        max-height: 163px !important;
+    }
+}
+
+/* Mobile Small (<575px): 220px → 143px (220 * 0.65) */
+@media (max-width: 575px) {
+    .slider-item,
+    .home-slider .slider-item,
+    .home-slider .owl-item .slider-item,
+    .owl-carousel .owl-item .slider-item,
+    .owl-item > .slider-item,
+    div.slider-item,
+    div.home-slider div.slider-item,
+    .owl-carousel.home-slider .owl-item .slider-item {
+        min-height: 143px !important;
+        max-height: 143px !important;
+        height: 143px !important;
+    }
+
+    .home-slider,
+    .home-slider.owl-carousel,
+    .owl-carousel.home-slider,
+    div.home-slider {
+        min-height: 143px !important;
+        max-height: 143px !important;
+    }
+
+    .home-slider .owl-stage-outer,
+    .home-slider .owl-stage {
+        min-height: 143px !important;
+        max-height: 143px !important;
+    }
+
+    /* Adjust dots position for smaller slider */
+    .home-slider .owl-dots {
+        margin-top: -28px !important;
+        padding-bottom: 4px !important;
+    }
+}
+
+/* ============================================
+   ADDITIONAL FORCED OVERRIDES
+   ============================================ */
+
+/* Force image sizing */
+.slider-item img,
+.slider-item .slider-img,
+div.slider-item img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    object-position: center !important;
+}
+
+/* Ensure container doesn't restrict height */
+.home-slider-section,
+.home-slider-section .container-fluid,
+div.home-slider-section,
+section.home-slider-section {
+    overflow: visible !important;
+}
+
+/* Force owl items to match */
+.home-slider .owl-item,
+.owl-carousel.home-slider .owl-item {
+    height: auto !important;
+}
+
+/* Maintain aspect ratio on all devices */
+.slider-item,
+.home-slider .slider-item {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+}
+
+/* Force navigation positioning based on new heights */
+.home-slider .owl-nav {
+    position: absolute !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    width: 100% !important;
+    z-index: 10 !important;
+}
+
+/* ============================================
+   RTL SUPPORT
+   ============================================ */
+
+html[dir="rtl"] .slider-item,
+html[lang="ar"] .slider-item,
+body.rtl .slider-item {
+    direction: rtl !important;
+}
+
+/* ============================================
+   PRINT STYLES
+   ============================================ */
+
+@media print {
+    .slider-item,
+    .home-slider .slider-item {
+        min-height: 200px !important;
+        max-height: 200px !important;
+        height: 200px !important;
+    }
+}

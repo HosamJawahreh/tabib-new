@@ -1,0 +1,232 @@
+/**
+ * DESKTOP SEARCH - NUCLEAR FIXES
+ * Force search input to be clickable and functional
+ * Maximum specificity overrides
+ */
+
+/* ============================================
+   FORCE SEARCH INPUT FUNCTIONALITY
+   ============================================ */
+
+/* Ensure search form is clickable */
+form.enhanced-search-form,
+.enhanced-search-form,
+.desktop-search-wrapper form,
+.desktop-search-wrapper .enhanced-search-form {
+    pointer-events: auto !important;
+    user-select: auto !important;
+    -webkit-user-select: auto !important;
+    -moz-user-select: auto !important;
+    -ms-user-select: auto !important;
+    position: relative !important;
+    z-index: 100 !important;
+}
+
+/* Force search input to accept typing */
+input.search-field,
+.search-field,
+input[name="search"],
+#desktopSearchInput,
+.enhanced-search-form input,
+.enhanced-search-form input.search-field {
+    pointer-events: auto !important;
+    user-select: text !important;
+    -webkit-user-select: text !important;
+    -moz-user-select: text !important;
+    -ms-user-select: text !important;
+    cursor: text !important;
+    z-index: 10 !important;
+    position: relative !important;
+    touch-action: manipulation !important;
+    -webkit-tap-highlight-color: transparent !important;
+}
+
+/* Ensure no overlay blocking input */
+.search-input-group,
+.enhanced-search-form .search-input-group,
+form.enhanced-search-form .search-input-group {
+    pointer-events: auto !important;
+    position: relative !important;
+    z-index: 5 !important;
+}
+
+/* Force submit button clickability */
+button.search-submit-btn,
+.search-submit-btn,
+.enhanced-search-form button,
+.enhanced-search-form .search-submit-btn {
+    pointer-events: auto !important;
+    cursor: pointer !important;
+    z-index: 20 !important;
+    position: absolute !important;
+}
+
+/* Remove any blocking overlays */
+.desktop-search-wrapper::before,
+.desktop-search-wrapper::after,
+.enhanced-search-form::before,
+.enhanced-search-form::after {
+    content: none !important;
+    display: none !important;
+}
+
+/* ============================================
+   ENSURE PROPER SPACING
+   ============================================ */
+
+/* Search column spacing near cart */
+.search-col,
+div.search-col {
+    margin-right: 8px !important;
+    padding-right: 0 !important;
+}
+
+/* Icons column spacing */
+.icons-col,
+div.icons-col {
+    margin-left: 8px !important;
+    padding-left: 0 !important;
+}
+
+/* Individual icon spacing - match cart to account spacing */
+.col-icons .header-icon-enhanced,
+.col-icons .header-cart-1 {
+    margin: 0 8px !important;
+}
+
+/* First icon (search on mobile, cart on desktop) */
+.col-icons .header-icon-enhanced:first-child,
+.col-icons .header-cart-1:first-child {
+    margin-left: 0 !important;
+}
+
+/* Last icon */
+.col-icons .header-icon-enhanced:last-child,
+.col-icons .header-cart-1:last-child {
+    margin-right: 0 !important;
+}
+
+/* ============================================
+   SUBMIT BUTTON - LIGHT BACKGROUND
+   ============================================ */
+
+/* Force light background on submit button */
+button.search-submit-btn,
+.search-submit-btn,
+.enhanced-search-form button.search-submit-btn,
+.enhanced-search-form .search-submit-btn {
+    background-color: var(--theme-light-color, #f5f5f5) !important;
+    background: var(--theme-light-color, #f5f5f5) !important;
+}
+
+/* Icon color dark on light background */
+button.search-submit-btn i,
+.search-submit-btn i,
+.enhanced-search-form .search-submit-btn i {
+    color: var(--theme-dark-color, #1f2937) !important;
+}
+
+/* Hover state - green background with white icon */
+button.search-submit-btn:hover,
+.search-submit-btn:hover,
+.enhanced-search-form .search-submit-btn:hover {
+    background-color: var(--theme-primary-color, #10b981) !important;
+    background: var(--theme-primary-color, #10b981) !important;
+}
+
+button.search-submit-btn:hover i,
+.search-submit-btn:hover i,
+.enhanced-search-form .search-submit-btn:hover i {
+    color: #ffffff !important;
+}
+
+/* ============================================
+   RESPONSIVE SPACING
+   ============================================ */
+
+@media (min-width: 768px) and (max-width: 991px) {
+    .search-col,
+    div.search-col {
+        margin-right: 6px !important;
+    }
+    
+    .icons-col,
+    div.icons-col {
+        margin-left: 6px !important;
+    }
+    
+    .col-icons .header-icon-enhanced,
+    .col-icons .header-cart-1 {
+        margin: 0 6px !important;
+    }
+}
+
+@media (max-width: 767px) {
+    .col-icons .header-icon-enhanced,
+    .col-icons .header-cart-1 {
+        margin: 0 5px !important;
+    }
+}
+
+/* ============================================
+   FORM VALIDATION & AUTOFILL
+   ============================================ */
+
+/* Remove autofill styling that might block interaction */
+input.search-field:-webkit-autofill,
+.search-field:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 30px white inset !important;
+    -webkit-text-fill-color: #1f2937 !important;
+}
+
+/* Remove any readonly/disabled states */
+input.search-field[readonly],
+input.search-field[disabled],
+.search-field[readonly],
+.search-field[disabled] {
+    pointer-events: auto !important;
+    cursor: text !important;
+    background: transparent !important;
+}
+
+/* ============================================
+   FOCUS MANAGEMENT
+   ============================================ */
+
+/* Ensure focus works properly */
+input.search-field:focus,
+.search-field:focus,
+#desktopSearchInput:focus {
+    pointer-events: auto !important;
+    outline: none !important;
+    border: none !important;
+    background: transparent !important;
+}
+
+/* ============================================
+   Z-INDEX HIERARCHY
+   ============================================ */
+
+.desktop-search-wrapper {
+    z-index: 100 !important;
+}
+
+.enhanced-search-form {
+    z-index: 100 !important;
+}
+
+.search-input-group {
+    z-index: 10 !important;
+}
+
+.search-field {
+    z-index: 11 !important;
+}
+
+.search-submit-btn {
+    z-index: 12 !important;
+}
+
+.search-suggestions-dropdown {
+    z-index: 1000 !important;
+}

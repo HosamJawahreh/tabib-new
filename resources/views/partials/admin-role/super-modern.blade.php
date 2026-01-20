@@ -8,15 +8,6 @@
     </li>
 
     <li class="menu-item">
-        <a href="{{ route('admin-prod-index') }}" class="menu-link wave-effect">
-            <span class="icon-wrapper">
-                <i class="icofont-cart"></i>
-            </span>
-            <span class="menu-text">{{ __('Products') }}</span>
-        </a>
-    </li>
-
-    <li class="menu-item">
         <a href="#menu5" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
             <span class="icon-wrapper">
                 <i class="fas fa-sitemap"></i>
@@ -44,52 +35,11 @@
     </li>
 
     <li class="menu-item">
-        <a href="{{ route('admin-staff-index') }}" class="menu-link wave-effect">
+        <a href="{{ route('admin-prod-index') }}" class="menu-link wave-effect">
             <span class="icon-wrapper">
-                <i class="fas fa-user-secret"></i>
+                <i class="icofont-cart"></i>
             </span>
-            <span class="menu-text">{{ __('Manage Staffs') }}</span>
-        </a>
-    </li>
-
-    <li class="menu-item">
-        <a href="{{ route('admin-role-index') }}" class="menu-link wave-effect">
-            <span class="icon-wrapper">
-                <i class="fas fa-user-tag"></i>
-            </span>
-            <span class="menu-text">{{ __('Manage Roles') }}</span>
-        </a>
-    </li>
-
-    <li class="menu-item">
-        <a href="#general" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
-            <span class="icon-wrapper">
-                <i class="fas fa-cogs"></i>
-            </span>
-            <span class="menu-text">{{ __('General Settings') }}</span>
-        </a>
-        <ul class="collapse list-unstyled" id="general" data-parent="#accordion">
-            <li><a href="{{ route('admin-gs-logo') }}"><i class="fas fa-image"></i> {{ __('Logo') }}</a></li>
-            <li><a href="{{ route('admin-gs-fav') }}"><i class="fas fa-star"></i> {{ __('Favicon') }}</a></li>
-            <li><a href="{{ route('admin-gs-load') }}"><i class="fas fa-spinner"></i> {{ __('Loader') }}</a></li>
-            <li><a href="{{ route('admin-shipping-index') }}"><i class="fas fa-shipping-fast"></i> {{ __('Shipping Methods') }}</a></li>
-            <li><a href="{{ route('admin-package-index') }}"><i class="fas fa-box"></i> {{ __('Packagings') }}</a></li>
-            <li><a href="{{ route('admin-pick-index') }}"><i class="fas fa-map-marker-alt"></i> {{ __('Pickup Locations') }}</a></li>
-            <li><a href="{{ route('admin-gs-contents') }}"><i class="fas fa-file-alt"></i> {{ __('Website Contents') }}</a></li>
-            <li><a href="{{ route('admin-gs-affilate') }}"><i class="fas fa-link"></i> {{__('Affiliate Program')}}</a></li>
-            <li><a href="{{ route('admin-gs-popup') }}"><i class="fas fa-window-restore"></i> {{ __('Popup Banner') }}</a></li>
-            <li><a href="{{ route('admin-gs-bread') }}"><i class="fas fa-stream"></i> {{ __('Breadcrumb Banner') }}</a></li>
-            <li><a href="{{ route('admin-gs-error-banner') }}"><i class="fas fa-exclamation-triangle"></i> {{ __('Error Banner') }}</a></li>
-            <li><a href="{{ route('admin-gs-maintenance') }}"><i class="fas fa-tools"></i> {{ __('Website Maintenance') }}</a></li>
-        </ul>
-    </li>
-
-    <li class="menu-item">
-        <a href="{{ route('admin-cache-clear') }}" class="menu-link wave-effect">
-            <span class="icon-wrapper">
-                <i class="fas fa-sync"></i>
-            </span>
-            <span class="menu-text">{{ __('Clear Cache') }}</span>
+            <span class="menu-text">{{ __('Products') }}</span>
         </a>
     </li>
 
@@ -155,6 +105,35 @@
                 </ul>
             </li>
 
+            <!-- General Settings -->
+            <li>
+                <a href="#general" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
+                    <i class="fas fa-cogs"></i> {{ __('General Settings') }}
+                </a>
+                <ul class="collapse list-unstyled" id="general" data-parent="#siteSettings">
+                    <li><a href="{{ route('admin-gs-logo') }}"><span>{{ __('Logo') }}</span></a></li>
+                    <li><a href="{{ route('admin-gs-fav') }}"><span>{{ __('Favicon') }}</span></a></li>
+                    <li><a href="{{ route('admin-gs-load') }}"><span>{{ __('Loader') }}</span></a></li>
+                    <li><a href="{{ route('admin-shipping-index') }}"><span>{{ __('Shipping Methods') }}</span></a></li>
+                    <li><a href="{{ route('admin-package-index') }}"><span>{{ __('Packagings') }}</span></a></li>
+                    <li><a href="{{ route('admin-pick-index') }}"><span>{{ __('Pickup Locations') }}</span></a></li>
+                    <li><a href="{{ route('admin-gs-contents') }}"><span>{{ __('Website Contents') }}</span></a></li>
+                    <li><a href="{{ route('admin-gs-affilate') }}"><span>{{__('Affiliate Program')}}</span></a></li>
+                    <li><a href="{{ route('admin-gs-popup') }}"><span>{{ __('Popup Banner') }}</span></a></li>
+                    <li><a href="{{ route('admin-gs-bread') }}"><span>{{ __('Breadcrumb Banner') }}</span></a></li>
+                    <li><a href="{{ route('admin-gs-error-banner') }}"><span>{{ __('Error Banner') }}</span></a></li>
+                    <li><a href="{{ route('admin-gs-maintenance') }}"><span>{{ __('Website Maintenance') }}</span></a></li>
+                </ul>
+            </li>
+
+            <!-- Staff & Roles -->
+            <li>
+                <a href="{{ route('admin-staff-index') }}"><i class="fas fa-user-secret"></i> {{ __('Manage Staffs') }}</a>
+            </li>
+            <li>
+                <a href="{{ route('admin-role-index') }}"><i class="fas fa-user-tag"></i> {{ __('Manage Roles') }}</a>
+            </li>
+
             <!-- Font Option -->
             <li>
                 <a href="{{ route('admin.fonts.index') }}"><i class="fa fa-font"></i> {{ __('Font Option') }}</a>
@@ -205,6 +184,11 @@
                     <li><a href="{{ route('admin-seotool-analytics') }}"><span>{{ __('Google Analytics') }}</span></a></li>
                     <li><a href="{{ route('admin-seotool-keywords') }}"><span>{{ __('Website Meta Keywords') }}</span></a></li>
                 </ul>
+            </li>
+
+            <!-- Clear Cache -->
+            <li>
+                <a href="{{ route('admin-cache-clear') }}"><i class="fas fa-sync"></i> {{ __('Clear Cache') }}</a>
             </li>
 
         </ul>

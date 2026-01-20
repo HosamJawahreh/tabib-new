@@ -143,7 +143,8 @@ class SearchController extends Controller
           $childcat = NULL;
         }
   
-        $prods = Product::when($cat,function ($query, $cat) {
+        $prods = Product::whereStatus(1)
+                                    ->when($cat,function ($query, $cat) {
                                         return $query->where('category_id', $cat->id);
                                     })
                                     ->when($subcat, function ($query, $subcat) {

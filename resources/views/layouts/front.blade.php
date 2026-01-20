@@ -129,6 +129,24 @@
     {{-- Mobile Responsive Fix CSS --}}
     <link rel="stylesheet" href="{{ asset('assets/vendor/css/mobile-fix.css') }}">
 
+    {{-- Mobile Search Icon Force Styling --}}
+    <link rel="stylesheet" href="{{ asset('assets/front/css/mobile-search-icon-force.css') }}?v={{ time() }}">
+
+    {{-- Desktop Search Professional Design --}}
+    <link rel="stylesheet" href="{{ asset('assets/front/css/desktop-search-professional.css') }}?v={{ time() }}">
+
+    {{-- NUCLEAR OVERRIDE - Mobile Search Icon - MUST BE LAST --}}
+    <link rel="stylesheet" href="{{ asset('assets/front/css/search-icon-nuclear-override.css') }}?v={{ time() }}">
+
+    {{-- Desktop Search Nuclear Fix - Force Functionality --}}
+    <link rel="stylesheet" href="{{ asset('assets/front/css/desktop-search-nuclear-fix.css') }}?v={{ time() }}">
+
+    {{-- SLIDER SIZE FORCE - Desktop +25%, Mobile -35% - ABSOLUTE LAST --}}
+    <link rel="stylesheet" href="{{ asset('assets/front/css/slider-size-force.css') }}?v={{ time() }}">
+
+    {{-- MOBILE FLAG SIZE FORCE - Increase flag on mobile - VERY LAST --}}
+    <link rel="stylesheet" href="{{ asset('assets/front/css/mobile-flag-size-force.css') }}?v={{ time() }}">
+
     @yield('css')
 </head>
 

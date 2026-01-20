@@ -1,0 +1,245 @@
+/**
+ * NUCLEAR OVERRIDE FOR MOBILE SEARCH ICON
+ * Maximum specificity to force green background and white icon
+ * This file should be loaded LAST to override everything else
+ */
+
+/* ============================================
+   SEARCH ICON - NUCLEAR LEVEL OVERRIDES
+   ============================================ */
+
+/* Search icon wrapper with all possible selectors */
+div.header-icon-enhanced.mobile-search-icon div.search-icon-wrapper,
+div.mobile-search-icon div.search-icon-wrapper,
+.header-icon-enhanced.mobile-search-icon .search-icon-wrapper,
+.mobile-search-icon .search-icon-wrapper,
+div.header-cart-1.header-icon-enhanced.mobile-search-icon div.search-icon-wrapper,
+.col-icons div.header-icon-enhanced.mobile-search-icon div.search-icon-wrapper {
+    background-color: var(--theme-light-color) !important;
+    background: var(--theme-light-color) !important;
+    border-radius: 100% !important;
+    width: 50px !important;
+    height: 50px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    position: relative !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+    box-sizing: border-box !important;
+}
+
+/* Hover state with all selectors - Keep same as cart (no color change, just subtle effect) */
+div.header-icon-enhanced.mobile-search-icon div.search-icon-wrapper:hover,
+div.mobile-search-icon div.search-icon-wrapper:hover,
+.header-icon-enhanced.mobile-search-icon .search-icon-wrapper:hover,
+.mobile-search-icon .search-icon-wrapper:hover,
+div.header-icon-enhanced.mobile-search-icon a:hover div.search-icon-wrapper,
+.mobile-search-icon a:hover .search-icon-wrapper,
+div.header-cart-1.header-icon-enhanced.mobile-search-icon a:hover div.search-icon-wrapper {
+    background-color: var(--theme-light-color) !important;
+    background: var(--theme-light-color) !important;
+    transform: scale(1.05) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Icon color stays dark on hover - matching cart behavior */
+div.header-icon-enhanced.mobile-search-icon div.search-icon-wrapper:hover i,
+div.mobile-search-icon div.search-icon-wrapper:hover i,
+.header-icon-enhanced.mobile-search-icon .search-icon-wrapper:hover i,
+.mobile-search-icon .search-icon-wrapper:hover i,
+div.header-icon-enhanced.mobile-search-icon a:hover div.search-icon-wrapper i,
+.mobile-search-icon a:hover .search-icon-wrapper i,
+div.header-cart-1.header-icon-enhanced.mobile-search-icon a:hover div.search-icon-wrapper i {
+    color: var(--theme-dark-color) !important;
+}
+
+div.header-icon-enhanced.mobile-search-icon div.search-icon-wrapper:hover i::before,
+div.mobile-search-icon div.search-icon-wrapper:hover i::before,
+.header-icon-enhanced.mobile-search-icon .search-icon-wrapper:hover i::before,
+.mobile-search-icon .search-icon-wrapper:hover i::before {
+    color: var(--theme-dark-color) !important;
+}
+
+/* Icon itself - DARK COLOR like cart/account */
+div.header-icon-enhanced.mobile-search-icon div.search-icon-wrapper i,
+div.mobile-search-icon div.search-icon-wrapper i,
+.header-icon-enhanced.mobile-search-icon .search-icon-wrapper i,
+.mobile-search-icon .search-icon-wrapper i,
+div.header-icon-enhanced.mobile-search-icon div.search-icon-wrapper i.flaticon-search,
+.mobile-search-icon .search-icon-wrapper i.flaticon-search,
+div.header-cart-1.header-icon-enhanced.mobile-search-icon div.search-icon-wrapper i {
+    color: var(--theme-dark-color) !important;
+    font-size: 20px !important;
+    line-height: 1 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100% !important;
+    height: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: transparent !important;
+}
+
+/* Remove any background from the icon before/after pseudo elements */
+div.header-icon-enhanced.mobile-search-icon div.search-icon-wrapper i::before,
+div.mobile-search-icon div.search-icon-wrapper i::before,
+.header-icon-enhanced.mobile-search-icon .search-icon-wrapper i::before,
+.mobile-search-icon .search-icon-wrapper i::before {
+    color: var(--theme-dark-color) !important;
+    background: transparent !important;
+}
+
+div.header-icon-enhanced.mobile-search-icon div.search-icon-wrapper i::after,
+div.mobile-search-icon div.search-icon-wrapper i::after,
+.header-icon-enhanced.mobile-search-icon .search-icon-wrapper i::after,
+.mobile-search-icon .search-icon-wrapper i::after {
+    color: var(--theme-dark-color) !important;
+    background: transparent !important;
+}
+
+/* Link styling removal */
+div.header-icon-enhanced.mobile-search-icon a,
+div.mobile-search-icon a,
+.header-icon-enhanced.mobile-search-icon a,
+.mobile-search-icon a,
+div.header-cart-1.header-icon-enhanced.mobile-search-icon a {
+    text-decoration: none !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    width: auto !important;
+    height: auto !important;
+}
+
+/* Active/pressed state */
+div.header-icon-enhanced.mobile-search-icon div.search-icon-wrapper:active,
+.mobile-search-icon .search-icon-wrapper:active {
+    transform: scale(0.95) !important;
+    background-color: var(--theme-light-color) !important;
+    background: var(--theme-light-color) !important;
+}
+
+/* ============================================
+   RESPONSIVE - MOBILE ONLY
+   ============================================ */
+
+@media screen and (max-width: 767px) {
+    /* Show search icon on mobile */
+    div.header-icon-enhanced.mobile-search-icon,
+    div.mobile-search-icon,
+    .header-icon-enhanced.mobile-search-icon,
+    .mobile-search-icon {
+        display: inline-flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+    
+    /* Ensure wrapper is sized correctly */
+    div.header-icon-enhanced.mobile-search-icon div.search-icon-wrapper,
+    .mobile-search-icon .search-icon-wrapper {
+        width: 42px !important;
+        height: 42px !important;
+    }
+    
+    /* Icon size */
+    div.header-icon-enhanced.mobile-search-icon div.search-icon-wrapper i,
+    .mobile-search-icon .search-icon-wrapper i {
+        font-size: 17px !important;
+    }
+}
+
+@media screen and (max-width: 575px) {
+    div.header-icon-enhanced.mobile-search-icon div.search-icon-wrapper,
+    .mobile-search-icon .search-icon-wrapper {
+        width: 40px !important;
+        height: 40px !important;
+    }
+    
+    div.header-icon-enhanced.mobile-search-icon div.search-icon-wrapper i,
+    .mobile-search-icon .search-icon-wrapper i {
+        font-size: 16px !important;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    div.header-icon-enhanced.mobile-search-icon div.search-icon-wrapper,
+    .mobile-search-icon .search-icon-wrapper {
+        width: 38px !important;
+        height: 38px !important;
+    }
+    
+    div.header-icon-enhanced.mobile-search-icon div.search-icon-wrapper i,
+    .mobile-search-icon .search-icon-wrapper i {
+        font-size: 15px !important;
+    }
+}
+
+/* Hide on desktop */
+@media screen and (min-width: 768px) {
+    div.header-icon-enhanced.mobile-search-icon,
+    div.mobile-search-icon,
+    .header-icon-enhanced.mobile-search-icon,
+    .mobile-search-icon {
+        display: none !important;
+    }
+}
+
+/* ============================================
+   ENSURE MATCH WITH CART AND ACCOUNT ICONS
+   ============================================ */
+
+/* Force consistency between all header icons */
+.col-icons .header-icon-enhanced .search-icon-wrapper,
+.col-icons .header-icon-enhanced .cart-icon {
+    width: 50px !important;
+    height: 50px !important;
+    border-radius: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+/* Spacing between icons */
+.col-icons .header-icon-enhanced {
+    margin: 0 8px !important;
+}
+
+@media (max-width: 767px) {
+    .col-icons .header-icon-enhanced {
+        margin: 0 5px !important;
+    }
+}
+
+/* ============================================
+   RTL SUPPORT
+   ============================================ */
+
+html[dir="rtl"] div.header-icon-enhanced.mobile-search-icon div.search-icon-wrapper i,
+html[dir="rtl"] .mobile-search-icon .search-icon-wrapper i {
+    transform: scaleX(-1) !important;
+}
+
+/* ============================================
+   ACCESSIBILITY
+   ============================================ */
+
+div.header-icon-enhanced.mobile-search-icon a:focus,
+.mobile-search-icon a:focus {
+    outline: 2px solid #10b981 !important;
+    outline-offset: 2px !important;
+}
+
+div.header-icon-enhanced.mobile-search-icon a:focus div.search-icon-wrapper,
+.mobile-search-icon a:focus .search-icon-wrapper {
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.3) !important;
+}

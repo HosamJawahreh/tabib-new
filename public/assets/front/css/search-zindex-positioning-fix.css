@@ -1,0 +1,105 @@
+/* ===============================================
+ * SEARCH BAR Z-INDEX AND POSITIONING FIX
+ * ===============================================
+ * Fixes:
+ * 1. Z-index conflict - navbar was blocking search input
+ * 2. Search bar positioning - moves closer to cart
+ * 3. Search dropdown display - ensures proper layering
+ * =============================================== */
+
+/* Fix navbar z-index - reduce from 999 to 50 to allow search interaction */
+.navbar {
+    z-index: 50 !important;
+}
+
+/* Fix header z-index - keep it reasonable */
+header,
+.header {
+    z-index: 60 !important;
+}
+
+/* Ensure search components are above navbar and header */
+.desktop-search-wrapper {
+    z-index: 1100 !important;
+    position: relative !important;
+}
+
+.enhanced-search-form {
+    z-index: 1100 !important;
+    position: relative !important;
+    pointer-events: auto !important;
+}
+
+.search-field {
+    z-index: 1101 !important;
+    position: relative !important;
+    pointer-events: auto !important;
+    cursor: text !important;
+}
+
+.search-submit-btn {
+    z-index: 1102 !important;
+    position: relative !important;
+    pointer-events: auto !important;
+}
+
+/* Search suggestions dropdown - highest z-index */
+.search-suggestions,
+.search-dropdown,
+.suggestions-dropdown,
+[class*="suggestion"] {
+    z-index: 1150 !important;
+    position: absolute !important;
+}
+
+/* Fix search bar positioning - move closer to cart */
+@media (min-width: 992px) {
+    .desktop-search-wrapper {
+        margin-right: 0px !important;
+        margin-left: 0px !important;
+    }
+    
+    /* Adjust search column spacing */
+    .col-lg-4.desktop-search-wrapper,
+    .header .col-lg-4:has(.desktop-search-wrapper) {
+        padding-right: 5px !important;
+        padding-left: 5px !important;
+    }
+    
+    /* Reduce gap between search and cart/icons */
+    .header .row > .col-lg-4:last-child {
+        padding-left: 5px !important;
+    }
+}
+
+/* Force input interactivity */
+.search-field input,
+input.search-field,
+.enhanced-search-form input {
+    pointer-events: auto !important;
+    z-index: 1101 !important;
+    position: relative !important;
+    cursor: text !important;
+}
+
+/* Ensure dropdown is clickable and visible */
+.search-suggestions *,
+.search-dropdown *,
+.suggestions-dropdown * {
+    pointer-events: auto !important;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 991px) {
+    .mobile-search-wrapper,
+    .mobile-search-form {
+        z-index: 1100 !important;
+        position: relative !important;
+    }
+    
+    .mobile-search-wrapper input,
+    .mobile-search-form input {
+        z-index: 1101 !important;
+        pointer-events: auto !important;
+    }
+}

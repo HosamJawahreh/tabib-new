@@ -183,7 +183,8 @@ class ProductController extends AdminBaseController
     {
         $cats = Category::all();
         $sign = $this->curr;
-        $languages = \App\Models\AdminLanguage::where('is_default', 0)->get(); // Get all non-default languages
+        // Get English language (is_default = 1) for translations
+        $languages = \App\Models\AdminLanguage::where('is_default', 1)->get();
 
         if ($slug == 'physical') {
             return view('admin.product.create.physical', compact('cats', 'sign', 'languages'));
@@ -499,13 +500,22 @@ class ProductController extends AdminBaseController
         if ($request->has('translations') && is_array($request->translations)) {
             foreach ($request->translations as $langId => $translation) {
                 if (!empty($translation['name']) || !empty($translation['description'])) {
-                    \App\Models\ProductTranslation::create([
-                        'ec_products_id' => $data->id,
-                        'lang_code' => $translation['lang_code'] ?? '',
-                        'name' => $translation['name'] ?? '',
-                        'description' => $translation['description'] ?? '',
-                        'content' => '' // You can add content field later if needed
-                    ]);
+                    $langCode = $translation['lang_code'] ?? '';
+
+                    if (!empty($langCode)) {
+                        // Use updateOrCreate to prevent duplicates
+                        \App\Models\ProductTranslation::updateOrCreate(
+                            [
+                                'ec_products_id' => $data->id,
+                                'lang_code' => $langCode,
+                            ],
+                            [
+                                'name' => $translation['name'] ?? '',
+                                'description' => $translation['description'] ?? '',
+                                'content' => '' // You can add content field later if needed
+                            ]
+                        );
+                    }
                 }
             }
         }
@@ -805,17 +815,19 @@ class ProductController extends AdminBaseController
     public function edit($id)
     {
         $cats = Category::all();
-        $data = Product::findOrFail($id);
+        $data = Product::with('translations', 'galleries', 'categories')->findOrFail($id);
         $sign = $this->curr;
+        // Get English language (is_default = 1) for translations, not Arabic
+        $languages = \App\Models\AdminLanguage::where('is_default', 1)->get();
 
         if ($data->type == 'Digital') {
-            return view('admin.product.edit.digital', compact('cats', 'data', 'sign'));
+            return view('admin.product.edit.digital', compact('cats', 'data', 'sign', 'languages'));
         } elseif ($data->type == 'License') {
-            return view('admin.product.edit.license', compact('cats', 'data', 'sign'));
+            return view('admin.product.edit.license', compact('cats', 'data', 'sign', 'languages'));
         } elseif ($data->type == 'Listing') {
-            return view('admin.product.edit.listing', compact('cats', 'data', 'sign'));
+            return view('admin.product.edit.listing', compact('cats', 'data', 'sign', 'languages'));
         } else {
-            return view('admin.product.edit.physical', compact('cats', 'data', 'sign'));
+            return view('admin.product.edit.physical', compact('cats', 'data', 'sign', 'languages'));
         }
 
     }
@@ -893,7 +905,8 @@ class ProductController extends AdminBaseController
                 $input['size_price'] = null;
                 $input['color'] = null;
             } else {
-                if (in_array(null, $request->size) || in_array(null, $request->size_qty) || in_array(null, $request->size_price)) {
+                if (empty($request->size) || empty($request->size_qty) || empty($request->size_price) ||
+                    in_array(null, $request->size ?? []) || in_array(null, $request->size_qty ?? []) || in_array(null, $request->size_price ?? [])) {
                     $input['stock_check'] = 0;
                     $input['size'] = null;
                     $input['size_qty'] = null;
@@ -932,7 +945,8 @@ class ProductController extends AdminBaseController
                 $input['whole_sell_qty'] = null;
                 $input['whole_sell_discount'] = null;
             } else {
-                if (in_array(null, $request->whole_sell_qty) || in_array(null, $request->whole_sell_discount)) {
+                if (empty($request->whole_sell_qty) || empty($request->whole_sell_discount) ||
+                    in_array(null, $request->whole_sell_qty ?? []) || in_array(null, $request->whole_sell_discount ?? [])) {
                     $input['whole_sell_qty'] = null;
                     $input['whole_sell_discount'] = null;
                 } else {
@@ -960,11 +974,13 @@ class ProductController extends AdminBaseController
         // Check License
         if ($data->type == "License") {
 
-            if (!in_array(null, $request->license) && !in_array(null, $request->license_qty)) {
+            if (!empty($request->license) && !empty($request->license_qty) &&
+                !in_array(null, $request->license ?? []) && !in_array(null, $request->license_qty ?? [])) {
                 $input['license'] = implode(',,', $request->license);
                 $input['license_qty'] = implode(',', $request->license_qty);
             } else {
-                if (in_array(null, $request->license) || in_array(null, $request->license_qty)) {
+                if (empty($request->license) || empty($request->license_qty) ||
+                    in_array(null, $request->license ?? []) || in_array(null, $request->license_qty ?? [])) {
                     $input['license'] = null;
                     $input['license_qty'] = null;
                 } else {
@@ -977,11 +993,11 @@ class ProductController extends AdminBaseController
 
         }
         // Check Features
-        if (!in_array(null, $request->features) && !in_array(null, $request->colors)) {
+        if (!empty($request->features) && !empty($request->colors) && !in_array(null, $request->features) && !in_array(null, $request->colors)) {
             $input['features'] = implode(',', str_replace(',', ' ', $request->features));
             $input['colors'] = implode(',', str_replace(',', ' ', $request->colors));
         } else {
-            if (in_array(null, $request->features) || in_array(null, $request->colors)) {
+            if (empty($request->features) || empty($request->colors) || in_array(null, $request->features ?? []) || in_array(null, $request->colors ?? [])) {
                 $input['features'] = null;
                 $input['colors'] = null;
             } else {
@@ -1077,6 +1093,49 @@ class ProductController extends AdminBaseController
         $data->slug = Str::slug($data->name, '-') . '-' . strtolower($data->sku);
 
         $data->update($input);
+
+        // Sync Multiple Categories (if provided)
+        if ($request->has('categories') && is_array($request->categories)) {
+            $data->categories()->sync($request->categories);
+        }
+
+        // Update Product Translations (if provided)
+        if ($request->has('translations') && is_array($request->translations)) {
+            foreach ($request->translations as $langId => $translation) {
+                if (!empty($translation['name']) || !empty($translation['description'])) {
+                    $langCode = $translation['lang_code'] ?? '';
+
+                    if (!empty($langCode)) {
+                        // Use updateOrCreate for composite key tables
+                        \App\Models\ProductTranslation::updateOrCreate(
+                            [
+                                'ec_products_id' => $data->id,
+                                'lang_code' => $langCode,
+                            ],
+                            [
+                                'name' => $translation['name'] ?? '',
+                                'description' => $translation['description'] ?? '',
+                            ]
+                        );
+                    }
+                }
+            }
+        }
+
+        // Update Gallery Images (if provided)
+        if ($files = $request->file('gallery')) {
+            foreach ($files as $key => $file) {
+                if (in_array($key, $request->galval ?? [])) {
+                    $gallery = new Gallery;
+                    $name = time() . Str::random(8) . '.' . $file->getClientOriginalExtension();
+                    $file->move('assets/images/galleries', $name);
+                    $gallery['photo'] = $name;
+                    $gallery['product_id'] = $data->id;
+                    $gallery->save();
+                }
+            }
+        }
+
         //-- Logic Section Ends
 
         //--- Redirect Section

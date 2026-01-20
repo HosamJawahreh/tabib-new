@@ -9,8 +9,14 @@ class ProductTranslation extends Model
     protected $fillable = ['ec_products_id', 'lang_code', 'name', 'description', 'content'];
 
     protected $table = 'ec_products_translations';
-    
+
     public $timestamps = false;
+
+    // This table doesn't have an auto-incrementing id
+    public $incrementing = false;
+
+    // Disable primary key (composite keys)
+    protected $primaryKey = null;
 
     public function product()
     {

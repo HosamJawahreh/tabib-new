@@ -2044,13 +2044,15 @@
 
        .search-col {
            order: 2 !important;
-           flex: 0 1 auto !important;
-           max-width: 500px !important;
+           flex: 0 0 auto !important;
+           max-width: 450px !important;
+           margin-right: 0 !important;
        }
 
        .icons-col {
            order: 3 !important;
            flex: 0 0 auto !important;
+           margin-left: 8px !important;
        }
 
        .phone-flag-col {
@@ -2170,15 +2172,47 @@ $pages = App\Models\Page::get();
                 </nav>
             </div>
 
+            <!-- Search Column - DESKTOP ONLY - Between Logo and Icons -->
+            <div class="col order-2 search-col d-none d-md-block">
+                <div class="desktop-search-wrapper">
+                    <form class="enhanced-search-form" action="{{ route('front.category') }}" method="GET">
+                        <div class="search-input-group">
+                            <input type="text" 
+                                   class="search-field" 
+                                   name="search" 
+                                   id="desktopSearchInput"
+                                   placeholder="{{ __('Search for products...') }}" 
+                                   autocomplete="off"
+                                   value="{{ request()->input('search') }}">
+                            <button type="submit" class="search-submit-btn" aria-label="Search">
+                                <i class="flaticon-search"></i>
+                            </button>
+                        </div>
+                        <!-- Search suggestions dropdown -->
+                        <div id="desktopSearchSuggestions" class="search-suggestions-dropdown" style="display: none;"></div>
+                    </form>
+                </div>
+            </div>
+
             <!-- Icons Column - CENTER - Search, Cart, Account -->
-            <div class="col-auto order-2 icons-col">
+            <div class="col-auto order-3 icons-col">
                 <div class="d-flex align-items-center justify-content-center h-100 col-icons">
 
-                    <!-- Mobile Search Icon -->
-                    <div class="header-icon-enhanced mobile-search-icon d-md-none">
-                        <a href="javascript:;" id="mobileSearchToggle" title="Search">
+                    <!-- Mobile Search Icon - Matches Cart/Account Design -->
+                    <div class="header-cart-1 header-icon-enhanced mobile-search-icon d-md-none">
+                        <a href="javascript:;" id="mobileSearchToggle" class="cart" title="Search">
                             <div class="search-icon-wrapper">
-                                <i class="flaticon-search flat-mini"></i>
+                                <i class="flaticon-search flat-mini mx-auto"></i>
+                            </div>
+                        </a>
+                    </div>
+
+                    <!-- Cart Icon - redirects to checkout if has items -->
+                    <div class="header-cart-1 header-icon-enhanced">
+                        <a href="javascript:;" id="cartIconLink" class="cart" title="Shopping Cart">
+                            <div class="cart-icon">
+                                <i class="flaticon-shopping-cart flat-mini mx-auto"></i>
+                                <span class="header-cart-count" id="cart-count">{{ Session::has('cart') ? count(Session::get('cart')->items) : 0 }}</span>
                             </div>
                         </a>
                     </div>
@@ -2207,7 +2241,7 @@ $pages = App\Models\Page::get();
             $currentLang = Session::has('language') ? Session::get('language') : $languges->where('is_default','=',1)->first()->id;
             $currentLangCode = $languges->where('id', $currentLang)->first()->language ?? 'English';
             @endphp
-            <div class="col-auto order-3 d-flex align-items-center justify-content-end gap-2 phone-flag-col">
+            <div class="col-auto order-4 d-flex align-items-center justify-content-end gap-2 phone-flag-col">
                 <!-- Phone Number - Desktop Only -->
                 <div class="d-none d-lg-block">
                     <a href="tel:{{$ps->phone}}" class="header-phone-link">
@@ -2321,6 +2355,113 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         console.log('✅ LTR MODE - Language:', htmlLang);
+    }
+
+    // Cart Icon Click Handler - Redirect to checkout if has items
+    const cartIcon = document.getElementById('cartIconLink');
+    if (cartIcon) {
+        cartIcon.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Get cart count from the badge
+            const cartCountElement = document.getElementById('cart-count');
+            const cartCount = cartCountElement ? parseInt(cartCountElement.textContent) : 0;
+            
+            console.log('🛒 Cart clicked. Items:', cartCount);
+            
+            // If cart has items, go to checkout. Otherwise, stay on current page or show message
+            if (cartCount > 0) {
+                window.location.href = "{{ route('front.checkout') }}";
+            } else {
+                // Optional: show a message that cart is empty
+                console.log('Cart is empty');
+                // You can add a toast notification here if needed
+                alert("{{ __('Your cart is empty') }}");
+            }
+        });
+    }
+
+    // Desktop Search Autocomplete - Professional Implementation
+    const desktopSearchInput = document.getElementById('desktopSearchInput');
+    const desktopSearchSuggestions = document.getElementById('desktopSearchSuggestions');
+    
+    if (desktopSearchInput && desktopSearchSuggestions) {
+        let desktopSearchTimeout;
+        
+        // Search input handler with debounce
+        desktopSearchInput.addEventListener('input', function() {
+            clearTimeout(desktopSearchTimeout);
+            const query = this.value.trim();
+            
+            if (query.length < 2) {
+                desktopSearchSuggestions.style.display = 'none';
+                desktopSearchSuggestions.innerHTML = '';
+                return;
+            }
+            
+            // Show loading state
+            desktopSearchSuggestions.style.display = 'block';
+            desktopSearchSuggestions.innerHTML = '<div class="search-loading">{{ __("Searching...") }}</div>';
+            
+            // Debounce search request
+            desktopSearchTimeout = setTimeout(function() {
+                fetch('{{ url("/") }}/autosearch/' + encodeURIComponent(query))
+                    .then(response => response.text())
+                    .then(html => {
+                        if (html.trim() === '') {
+                            desktopSearchSuggestions.innerHTML = '<div class="no-results-message">{{ __("No products found") }}</div>';
+                        } else {
+                            desktopSearchSuggestions.innerHTML = html;
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Desktop search error:', error);
+                        desktopSearchSuggestions.innerHTML = '<div class="no-results-message">{{ __("Search error occurred") }}</div>';
+                    });
+            }, 300);
+        });
+        
+        // Close suggestions when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!desktopSearchInput.contains(e.target) && !desktopSearchSuggestions.contains(e.target)) {
+                desktopSearchSuggestions.style.display = 'none';
+            }
+        });
+        
+        // Show suggestions when focusing on input with existing results
+        desktopSearchInput.addEventListener('focus', function() {
+            if (desktopSearchSuggestions.innerHTML.trim() !== '') {
+                desktopSearchSuggestions.style.display = 'block';
+            }
+        });
+        
+        // Handle keyboard navigation
+        desktopSearchInput.addEventListener('keydown', function(e) {
+            const suggestions = desktopSearchSuggestions.querySelectorAll('.suggestion-item');
+            
+            if (suggestions.length === 0) return;
+            
+            let currentFocus = -1;
+            const focused = desktopSearchSuggestions.querySelector('.suggestion-item:focus');
+            if (focused) {
+                currentFocus = Array.from(suggestions).indexOf(focused);
+            }
+            
+            if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                currentFocus++;
+                if (currentFocus >= suggestions.length) currentFocus = 0;
+                suggestions[currentFocus].focus();
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                currentFocus--;
+                if (currentFocus < 0) currentFocus = suggestions.length - 1;
+                suggestions[currentFocus].focus();
+            } else if (e.key === 'Escape') {
+                desktopSearchSuggestions.style.display = 'none';
+                desktopSearchInput.blur();
+            }
+        });
     }
 
     // Mobile Search Overlay - Professional Implementation
