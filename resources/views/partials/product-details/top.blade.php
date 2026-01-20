@@ -1218,12 +1218,12 @@
 
                       if (scale > minScale) {
                           scale = Math.max(minScale, scale - zoomStep);
-                          
+
                           if (scale === 1) {
                               posX = 0;
                               posY = 0;
                           }
-                          
+
                           constrainPosition();
                           updateTransform(true);
                       }
@@ -1248,7 +1248,7 @@
 
                       if (e.touches.length === 1) {
                           e.preventDefault();
-                          
+
                           const deltaX = e.touches[0].clientX - lastTouchX;
                           const deltaY = e.touches[0].clientY - lastTouchY;
 
