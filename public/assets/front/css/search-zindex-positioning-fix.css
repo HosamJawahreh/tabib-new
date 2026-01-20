@@ -58,14 +58,14 @@ header,
         margin-right: 0px !important;
         margin-left: 0px !important;
     }
-    
+
     /* Adjust search column spacing */
     .col-lg-4.desktop-search-wrapper,
     .header .col-lg-4:has(.desktop-search-wrapper) {
         padding-right: 5px !important;
         padding-left: 5px !important;
     }
-    
+
     /* Reduce gap between search and cart/icons */
     .header .row > .col-lg-4:last-child {
         padding-left: 5px !important;
@@ -96,7 +96,7 @@ input.search-field,
         z-index: 1100 !important;
         position: relative !important;
     }
-    
+
     .mobile-search-wrapper input,
     .mobile-search-form input {
         z-index: 1101 !important;

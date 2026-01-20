@@ -143,14 +143,14 @@ div.header-icon-enhanced.mobile-search-icon div.search-icon-wrapper:active,
         align-items: center !important;
         justify-content: center !important;
     }
-    
+
     /* Ensure wrapper is sized correctly */
     div.header-icon-enhanced.mobile-search-icon div.search-icon-wrapper,
     .mobile-search-icon .search-icon-wrapper {
         width: 42px !important;
         height: 42px !important;
     }
-    
+
     /* Icon size */
     div.header-icon-enhanced.mobile-search-icon div.search-icon-wrapper i,
     .mobile-search-icon .search-icon-wrapper i {
@@ -164,7 +164,7 @@ div.header-icon-enhanced.mobile-search-icon div.search-icon-wrapper:active,
         width: 40px !important;
         height: 40px !important;
     }
-    
+
     div.header-icon-enhanced.mobile-search-icon div.search-icon-wrapper i,
     .mobile-search-icon .search-icon-wrapper i {
         font-size: 16px !important;
@@ -177,7 +177,7 @@ div.header-icon-enhanced.mobile-search-icon div.search-icon-wrapper:active,
         width: 38px !important;
         height: 38px !important;
     }
-    
+
     div.header-icon-enhanced.mobile-search-icon div.search-icon-wrapper i,
     .mobile-search-icon .search-icon-wrapper i {
         font-size: 15px !important;

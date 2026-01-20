@@ -2177,11 +2177,11 @@ $pages = App\Models\Page::get();
                 <div class="desktop-search-wrapper">
                     <form class="enhanced-search-form" action="{{ route('front.category') }}" method="GET">
                         <div class="search-input-group">
-                            <input type="text" 
-                                   class="search-field" 
-                                   name="search" 
+                            <input type="text"
+                                   class="search-field"
+                                   name="search"
                                    id="desktopSearchInput"
-                                   placeholder="{{ __('Search for products...') }}" 
+                                   placeholder="{{ __('Search for products...') }}"
                                    autocomplete="off"
                                    value="{{ request()->input('search') }}">
                             <button type="submit" class="search-submit-btn" aria-label="Search">
@@ -2362,13 +2362,13 @@ document.addEventListener('DOMContentLoaded', function() {
     if (cartIcon) {
         cartIcon.addEventListener('click', function(e) {
             e.preventDefault();
-            
+
             // Get cart count from the badge
             const cartCountElement = document.getElementById('cart-count');
             const cartCount = cartCountElement ? parseInt(cartCountElement.textContent) : 0;
-            
+
             console.log('🛒 Cart clicked. Items:', cartCount);
-            
+
             // If cart has items, go to checkout. Otherwise, stay on current page or show message
             if (cartCount > 0) {
                 window.location.href = "{{ route('front.checkout') }}";
@@ -2384,25 +2384,25 @@ document.addEventListener('DOMContentLoaded', function() {
     // Desktop Search Autocomplete - Professional Implementation
     const desktopSearchInput = document.getElementById('desktopSearchInput');
     const desktopSearchSuggestions = document.getElementById('desktopSearchSuggestions');
-    
+
     if (desktopSearchInput && desktopSearchSuggestions) {
         let desktopSearchTimeout;
-        
+
         // Search input handler with debounce
         desktopSearchInput.addEventListener('input', function() {
             clearTimeout(desktopSearchTimeout);
             const query = this.value.trim();
-            
+
             if (query.length < 2) {
                 desktopSearchSuggestions.style.display = 'none';
                 desktopSearchSuggestions.innerHTML = '';
                 return;
             }
-            
+
             // Show loading state
             desktopSearchSuggestions.style.display = 'block';
             desktopSearchSuggestions.innerHTML = '<div class="search-loading">{{ __("Searching...") }}</div>';
-            
+
             // Debounce search request
             desktopSearchTimeout = setTimeout(function() {
                 fetch('{{ url("/") }}/autosearch/' + encodeURIComponent(query))
@@ -2420,33 +2420,33 @@ document.addEventListener('DOMContentLoaded', function() {
                     });
             }, 300);
         });
-        
+
         // Close suggestions when clicking outside
         document.addEventListener('click', function(e) {
             if (!desktopSearchInput.contains(e.target) && !desktopSearchSuggestions.contains(e.target)) {
                 desktopSearchSuggestions.style.display = 'none';
             }
         });
-        
+
         // Show suggestions when focusing on input with existing results
         desktopSearchInput.addEventListener('focus', function() {
             if (desktopSearchSuggestions.innerHTML.trim() !== '') {
                 desktopSearchSuggestions.style.display = 'block';
             }
         });
-        
+
         // Handle keyboard navigation
         desktopSearchInput.addEventListener('keydown', function(e) {
             const suggestions = desktopSearchSuggestions.querySelectorAll('.suggestion-item');
-            
+
             if (suggestions.length === 0) return;
-            
+
             let currentFocus = -1;
             const focused = desktopSearchSuggestions.querySelector('.suggestion-item:focus');
             if (focused) {
                 currentFocus = Array.from(suggestions).indexOf(focused);
             }
-            
+
             if (e.key === 'ArrowDown') {
                 e.preventDefault();
                 currentFocus++;

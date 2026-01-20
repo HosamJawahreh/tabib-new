@@ -39,8 +39,8 @@ class SearchController extends Controller
           return response()->json(['status' => true, 'data' => [], 'error' => ['message' => $e->getMessage()]]);
         }
       }
-  
-  
+
+
       public function category($id) {
         try{
         $cat = Category::where('status','=',1)->where('id',$id)->get();
@@ -50,7 +50,7 @@ class SearchController extends Controller
           return response()->json(['status' => true, 'data' => [], 'error' => ['message' => $e->getMessage()]]);
         }
       }
-  
+
       public function subcategories($id) {
         try{
         $subcats = Subcategory::where('category_id',$id)->where('status','=',1)->get();
@@ -60,7 +60,7 @@ class SearchController extends Controller
           return response()->json(['status' => true, 'data' => [], 'error' => ['message' => $e->getMessage()]]);
         }
       }
-  
+
       public function childcategories($id) {
         try{
         $childcats = Childcategory::where('subcategory_id',$id)->where('status','=',1)->get();
@@ -70,27 +70,27 @@ class SearchController extends Controller
           return response()->json(['status' => true, 'data' => [], 'error' => ['message' => $e->getMessage()]]);
         }
       }
-  
+
       public function attributes(Request $request, $id) {
         try{
-  
-  
+
+
           $rules = [
             'type' => 'required'
           ];
-  
+
           $validator = Validator::make($request->all(), $rules);
           if ($validator->fails()) {
             return response()->json(['status' => false, 'data' => [], 'error' => $validator->errors()]);
           }
-  
+
           $type          = $request->type;
           $checkType =  in_array($type, ['category','subcategory','childcategory']);
           if(!$checkType){
             return response()->json(['status' => false, 'data' => [], 'error' => ["message" => "This type doesn't exists."]]);
           }
-  
-  
+
+
         if ($type== 'category') {
           $attributes = Attribute::where('attributable_id', $id)->where('attributable_type', 'App\Models\Category')->get();
         }
@@ -100,14 +100,14 @@ class SearchController extends Controller
         if ($type == 'childcategory') {
           $attributes = Attribute::where('attributable_id', $id)->where('attributable_type', 'App\Models\Childcategory')->get();
         }
-  
+
         return response()->json(['status' => true, 'data' => AttributeResource::collection($attributes), 'error' => []]);
         }
         catch(\Exception $e){
           return response()->json(['status' => true, 'data' => [], 'error' => ['message' => $e->getMessage()]]);
         }
       }
-  
+
       public function attributeoptions($id) {
         try{
         $attributeOpts = AttributeOption::where('attribute_id', $id)->get();
@@ -117,7 +117,7 @@ class SearchController extends Controller
           return response()->json(['status' => true, 'data' => [], 'error' => ['message' => $e->getMessage()]]);
         }
       }
-  
+
       public function search(Request $request)
       {
         try{
@@ -125,8 +125,8 @@ class SearchController extends Controller
         $maxprice = $request->max;
         $sort = $request->sort;
         $search = $request->term;
-  
-          
+
+
         if (!empty($request->category)) {
           $cat = Category::find($request->category);
         } else {
@@ -142,7 +142,7 @@ class SearchController extends Controller
         } else {
           $childcat = NULL;
         }
-  
+
         $prods = Product::whereStatus(1)
                                     ->when($cat,function ($query, $cat) {
                                         return $query->where('category_id', $cat->id);
@@ -179,11 +179,11 @@ class SearchController extends Controller
                                     ->when(empty($sort), function ($query, $sort) {
                                         return $query->orderBy('id', 'DESC');
                                     });
-                                    
-                             
+
+
                                     $prods = $prods->where(function ($query) use ($cat, $subcat, $childcat, $request) {
                                                 $flag = 0;
-  
+
                                                 if (!empty($cat)) {
                                                   foreach ($cat->attributes as $key => $attribute) {
                                                     $inname = $attribute->input_name;
@@ -196,12 +196,12 @@ class SearchController extends Controller
                                                         } else {
                                                           $query->orWhere('attributes', 'like', '%'.'"'.$chFilter.'"'.'%');
                                                         }
-  
+
                                                       }
                                                     }
                                                   }
                                                 }
-  
+
                                                 if (!empty($subcat)) {
                                                   foreach ($subcat->attributes as $attribute) {
                                                     $inname = $attribute->input_name;
@@ -214,13 +214,13 @@ class SearchController extends Controller
                                                         } else {
                                                           $query->orWhere('attributes', 'like', '%'.'"'.$chFilter.'"'.'%');
                                                         }
-  
+
                                                       }
                                                     }
-  
+
                                                   }
                                                 }
-  
+
                                                 if (!empty($childcat)) {
                                                   foreach ($childcat->attributes as $attribute) {
                                                     $inname = $attribute->input_name;
@@ -233,24 +233,24 @@ class SearchController extends Controller
                                                         } else {
                                                           $query->orWhere('attributes', 'like', '%'.'"'.$chFilter.'"'.'%');
                                                         }
-  
+
                                                       }
                                                     }
-  
+
                                                   }
                                                 }
-  
+
                                             });
-  
+
                                     $prods = $prods->where('status', 1)->get();
-                                    
+
                                     $prods = (new Collection(Product::filterProducts($prods)));
-                                  
+
                                     return response()->json(['status' => true, 'data' => ProductlistResource::collection($prods->flatten(1)), 'error' => []]);
           }
           catch(\Exception $e){
             return response()->json(['status' => false, 'data' => [], 'error' => ['message' => $e->getMessage()]]);
           }
-  
+
       }
 }
