@@ -9,15 +9,20 @@
 .product-images {
     position: relative !important;
     overflow: visible !important;
+    /* Professional Smooth Scrolling for entire product area */
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
 }
 
 .woocommerce-product-gallery {
     overflow: visible !important;
+    scroll-behavior: smooth;
 }
 
 .woocommerce-product-gallery__wrapper {
     margin: 0 !important;
     overflow: visible !important;
+    scroll-behavior: smooth;
 }
 
 #single-image-zoom {
@@ -81,6 +86,9 @@
         -webkit-touch-callout: none;
         -webkit-tap-highlight-color: transparent;
         cursor: pointer;
+        /* Professional Smooth Scrolling */
+        scroll-behavior: smooth;
+        -webkit-overflow-scrolling: touch;
     }
 
     /* Lock body ONLY when actively zooming with two fingers */
@@ -111,12 +119,14 @@
     }
 }
 
-/* Desktop - keep normal behavior */
+/* Desktop - keep normal behavior with smooth scrolling */
 @media (min-width: 768px) {
     .mobile-zoom-wrapper {
         position: relative !important;
         overflow: visible !important;
         touch-action: auto;
+        /* Professional Smooth Scrolling */
+        scroll-behavior: smooth;
     }
 
     #single-image-zoom {
@@ -815,6 +825,14 @@
     .single-product-wrapper .col-md-6 {
         padding: 0 15px !important;
     }
+
+    /* Professional Smooth Scrolling on Mobile */
+    .product-images,
+    .woocommerce-product-gallery,
+    .mobile-zoom-wrapper {
+        scroll-behavior: smooth !important;
+        -webkit-overflow-scrolling: touch !important;
+    }
 }
 
 /* Desktop Responsive Styles (768px and up) */
@@ -965,6 +983,13 @@
         height: 110px !important;
         width: 110px !important;
     }
+
+    /* Professional Smooth Scrolling on Desktop */
+    .product-images,
+    .woocommerce-product-gallery,
+    .mobile-zoom-wrapper {
+        scroll-behavior: smooth !important;
+    }
 }
 
 /* Large Desktop (1200px and up) */
@@ -1016,14 +1041,14 @@
 }
 </style>
 
-<div class="full-row pb-0" style="padding-top: 0; margin-top: 0;">
-  <div class="container" style="padding-top: 0;">
-      <div class="row single-product-wrapper" style="margin-top: 0;">
+<div class="full-row pb-0" style="padding-top: 0; margin-top: 0; scroll-behavior: smooth;">
+  <div class="container" style="padding-top: 0; scroll-behavior: smooth;">
+      <div class="row single-product-wrapper" style="margin-top: 0; scroll-behavior: smooth;">
           <div class="col-md-6 mb-4">
-              <div class="product-images position-relative" style="top: 0; padding-top: 0; margin-top: 0;">
-                  <div class="woocommerce-product-gallery woocommerce-product-gallery--with-images woocommerce-product-gallery--columns-4 images" data-columns="4">
-                      <figure class="woocommerce-product-gallery__wrapper" style="margin: 0;">
-                          <div class="mobile-zoom-wrapper" style="position: relative; background: transparent; padding: 0; border: none;">
+              <div class="product-images position-relative" style="top: 0; padding-top: 0; margin-top: 0; scroll-behavior: smooth; -webkit-overflow-scrolling: touch;">
+                  <div class="woocommerce-product-gallery woocommerce-product-gallery--with-images woocommerce-product-gallery--columns-4 images" data-columns="4" style="scroll-behavior: smooth;">
+                      <figure class="woocommerce-product-gallery__wrapper" style="margin: 0; scroll-behavior: smooth;">
+                          <div class="mobile-zoom-wrapper" style="position: relative; background: transparent; padding: 0; border: none; scroll-behavior: smooth; -webkit-overflow-scrolling: touch;">
                               <img id="single-image-zoom" src="{{filter_var($productt->photo, FILTER_VALIDATE_URL) ?$productt->photo:asset('assets/images/products/'.$productt->photo)}}" alt="Product Image" data-zoom-image="{{filter_var($productt->photo, FILTER_VALIDATE_URL) ?$productt->photo:asset('assets/images/products/'.$productt->photo)}}" style="width: 100%; height: auto; display: block; border: none; box-shadow: none;" />
 
                               {{-- Desktop Zoom Hint --}}
