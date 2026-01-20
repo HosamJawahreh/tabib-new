@@ -74,19 +74,14 @@
     }
 }
 
-/* Mobile Touch Zoom - Two-Finger Pinch + Double Tap */
+/* Mobile Touch Zoom - Button-Only Control */
 @media (max-width: 767px) {
     .mobile-zoom-wrapper {
         position: relative;
-        overflow: hidden;
-        touch-action: pan-y pinch-zoom;
-        -webkit-user-select: none;
-        user-select: none;
+        overflow: visible;
+        touch-action: auto;
         width: 100%;
         height: auto;
-        -webkit-touch-callout: none;
-        -webkit-tap-highlight-color: transparent;
-        cursor: pointer;
         /* Professional Smooth Scrolling */
         scroll-behavior: smooth;
         -webkit-overflow-scrolling: touch;
@@ -149,10 +144,14 @@
         max-width: 100%;
         transform-origin: center center;
         will-change: transform;
+        touch-action: auto;
+        pointer-events: auto;
     }
 
     #single-image-zoom.zoomed {
         cursor: grab;
+        touch-action: none;
+        overflow: hidden;
     }
 
     #single-image-zoom.zoomed:active {
@@ -1134,7 +1133,7 @@
               </div>
 
               <script>
-              // SIMPLE BUTTON-ONLY ZOOM - No Gesture Interference
+              // PROFESSIONAL BUTTON-ONLY ZOOM - 100% Scroll Freedom
               (function() {
                   // Only on mobile devices
                   if (window.innerWidth > 767) return;
@@ -1153,10 +1152,71 @@
                   let isPanning = false;
                   let lastTouchX = 0;
                   let lastTouchY = 0;
+                  let touchHandlersAttached = false;
 
                   const minScale = 1;
                   const maxScale = 4;
                   const zoomStep = 0.5;
+
+                  // Touch handlers (defined once, attached/removed dynamically)
+                  function handleTouchStart(e) {
+                      if (scale <= 1) return;
+                      
+                      if (e.touches.length === 1) {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          isPanning = true;
+                          lastTouchX = e.touches[0].clientX;
+                          lastTouchY = e.touches[0].clientY;
+                      }
+                  }
+
+                  function handleTouchMove(e) {
+                      if (scale <= 1 || !isPanning) return;
+
+                      if (e.touches.length === 1) {
+                          e.preventDefault();
+                          e.stopPropagation();
+
+                          const deltaX = e.touches[0].clientX - lastTouchX;
+                          const deltaY = e.touches[0].clientY - lastTouchY;
+
+                          posX += deltaX;
+                          posY += deltaY;
+
+                          lastTouchX = e.touches[0].clientX;
+                          lastTouchY = e.touches[0].clientY;
+
+                          constrainPosition();
+                          updateTransform(false);
+                      }
+                  }
+
+                  function handleTouchEnd(e) {
+                      isPanning = false;
+                  }
+
+                  // Attach touch listeners ONLY when zoomed
+                  function attachTouchListeners() {
+                      if (touchHandlersAttached) return;
+                      mainImage.addEventListener('touchstart', handleTouchStart, { passive: false });
+                      mainImage.addEventListener('touchmove', handleTouchMove, { passive: false });
+                      mainImage.addEventListener('touchend', handleTouchEnd, { passive: false });
+                      mainImage.addEventListener('touchcancel', handleTouchEnd, { passive: false });
+                      touchHandlersAttached = true;
+                      wrapper.style.overflow = 'hidden';
+                  }
+
+                  // Remove touch listeners when not zoomed
+                  function removeTouchListeners() {
+                      if (!touchHandlersAttached) return;
+                      mainImage.removeEventListener('touchstart', handleTouchStart);
+                      mainImage.removeEventListener('touchmove', handleTouchMove);
+                      mainImage.removeEventListener('touchend', handleTouchEnd);
+                      mainImage.removeEventListener('touchcancel', handleTouchEnd);
+                      touchHandlersAttached = false;
+                      wrapper.style.overflow = 'visible';
+                  }
 
                   // Update image transform
                   function updateTransform(animate = false) {
@@ -1165,8 +1225,10 @@
 
                       if (scale > 1) {
                           mainImage.classList.add('zoomed');
+                          attachTouchListeners();
                       } else {
                           mainImage.classList.remove('zoomed');
+                          removeTouchListeners();
                       }
 
                       updateButtonStates();
@@ -1228,48 +1290,6 @@
                           updateTransform(true);
                       }
                   });
-
-                  // Touch handling - ONLY when zoomed via buttons
-                  mainImage.addEventListener('touchstart', function(e) {
-                      // Only handle panning if zoomed in
-                      if (scale <= 1) return;
-
-                      if (e.touches.length === 1) {
-                          e.preventDefault();
-                          isPanning = true;
-                          lastTouchX = e.touches[0].clientX;
-                          lastTouchY = e.touches[0].clientY;
-                      }
-                  }, { passive: false });
-
-                  mainImage.addEventListener('touchmove', function(e) {
-                      // Only handle panning if zoomed in and panning started
-                      if (scale <= 1 || !isPanning) return;
-
-                      if (e.touches.length === 1) {
-                          e.preventDefault();
-
-                          const deltaX = e.touches[0].clientX - lastTouchX;
-                          const deltaY = e.touches[0].clientY - lastTouchY;
-
-                          posX += deltaX;
-                          posY += deltaY;
-
-                          lastTouchX = e.touches[0].clientX;
-                          lastTouchY = e.touches[0].clientY;
-
-                          constrainPosition();
-                          updateTransform(false);
-                      }
-                  }, { passive: false });
-
-                  mainImage.addEventListener('touchend', function(e) {
-                      isPanning = false;
-                  }, { passive: false });
-
-                  mainImage.addEventListener('touchcancel', function(e) {
-                      isPanning = false;
-                  }, { passive: false });
 
                   // Thumbnail click handler - reset zoom
                   document.querySelectorAll('#gallery_09 a').forEach(function(thumb) {
