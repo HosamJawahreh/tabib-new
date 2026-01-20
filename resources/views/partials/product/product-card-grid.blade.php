@@ -1,5 +1,5 @@
 @foreach($products as $product)
-<div class="col-lg-2 col-md-3 col-sm-4 col-6 product-item mb-4" data-product-id="{{ $product->id }}">
+<div class="col-lg-2 col-md-3 col-sm-4 col-6 product-item" style="margin-bottom: 0.25rem !important; padding-bottom: 0.25rem !important; padding-left: 0.25rem !important; padding-right: 0.25rem !important;" data-product-id="{{ $product->id }}">
     <div class="product-card h-100 shadow-sm">
         <div class="product-thumb position-relative">
             <a href="{{ route('front.product', $product->slug) }}" class="d-block">
@@ -63,20 +63,20 @@
             </div>
         </div>
 
-        <div class="product-content p-3">
+        <div class="product-content" style="padding: 0.35rem !important; padding-bottom: 0 !important;">
             <h6 class="product-title mb-2" style="min-height: 40px;">
                 <a href="{{ route('front.product', $product->slug) }}" class="text-dark text-decoration-none">
                     {{ Str::limit($product->translated_name, 60) }}
                 </a>
             </h6>
 
-            <div class="product-price mb-2">
+            <div class="product-price" style="margin-bottom: 0 !important; padding-bottom: 0 !important;">
                 @if($product->previous_price && $product->previous_price > $product->price)
-                    <span class="price-old text-muted text-decoration-line-through me-2 small">
+                    <span class="price-old text-muted text-decoration-line-through me-2 small" style="margin-bottom: 0 !important; padding-bottom: 0 !important;">
                         {{ number_format($product->previous_price, 2) }} {{ $gs->curr_code ?? 'JD' }}
                     </span>
                 @endif
-                <span class="price-current fw-bold" style="color: #7caa53;">
+                <span class="price-current fw-bold" style="color: #7caa53; margin-bottom: 0 !important; padding-bottom: 0 !important;">
                     {{ number_format($product->price, 2) }} {{ $gs->curr_code ?? 'JD' }}
                 </span>
             </div>

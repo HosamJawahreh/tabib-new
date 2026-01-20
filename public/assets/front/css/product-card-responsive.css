@@ -164,7 +164,9 @@
     flex: 1;
     display: flex;
     flex-direction: column;
-    padding: 15px;
+    padding: 0.35rem !important;
+    padding-top: 0.35rem !important;
+    padding-bottom: 0 !important;
     background: white;
 }
 
@@ -195,7 +197,8 @@
    ======================================== */
 
 .product-price {
-    margin-bottom: 10px;
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
@@ -206,12 +209,20 @@
     font-size: 18px;
     font-weight: bold;
     color: #7caa53;
+    margin: 0 !important;
+    padding: 0 !important;
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
 }
 
 .price-old {
     font-size: 14px;
     color: #999;
     text-decoration: line-through;
+    margin: 0 !important;
+    padding: 0 !important;
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
 }
 
 /* ========================================
@@ -299,7 +310,9 @@
     }
 
     .product-content {
-        padding: 12px;
+        padding: 0.5rem !important;
+        padding-top: 0.5rem !important;
+        padding-bottom: 0.5rem !important;
     }
 
     .product-title {
@@ -367,7 +380,9 @@
 
     /* Content adjustments */
     .product-content {
-        padding: 10px;
+        padding: 0.35rem !important;
+        padding-top: 0.35rem !important;
+        padding-bottom: 0 !important;
     }
 
     .product-title {

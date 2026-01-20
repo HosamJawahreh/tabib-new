@@ -68,12 +68,12 @@
     }
 }
 
-/* Mobile Touch Zoom - Smooth No-Shake Implementation */
+/* Mobile Touch Zoom - Two-Finger Pinch Only */
 @media (max-width: 767px) {
     .mobile-zoom-wrapper {
         position: relative;
         overflow: hidden;
-        touch-action: none;
+        touch-action: pan-y pinch-zoom;
         -webkit-user-select: none;
         user-select: none;
         width: 100%;
@@ -82,7 +82,7 @@
         -webkit-tap-highlight-color: transparent;
     }
 
-    /* Prevent ALL page movement during zoom */
+    /* Lock body ONLY when actively zooming with two fingers */
     body.zoom-active {
         overflow: hidden !important;
         position: fixed !important;
@@ -1061,7 +1061,7 @@
               </div>
 
               <script>
-              // Simple, Smooth Mobile Pinch-to-Zoom - No Shake Guaranteed
+              // TWO-FINGER PINCH ZOOM with ONE-FINGER SCROLL - Professional Implementation
               (function() {
                   // Only on mobile devices
                   if (window.innerWidth > 767) return;
@@ -1085,6 +1085,7 @@
                   let isPanning = false;
                   let lastTouchX = 0;
                   let lastTouchY = 0;
+                  let touchStarted = false;
 
                   // Get distance between two touch points
                   function getDistance(touches) {
@@ -1134,7 +1135,7 @@
                       posY = Math.max(-maxY, Math.min(maxY, posY));
                   }
 
-                  // Lock body scroll
+                  // Lock body scroll ONLY when actively zooming
                   function lockBody() {
                       document.body.style.top = `-${window.scrollY}px`;
                       document.body.classList.add('zoom-active');
@@ -1148,10 +1149,12 @@
                       window.scrollTo(0, parseInt(scrollY || '0') * -1);
                   }
 
-                  // Touch start
+                  // Touch start - CRITICAL: Only handle two-finger touches for zoom
                   wrapper.addEventListener('touchstart', function(e) {
+                      touchStarted = true;
+                      
                       if (e.touches.length === 2) {
-                          // Start pinch zoom
+                          // TWO FINGERS = Start pinch zoom
                           e.preventDefault();
                           e.stopPropagation();
 
@@ -1161,7 +1164,7 @@
 
                           lockBody();
                       } else if (e.touches.length === 1 && scale > 1) {
-                          // Start pan
+                          // ONE FINGER + Already zoomed = Pan the zoomed image
                           e.preventDefault();
                           e.stopPropagation();
 
@@ -1173,12 +1176,13 @@
 
                           lockBody();
                       }
+                      // ONE FINGER + Not zoomed = Let page scroll normally (do nothing)
                   }, { passive: false });
 
-                  // Touch move
+                  // Touch move - CRITICAL: Only prevent default for two-finger or when panning zoomed image
                   wrapper.addEventListener('touchmove', function(e) {
                       if (e.touches.length === 2 && isPinching) {
-                          // Pinch zoom
+                          // TWO FINGERS = Pinch zoom
                           e.preventDefault();
                           e.stopPropagation();
 
@@ -1191,7 +1195,7 @@
                           updateTransform(false);
 
                       } else if (e.touches.length === 1 && isPanning && scale > 1) {
-                          // Pan
+                          // ONE FINGER + Already zoomed = Pan
                           e.preventDefault();
                           e.stopPropagation();
 
@@ -1204,6 +1208,7 @@
                           constrainPosition();
                           updateTransform(false);
                       }
+                      // ONE FINGER + Not zoomed = Allow normal page scrolling (do nothing, no preventDefault)
                   }, { passive: false });
 
                   // Touch end
@@ -1211,22 +1216,41 @@
                       if (e.touches.length === 0) {
                           isPinching = false;
                           isPanning = false;
+                          touchStarted = false;
 
-                          // If zoomed out completely, reset
+                          // If zoomed out completely, reset and unlock scroll
                           if (scale <= 1) {
                               scale = 1;
                               posX = 0;
                               posY = 0;
                               updateTransform(true);
                               unlockBody();
+                          } else if (scale > 1 && !isPinching && !isPanning) {
+                              // Still zoomed but not actively manipulating - unlock to allow page scroll
+                              unlockBody();
                           }
                       }
+                  }, { passive: false });
+
+                  // Touch cancel - cleanup
+                  wrapper.addEventListener('touchcancel', function(e) {
+                      isPinching = false;
+                      isPanning = false;
+                      touchStarted = false;
+                      
+                      if (scale <= 1) {
+                          scale = 1;
+                          posX = 0;
+                          posY = 0;
+                          updateTransform(true);
+                      }
+                      unlockBody();
                   }, { passive: false });
 
                   // Double tap to reset
                   let lastTapTime = 0;
                   wrapper.addEventListener('touchend', function(e) {
-                      if (e.touches.length === 0) {
+                      if (e.touches.length === 0 && !isPinching && !isPanning) {
                           const now = Date.now();
                           if (now - lastTapTime < 300) {
                               e.preventDefault();
@@ -1254,6 +1278,8 @@
                               posX = 0;
                               posY = 0;
                               lastScale = 1;
+                              isPinching = false;
+                              isPanning = false;
                               updateTransform(true);
                               unlockBody();
                           }

@@ -563,9 +563,9 @@
            align-items: center !important;
            justify-content: center !important;
            height: 100% !important;
-           gap: 20px !important; /* Space between icons */
+           gap: 35px !important; /* Space between icons */
            padding: 0 !important;
-           padding-left: 25px !important; /* Space from search bar */
+           padding-left: 40px !important; /* Space from search bar */
        }
 
        /* Force center alignment on mobile - override any desktop styles */
@@ -577,7 +577,7 @@
        .search-col,
        .header-search-form,
        form.search-form {
-           margin-right: 25px !important;
+           margin-right: 50px !important;
            padding-right: 15px !important;
        }
 
@@ -1007,12 +1007,80 @@
        }
    }
 
-   /* Mobile - Smaller flags */
-   @media (max-width: 991px) {
+   /* Desktop - Larger and more prominent */
+   @media (min-width: 992px) {
+       .phone-flag-col {
+           padding-right: 15px !important;
+           padding-left: 10px !important;
+       }
+       
+       .language-flag-selector {
+           margin-right: 15px !important;
+           margin-left: 10px !important;
+       }
+       
+       .language-flag-selector .flag-link {
+           padding: 8px 10px !important;
+           border-radius: 0 !important;
+       }
+
        .language-flag-selector .flag-icon {
-           width: 32px;
-           height: 24px;
-           border-radius: 5px;
+           width: 48px !important;
+           height: 36px !important;
+           min-width: 48px !important;
+           max-width: 48px !important;
+           min-height: 36px !important;
+           max-height: 36px !important;
+           border-radius: 6px !important;
+           border: 2px solid #ddd !important;
+       }
+   }
+
+   /* Mobile - Compact to fit screen */
+   @media (max-width: 991px) {
+       .phone-flag-col {
+           padding-right: 0 !important;
+           padding-left: 0 !important;
+           margin-right: 0 !important;
+           max-width: 44px !important;
+           min-width: auto !important;
+           gap: 1px !important;
+       }
+       
+       .language-flag-selector {
+           margin-right: 2px !important;
+           margin-left: 0 !important;
+           padding: 0 !important;
+           min-width: 40px !important;
+           max-width: 42px !important;
+           overflow: visible !important;
+           flex-shrink: 0 !important;
+           position: relative !important;
+           z-index: 1000 !important;
+       }
+       
+       .language-flag-selector .flag-link {
+           padding: 0 !important;
+           margin: 0 !important;
+           display: flex !important;
+           align-items: center !important;
+           justify-content: center !important;
+           flex-shrink: 0 !important;
+           overflow: visible !important;
+       }
+       
+       .language-flag-selector .flag-icon {
+           width: 38px !important;
+           height: 29px !important;
+           min-width: 38px !important;
+           max-width: 38px !important;
+           min-height: 29px !important;
+           max-height: 29px !important;
+           border-radius: 3px !important;
+           display: block !important;
+           object-fit: cover !important;
+           flex-shrink: 0 !important;
+           border: 2px solid #ccc !important;
        }
    }
 
@@ -1511,6 +1579,95 @@
            align-items: center !important;
            justify-content: center !important;
        }
+
+       /* Phone flag column - DESKTOP AND MOBILE SEPARATED */
+       @media (min-width: 992px) {
+           .phone-flag-col {
+               padding-right: 15px !important;
+               padding-left: 10px !important;
+           }
+           
+           .language-flag-selector {
+               margin-right: 15px !important;
+               margin-left: 10px !important;
+           }
+           
+           .language-flag-selector .flag-link {
+               padding: 8px 10px !important;
+           }
+           
+           .language-flag-selector .flag-icon {
+               width: 48px !important;
+               height: 36px !important;
+               border: 2px solid #ddd !important;
+               border-radius: 6px !important;
+           }
+       }
+       
+       @media (max-width: 991px) {
+           .phone-flag-col {
+               padding-right: 0 !important;
+               padding-left: 0 !important;
+               margin-right: 0 !important;
+               max-width: 44px !important;
+               min-width: auto !important;
+               overflow: visible !important;
+               gap: 1px !important;
+           }
+           
+           /* Move flag selector to the right on mobile - ABSOLUTE MINIMAL */
+           .language-flag-selector {
+               margin-right: 2px !important;
+               margin-left: 0 !important;
+               padding: 0 !important;
+               min-width: 40px !important;
+               max-width: 42px !important;
+               overflow: visible !important;
+               flex-shrink: 0 !important;
+               position: relative !important;
+               z-index: 1001 !important;
+           }
+
+           .language-flag-selector .flag-link {
+               padding: 0 !important;
+               display: flex !important;
+               align-items: center !important;
+               justify-content: center !important;
+               flex-shrink: 0 !important;
+               overflow: visible !important;
+               margin: 0 !important;
+           }
+           
+           .language-flag-selector .flag-icon {
+               width: 38px !important;
+               height: 29px !important;
+               min-width: 38px !important;
+               max-width: 38px !important;
+               min-height: 29px !important;
+               max-height: 29px !important;
+               flex-shrink: 0 !important;
+               border: 2px solid #ccc !important;
+               border-radius: 3px !important;
+           }
+       }
+
+       .language-flag-selector .flag-icon {
+           width: 40px !important;
+           height: 30px !important;
+           min-width: 40px !important;
+           max-width: 40px !important;
+           min-height: 30px !important;
+           max-height: 30px !important;
+           display: block !important;
+           object-fit: cover !important;
+       }
+
+       /* Ensure flag column doesn't cut off */
+       .phone-flag-col {
+           padding-right: 15px !important;
+           margin-right: 10px !important;
+           overflow: visible !important;
+       }
    }
 
    /* HIDE BURGER MENU COMPLETELY - All screen sizes */
@@ -1735,9 +1892,29 @@
            font-size: 18px !important;
        }
 
-       .mobile-search-icon a:hover .search-icon-wrapper {
+       .mobile-search-icon a:hover .search-icon-wrapper,
+       .mobile-search-icon a:active .search-icon-wrapper {
            transform: scale(1.1);
            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+       }
+
+       /* Mobile Cart & Account Icon Animation - Match Desktop */
+       .header-cart-1,
+       .header-icon-enhanced {
+           transition: all 0.3s ease !important;
+       }
+
+       .header-cart-1:active,
+       .header-icon-enhanced:active,
+       .header-cart-1:hover,
+       .header-icon-enhanced:hover {
+           background-color: #f7fafc !important;
+           transform: translateY(-1px) scale(1.05) !important;
+       }
+
+       .header-cart-1 a:active .cart-icon,
+       .header-icon-enhanced a:active .cart-icon {
+           transform: scale(1.1) !important;
        }
    }
 
@@ -1903,54 +2080,70 @@
    }
 
    .mobile-search-result-item {
-       display: flex;
-       align-items: center;
-       padding: 12px 15px;
-       border-bottom: 1px solid #f3f4f6;
-       cursor: pointer;
-       transition: all 0.2s ease;
-       text-decoration: none;
-       color: inherit;
+       display: flex !important;
+       align-items: center !important;
+       padding: 12px 15px !important;
+       border-bottom: 1px solid #f3f4f6 !important;
+       cursor: pointer !important;
+       transition: all 0.2s ease !important;
+       text-decoration: none !important;
+       color: inherit !important;
    }
 
    .mobile-search-result-item:last-child {
-       border-bottom: none;
+       border-bottom: none !important;
    }
 
    .mobile-search-result-item:hover {
-       background: #f9fafb;
-       padding-left: 20px;
+       background: #f9fafb !important;
+       padding-left: 20px !important;
    }
 
    .mobile-search-result-image {
-       width: 60px;
-       height: 60px;
-       object-fit: cover;
-       border-radius: 8px;
-       margin-right: 12px;
-       background: #f3f4f6;
+       width: 80px !important;
+       height: 80px !important;
+       min-width: 80px !important;
+       max-width: 80px !important;
+       min-height: 80px !important;
+       max-height: 80px !important;
+       object-fit: cover !important;
+       border-radius: 10px !important;
+       margin-right: 15px !important;
+       background: #f3f4f6 !important;
+       flex-shrink: 0 !important;
+       box-shadow: 0 2px 6px rgba(0,0,0,0.08) !important;
    }
 
    .mobile-search-result-info {
-       flex: 1;
+       flex: 1 !important;
+       display: flex !important;
+       flex-direction: column !important;
+       justify-content: center !important;
+       gap: 6px !important;
    }
 
-   .mobile-search-result-name {
-       font-size: 14px;
-       font-weight: 600;
-       color: #1a1a1a;
-       margin: 0 0 4px 0;
-       display: -webkit-box;
-       -webkit-line-clamp: 2;
-       -webkit-box-orient: vertical;
-       overflow: hidden;
+   .mobile-search-result-name,
+   .mobile-search-result-item h6 {
+       font-size: 14px !important;
+       font-weight: 600 !important;
+       color: #1a1a1a !important;
+       margin: 0 !important;
+       padding: 0 !important;
+       line-height: 1.3 !important;
+       display: -webkit-box !important;
+       -webkit-line-clamp: 2 !important;
+       -webkit-box-orient: vertical !important;
+       overflow: hidden !important;
    }
 
-   .mobile-search-result-price {
-       font-size: 16px;
-       font-weight: 700;
-       color: #10b981;
-       margin: 0;
+   .mobile-search-result-price,
+   .mobile-search-result-item p {
+       font-size: 16px !important;
+       font-weight: 700 !important;
+       color: #10b981 !important;
+       margin: 0 !important;
+       padding: 0 !important;
+       line-height: 1 !important;
    }
 
    .mobile-search-no-results {
@@ -2005,13 +2198,13 @@
 
    /* RTL Support for search results */
    [dir="rtl"] .mobile-search-result-image {
-       margin-right: 0;
-       margin-left: 12px;
+       margin-right: 0 !important;
+       margin-left: 15px !important;
    }
 
    [dir="rtl"] .mobile-search-result-item:hover {
-       padding-left: 15px;
-       padding-right: 20px;
+       padding-left: 15px !important;
+       padding-right: 20px !important;
    }
 
    /* RTL Support for Mobile Search */
@@ -2305,7 +2498,7 @@ $pages = App\Models\Page::get();
             </div>
 
             <!-- Search Column - DESKTOP ONLY - Between Logo and Icons -->
-            <div class="col order-2 search-col d-none d-md-block" style="margin-right: 40px; padding-right: 20px;">
+            <div class="col order-2 search-col d-none d-md-block" style="margin-right: 80px !important; padding-right: 20px !important;">
                 <div class="desktop-search-wrapper">
                     <form class="enhanced-search-form" action="{{ route('front.category') }}" method="GET">
                         <div class="search-input-group">
@@ -2328,7 +2521,7 @@ $pages = App\Models\Page::get();
 
             <!-- Icons Column - CENTER - Search, Cart, Account -->
             <div class="col-auto order-3 icons-col">
-                <div class="d-flex align-items-center justify-content-center h-100 col-icons" style="gap: 30px; padding-left: 30px;">
+                <div class="d-flex align-items-center justify-content-center h-100 col-icons" style="gap: 60px !important; padding-left: 60px !important;">
 
                     <!-- Mobile Search Icon - Matches Cart/Account Design -->
                     <div class="header-cart-1 header-icon-enhanced mobile-search-icon d-md-none">
@@ -2565,11 +2758,20 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log('✅ LTR MODE - Language:', htmlLang);
     }
 
-    // Cart Icon Click Handler - Redirect to checkout if has items
+    // Cart Icon Click Handler - Redirect to checkout if has items (Desktop + Mobile)
     const cartIcon = document.getElementById('cartIconLink');
     if (cartIcon) {
         cartIcon.addEventListener('click', function(e) {
             e.preventDefault();
+
+            // Add click animation
+            const cartIconDiv = this.querySelector('.cart-icon');
+            if (cartIconDiv) {
+                cartIconDiv.style.transform = 'scale(1.15)';
+                setTimeout(() => {
+                    cartIconDiv.style.transform = '';
+                }, 200);
+            }
 
             // Get cart count from the badge
             const cartCountElement = document.getElementById('cart-count');
@@ -2587,16 +2789,33 @@ document.addEventListener('DOMContentLoaded', function() {
                 alert("{{ __('Your cart is empty') }}");
             }
         });
+
+        // Add touch event for better mobile responsiveness
+        cartIcon.addEventListener('touchstart', function() {
+            const cartIconDiv = this.querySelector('.cart-icon');
+            if (cartIconDiv) {
+                cartIconDiv.style.transform = 'scale(1.15)';
+            }
+        });
+
+        cartIcon.addEventListener('touchend', function() {
+            const cartIconDiv = this.querySelector('.cart-icon');
+            if (cartIconDiv) {
+                setTimeout(() => {
+                    cartIconDiv.style.transform = '';
+                }, 200);
+            }
+        });
     }
 
-    // Desktop Search Autocomplete - Professional Implementation
+    // Desktop Search Autocomplete - EXACT COPY OF MOBILE SEARCH (Proven Working)
     const desktopSearchInput = document.getElementById('desktopSearchInput');
     const desktopSearchSuggestions = document.getElementById('desktopSearchSuggestions');
 
     if (desktopSearchInput && desktopSearchSuggestions) {
         let desktopSearchTimeout;
 
-        // Search input handler with debounce
+        // Search input handler with debounce - EXACT SAME AS MOBILE
         desktopSearchInput.addEventListener('input', function() {
             clearTimeout(desktopSearchTimeout);
             const query = this.value.trim();
@@ -2607,27 +2826,86 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
 
-            // Show loading state
+            // Show loading state - SAME AS MOBILE
             desktopSearchSuggestions.style.display = 'block';
-            desktopSearchSuggestions.innerHTML = '<div class="search-loading">{{ __("Searching...") }}</div>';
+            desktopSearchSuggestions.innerHTML = `
+                <div class="search-loading">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <p>{{ __("Searching...") }}</p>
+                </div>
+            `;
 
-            // Debounce search request
+            // Debounce search request - 500ms SAME AS MOBILE
             desktopSearchTimeout = setTimeout(function() {
-                fetch('{{ url("/") }}/autosearch/' + encodeURIComponent(query))
-                    .then(response => response.text())
-                    .then(html => {
-                        if (html.trim() === '') {
-                            desktopSearchSuggestions.innerHTML = '<div class="no-results-message">{{ __("No products found") }}</div>';
-                        } else {
-                            desktopSearchSuggestions.innerHTML = html;
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Desktop search error:', error);
-                        desktopSearchSuggestions.innerHTML = '<div class="no-results-message">{{ __("Search error occurred") }}</div>';
-                    });
-            }, 300);
+                performDesktopSearch(query);
+            }, 500);
         });
+
+        // AJAX Search Function - EXACT SAME AS MOBILE
+        function performDesktopSearch(query) {
+            fetch(`{{ route('front.category') }}?search=${encodeURIComponent(query)}&ajax=1`, {
+                method: 'GET',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                displayDesktopResults(data, query);
+            })
+            .catch(error => {
+                console.error('Desktop search error:', error);
+                desktopSearchSuggestions.innerHTML = `
+                    <div class="no-results-message">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <p>{{ __("Error loading results. Please try again.") }}</p>
+                    </div>
+                `;
+            });
+        }
+
+        // Display Results Function - ADAPTED FROM MOBILE
+        function displayDesktopResults(data, query) {
+            if (!data.products || data.products.length === 0) {
+                desktopSearchSuggestions.innerHTML = `
+                    <div class="no-results-message">
+                        <i class="fas fa-search"></i>
+                        <p>{{ __("No products found for") }} "<strong>${query}</strong>"</p>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = '<div class="search-suggestions-list">';
+            data.products.forEach(product => {
+                const imageUrl = product.photo ? `{{ asset('assets/images/products/') }}/${product.photo}` : `{{ asset('assets/images/noimage.png') }}`;
+                const productUrl = `{{ url('/') }}/item/${product.slug}`;
+
+                html += `
+                    <a href="${productUrl}" class="suggestion-item">
+                        <img src="${imageUrl}" alt="${product.name}" class="suggestion-image">
+                        <div class="suggestion-content">
+                            <p class="suggestion-title">${product.name}</p>
+                            <span class="suggestion-price">${product.price}</span>
+                        </div>
+                    </a>
+                `;
+            });
+
+            // Add "View All Results" button if there are more products
+            if (data.total > data.products.length) {
+                html += `
+                    <a href="{{ route('front.category') }}?search=${encodeURIComponent(query)}" class="view-all-results">
+                        {{ __("View All") }} ${data.total} {{ __("Results") }}
+                    </a>
+                `;
+            }
+
+            html += '</div>';
+            desktopSearchSuggestions.innerHTML = html;
+            desktopSearchSuggestions.style.display = 'block';
+        }
 
         // Close suggestions when clicking outside
         document.addEventListener('click', function(e) {
@@ -2638,19 +2916,19 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Show suggestions when focusing on input with existing results
         desktopSearchInput.addEventListener('focus', function() {
-            if (desktopSearchSuggestions.innerHTML.trim() !== '') {
+            if (desktopSearchSuggestions.innerHTML.trim() !== '' && desktopSearchInput.value.trim().length >= 2) {
                 desktopSearchSuggestions.style.display = 'block';
             }
         });
 
         // Handle keyboard navigation
         desktopSearchInput.addEventListener('keydown', function(e) {
-            const suggestions = desktopSearchSuggestions.querySelectorAll('.suggestion-item');
+            const suggestions = desktopSearchSuggestions.querySelectorAll('a.suggestion-item');
 
             if (suggestions.length === 0) return;
 
             let currentFocus = -1;
-            const focused = desktopSearchSuggestions.querySelector('.suggestion-item:focus');
+            const focused = desktopSearchSuggestions.querySelector('a.suggestion-item:focus');
             if (focused) {
                 currentFocus = Array.from(suggestions).indexOf(focused);
             }
@@ -2668,6 +2946,21 @@ document.addEventListener('DOMContentLoaded', function() {
             } else if (e.key === 'Escape') {
                 desktopSearchSuggestions.style.display = 'none';
                 desktopSearchInput.blur();
+            } else if (e.key === 'Enter' && currentFocus >= 0) {
+                e.preventDefault();
+                suggestions[currentFocus].click();
+            }
+        });
+
+        // Submit form on enter
+        desktopSearchInput.closest('form').addEventListener('submit', function(e) {
+            const query = desktopSearchInput.value.trim();
+            if (query.length < 2) {
+                e.preventDefault();
+                alert('{{ __("Please enter at least 2 characters to search") }}');
+            } else {
+                // Hide suggestions when submitting
+                desktopSearchSuggestions.style.display = 'none';
             }
         });
     }
@@ -2790,11 +3083,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     const productUrl = `${mainurl}/item/${product.slug}`;
 
                     html += `
-                        <a href="${productUrl}" class="mobile-search-result-item">
-                            <img src="${imageUrl}" alt="${product.name}" class="mobile-search-result-image">
-                            <div class="mobile-search-result-info">
-                                <h6 class="mobile-search-result-name">${product.name}</h6>
-                                <p class="mobile-search-result-price">${product.price}</p>
+                        <a href="${productUrl}" class="mobile-search-result-item" style="display: flex !important; align-items: center !important; padding: 8px 15px !important; border-bottom: 1px solid #f3f4f6 !important; text-decoration: none !important; color: inherit !important;">
+                            <img src="${imageUrl}" alt="${product.name}" class="mobile-search-result-image" style="width: 80px !important; height: 80px !important; min-width: 80px !important; max-width: 80px !important; min-height: 80px !important; max-height: 80px !important; object-fit: cover !important; border-radius: 10px !important; margin-right: 15px !important; background: #f3f4f6 !important; flex-shrink: 0 !important; box-shadow: 0 2px 6px rgba(0,0,0,0.08) !important;">
+                            <div class="mobile-search-result-info" style="flex: 1 !important; display: flex !important; flex-direction: column !important; justify-content: center !important; gap: 1px !important; padding: 0 !important; margin: 0 !important; height: 80px !important; max-height: 80px !important;">
+                                <h6 class="mobile-search-result-name" style="font-size: 14px !important; font-weight: 600 !important; color: #1a1a1a !important; margin: 0 !important; padding: 0 !important; margin-bottom: 0 !important; padding-bottom: 0 !important; line-height: 1.3 !important; display: -webkit-box !important; -webkit-line-clamp: 2 !important; -webkit-box-orient: vertical !important; overflow: hidden !important;">${product.name}</h6>
+                                <p class="mobile-search-result-price" style="font-size: 16px !important; font-weight: 700 !important; color: #10b981 !important; margin: 0 !important; padding: 0 !important; line-height: 0.9 !important; margin-top: 0 !important; margin-bottom: 0 !important; padding-top: 0 !important; padding-bottom: 0 !important; height: 15px !important; max-height: 15px !important; overflow: hidden !important;">${product.price}</p>
                             </div>
                         </a>
                     `;
@@ -2810,6 +3103,34 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
 
                 suggestionsContainer.innerHTML = html;
+
+                // FORCE STYLES AFTER DOM INSERTION - This overrides everything
+                setTimeout(() => {
+                    const items = suggestionsContainer.querySelectorAll('.mobile-search-result-item');
+                    items.forEach(item => {
+                        item.style.cssText = 'display: flex !important; align-items: center !important; padding: 8px 15px !important; border-bottom: 1px solid #f3f4f6 !important; text-decoration: none !important; color: inherit !important;';
+
+                        const img = item.querySelector('.mobile-search-result-image');
+                        if (img) {
+                            img.style.cssText = 'width: 80px !important; height: 80px !important; min-width: 80px !important; max-width: 80px !important; min-height: 80px !important; max-height: 80px !important; object-fit: cover !important; border-radius: 10px !important; margin-right: 15px !important; background: #f3f4f6 !important; flex-shrink: 0 !important; box-shadow: 0 2px 6px rgba(0,0,0,0.08) !important;';
+                        }
+
+                        const info = item.querySelector('.mobile-search-result-info');
+                        if (info) {
+                            info.style.cssText = 'flex: 1 !important; display: flex !important; flex-direction: column !important; justify-content: center !important; gap: 1px !important; padding: 0 !important; margin: 0 !important; height: 80px !important; max-height: 80px !important;';
+                        }
+
+                        const name = item.querySelector('.mobile-search-result-name, h6');
+                        if (name) {
+                            name.style.cssText = 'font-size: 14px !important; font-weight: 600 !important; color: #1a1a1a !important; margin: 0 !important; padding: 0 !important; margin-bottom: 0 !important; padding-bottom: 0 !important; line-height: 1.3 !important; display: -webkit-box !important; -webkit-line-clamp: 2 !important; -webkit-box-orient: vertical !important; overflow: hidden !important;';
+                        }
+
+                        const price = item.querySelector('.mobile-search-result-price, p');
+                        if (price) {
+                            price.style.cssText = 'font-size: 16px !important; font-weight: 700 !important; color: #10b981 !important; margin: 0 !important; padding: 0 !important; line-height: 0.9 !important; margin-top: 0 !important; margin-bottom: 0 !important; padding-top: 0 !important; padding-bottom: 0 !important; height: 15px !important; max-height: 15px !important; overflow: hidden !important;';
+                        }
+                    });
+                }, 10);
             }
 
             // Submit form on enter or button click
@@ -2845,6 +3166,73 @@ document.addEventListener('DOMContentLoaded', function() {
             window.location.href = url;
         });
     });
+
+    // FORCE FLAG VISIBILITY - SEPARATE DESKTOP AND MOBILE
+    function forceFlagVisibility() {
+        if (window.innerWidth <= 991) {
+            // MOBILE - Compact
+            const phoneFlags = document.querySelectorAll('.phone-flag-col');
+            phoneFlags.forEach(function(col) {
+                col.style.cssText = 'padding-right: 0 !important; padding-left: 0 !important; margin-right: 0 !important; overflow: visible !important; flex-shrink: 0 !important; max-width: 44px !important; min-width: auto !important; display: flex !important; gap: 1px !important;';
+            });
+
+            const flagSelectors = document.querySelectorAll('.language-flag-selector');
+            flagSelectors.forEach(function(selector) {
+                selector.style.cssText = 'margin-right: 2px !important; margin-left: 0 !important; min-width: 40px !important; max-width: 42px !important; overflow: visible !important; padding: 0 !important; flex-shrink: 0 !important; display: flex !important; justify-content: center !important; position: relative !important; z-index: 1001 !important;';
+            });
+
+            const flagLinks = document.querySelectorAll('.language-flag-selector .flag-link');
+            flagLinks.forEach(function(link) {
+                link.style.cssText = 'display: flex !important; align-items: center !important; justify-content: center !important; padding: 0 !important; flex-shrink: 0 !important; overflow: visible !important; margin: 0 !important;';
+            });
+
+            const flagIcons = document.querySelectorAll('.language-flag-selector .flag-icon');
+            flagIcons.forEach(function(icon) {
+                icon.style.cssText = 'width: 38px !important; height: 29px !important; min-width: 38px !important; max-width: 38px !important; min-height: 29px !important; max-height: 29px !important; display: block !important; object-fit: cover !important; flex-shrink: 0 !important; border: 2px solid #ccc !important; border-radius: 3px !important;';
+            });
+        } else {
+            // DESKTOP - Larger
+            const phoneFlags = document.querySelectorAll('.phone-flag-col');
+            phoneFlags.forEach(function(col) {
+                col.style.cssText = 'padding-right: 15px !important; padding-left: 10px !important;';
+            });
+
+            const flagSelectors = document.querySelectorAll('.language-flag-selector');
+            flagSelectors.forEach(function(selector) {
+                selector.style.cssText = 'margin-right: 15px !important; margin-left: 10px !important;';
+            });
+
+            const flagLinks = document.querySelectorAll('.language-flag-selector .flag-link');
+            flagLinks.forEach(function(link) {
+                link.style.cssText = 'display: flex !important; align-items: center !important; justify-content: center !important; padding: 8px 10px !important;';
+            });
+
+            const flagIcons = document.querySelectorAll('.language-flag-selector .flag-icon');
+            flagIcons.forEach(function(icon) {
+                icon.style.cssText = 'width: 48px !important; height: 36px !important; min-width: 48px !important; max-width: 48px !important; min-height: 36px !important; max-height: 36px !important; display: block !important; object-fit: cover !important; flex-shrink: 0 !important; border: 2px solid #ddd !important; border-radius: 6px !important;';
+            });
+        }
+    }
+
+    // Apply immediately
+    forceFlagVisibility();
+
+    // Apply again after delays to override any lazy scripts
+    setTimeout(forceFlagVisibility, 50);
+    setTimeout(forceFlagVisibility, 100);
+    setTimeout(forceFlagVisibility, 300);
+    setTimeout(forceFlagVisibility, 500);
+    setTimeout(forceFlagVisibility, 1000);
+    
+    // Reapply on window resize
+    window.addEventListener('resize', forceFlagVisibility);
+    
+    // Reapply on scroll (for lazy loading scenarios)
+    let scrollTimer;
+    window.addEventListener('scroll', function() {
+        clearTimeout(scrollTimer);
+        scrollTimer = setTimeout(forceFlagVisibility, 50);
+    }, { passive: true });
 });
 </script>
 
