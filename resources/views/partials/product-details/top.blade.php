@@ -1457,7 +1457,7 @@
     @endif
     {{-- PRODUCT STOCK CONDITION SECTION ENDS --}}
                          <div class="product-purchase-section mt-4" style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: center; margin-bottom: 20px;">
-                            
+
                           {{-- QUANTITY SELECTOR FIRST (BEFORE BUTTONS) --}}
                           @if($productt->product_type != "affiliate" && $productt->type == 'Physical')
                                <div class="quantity-wrapper" style="order: 1; display: flex; justify-content: center; width: 100%; margin-bottom: 15px;">
@@ -1573,28 +1573,28 @@
                                   transform: translateY(-4px) scale(1.08);
                                   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25) !important;
                               }
-                              
+
                               .facebook:hover {
                                   background: linear-gradient(135deg, #0c5fcd 0%, #1877f2 100%) !important;
                               }
-                              
+
                               .twitter:hover {
                                   background: linear-gradient(135deg, #0d8bd9 0%, #1da1f2 100%) !important;
                               }
-                              
+
                               .linkedin:hover {
                                   background: linear-gradient(135deg, #005885 0%, #0077b5 100%) !important;
                               }
-                              
+
                               .pinterest:hover {
                                   background: linear-gradient(135deg, #bd001c 0%, #e60023 100%) !important;
                               }
-                              
+
                               .instagram:hover,
                               a.a2a_button_whatsapp:hover {
                                   background: linear-gradient(135deg, #1ebe57 0%, #25d366 100%) !important;
                               }
-                              
+
                               /* Quantity Buttons Hover Effects */
                               .qtminus:hover,
                               .qtplus:hover {
@@ -1603,14 +1603,14 @@
                                   border-color: #10b981 !important;
                                   transform: scale(1.05);
                               }
-                              
+
                               /* Add to Cart Button Hover */
                               #addcrt:hover {
                                   transform: translateY(-2px);
                                   box-shadow: 0 10px 30px rgba(16, 185, 129, 0.5) !important;
                                   background: linear-gradient(135deg, #059669 0%, #10b981 100%) !important;
                               }
-                              
+
                               /* Buy Now Button Hover */
                               #qaddcrt:hover {
                                   transform: translateY(-2px);
