@@ -1013,12 +1013,12 @@
            padding-right: 15px !important;
            padding-left: 10px !important;
        }
-       
+
        .language-flag-selector {
            margin-right: 15px !important;
            margin-left: 10px !important;
        }
-       
+
        .language-flag-selector .flag-link {
            padding: 8px 10px !important;
            border-radius: 0 !important;
@@ -1046,7 +1046,7 @@
            min-width: auto !important;
            gap: 1px !important;
        }
-       
+
        .language-flag-selector {
            margin-right: 2px !important;
            margin-left: 0 !important;
@@ -1058,7 +1058,7 @@
            position: relative !important;
            z-index: 1000 !important;
        }
-       
+
        .language-flag-selector .flag-link {
            padding: 0 !important;
            margin: 0 !important;
@@ -1068,7 +1068,7 @@
            flex-shrink: 0 !important;
            overflow: visible !important;
        }
-       
+
        .language-flag-selector .flag-icon {
            width: 38px !important;
            height: 29px !important;
@@ -1586,16 +1586,16 @@
                padding-right: 15px !important;
                padding-left: 10px !important;
            }
-           
+
            .language-flag-selector {
                margin-right: 15px !important;
                margin-left: 10px !important;
            }
-           
+
            .language-flag-selector .flag-link {
                padding: 8px 10px !important;
            }
-           
+
            .language-flag-selector .flag-icon {
                width: 48px !important;
                height: 36px !important;
@@ -1603,7 +1603,7 @@
                border-radius: 6px !important;
            }
        }
-       
+
        @media (max-width: 991px) {
            .phone-flag-col {
                padding-right: 0 !important;
@@ -1614,7 +1614,7 @@
                overflow: visible !important;
                gap: 1px !important;
            }
-           
+
            /* Move flag selector to the right on mobile - ABSOLUTE MINIMAL */
            .language-flag-selector {
                margin-right: 2px !important;
@@ -1637,7 +1637,7 @@
                overflow: visible !important;
                margin: 0 !important;
            }
-           
+
            .language-flag-selector .flag-icon {
                width: 38px !important;
                height: 29px !important;
@@ -3223,10 +3223,10 @@ document.addEventListener('DOMContentLoaded', function() {
     setTimeout(forceFlagVisibility, 300);
     setTimeout(forceFlagVisibility, 500);
     setTimeout(forceFlagVisibility, 1000);
-    
+
     // Reapply on window resize
     window.addEventListener('resize', forceFlagVisibility);
-    
+
     // Reapply on scroll (for lazy loading scenarios)
     let scrollTimer;
     window.addEventListener('scroll', function() {

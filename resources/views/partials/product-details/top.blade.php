@@ -1152,7 +1152,7 @@
                   // Touch start - CRITICAL: Only handle two-finger touches for zoom
                   wrapper.addEventListener('touchstart', function(e) {
                       touchStarted = true;
-                      
+
                       if (e.touches.length === 2) {
                           // TWO FINGERS = Start pinch zoom
                           e.preventDefault();
@@ -1237,7 +1237,7 @@
                       isPinching = false;
                       isPanning = false;
                       touchStarted = false;
-                      
+
                       if (scale <= 1) {
                           scale = 1;
                           posX = 0;
