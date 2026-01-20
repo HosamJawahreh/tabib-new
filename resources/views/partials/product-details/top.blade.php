@@ -1142,7 +1142,7 @@
               </div>
 
               <script>
-              // PROFESSIONAL BUTTON-ONLY ZOOM - 100% Scroll Freedom
+              // PROFESSIONAL BUTTON + DOUBLE-TAP ZOOM - 100% Scroll Freedom
               (function() {
                   // Only on mobile devices
                   if (window.innerWidth > 767) return;
@@ -1174,7 +1174,7 @@
                   const doubleTapDelay = 300; // milliseconds
                   const doubleTapDistance = 50; // pixels
 
-                  // Touch handlers (defined once, attached/removed dynamically)
+                  // Touch handlers
                   function handleTouchStart(e) {
                       if (e.touches.length === 1) {
                           // Only pan if already zoomed
@@ -1212,16 +1212,17 @@
                   function handleTouchEnd(e) {
                       isPanning = false;
 
-                      // Double tap detection - works whether zoomed or not
-                  // Attach touch listeners - ALWAYS attached for double tap, but only pan when zoomed
-                  function attachTouchListeners() {
-                      if (touchHandlersAttached) return;
-                      mainImage.addEventListener('touchstart', handleTouchStart, { passive: false });
-                      mainImage.addEventListener('touchmove', handleTouchMove, { passive: false });
-                      mainImage.addEventListener('touchend', handleTouchEnd, { passive: false });
-                      mainImage.addEventListener('touchcancel', handleTouchEnd, { passive: false });
-                      touchHandlersAttached = true;
-                  }
+                      // Double tap detection - only if single touch
+                      if (e.changedTouches.length === 1) {
+                          const now = Date.now();
+                          const touchX = e.changedTouches[0].clientX;
+                          const touchY = e.changedTouches[0].clientY;
+
+                          const timeSinceLastTap = now - lastTapTime;
+                          const distanceFromLastTap = Math.sqrt(
+                              Math.pow(touchX - lastTapX, 2) + Math.pow(touchY - lastTapY, 2)
+                          );
+
                           // Check if it's a double tap
                           if (timeSinceLastTap < doubleTapDelay && timeSinceLastTap > 0 && distanceFromLastTap < doubleTapDistance) {
                               e.preventDefault();
@@ -1255,7 +1256,7 @@
                       }
                   }
 
-                  // Attach touch listeners ONLY when zoomed
+                  // Attach touch listeners - ALWAYS attached for double tap
                   function attachTouchListeners() {
                       if (touchHandlersAttached) return;
                       mainImage.addEventListener('touchstart', handleTouchStart, { passive: false });
@@ -1263,19 +1264,7 @@
                       mainImage.addEventListener('touchend', handleTouchEnd, { passive: false });
                       mainImage.addEventListener('touchcancel', handleTouchEnd, { passive: false });
                       touchHandlersAttached = true;
-                      wrapper.style.overflow = 'hidden';
                   }
-
-                  // Remove touch listeners when not zoomed
-                  // Remove touch listeners - not used anymore, listeners stay attached for double tap
-                  function removeTouchListeners() {
-                      // Keep listeners attached for double tap functionality
-                      // Just update wrapper overflow based on zoom state
-                  }
-                  // Update image transform
-                  function updateTransform(animate = false) {
-                      mainImage.style.transition = animate ? 'transform 0.3s ease' : 'none';
-                      mainImage.style.transform = `translate(${posX}px, ${posY}px) scale(${scale})`;
 
                   // Update image transform
                   function updateTransform(animate = false) {
@@ -1293,7 +1282,12 @@
                       }
 
                       updateButtonStates();
-                  }   zoomOutBtn.disabled = scale <= minScale;
+                  }
+
+                  // Update button states
+                  function updateButtonStates() {
+                      zoomInBtn.disabled = scale >= maxScale;
+                      zoomOutBtn.disabled = scale <= minScale;
                   }
 
                   // Constrain position to prevent image from going out of bounds
