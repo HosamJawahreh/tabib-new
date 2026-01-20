@@ -68,11 +68,11 @@
     }
 }
 
-/* Professional Mobile Touch Zoom - Smooth & Stable */
+/* Mobile Touch Zoom - Two-Finger Pinch + Double Tap */
 @media (max-width: 767px) {
     .mobile-zoom-wrapper {
         position: relative;
-        overflow: visible;
+        overflow: hidden;
         touch-action: pan-y pinch-zoom;
         -webkit-user-select: none;
         user-select: none;
@@ -81,10 +81,9 @@
         -webkit-touch-callout: none;
         -webkit-tap-highlight-color: transparent;
         cursor: pointer;
-        background: transparent;
     }
 
-    /* Lock body ONLY when actively zooming */
+    /* Lock body ONLY when actively zooming with two fingers */
     body.zoom-active {
         overflow: hidden !important;
         position: fixed !important;
@@ -101,12 +100,6 @@
         max-width: 100%;
         transform-origin: center center;
         will-change: transform;
-        backface-visibility: hidden;
-        -webkit-backface-visibility: hidden;
-        -webkit-transform: translateZ(0);
-        transform: translateZ(0);
-        image-rendering: -webkit-optimize-contrast;
-        image-rendering: crisp-edges;
     }
 
     #single-image-zoom.zoomed {
@@ -115,10 +108,6 @@
 
     #single-image-zoom.zoomed:active {
         cursor: grabbing;
-    }
-
-    #single-image-zoom.zooming {
-        pointer-events: none;
     }
 }
 
@@ -1073,10 +1062,8 @@
               </div>
 
               <script>
-              // PROFESSIONAL MOBILE ZOOM - Smooth, Stable, Shake-Free
+              // TWO-FINGER PINCH ZOOM with ONE-FINGER SCROLL - Professional Implementation
               (function() {
-                  'use strict';
-
                   // Only on mobile devices
                   if (window.innerWidth > 767) return;
 
@@ -1085,39 +1072,23 @@
 
                   if (!wrapper || !mainImage) return;
 
-                  // Zoom state with smooth interpolation
+                  // Zoom state
                   let scale = 1;
                   let posX = 0;
                   let posY = 0;
-                  let targetScale = 1;
-                  let targetPosX = 0;
-                  let targetPosY = 0;
                   let lastScale = 1;
                   let lastPosX = 0;
                   let lastPosY = 0;
 
                   // Touch state
                   let initialDistance = 0;
-                  let initialScale = 1;
-                  let initialPosX = 0;
-                  let initialPosY = 0;
-                  let centerX = 0;
-                  let centerY = 0;
                   let isPinching = false;
                   let isPanning = false;
                   let lastTouchX = 0;
                   let lastTouchY = 0;
                   let touchStarted = false;
+                  let doubleTapTimer = null;
                   let lastTapTime = 0;
-                  let animationFrameId = null;
-                  let isAnimating = false;
-
-                  // Smoothing configuration
-                  const SMOOTH_FACTOR = 0.25; // Lower = smoother but slower response
-                  const MIN_SCALE = 1;
-                  const MAX_SCALE = 4;
-                  const DOUBLE_TAP_THRESHOLD = 300;
-                  const ZOOM_ANIMATION_DURATION = 300;
 
                   // Get distance between two touch points
                   function getDistance(touches) {
@@ -1134,70 +1105,37 @@
                       };
                   }
 
-                  // Smooth interpolation for shake-free zooming
-                  function lerp(start, end, factor) {
-                      return start + (end - start) * factor;
-                  }
-
-                  // Update image transform with optional smoothing
-                  function updateTransform(animate = false, useSmoothing = false) {
-                      if (animate) {
-                          mainImage.style.transition = 'transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
-                      } else {
-                          mainImage.style.transition = 'none';
-                      }
-
-                      const finalScale = useSmoothing ? lerp(scale, targetScale, SMOOTH_FACTOR) : scale;
-                      const finalPosX = useSmoothing ? lerp(posX, targetPosX, SMOOTH_FACTOR) : posX;
-                      const finalPosY = useSmoothing ? lerp(posY, targetPosY, SMOOTH_FACTOR) : posY;
-
-                      mainImage.style.transform = `translate3d(${finalPosX}px, ${finalPosY}px, 0) scale(${finalScale})`;
+                  // Update image transform
+                  function updateTransform(animate = false) {
+                      mainImage.style.transition = animate ? 'transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)' : 'none';
+                      mainImage.style.transform = `translate(${posX}px, ${posY}px) scale(${scale})`;
 
                       if (scale > 1) {
                           mainImage.classList.add('zoomed');
                       } else {
                           mainImage.classList.remove('zoomed');
                       }
-
-                      // Continue smooth animation if needed
-                      if (useSmoothing && !isPinching && !isPanning) {
-                          const scaleCloseEnough = Math.abs(scale - targetScale) < 0.01;
-                          const posCloseEnough = Math.abs(posX - targetPosX) < 0.5 && Math.abs(posY - targetPosY) < 0.5;
-
-                          if (!scaleCloseEnough || !posCloseEnough) {
-                              scale = finalScale;
-                              posX = finalPosX;
-                              posY = finalPosY;
-                              requestAnimationFrame(() => updateTransform(false, true));
-                          } else {
-                              scale = targetScale;
-                              posX = targetPosX;
-                              posY = targetPosY;
-                              isAnimating = false;
-                          }
-                      }
                   }
 
                   // Constrain position to prevent image from going out of bounds
                   function constrainPosition() {
                       if (scale <= 1) {
-                          targetPosX = 0;
-                          targetPosY = 0;
+                          posX = 0;
+                          posY = 0;
                           return;
                       }
 
+                      const rect = mainImage.getBoundingClientRect();
                       const wrapperRect = wrapper.getBoundingClientRect();
-                      const imageNaturalWidth = mainImage.naturalWidth || mainImage.width;
-                      const imageNaturalHeight = mainImage.naturalHeight || mainImage.height;
 
-                      const scaledWidth = wrapperRect.width * scale;
-                      const scaledHeight = (imageNaturalHeight / imageNaturalWidth) * wrapperRect.width * scale;
+                      const scaledWidth = rect.width / lastScale * scale;
+                      const scaledHeight = rect.height / lastScale * scale;
 
                       const maxX = Math.max(0, (scaledWidth - wrapperRect.width) / 2);
                       const maxY = Math.max(0, (scaledHeight - wrapperRect.height) / 2);
 
-                      targetPosX = Math.max(-maxX, Math.min(maxX, targetPosX));
-                      targetPosY = Math.max(-maxY, Math.min(maxY, targetPosY));
+                      posX = Math.max(-maxX, Math.min(maxX, posX));
+                      posY = Math.max(-maxY, Math.min(maxY, posY));
                   }
 
                   // Lock body scroll ONLY when actively zooming
@@ -1214,30 +1152,22 @@
                       window.scrollTo(0, parseInt(scrollY || '0') * -1);
                   }
 
-                  // Touch start - CRITICAL: Allow page scroll by default
+                  // Touch start - CRITICAL: Only handle two-finger touches or zoomed state
                   wrapper.addEventListener('touchstart', function(e) {
                       touchStarted = true;
-                      isAnimating = false;
 
                       if (e.touches.length === 2) {
-                          // TWO FINGERS = Start pinch zoom (BLOCK PAGE SCROLL)
+                          // TWO FINGERS = Start pinch zoom
                           e.preventDefault();
                           e.stopPropagation();
 
                           isPinching = true;
                           initialDistance = getDistance(e.touches);
-                          initialScale = scale;
+                          lastScale = scale;
 
-                          const center = getCenter(e.touches);
-                          const rect = wrapper.getBoundingClientRect();
-                          centerX = center.x - rect.left;
-                          centerY = center.y - rect.top;
-
-                          mainImage.classList.add('zooming');
                           lockBody();
-
                       } else if (e.touches.length === 1 && scale > 1) {
-                          // ONE FINGER + Already zoomed = Pan the zoomed image (BLOCK PAGE SCROLL)
+                          // ONE FINGER + Already zoomed = Pan the zoomed image
                           e.preventDefault();
                           e.stopPropagation();
 
@@ -1248,14 +1178,13 @@
                           lastPosY = posY;
 
                           lockBody();
-
                       } else if (e.touches.length === 1 && scale === 1) {
-                          // ONE FINGER + Not zoomed = Track for double tap, but ALLOW PAGE SCROLL
+                          // ONE FINGER + Not zoomed = Check for double tap, otherwise allow scroll
                           const now = Date.now();
                           const timeSinceLastTap = now - lastTapTime;
 
-                          if (timeSinceLastTap < DOUBLE_TAP_THRESHOLD && timeSinceLastTap > 0) {
-                              // Double tap detected - zoom in smoothly (BLOCK PAGE SCROLL)
+                          if (timeSinceLastTap < 300 && timeSinceLastTap > 0) {
+                              // Double tap detected - zoom in
                               e.preventDefault();
                               e.stopPropagation();
 
@@ -1263,169 +1192,128 @@
                               const touchX = e.touches[0].clientX - rect.left;
                               const touchY = e.touches[0].clientY - rect.top;
 
-                              targetScale = 2.5;
-                              scale = 2.5;
-                              targetPosX = 0;
-                              targetPosY = 0;
+                              scale = 2;
                               posX = 0;
                               posY = 0;
+                              lastScale = 2;
 
-                              updateTransform(true, false);
+                              updateTransform(true);
                               lockBody();
                           }
 
                           lastTapTime = now;
                       }
-                      // ONE FINGER + Not zoomed + Not double tap = ALLOW PAGE SCROLL (no preventDefault)
-                  }, { passive: false });                  // Touch move - Smooth, shake-free zooming and panning
+                      // ONE FINGER + Not zoomed + Not double tap = Let page scroll normally (do nothing)
+                  }, { passive: false });
+
+                  // Touch move - CRITICAL: Only prevent default for two-finger or when panning zoomed image
                   wrapper.addEventListener('touchmove', function(e) {
                       if (e.touches.length === 2 && isPinching) {
-                          // TWO FINGERS = Smooth pinch zoom
+                          // TWO FINGERS = Pinch zoom
                           e.preventDefault();
                           e.stopPropagation();
 
-                          const currentDistance = getDistance(e.touches);
-                          const scaleChange = currentDistance / initialDistance;
+                          const distance = getDistance(e.touches);
+                          const scaleChange = distance / initialDistance;
 
-                          // Calculate new scale with smooth clamping
-                          const newScale = Math.max(MIN_SCALE, Math.min(MAX_SCALE, initialScale * scaleChange));
-
-                          // Smooth scale transition
-                          targetScale = newScale;
-                          scale = newScale;
-
-                          // Get current center and adjust position to zoom towards center
-                          const currentCenter = getCenter(e.touches);
-                          const rect = wrapper.getBoundingClientRect();
-                          const currentCenterX = currentCenter.x - rect.left;
-                          const currentCenterY = currentCenter.y - rect.top;
+                          scale = Math.max(1, Math.min(4, lastScale * scaleChange));
 
                           constrainPosition();
-                          updateTransform(false, false);
+                          updateTransform(false);
 
                       } else if (e.touches.length === 1 && isPanning && scale > 1) {
-                          // ONE FINGER + Already zoomed = Smooth pan
+                          // ONE FINGER + Already zoomed = Pan
                           e.preventDefault();
                           e.stopPropagation();
 
                           const deltaX = e.touches[0].clientX - lastTouchX;
-                  // Touch end - Clean finalization
+                          const deltaY = e.touches[0].clientY - lastTouchY;
+
+                          posX = lastPosX + deltaX;
+                          posY = lastPosY + deltaY;
+
+                          constrainPosition();
+                          updateTransform(false);
+                      }
+                      // ONE FINGER + Not zoomed = Allow normal page scrolling (do nothing, no preventDefault)
+                  }, { passive: false });
+
+                  // Touch end
                   wrapper.addEventListener('touchend', function(e) {
-                      mainImage.classList.remove('zooming');
-
                       if (e.touches.length === 0) {
-                          const wasPinching = isPinching;
-                          const wasPanning = isPanning;
-
                           isPinching = false;
                           isPanning = false;
                           touchStarted = false;
 
-                          // Snap to minimum scale if close
-                          if (scale < MIN_SCALE + 0.1) {
-                              targetScale = MIN_SCALE;
-                              scale = MIN_SCALE;
-                              targetPosX = 0;
-                              targetPosY = 0;
-                              posX = 0;
-                              posY = 0;
-                              updateTransform(true, false);
-                              unlockBody();
-                          } else if (scale <= 1.05) {
-                              // Very close to 1, reset smoothly
-                              targetScale = 1;
+                          // If zoomed out completely, reset and unlock scroll
+                          if (scale <= 1) {
                               scale = 1;
-                              targetPosX = 0;
-                              targetPosY = 0;
                               posX = 0;
                               posY = 0;
-                              updateTransform(true, false);
+                              updateTransform(true);
                               unlockBody();
-                          } else if (wasPinching || wasPanning) {
-                              // Smooth settle after interaction
-                              constrainPosition();
-                              isAnimating = true;
-                              updateTransform(false, true);
-                          }
-
-                          // Double tap detection when zoomed
-                          if (scale > 1 && !wasPinching && !wasPanning) {
-                              const now = Date.now();
-                              const timeSinceLastTap = now - lastTapTime;
-
-                              if (timeSinceLastTap < DOUBLE_TAP_THRESHOLD && timeSinceLastTap > 0) {
-                                  // Double tap while zoomed - reset zoom
-                                  e.preventDefault();
-                                  targetScale = 1;
-                                  scale = 1;
-                                  targetPosX = 0;
-                                  targetPosY = 0;
-                                  posX = 0;
-                                  posY = 0;
-                                  updateTransform(true, false);
-                                  unlockBody();
-                              }
+                          } else if (scale > 1 && !isPinching && !isPanning) {
+                              // Still zoomed but not actively manipulating - unlock to allow page scroll
+                              unlockBody();
                           }
                       }
                   }, { passive: false });
 
                   // Touch cancel - cleanup
                   wrapper.addEventListener('touchcancel', function(e) {
-                      mainImage.classList.remove('zooming');
                       isPinching = false;
                       isPanning = false;
                       touchStarted = false;
-                      isAnimating = false;
-                  // Thumbnail click handler - smooth image change with zoom reset
+
+                      if (scale <= 1) {
+                          scale = 1;
+                          posX = 0;
+                          posY = 0;
+                          updateTransform(true);
+                      }
+                      unlockBody();
+                  }, { passive: false });
+
+                  // Double tap when zoomed to reset
+                  wrapper.addEventListener('touchend', function(e) {
+                      if (e.touches.length === 0 && scale > 1 && !isPinching && !isPanning) {
+                          const now = Date.now();
+                          const timeSinceLastTap = now - lastTapTime;
+
+                          if (timeSinceLastTap < 300 && timeSinceLastTap > 0) {
+                              // Double tap while zoomed - reset zoom
+                              e.preventDefault();
+                              scale = 1;
+                              posX = 0;
+                              posY = 0;
+                              lastScale = 1;
+                              updateTransform(true);
+                              unlockBody();
+                          }
+                      }
+                  });
+
+                  // Thumbnail click handler - reset zoom
                   document.querySelectorAll('#gallery_09 a').forEach(function(thumb) {
                       thumb.addEventListener('click', function(e) {
                           e.preventDefault();
                           const newImage = this.getAttribute('data-image');
                           if (mainImage && newImage) {
-                              // Smooth fade transition
-                              mainImage.style.opacity = '0.7';
-                              mainImage.style.transition = 'opacity 0.2s ease';
+                              mainImage.src = newImage;
+                              mainImage.setAttribute('data-zoom-image', this.getAttribute('data-zoom-image'));
 
-                              setTimeout(() => {
-                                  mainImage.src = newImage;
-                                  mainImage.setAttribute('data-zoom-image', this.getAttribute('data-zoom-image'));
-
-                                  // Reset zoom smoothly
-                                  targetScale = 1;
-                                  scale = 1;
-                                  targetPosX = 0;
-                                  targetPosY = 0;
-                                  posX = 0;
-                                  posY = 0;
-                                  isPinching = false;
-                                  isPanning = false;
-                                  isAnimating = false;
-
-                                  mainImage.classList.remove('zoomed', 'zooming');
-                                  mainImage.style.opacity = '1';
-                                  updateTransform(true, false);
-                                  unlockBody();
-                              }, 150);
+                              // Reset zoom
+                              scale = 1;
+                              posX = 0;
+                              posY = 0;
+                              lastScale = 1;
+                              isPinching = false;
+                              isPanning = false;
+                              updateTransform(true);
+                              unlockBody();
                           }
                       });
                   });
-
-                  // Prevent momentum scrolling interference
-                  let scrollTimeout;
-                  window.addEventListener('scroll', function() {
-                      if (scale > 1) {
-                          clearTimeout(scrollTimeout);
-                          scrollTimeout = setTimeout(() => {
-                              if (scale <= 1) {
-                                  unlockBody();
-                              }
-                          }, 100);
-                      }
-                  }, { passive: true });
-
-                  // Initial setup
-                  mainImage.style.transformOrigin = 'center center';
-                  mainImage.style.transform = 'translate3d(0, 0, 0) scale(1)';
               })();
               </script>
           </div>
