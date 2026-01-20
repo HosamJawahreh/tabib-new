@@ -31,19 +31,20 @@
     display: block !important;
 }
 
-/* Professional Desktop Zoom with Inner Window */
+/* Professional Desktop Zoom with Inner Window - Hidden Borders */
 .zoomLens {
-    border: 3px solid #10b981 !important;
+    border: none !important;
     cursor: crosshair !important;
-    opacity: 0.4 !important;
-    background: #10b981 !important;
-    box-shadow: 0 0 20px rgba(16, 185, 129, 0.5) !important;
+    opacity: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    display: none !important;
 }
 
 .zoomWindow {
-    border: 3px solid #10b981 !important;
+    border: none !important;
     border-radius: 0 !important;
-    box-shadow: inset 0 0 40px rgba(16, 185, 129, 0.1) !important;
+    box-shadow: none !important;
     z-index: 999 !important;
     background: #ffffff !important;
 }

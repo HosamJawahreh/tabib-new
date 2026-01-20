@@ -51,7 +51,7 @@
         }
     }
 </style>
-<div class="full-row bg-light overlay-dark py-5" style="background-image: url({{ $gs->breadcrumb_banner ? asset('assets/images/'.$gs->breadcrumb_banner):asset('assets/images/noimage.png') }}); background-position: center center; background-size: cover; margin-bottom: 0; padding-bottom: 20px;">
+<div class="full-row bg-light overlay-dark py-5" style="background-image: url({{ $gs->breadcrumb_banner ? asset('assets/images/'.$gs->breadcrumb_banner):asset('assets/images/noimage.png') }}); background-position: center center; background-size: cover; margin-bottom: 0; padding-top: 14px !important; padding-bottom: 14px !important; height: 70% !important;">
    <div class="container">
       <div class="row text-center text-white">
          <div class="col-12">
@@ -117,6 +117,12 @@
     @keyframes pulse {
         0%, 100% { opacity: 0.6; transform: scale(1); }
         50% { opacity: 1; transform: scale(1.1); }
+    }
+
+    /* Hide review/ratings, wishlist, compare, cart buttons in related products */
+    .full-row.pt-0 .product .hover-area,
+    .full-row.pt-0 .product .shipping-feed-back {
+        display: none !important;
     }
 
     @media (max-width: 767px) {
