@@ -498,18 +498,24 @@
          <div class="col-lg-4 order-1 order-lg-2">
             <div class="right-area">
                <div class="order-box">
-                  <h4 class="title">{{ __('PRICE DETAILS') }}</h4>
+                  <h4 class="title" style="margin-bottom: 12px;">
+                     @if($langg->rtl == 1)
+                     تفاصيل السعر
+                     @else
+                     {{ __('Price Details') }}
+                     @endif
+                  </h4>
 
                   {{-- Products List --}}
-                  <div class="cart-products-list mb-3">
+                  <div class="cart-products-list mb-2">
                      @foreach($products as $index => $product)
-                     <div class="cart-product-item d-flex align-items-center mb-2 pb-2" style="border-bottom: 1px solid #eee;"
+                     <div class="cart-product-item d-flex align-items-center mb-1 pb-1" style="border-bottom: 1px solid #eee; position: relative;"
                           data-product-index="{{ $index }}"
                           data-item-id="{{ $product['item']['id'] }}"
                           data-unit-price="{{ $product['item_price'] }}">
                         <img src="{{ asset('assets/images/products/'.$product['item']['photo']) }}"
                              alt="{{ $product['item']['name'] }}"
-                             style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px;"
+                             style="width: 45px; height: 45px; object-fit: cover; border-radius: 4px;"
                              class="mr-2">
                         <div class="flex-grow-1" style="min-width: 0;">
                            <p class="mb-0" style="font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
@@ -529,14 +535,20 @@
                               </span>
                            </div>
                         </div>
+                        <button type="button" class="remove-from-checkout" 
+                                data-href="{{ route('product.cart.remove',$product['item']['id'].$product['size'].$product['color'].str_replace(str_split(' ,'),'',$product['values'])) }}"
+                                title="{{ __('Remove this item') }}"
+                                style="position: absolute; top: 5px; right: 5px; background: transparent; border: none; color: #dc3545; font-size: 18px; line-height: 1; padding: 0; width: 20px; height: 20px; cursor: pointer; opacity: 0.7; transition: opacity 0.2s;">
+                           <i class="fas fa-times"></i>
+                        </button>
                      </div>
                      @endforeach
                   </div>
 
                   @if($digital == 0)
                   {{-- Shipping Method Area --}}
-                  <div class="packeging-area">
-                     <h4 class="title" style="font-size: 16px; font-weight: 600; margin-bottom: 15px; color: #333;">
+                  <div class="packeging-area" style="margin-top: 10px;">
+                     <h4 class="title" style="font-size: 16px; font-weight: 600; margin-bottom: 10px; color: #333;">
                         @if($langg->rtl == 1)
                         طريقة الشحن
                         @else
@@ -544,7 +556,7 @@
                         @endif
                      </h4>
                      @foreach($shipping_data as $data)
-                     <div class="shipping-option" style="margin-bottom: 10px; padding: 12px 15px; border: 1px solid #e0e0e0; border-radius: 8px; background: #fff; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: all 0.3s ease;"
+                     <div class="shipping-option" style="margin-bottom: 8px; padding: 10px 12px; border: 1px solid #e0e0e0; border-radius: 8px; background: #fff; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: all 0.3s ease;"
                           onclick="document.getElementById('free-shepping{{ $data->id }}').click();">
                         <div style="display: flex; align-items: center; flex: 1;">
                            <input type="radio"
@@ -581,7 +593,7 @@
                   </div>
 
                   {{-- Final Price Area --}}
-                  <div class="final-price" style="margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
+                  <div class="final-price" style="margin-top: 12px; padding: 12px; background: #f8f9fa; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
                      <span style="font-size: 16px; font-weight: 600; color: #333;">
                         @if($langg->rtl == 1)
                         السعر النهائي :
@@ -1433,7 +1445,26 @@
       }
    });
 
-
+   // Remove product from checkout
+   $(document).on('click', '.remove-from-checkout', function(e) {
+      e.preventDefault();
+      var $button = $(this);
+      var removeUrl = $button.data('href');
+      
+      if (confirm('{{ __("Are you sure you want to remove this item from cart?") }}')) {
+         $.ajax({
+            url: removeUrl,
+            type: 'GET',
+            success: function(response) {
+               // Reload the page to refresh the cart
+               location.reload();
+            },
+            error: function() {
+               alert('{{ __("Error removing item. Please try again.") }}');
+            }
+         });
+      }
+   });
 
 </script>
 
@@ -1459,6 +1490,12 @@
    border-radius: 3px;
 }
 
+/* Remove button hover effect */
+.remove-from-checkout:hover {
+   opacity: 1 !important;
+   color: #c82333 !important;
+}
+
 /* Shipping Options Styling */
 .shipping-option {
    transition: all 0.3s ease;
@@ -1478,6 +1515,38 @@
 
 .shipping-option input[type="radio"] {
    accent-color: #28a745;
+}
+
+/* Mobile: Make shipping section text 25% bigger */
+@media (max-width: 767px) {
+   /* Shipping Method Title */
+   .order-summary h4 {
+      font-size: 1.25rem !important;
+   }
+
+   /* Shipping option labels and text */
+   .shipping-option label {
+      font-size: 17.5px !important;
+   }
+
+   .shipping-option label span {
+      font-size: 17.5px !important;
+   }
+
+   /* Shipping radio buttons - also bigger */
+   .shipping-option input[type="radio"] {
+      width: 22.5px !important;
+      height: 22.5px !important;
+   }
+
+   /* Final Price text */
+   .final-price span {
+      font-size: 20px !important;
+   }
+
+   .final-price #final-cost {
+      font-size: 22.5px !important;
+   }
 }
 
 .payment-method-section .radio-design {

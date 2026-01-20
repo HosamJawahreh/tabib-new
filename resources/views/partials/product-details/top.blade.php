@@ -92,7 +92,47 @@
         -webkit-overflow-scrolling: touch;
     }
 
-    /* Lock body ONLY when actively zooming with two fingers */
+    /* Mobile Zoom Control Buttons */
+    .mobile-zoom-controls {
+        position: absolute;
+        bottom: 15px;
+        right: 15px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        z-index: 10;
+        opacity: 0.9;
+    }
+
+    .zoom-btn {
+        width: 40px;
+        height: 40px;
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        border: none;
+        border-radius: 50%;
+        color: white;
+        font-size: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+        transition: all 0.3s ease;
+        font-weight: bold;
+    }
+
+    .zoom-btn:active {
+        transform: scale(0.95);
+        box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+    }
+
+    .zoom-btn:disabled {
+        background: #9ca3af;
+        cursor: not-allowed;
+        box-shadow: 0 2px 8px rgba(156, 163, 175, 0.3);
+    }
+
+    /* Lock body ONLY when actively zooming with buttons or gestures */
     body.zoom-active {
         overflow: hidden !important;
         position: fixed !important;
@@ -1052,6 +1092,12 @@
                           <div class="mobile-zoom-wrapper" style="position: relative; background: transparent; padding: 0; border: none; scroll-behavior: smooth; -webkit-overflow-scrolling: touch;">
                               <img id="single-image-zoom" src="{{filter_var($productt->photo, FILTER_VALIDATE_URL) ?$productt->photo:asset('assets/images/products/'.$productt->photo)}}" alt="Product Image" data-zoom-image="{{filter_var($productt->photo, FILTER_VALIDATE_URL) ?$productt->photo:asset('assets/images/products/'.$productt->photo)}}" style="width: 100%; height: auto; display: block; border: none; box-shadow: none;" />
 
+                              {{-- Mobile Zoom Control Buttons --}}
+                              <div class="mobile-zoom-controls d-md-none">
+                                  <button type="button" class="zoom-btn" id="zoom-in-btn" title="Zoom In">+</button>
+                                  <button type="button" class="zoom-btn" id="zoom-out-btn" title="Zoom Out">−</button>
+                              </div>
+
                               {{-- Desktop Zoom Hint --}}
                               <div class="zoom-hint d-none d-md-flex">
                                   <i class="fas fa-search-plus"></i>
@@ -1088,7 +1134,203 @@
               </div>
 
               <script>
-              // TWO-FINGER PINCH ZOOM with ONE-FINGER SCROLL - Professional Implementation
+              // BUTTON-CONTROLLED ZOOM with SMOOTH SCROLL - Professional Mobile Implementation
+              (function() {
+                  // Only on mobile devices
+                  if (window.innerWidth > 767) return;
+
+                  const wrapper = document.querySelector('.mobile-zoom-wrapper');
+                  const mainImage = document.getElementById('single-image-zoom');
+                  const zoomInBtn = document.getElementById('zoom-in-btn');
+                  const zoomOutBtn = document.getElementById('zoom-out-btn');
+
+                  if (!wrapper || !mainImage || !zoomInBtn || !zoomOutBtn) return;
+
+                  // Zoom state
+                  let scale = 1;
+                  let posX = 0;
+                  let posY = 0;
+                  let lastPosX = 0;
+                  let lastPosY = 0;
+                  let isPanning = false;
+                  let lastTouchX = 0;
+                  let lastTouchY = 0;
+                  let isZoomActive = false; // Track if zoom mode is active
+
+                  const minScale = 1;
+                  const maxScale = 4;
+                  const zoomStep = 0.5;
+
+                  // Update image transform
+                  function updateTransform(animate = false) {
+                      mainImage.style.transition = animate ? 'transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)' : 'none';
+                      mainImage.style.transform = `translate(${posX}px, ${posY}px) scale(${scale})`;
+
+                      if (scale > 1) {
+                          mainImage.classList.add('zoomed');
+                          isZoomActive = true;
+                      } else {
+                          mainImage.classList.remove('zoomed');
+                          isZoomActive = false;
+                      }
+
+                      updateButtonStates();
+                  }
+
+                  // Update button states
+                  function updateButtonStates() {
+                      zoomInBtn.disabled = scale >= maxScale;
+                      zoomOutBtn.disabled = scale <= minScale;
+                  }
+
+                  // Constrain position to prevent image from going out of bounds
+                  function constrainPosition() {
+                      if (scale <= 1) {
+                          posX = 0;
+                          posY = 0;
+                          return;
+                      }
+
+                      const rect = mainImage.getBoundingClientRect();
+                      const wrapperRect = wrapper.getBoundingClientRect();
+
+                      const scaledWidth = rect.width / scale * scale;
+                      const scaledHeight = rect.height / scale * scale;
+
+                      const maxX = Math.max(0, (scaledWidth - wrapperRect.width) / 2);
+                      const maxY = Math.max(0, (scaledHeight - wrapperRect.height) / 2);
+
+                      posX = Math.max(-maxX, Math.min(maxX, posX));
+                      posY = Math.max(-maxY, Math.min(maxY, posY));
+                  }
+
+                  // Lock body scroll
+                  function lockBody() {
+                      document.body.style.top = `-${window.scrollY}px`;
+                      document.body.classList.add('zoom-active');
+                  }
+
+                  // Unlock body scroll
+                  function unlockBody() {
+                      const scrollY = document.body.style.top;
+                      document.body.classList.remove('zoom-active');
+                      document.body.style.top = '';
+                      window.scrollTo(0, parseInt(scrollY || '0') * -1);
+                  }
+
+                  // Zoom In Button
+                  zoomInBtn.addEventListener('click', function(e) {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      
+                      if (scale < maxScale) {
+                          scale = Math.min(maxScale, scale + zoomStep);
+                          constrainPosition();
+                          updateTransform(true);
+                          
+                          if (scale > 1) {
+                              lockBody();
+                          }
+                      }
+                  });
+
+                  // Zoom Out Button
+                  zoomOutBtn.addEventListener('click', function(e) {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      
+                      if (scale > minScale) {
+                          scale = Math.max(minScale, scale - zoomStep);
+                          
+                          if (scale === 1) {
+                              posX = 0;
+                              posY = 0;
+                              unlockBody();
+                          }
+                          
+                          constrainPosition();
+                          updateTransform(true);
+                      }
+                  });
+
+                  // Touch handling - ONLY when zoomed (buttons clicked)
+                  wrapper.addEventListener('touchstart', function(e) {
+                      if (!isZoomActive || scale <= 1) {
+                          // NOT zoomed = Allow normal page scrolling
+                          return;
+                      }
+
+                      // Zoomed = Pan the image
+                      if (e.touches.length === 1) {
+                          e.preventDefault();
+                          e.stopPropagation();
+
+                          isPanning = true;
+                          lastTouchX = e.touches[0].clientX;
+                          lastTouchY = e.touches[0].clientY;
+                          lastPosX = posX;
+                          lastPosY = posY;
+                      }
+                  }, { passive: false });
+
+                  wrapper.addEventListener('touchmove', function(e) {
+                      if (!isZoomActive || scale <= 1 || !isPanning) {
+                          // NOT zoomed or not panning = Allow page scroll
+                          return;
+                      }
+
+                      // Zoomed and panning = Pan the image
+                      if (e.touches.length === 1) {
+                          e.preventDefault();
+                          e.stopPropagation();
+
+                          const deltaX = e.touches[0].clientX - lastTouchX;
+                          const deltaY = e.touches[0].clientY - lastTouchY;
+
+                          posX = lastPosX + deltaX;
+                          posY = lastPosY + deltaY;
+
+                          constrainPosition();
+                          updateTransform(false);
+                      }
+                  }, { passive: false });
+
+                  wrapper.addEventListener('touchend', function(e) {
+                      isPanning = false;
+                  }, { passive: false });
+
+                  wrapper.addEventListener('touchcancel', function(e) {
+                      isPanning = false;
+                  }, { passive: false });
+
+                  // Thumbnail click handler - reset zoom
+                  document.querySelectorAll('#gallery_09 a').forEach(function(thumb) {
+                      thumb.addEventListener('click', function(e) {
+                          e.preventDefault();
+                          const newImage = this.getAttribute('data-image');
+                          if (mainImage && newImage) {
+                              mainImage.src = newImage;
+                              mainImage.setAttribute('data-zoom-image', this.getAttribute('data-zoom-image'));
+
+                              // Reset zoom
+                              scale = 1;
+                              posX = 0;
+                              posY = 0;
+                              isPanning = false;
+                              isZoomActive = false;
+                              updateTransform(true);
+                              unlockBody();
+                          }
+                      });
+                  });
+
+                  // Initialize button states
+                  updateButtonStates();
+              })();
+              </script>
+
+              <script>
+              // COMPLEMENTARY TOUCH GESTURES - Pinch & Double-Tap (Works with Button Controls)
               (function() {
                   // Only on mobile devices
                   if (window.innerWidth > 767) return;
@@ -1113,7 +1355,6 @@
                   let lastTouchX = 0;
                   let lastTouchY = 0;
                   let touchStarted = false;
-                  let doubleTapTimer = null;
                   let lastTapTime = 0;
 
                   // Get distance between two touch points
@@ -1348,9 +1589,7 @@
               <div class="summary entry-summary">
                   <div class="summary-inner">
 
-                      <h1 class="product_title entry-title mb-3" style="font-size: 2rem; font-weight: 700; color: #2d3748;">{{ $productt->translated_name }}</h1>
-
-                      {{-- Rating Section - Only show if ratings exist --}}
+                      <h1 class="product_title entry-title mb-3" style="font-size: 2rem; font-weight: 700; color: #2d3748;">{{ $productt->translated_name }}</h1>                      {{-- Rating Section - Only show if ratings exist --}}
                       @php
                           $ratingCount = App\Models\Rating::ratingCount($productt->id);
                           $ratingValue = App\Models\Rating::ratings($productt->id);

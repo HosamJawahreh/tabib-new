@@ -336,9 +336,10 @@
             margin-bottom: 3px;
         }
 
+        /* Mobile text 25% bigger (12px * 1.25 = 15px) */
         .main-category-item {
-            font-size: 12px;
-            padding: 8px 14px;
+            font-size: 15px;
+            padding: 10px 16px;
             border-radius: 20px;
         }
 
@@ -348,9 +349,10 @@
             margin-bottom: 3px;
         }
 
+        /* Mobile text 25% bigger (11px * 1.25 = 13.75px) */
         .subcategory-item {
-            font-size: 11px;
-            padding: 6px 12px;
+            font-size: 13.75px;
+            padding: 8px 14px;
             border-radius: 16px;
         }
 
@@ -359,20 +361,23 @@
             padding: 3px;
         }
 
+        /* Mobile text 25% bigger (10px * 1.25 = 12.5px) */
         .childcategory-item {
-            font-size: 10px;
-            padding: 5px 10px;
+            font-size: 12.5px;
+            padding: 6px 12px;
             border-radius: 14px;
         }
 
+        /* Badge text 25% bigger (9px * 1.25 = 11.25px) */
         .badge-count {
-            font-size: 9px;
-            padding: 0px 3px;
+            font-size: 11.25px;
+            padding: 1px 4px;
         }
 
+        /* Badge text 25% bigger (8px * 1.25 = 10px) */
         .badge-count-sm {
-            font-size: 8px;
-            padding: 0px 3px;
+            font-size: 10px;
+            padding: 1px 4px;
         }
     }
 
