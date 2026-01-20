@@ -7,18 +7,7 @@
 							<div class="row">
 								<div class="col-lg-12">
 										<h4 class="heading">{{ __("Products") }}</h4>
-										<u			});
-		});
-
-      	$(function() {
-        $(".btn-area").append('<div class="col-sm-4 table-contents">'+
-        	'<a class="add-btn" href="{{route('admin-prod-physical-create')}}">'+
-          '<i class="fas fa-plus"></i> <span class="remove-mobile">{{ __("Add Product") }}<span>'+
-          '</a>'+
-          '</div>');
-      });
-
-})(jQuery);ks">
+										<ul class="links">
 											<li>
 												<a href="{{ route('admin.dashboard') }}">{{ __("Dashboard") }} </a>
 											</li>
@@ -38,54 +27,63 @@
 									<div class="mr-table allproduct">
                         					@include('alerts.admin.form-success')
 
-										{{-- Filters Section --}}
-										<div class="row mb-4" style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 0 0 20px 0;">
-											<div class="col-md-3">
-												<label style="font-weight: 600; color: #2d3748; font-size: 13px; margin-bottom: 8px; display: block;">
-													<i class="fas fa-search"></i> {{ __("Search Product") }}
-												</label>
-												<input type="text" id="search-product" class="form-control" placeholder="{{ __('Search by name or SKU...') }}" style="border-radius: 6px;">
+										{{-- Simple Professional Filters Section --}}
+										<div class="filters-container" style="background: #f8f9fa; padding: 25px; border-radius: 8px; margin: 0 0 25px 0; border: 1px solid #e2e8f0;">
+											<div class="row align-items-end">
+												<div class="col-md-3 mb-3">
+													<label style="font-weight: 600; color: #2d3748; font-size: 14px; margin-bottom: 10px; display: block;">
+														<i class="fas fa-search"></i> {{ __("Search Product") }}
+													</label>
+													<input type="text" id="search-product" class="form-control" placeholder="{{ __('Product name or SKU...') }}" style="border: 1px solid #e2e8f0; border-radius: 6px; padding: 10px 15px;">
+												</div>
+												<div class="col-md-2 mb-3">
+													<label style="font-weight: 600; color: #2d3748; font-size: 14px; margin-bottom: 10px; display: block;">
+														<i class="fas fa-toggle-on"></i> {{ __("Status") }}
+													</label>
+													<select id="filter-status" class="form-control" style="border: 1px solid #e2e8f0; border-radius: 6px; padding: 10px 15px;">
+														<option value="">{{ __("All Status") }}</option>
+														<option value="1">{{ __("Active") }}</option>
+														<option value="0">{{ __("Inactive") }}</option>
+													</select>
+												</div>
+												<div class="col-md-3 mb-3">
+													<label style="font-weight: 600; color: #2d3748; font-size: 14px; margin-bottom: 10px; display: block;">
+														<i class="fas fa-tags"></i> {{ __("Category") }}
+													</label>
+													<select id="filter-category" class="form-control" style="border: 1px solid #e2e8f0; border-radius: 6px; padding: 10px 15px;">
+														<option value="">{{ __("All Categories") }}</option>
+														@foreach(\App\Models\Category::where('status', 1)->orderBy('name')->get() as $cat)
+															<option value="{{$cat->id}}">{{$cat->name}}</option>
+														@endforeach
+													</select>
+												</div>
+												<div class="col-md-2 mb-3">
+													<label style="font-weight: 600; color: #2d3748; font-size: 14px; margin-bottom: 10px; display: block;">
+														<i class="fas fa-dollar-sign"></i> {{ __("Price Range") }}
+													</label>
+													<select id="filter-price" class="form-control" style="border: 1px solid #e2e8f0; border-radius: 6px; padding: 10px 15px;">
+														<option value="">{{ __("All Prices") }}</option>
+														<option value="0-10">0 - 10</option>
+														<option value="10-50">10 - 50</option>
+														<option value="50-100">50 - 100</option>
+														<option value="100+">100+</option>
+													</select>
+												</div>
+												<div class="col-md-2 mb-3">
+													<button id="reset-filters" class="btn" style="width: 100%; border-radius: 6px; padding: 10px; font-weight: 600; border: 1px solid #e2e8f0; background: white; color: #2d3748;">
+														<i class="fas fa-redo"></i> {{ __("Reset") }}
+													</button>
+												</div>
 											</div>
-											<div class="col-md-2">
-												<label style="font-weight: 600; color: #2d3748; font-size: 13px; margin-bottom: 8px; display: block;">
-													<i class="fas fa-toggle-on"></i> {{ __("Status") }}
-												</label>
-												<select id="filter-status" class="form-control" style="border-radius: 6px;">
-													<option value="">{{ __("All Status") }}</option>
-													<option value="1">{{ __("Active") }}</option>
-													<option value="0">{{ __("Inactive") }}</option>
-												</select>
-											</div>
-											<div class="col-md-2">
-												<label style="font-weight: 600; color: #2d3748; font-size: 13px; margin-bottom: 8px; display: block;">
-													<i class="fas fa-folder"></i> {{ __("Category") }}
-												</label>
-												<select id="filter-category" class="form-control" style="border-radius: 6px;">
-													<option value="">{{ __("All Categories") }}</option>
-													@foreach(\App\Models\Category::all() as $cat)
-														<option value="{{$cat->id}}">{{$cat->name}}</option>
-													@endforeach
-												</select>
-											</div>
-											<div class="col-md-2">
-												<label style="font-weight: 600; color: #2d3748; font-size: 13px; margin-bottom: 8px; display: block;">
-													<i class="fas fa-dollar-sign"></i> {{ __("Price Range") }}
-												</label>
-												<select id="filter-price" class="form-control" style="border-radius: 6px;">
-													<option value="">{{ __("All Prices") }}</option>
-													<option value="0-10">0 - 10</option>
-													<option value="10-50">10 - 50</option>
-													<option value="50-100">50 - 100</option>
-													<option value="100+">100+</option>
-												</select>
-											</div>
-											<div class="col-md-3">
-												<label style="font-weight: 600; color: #2d3748; font-size: 13px; margin-bottom: 8px; display: block;">
-													&nbsp;
-												</label>
-												<button id="reset-filters" class="btn btn-secondary" style="width: 100%; border-radius: 6px;">
-													<i class="fas fa-redo"></i> {{ __("Reset Filters") }}
-												</button>
+
+											{{-- Filter Summary --}}
+											<div id="filter-summary" class="mt-3" style="display: none;">
+												<div style="background: #ffffff; border-radius: 6px; padding: 12px; border: 1px solid #e2e8f0;">
+													<small style="color: #2d3748; font-weight: 600;">
+														<i class="fas fa-filter"></i> {{ __("Active Filters:") }}
+													</small>
+													<div id="active-filters" style="display: inline-block; margin-left: 10px;"></div>
+												</div>
 											</div>
 										</div>
 
@@ -93,6 +91,7 @@
 												<table id="geniustable" class="table table-hover dt-responsive" cellspacing="0" width="100%">
 													<thead>
 														<tr>
+									                        <th>{{ __("Image") }}</th>
 									                        <th>{{ __("Name") }}</th>
 									                        <th>{{ __("Price") }}</th>
 									                        <th>{{ __("Status") }}</th>
@@ -272,11 +271,19 @@
 					}
 			   },
                columns: [
+                        { data: 'image', name: 'photo', searchable: false, orderable: false },
                         { data: 'name', name: 'name' },
                         { data: 'price', name: 'price' },
                         { data: 'status', searchable: false, orderable: false},
             			{ data: 'action', searchable: false, orderable: false }
                      ],
+               columnDefs: [
+                   {
+                       targets: 0,
+                       width: '80px',
+                       className: 'text-center'
+                   }
+               ],
                 language : {
                 	processing: '<img src="{{asset('assets/images/'.$gs->admin_loader)}}">'
                 },
@@ -288,22 +295,57 @@
 		// Search filter
 		$('#search-product').on('keyup', function() {
 			table.draw();
+			updateFilterSummary();
 		});
 
 		// Status filter
 		$('#filter-status').on('change', function() {
 			table.draw();
+			updateFilterSummary();
 		});
 
 		// Category filter
 		$('#filter-category').on('change', function() {
 			table.draw();
+			updateFilterSummary();
 		});
 
 		// Price filter
 		$('#filter-price').on('change', function() {
 			table.draw();
+			updateFilterSummary();
 		});
+
+		// Reset filters
+		$('#reset-filters').on('click', function() {
+			$('#search-product').val('');
+			$('#filter-status').val('');
+			$('#filter-category').val('');
+			$('#filter-price').val('');
+			table.draw();
+			updateFilterSummary();
+		});
+
+		// Update filter summary
+		function updateFilterSummary() {
+			var filters = [];
+			var search = $('#search-product').val();
+			var status = $('#filter-status').val();
+			var category = $('#filter-category option:selected').text();
+			var price = $('#filter-price option:selected').text();
+
+			if (search) filters.push('<span class="badge" style="background: #2d3748; color: white; padding: 5px 10px; border-radius: 4px; margin-right: 5px;"><i class="fas fa-search"></i> ' + search + '</span>');
+			if (status !== '') filters.push('<span class="badge" style="background: #2d3748; color: white; padding: 5px 10px; border-radius: 4px; margin-right: 5px;"><i class="fas fa-toggle-on"></i> ' + (status == '1' ? 'Active' : 'Inactive') + '</span>');
+			if ($('#filter-category').val()) filters.push('<span class="badge" style="background: #2d3748; color: white; padding: 5px 10px; border-radius: 4px; margin-right: 5px;"><i class="fas fa-tags"></i> ' + category + '</span>');
+			if ($('#filter-price').val()) filters.push('<span class="badge" style="background: #2d3748; color: white; padding: 5px 10px; border-radius: 4px; margin-right: 5px;"><i class="fas fa-dollar-sign"></i> ' + price + '</span>');
+
+			if (filters.length > 0) {
+				$('#active-filters').html(filters.join(''));
+				$('#filter-summary').slideDown();
+			} else {
+				$('#filter-summary').slideUp();
+			}
+		}
 
 		// Reset filters
 		$('#reset-filters').on('click', function() {
@@ -335,7 +377,7 @@
 
       	$(function() {
         $(".btn-area").append('<div class="col-sm-4 table-contents">'+
-        	'<a class="add-btn" href="{{route('admin-prod-types')}}">'+
+        	'<a class="add-btn" href="{{route('admin-prod-create', 'physical')}}">'+
           '<i class="fas fa-plus"></i> <span class="remove-mobile">{{ __("Add Product") }}<span>'+
           '</a>'+
           '</div>');

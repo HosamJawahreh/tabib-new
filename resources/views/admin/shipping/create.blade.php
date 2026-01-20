@@ -18,11 +18,23 @@
                           <div class="col-lg-4">
                             <div class="left-area">
                                 <h4 class="heading">{{ __('Title') }} *</h4>
-                                <p class="sub-heading">{{ __('(In Any Language)') }}</p>
+                                <p class="sub-heading">{{ __('(In English)') }}</p>
                             </div>
                           </div>
                           <div class="col-lg-7">
-                            <input type="text" class="input-field" name="title" placeholder="{{ __('Title') }}" required="" value="">
+                            <input type="text" class="input-field" name="title" placeholder="{{ __('Title in English') }}" required="" value="">
+                          </div>
+                        </div>
+
+                        <div class="row">
+                          <div class="col-lg-4">
+                            <div class="left-area">
+                                <h4 class="heading">{{ __('Title (Arabic)') }}</h4>
+                                <p class="sub-heading">{{ __('(In Arabic)') }}</p>
+                            </div>
+                          </div>
+                          <div class="col-lg-7">
+                            <input type="text" class="input-field" name="title_ar" placeholder="{{ __('Title in Arabic') }}" value="" dir="rtl">
                           </div>
                         </div>
 

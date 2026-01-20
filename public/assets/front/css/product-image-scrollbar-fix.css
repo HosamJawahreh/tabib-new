@@ -1,0 +1,149 @@
+/**
+ * PRODUCT IMAGE & CATEGORY SCROLLBAR FIX
+ * Fixes gray background on product images and hides green category scrollbar
+ */
+
+/* ============================================
+   FIX PRODUCT IMAGE GRAY AREA
+   ============================================ */
+
+/* Remove gray background from product thumbnails */
+.product-thumb {
+    background: transparent !important;
+    background-color: transparent !important;
+}
+
+/* Remove padding that causes gray area */
+.product-thumb img.product-image,
+.product-image {
+    background: transparent !important;
+    background-color: transparent !important;
+    padding: 0 !important;
+}
+
+/* Keep product centered without gray background */
+.product-thumb a {
+    background: transparent !important;
+}
+
+/* Product card white background only */
+.product-card {
+    background: white !important;
+}
+
+/* Product content area */
+.product-content {
+    background: white !important;
+}
+
+/* ============================================
+   HIDE GREEN CATEGORY SCROLLBARS
+   ============================================ */
+
+/* Hide scrollbar for main categories row */
+.main-categories-row {
+    scrollbar-width: none !important; /* Firefox */
+    -ms-overflow-style: none !important; /* IE and Edge */
+}
+
+.main-categories-row::-webkit-scrollbar {
+    display: none !important; /* Chrome, Safari, Opera */
+    width: 0 !important;
+    height: 0 !important;
+}
+
+/* Hide scrollbar for subcategories row */
+.subcategories-row {
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+}
+
+.subcategories-row::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+}
+
+/* Hide scrollbar for child categories row */
+.childcategories-row {
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+}
+
+.childcategories-row::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+}
+
+/* ============================================
+   PRODUCT IMAGE FIXES FOR ALL VIEWPORTS
+   ============================================ */
+
+/* Remove background from product images at all sizes */
+@media (max-width: 575px) {
+    .product-thumb {
+        background: transparent !important;
+        padding: 0 !important;
+    }
+
+    .product-thumb img.product-image,
+    .product-image {
+        background: transparent !important;
+        padding: 8px !important; /* Small padding to prevent touching edges */
+    }
+}
+
+@media (min-width: 576px) and (max-width: 767px) {
+    .product-thumb {
+        background: transparent !important;
+        padding: 0 !important;
+    }
+
+    .product-thumb img.product-image,
+    .product-image {
+        background: transparent !important;
+        padding: 10px !important;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+    .product-thumb {
+        background: transparent !important;
+        padding: 0 !important;
+    }
+
+    .product-thumb img.product-image,
+    .product-image {
+        background: transparent !important;
+        padding: 12px !important;
+    }
+}
+
+@media (min-width: 992px) {
+    .product-thumb {
+        background: transparent !important;
+        padding: 0 !important;
+    }
+
+    .product-thumb img.product-image,
+    .product-image {
+        background: transparent !important;
+        padding: 15px !important;
+    }
+}
+
+/* ============================================
+   ENSURE ICONS REMAIN VISIBLE
+   ============================================ */
+
+/* Cart icons should remain visible */
+.cart-action-buttons,
+.cart-icon-clean {
+    background: transparent !important;
+}
+
+/* Discount badge should remain visible */
+.on-sale {
+    background: linear-gradient(135deg, #ff0000 0%, #cc0000 100%) !important;
+}

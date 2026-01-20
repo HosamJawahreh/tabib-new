@@ -1,26 +1,7 @@
     <li>
-        <a href="#order" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false"><i class="fas fa-hand-holding-usd"></i>{{ __('Orders') }}</a>
-        <ul class="collapse list-unstyled" id="order" data-parent="#accordion" >
-            <li>
-                <a href="{{ route('admin-orders-all') }}"> {{ __('All Orders') }}</a>
-            </li>
-            <li>
-                <a href="{{ route('admin-orders-all') }}?status=pending"> {{ __('Pending Orders') }}</a>
-            </li>
-            <li>
-                <a href="{{ route('admin-orders-all') }}?status=processing"> {{ __('Processing Orders') }}</a>
-            </li>
-            <li>
-                <a href="{{ route('admin-orders-all') }}?status=completed"> {{ __('Completed Orders') }}</a>
-            </li>
-            <li>
-                <a href="{{ route('admin-orders-all') }}?status=declined"> {{ __('Declined Orders') }}</a>
-            </li>
-            <li>
-                <a href="{{route('admin-order-create')}}"> {{ __('Pos') }}</a>
-            </li>
-
-        </ul>
+        <a href="{{ route('admin-orders-all') }}" class="wave-effect">
+            <i class="fas fa-hand-holding-usd"></i>{{ __('Orders') }}
+        </a>
     </li>
 
     {{-- MANAGE COUNTRY HIDDEN (MOVED TO SITE SETTINGS) --}}
@@ -88,37 +69,11 @@
             </ul>
     </li>
 
+    {{-- Products - Direct link to All Products (Add New is inside) --}}
     <li>
-        <a href="#menu2" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
+        <a href="{{ route('admin-prod-index') }}" class="wave-effect">
             <i class="icofont-cart"></i>{{ __('Products') }}
         </a>
-        <ul class="collapse list-unstyled" id="menu2" data-parent="#accordion">
-            <li class="d-none">
-                <a href="{{ route('admin-prod-types') }}"><span>{{ __('Add New Product') }}</span></a>
-            </li>
-            <li>
-                <a href="{{ route('admin-prod-create', 'physical') }}"><span>{{ __('Add New Product') }}</span></a>
-            </li>
-            <li>
-                <a href="{{ route('admin-prod-index') }}"><span>{{ __('All Products') }}</span></a>
-            </li>
-            <li>
-                <a href="{{ route('admin-prod-deactive') }}"><span>{{ __('Deactivated Product') }}</span></a>
-            </li>
-            {{-- PRODUCT CATALOGS HIDDEN --}}
-            {{--
-            <li>
-                <a href="{{ route('admin-prod-catalog-index') }}"><span>{{ __('Product Catalogs') }}</span></a>
-            </li>
-            --}}
-
-            {{-- PRODUCT SETTINGS HIDDEN --}}
-            {{--
-            <li>
-                <a href="{{ route('admin-gs-prod-settings') }}"><span>{{ __('Product Settings') }}</span></a>
-            </li>
-            --}}
-        </ul>
     </li>
 
     {{-- AFFILIATE PRODUCTS HIDDEN --}}

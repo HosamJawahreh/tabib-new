@@ -1,0 +1,233 @@
+/**
+ * ============================================
+ * FOOTER SPACING FIX FOR DESKTOP
+ * ============================================
+ * Removes excessive white space under footer on desktop
+ */
+
+/* Fix for checkout and product details pages */
+@media (min-width: 992px) {
+    /* Remove excessive padding from checkout section */
+    .checkout {
+        padding-bottom: 30px !important;
+    }
+
+    /* Ensure body doesn't have min-height that creates extra space */
+    body {
+        min-height: auto !important;
+        height: auto !important;
+    }
+
+    /* Fix page wrapper */
+    #page_wrapper {
+        min-height: auto !important;
+        height: auto !important;
+    }
+
+    /* Remove any fixed positioning from body unless cart is open */
+    body:not(.cart-open) {
+        position: static !important;
+        width: auto !important;
+    }
+
+    /* Fix zoomContainer positioning issue */
+    .zoomContainer {
+        position: absolute !important;
+        pointer-events: none !important;
+        z-index: 100 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        height: 0 !important;
+        overflow: visible !important;
+    }
+
+    /* Prevent product details from adding extra space */
+    .product-single-details,
+    .product-single,
+    .product-details-wrapper {
+        margin-bottom: 30px !important;
+        padding-bottom: 0 !important;
+    }
+
+    /* Fix main content area */
+    main,
+    .main-content,
+    .content-wrapper {
+        min-height: auto !important;
+        padding-bottom: 0 !important;
+    }
+
+    /* Ensure footer sits properly */
+    footer,
+    .footer {
+        margin-top: 40px !important;
+    }
+
+    /* Remove any 100vh constraints */
+    .min-vh-100,
+    .vh-100 {
+        min-height: auto !important;
+        height: auto !important;
+    }
+}
+
+/* Mobile - keep normal spacing */
+@media (max-width: 991px) {
+    .checkout {
+        padding-bottom: 40px;
+    }
+
+    /* Fix zoomContainer on mobile too */
+    .zoomContainer {
+        position: absolute !important;
+        pointer-events: none !important;
+        z-index: 100 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        height: 0 !important;
+        overflow: visible !important;
+    }
+
+    /* Prevent extra spacing on mobile */
+    body,
+    #page_wrapper {
+        min-height: auto !important;
+        height: auto !important;
+    }
+}
+
+/**
+ * ============================================
+ * PRODUCT BUTTONS HOVER EFFECTS
+ * ============================================
+ * Ensure white text color on hover for both mobile and desktop
+ */
+
+/* Add to Cart button (GREEN) - Base & Hover - Desktop & Mobile */
+.add-to-cart-btn,
+button#addcrt {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+    border: none !important;
+    color: #ffffff !important;
+}
+
+.add-to-cart-btn:hover,
+.add-to-cart-btn:focus,
+.add-to-cart-btn:active,
+button#addcrt:hover,
+button#addcrt:focus,
+button#addcrt:active {
+    background: linear-gradient(135deg, #059669 0%, #047857 100%) !important;
+    color: #ffffff !important;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(16, 185, 129, 0.5) !important;
+    border: none !important;
+}
+
+.add-to-cart-btn span,
+.add-to-cart-btn i,
+button#addcrt span,
+button#addcrt i {
+    color: #ffffff !important;
+}
+
+/* Buy Now button (DARK GRAY) - Base & Hover - Desktop & Mobile */
+.buy-now-btn,
+button#qaddcrt {
+    background: #1f2937 !important;
+    border: 2px solid #374151 !important;
+    color: #ffffff !important;
+}
+
+.buy-now-btn:hover,
+.buy-now-btn:focus,
+.buy-now-btn:active,
+button#qaddcrt:hover,
+button#qaddcrt:focus,
+button#qaddcrt:active {
+    background: #111827 !important;
+    color: #ffffff !important;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.3) !important;
+    border-color: #4b5563 !important;
+}
+
+.buy-now-btn span,
+.buy-now-btn i,
+button#qaddcrt span,
+button#qaddcrt i {
+    color: #ffffff !important;
+}
+
+/* Ensure proper display on mobile */
+@media (max-width: 991px) {
+    .add-to-cart-btn,
+    .buy-now-btn {
+        flex: 1 1 100% !important;
+        max-width: 100% !important;
+        min-width: 100% !important;
+        width: 100% !important;
+        margin-bottom: 10px;
+    }
+
+    .product-purchase-section {
+        flex-direction: column !important;
+        align-items: stretch !important;
+    }
+
+    .quantity-wrapper {
+        order: 1 !important;
+        width: 100% !important;
+        margin-bottom: 12px !important;
+    }
+
+    .qty-selector {
+        width: 100% !important;
+        justify-content: center !important;
+    }
+
+    button#addcrt {
+        order: 2 !important;
+    }
+
+    button#qaddcrt {
+        order: 3 !important;
+    }
+}
+
+@media (min-width: 992px) {
+    .product-purchase-section {
+        justify-content: flex-start !important;
+    }
+
+    .quantity-wrapper {
+        flex: 0 0 auto !important;
+        order: 1 !important;
+        margin-right: 8px !important;
+    }
+
+    button#addcrt {
+        order: 2 !important;
+        margin-right: 8px !important;
+    }
+
+    button#qaddcrt {
+        order: 3 !important;
+    }
+
+    /* Hover effects for quantity buttons */
+    .qtminus:hover,
+    .qtplus:hover {
+        background: #e5e7eb !important;
+        transform: scale(1.05);
+    }
+}
+
+/* Fix zoomContainer to prevent footer spacing */
+.zoomContainer {
+    position: absolute !important;
+    pointer-events: none !important;
+    z-index: 100 !important;
+}
+    }
+}

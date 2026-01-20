@@ -20,6 +20,15 @@ class ShippingController extends AdminBaseController
          $datas = Shipping::all();
          //--- Integrating This Collection Into Datatables
          return DataTables::of($datas)
+                            ->editColumn('title', function(Shipping $data) {
+                                $titles = '<div style="text-align: left;">';
+                                $titles .= '<strong>EN:</strong> ' . $data->title;
+                                if (!empty($data->title_ar)) {
+                                    $titles .= '<br><strong>AR:</strong> <span dir="rtl">' . $data->title_ar . '</span>';
+                                }
+                                $titles .= '</div>';
+                                return $titles;
+                            })
                             ->editColumn('price', function(Shipping $data) {
                                 $price = $data->price * $this->curr->value;
                                 return PriceHelper::showAdminCurrencyPrice($price);
@@ -27,7 +36,7 @@ class ShippingController extends AdminBaseController
                             ->addColumn('action', function(Shipping $data) {
                                 return '<div class="action-list"><a data-href="' . route('admin-shipping-edit',$data->id) . '" class="edit" data-toggle="modal" data-target="#modal1"> <i class="fas fa-edit"></i>'.__('Edit').'</a><a href="javascript:;" data-href="' . route('admin-shipping-delete',$data->id) . '" data-toggle="modal" data-target="#confirm-delete" class="delete"><i class="fas fa-trash-alt"></i></a></div>';
                             })
-                            ->rawColumns(['action'])
+                            ->rawColumns(['title', 'action'])
                             ->toJson(); //--- Returning Json Data To Client Side
     }
 
@@ -50,6 +59,7 @@ class ShippingController extends AdminBaseController
         //--- Validation Section
         $rules = [
             'title' => 'required|unique:shippings',
+            'title_ar' => 'nullable|string',
             'subtitle' => 'nullable|string',
             'price' => 'required|numeric|min:0',
         ];
@@ -74,7 +84,8 @@ class ShippingController extends AdminBaseController
             }
 
             $data = new Shipping();
-            $input = $request->only(['title', 'subtitle', 'price']);
+            $input = $request->only(['title', 'title_ar', 'subtitle', 'price']);
+            $input['user_id'] = 0; // Admin shipping methods have user_id = 0
             $signValue = (!empty($sign->value) && $sign->value != 0) ? $sign->value : 1;
             $input['price'] = ($input['price'] / $signValue);
             $data->fill($input)->save();
@@ -105,6 +116,7 @@ class ShippingController extends AdminBaseController
         //--- Validation Section
         $rules = [
             'title' => 'required|unique:shippings,title,'.$id,
+            'title_ar' => 'nullable|string',
             'subtitle' => 'nullable|string',
             'price' => 'required|numeric|min:0',
         ];
@@ -130,7 +142,7 @@ class ShippingController extends AdminBaseController
             }
 
             $data = Shipping::findOrFail($id);
-            $input = $request->only(['title', 'subtitle', 'price']);
+            $input = $request->only(['title', 'title_ar', 'subtitle', 'price']);
             $signValue = (!empty($sign->value) && $sign->value != 0) ? $sign->value : 1;
             $input['price'] = ($input['price'] / $signValue);
             $data->update($input);

@@ -26,7 +26,7 @@ class ProductController extends AdminBaseController
     public function datatables(Request $request)
     {
         // Optimized query with select only needed columns
-        $query = Product::select(['id', 'name', 'slug', 'sku', 'price', 'status', 'type', 'product_type', 'user_id'])
+        $query = Product::select(['id', 'name', 'slug', 'sku', 'price', 'status', 'type', 'product_type', 'user_id', 'photo', 'thumbnail'])
             ->where('type', 'Physical');
 
         // Apply filters
@@ -43,8 +43,8 @@ class ProductController extends AdminBaseController
             });
         }
 
-        // Status filter
-        if ($request->has('status') && $request->status !== '') {
+        // Status filter - only apply if explicitly set
+        if ($request->has('status') && $request->status !== '' && $request->status !== null) {
             $query->where('status', $request->status);
         }
 
@@ -73,6 +73,10 @@ class ProductController extends AdminBaseController
 
         //--- Integrating This Collection Into Datatables with Query Builder (optimized)
         return Datatables::eloquent($query)
+            ->addColumn('image', function (Product $data) {
+                $photo = $data->thumbnail ? asset('assets/images/thumbnails/' . $data->thumbnail) : asset('assets/images/noimage.png');
+                return '<img src="' . $photo . '" alt="Product" style="width: 60px; height: 60px; object-fit: cover; border-radius: 4px;">';
+            })
             ->editColumn('name', function (Product $data) {
                 $name = mb_strlen($data->name, 'UTF-8') > 50 ? mb_substr($data->name, 0, 50, 'UTF-8') . '...' : $data->name;
                 $id = '<small>' . __("ID") . ': <a href="' . route('front.product', $data->slug) . '" target="_blank">' . sprintf("%'.08d", $data->id) . '</a></small>';
@@ -91,10 +95,20 @@ class ProductController extends AdminBaseController
                         </label>';
             })
             ->addColumn('action', function (Product $data) {
-                $catalog = $data->type == 'Physical' ? ($data->is_catalog == 1 ? '<a href="javascript:;" data-href="' . route('admin-prod-catalog', ['id1' => $data->id, 'id2' => 0]) . '" data-toggle="modal" data-target="#catalog-modal" class="delete"><i class="fas fa-trash-alt"></i> ' . __("Remove Catalog") . '</a>' : '<a href="javascript:;" data-href="' . route('admin-prod-catalog', ['id1' => $data->id, 'id2' => 1]) . '" data-toggle="modal" data-target="#catalog-modal"> <i class="fas fa-plus"></i> ' . __("Add To Catalog") . '</a>') : '';
-                return '<div class="godropdown"><button class="go-dropdown-toggle"> ' . __("Actions") . '<i class="fas fa-chevron-down"></i></button><div class="action-list"><a href="' . route('admin-prod-edit', $data->id) . '"> <i class="fas fa-edit"></i> ' . __("Edit") . '</a><a href="javascript" class="set-gallery" data-toggle="modal" data-target="#setgallery"><input type="hidden" value="' . $data->id . '"><i class="fas fa-eye"></i> ' . __("View Gallery") . '</a>' . $catalog . '<a data-href="' . route('admin-prod-feature', $data->id) . '" class="feature" data-toggle="modal" data-target="#modal2"> <i class="fas fa-star"></i> ' . __("Highlight") . '</a><a href="javascript:;" data-href="' . route('admin-prod-delete', $data->id) . '" data-toggle="modal" data-target="#confirm-delete" class="delete"><i class="fas fa-trash-alt"></i> ' . __("Delete") . '</a></div></div>';
+                return '<div class="action-btns" style="display: flex; gap: 8px; justify-content: center;">
+                    <a href="' . route('admin-prod-edit', $data->id) . '" class="btn btn-sm btn-primary" title="' . __("Edit") . '" style="padding: 6px 12px;">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                    <a href="javascript:void(0)" class="btn btn-sm btn-info set-gallery" data-toggle="modal" data-target="#setgallery" title="' . __("View Gallery") . '" style="padding: 6px 12px;">
+                        <input type="hidden" value="' . $data->id . '">
+                        <i class="fas fa-images"></i>
+                    </a>
+                    <a href="javascript:void(0)" data-href="' . route('admin-prod-delete', $data->id) . '" data-toggle="modal" data-target="#confirm-delete" class="btn btn-sm btn-danger delete" title="' . __("Delete") . '" style="padding: 6px 12px;">
+                        <i class="fas fa-trash-alt"></i>
+                    </a>
+                </div>';
             })
-            ->rawColumns(['name', 'status', 'action'])
+            ->rawColumns(['image', 'name', 'status', 'action'])
             ->toJson(); //--- Returning Json Data To Client Side
     }
 

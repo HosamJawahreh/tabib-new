@@ -697,6 +697,12 @@
         display: flex !important;
     }
 
+    /* Button container div - Full width on mobile */
+    .product-purchase-section > div[style*="flex-direction: column"] {
+        max-width: 100% !important;
+        width: 100% !important;
+    }
+
     .add-to-cart-btn,
     .buy-now-btn,
     .contact-seller-btn {
@@ -749,41 +755,55 @@
         border-color: #4b5563 !important;
     }
 
-    /* Responsive fixes for all screen sizes */
+    /* Mobile-specific: Quantity FIRST, Buttons SECOND */
     .product-purchase-section {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 15px;
-        align-items: center;
-        justify-content: center;
-        margin-bottom: 20px;
+        display: flex !important;
+        flex-direction: column !important;
+        flex-wrap: nowrap !important;
+        gap: 15px !important;
+        align-items: stretch !important;
+        justify-content: flex-start !important;
+        margin-bottom: 20px !important;
+        width: 100% !important;
     }
 
+    /* QUANTITY COMES FIRST ON MOBILE */
     .quantity-wrapper {
-        flex: 0 0 auto;
-        display: flex;
-        justify-content: center;
-        width: 100%;
+        order: 1 !important;
+        flex: 0 0 auto !important;
+        display: flex !important;
+        justify-content: center !important;
+        width: 100% !important;
+        margin-bottom: 0 !important;
     }
 
     .qty-selector {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-        background: #f9fafb;
-        padding: 6px 10px;
-        border-radius: 10px;
-        border: 2px solid #e5e7eb;
-        margin: 0 auto;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 8px !important;
+        background: #f9fafb !important;
+        padding: 6px 10px !important;
+        border-radius: 10px !important;
+        border: 2px solid #e5e7eb !important;
+        margin: 0 auto !important;
+        width: auto !important;
+    }
+
+    /* BUTTON WRAPPER COMES SECOND ON MOBILE - FULL WIDTH */
+    .product-purchase-section > div:not(.quantity-wrapper):not(.share-section) {
+        order: 2 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
     }
 
     .action-buttons {
-        display: flex;
-        gap: 12px;
-        flex: 1 1 auto;
-        width: 100%;
-        justify-content: center;
+        display: flex !important;
+        gap: 12px !important;
+        flex: 1 1 auto !important;
+        width: 100% !important;
+        justify-content: center !important;
     }
 
     /* Product Info Section - Better Spacing */
@@ -809,75 +829,37 @@
         max-width: 60% !important;
     }
 
+    /* Desktop: ALL 3 elements in ONE LINE (Quantity + Add to Cart + Buy Now) */
     .product-purchase-section {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: flex-start;
-        gap: 15px;
-        flex-wrap: nowrap;
-        margin-bottom: 20px;
-    }
-
-    /* Add to Cart and Buy Now buttons come first on desktop */
-    .action-buttons {
-        order: 1;
-        flex: 1 1 auto !important;
-        width: auto !important;
+        display: flex !important;
         flex-direction: row !important;
+        align-items: center !important;
         justify-content: flex-start !important;
         gap: 15px !important;
         flex-wrap: nowrap !important;
-        margin-bottom: 0 !important;
+        margin-bottom: 20px !important;
     }
 
-    .add-to-cart-btn,
-    .buy-now-btn {
-        flex: 1 1 0 !important;
-        max-width: 220px !important;
-        width: auto !important;
-        padding: 16px 20px !important;
-        font-size: 1rem !important;
-        white-space: nowrap !important;
-        border-radius: 12px;
-        font-weight: 600;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        transition: all 0.3s ease;
-    }
-
-    .add-to-cart-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
-    }
-
-    /* Buy Now button - White text on hover */
-    .buy-now-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 24px rgba(16, 185, 129, 0.5);
-        color: #ffffff !important;
-        background: linear-gradient(135deg, #059669 0%, #047857 100%) !important;
-    }
-
-    /* Quantity comes AFTER buttons (behind them) on desktop */
+    /* QUANTITY COMES FIRST on desktop */
     .quantity-wrapper {
-        order: 2;
-        width: auto;
-        flex: 0 0 auto;
+        order: 1 !important;
+        width: auto !important;
+        flex: 0 0 auto !important;
         margin-bottom: 0 !important;
     }
 
     .qty-selector {
-        padding: 10px 14px;
-        gap: 12px;
-        background: #ffffff;
-        box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-        border-radius: 12px;
+        padding: 10px 14px !important;
+        gap: 12px !important;
+        background: #ffffff !important;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.08) !important;
+        border-radius: 12px !important;
     }
 
     .qty-selector .qtminus,
     .qty-selector .qtplus {
-        width: 44px;
-        height: 44px;
+        width: 44px !important;
+        height: 44px !important;
         font-size: 1.2rem;
         border-radius: 10px;
         background: #f9fafb;
@@ -895,11 +877,51 @@
     }
 
     .qty-selector .qttotal {
-        width: 80px;
-        font-size: 1.15rem;
-        font-weight: 700;
-        border: 2px solid #e5e7eb;
-        border-radius: 8px;
+        width: 80px !important;
+        font-size: 1.15rem !important;
+        font-weight: 700 !important;
+        border: 2px solid #e5e7eb !important;
+        border-radius: 8px !important;
+    }
+
+    /* BUTTONS COME SECOND - Both buttons in one line on desktop */
+    .product-purchase-section > div[style*="flex-direction: column"] {
+        order: 2 !important;
+        display: flex !important;
+        flex-direction: row !important;
+        gap: 15px !important;
+        width: auto !important;
+        max-width: none !important;
+        flex: 1 1 auto !important;
+        margin: 0 !important;
+    }
+
+    .add-to-cart-btn,
+    .buy-now-btn {
+        flex: 1 1 0 !important;
+        max-width: 220px !important;
+        width: auto !important;
+        padding: 16px 20px !important;
+        font-size: 1rem !important;
+        white-space: nowrap !important;
+        border-radius: 12px !important;
+        font-weight: 600 !important;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+        transition: all 0.3s ease !important;
+        height: auto !important;
+    }
+
+    .add-to-cart-btn:hover {
+        transform: translateY(-2px) !important;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2) !important;
+    }
+
+    /* Buy Now button - White text on hover */
+    .buy-now-btn:hover {
+        transform: translateY(-2px) !important;
+        box-shadow: 0 8px 24px rgba(16, 185, 129, 0.5) !important;
+        color: #ffffff !important;
+        background: linear-gradient(135deg, #059669 0%, #047857 100%) !important;
     }
 
     /* Share Section Desktop - New Row */
@@ -993,9 +1015,9 @@
 }
 </style>
 
-<div class="full-row pb-0">
-  <div class="container">
-      <div class="row single-product-wrapper">
+<div class="full-row pb-0" style="padding-top: 0; margin-top: 0;">
+  <div class="container" style="padding-top: 0;">
+      <div class="row single-product-wrapper" style="margin-top: 0;">
           <div class="col-md-6 mb-4">
               <div class="product-images position-relative" style="top: 0; padding-top: 0; margin-top: 0;">
                   <div class="woocommerce-product-gallery woocommerce-product-gallery--with-images woocommerce-product-gallery--columns-4 images" data-columns="4">
@@ -1434,55 +1456,57 @@
 
     @endif
     {{-- PRODUCT STOCK CONDITION SECTION ENDS --}}
-                         <div class="product-purchase-section mt-4" style="display: flex; flex-wrap: wrap; gap: 15px; align-items: center; justify-content: center; margin-bottom: 20px;">
-                            @if($productt->product_type != "affiliate" && $productt->type == 'Physical')
-                               <div class="quantity-wrapper mb-3 d-flex justify-content-center" style="width: 100%; flex: 0 0 auto;">
-                                   <div class="qty-selector border rounded d-flex align-items-center justify-content-center" style="background: #ffffff; box-shadow: 0 2px 12px rgba(0,0,0,0.08); padding: 10px 14px; gap: 12px; border-radius: 12px; border: 2px solid #e5e7eb;">
-                                      <button type="button" class="qtminus btn btn-light border-0" style="font-size: 1.2rem; width: 44px; height: 44px; border-radius: 10px; background: #f9fafb; border: 2px solid #e5e7eb !important; font-weight: 600; display: flex; align-items: center; justify-content: center;">
+                         <div class="product-purchase-section mt-4" style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: center; margin-bottom: 20px;">
+                            
+                          {{-- QUANTITY SELECTOR FIRST (BEFORE BUTTONS) --}}
+                          @if($productt->product_type != "affiliate" && $productt->type == 'Physical')
+                               <div class="quantity-wrapper" style="order: 1; display: flex; justify-content: center; width: 100%; margin-bottom: 15px;">
+                                   <div class="qty-selector border rounded d-flex align-items-center justify-content-center" style="background: #ffffff; box-shadow: 0 4px 16px rgba(0,0,0,0.1); padding: 10px 16px; gap: 12px; border-radius: 14px; border: 2px solid #e5e7eb; height: 58px; min-width: 180px;">
+                                      <button type="button" class="qtminus btn btn-light border-0" style="font-size: 1.2rem; width: 42px; height: 42px; border-radius: 10px; background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%); border: 2px solid #e5e7eb !important; font-weight: 700; display: flex; align-items: center; justify-content: center; padding: 0; transition: all 0.2s ease; color: #374151; box-shadow: 0 2px 6px rgba(0,0,0,0.08);">
                                          <i class="icofont-minus"></i>
                                       </button>
-                                      <input class="qttotal form-control border-0 text-center" type="text" id="order-qty" value="{{ $productt->minimum_qty == null ? '1' : (int)$productt->minimum_qty }}" style="width: 80px; font-weight: 700; font-size: 1.15rem; border: 2px solid #e5e7eb !important; border-radius: 8px; padding: 12px 10px;">
+                                      <input class="qttotal form-control border-0 text-center" type="text" id="order-qty" value="{{ $productt->minimum_qty == null ? '1' : (int)$productt->minimum_qty }}" style="width: 70px; font-weight: 800; font-size: 1.2rem; border: 2px solid #e5e7eb !important; border-radius: 10px; padding: 10px 8px; background: #fafafa; color: #1f2937; box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);">
                                       <input type="hidden" id="affilate_user" value="{{ $affilate_user }}">
                                       <input type="hidden" id="product_minimum_qty" value="{{ $productt->minimum_qty == null ? '0' : $productt->minimum_qty }}">
-                                      <button type="button" class="qtplus btn btn-light border-0" style="font-size: 1.2rem; width: 44px; height: 44px; border-radius: 10px; background: #f9fafb; border: 2px solid #e5e7eb !important; font-weight: 600; display: flex; align-items: center; justify-content: center;">
+                                      <button type="button" class="qtplus btn btn-light border-0" style="font-size: 1.2rem; width: 42px; height: 42px; border-radius: 10px; background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%); border: 2px solid #e5e7eb !important; font-weight: 700; display: flex; align-items: center; justify-content: center; padding: 0; transition: all 0.2s ease; color: #374151; box-shadow: 0 2px 6px rgba(0,0,0,0.08);">
                                          <i class="icofont-plus"></i>
                                       </button>
                                    </div>
                                </div>
                           @endif
 
-
-                          {{-- PRODUCT QUANTITY SECTION ENDS --}}
-                          <div class="action-buttons d-flex flex-wrap gap-3" style="width: 100%; flex-direction: column; justify-content: center;">
+                          {{-- ACTION BUTTONS COME AFTER QUANTITY --}}
                           @if($productt->product_type == "affiliate")
 
-                              <a href="javascript:;" class="btn btn-primary affilate-btn add-to-cart-btn" data-href="{{ $productt->affiliate_link }}" target="_blank">
+                              <a href="javascript:;" class="btn btn-primary affilate-btn add-to-cart-btn" data-href="{{ $productt->affiliate_link }}" target="_blank" style="order: 2; margin: 0 auto;">
                                   <i class="icofont-cart me-2"></i>
                                   <span>{{ __('Buy Now') }}</span>
                               </a>
                               @else
                               @if($productt->emptyStock())
-                              <a href="javascript:;" class="btn btn-secondary cart-out-of-stock add-to-cart-btn" style="cursor: not-allowed; width: 100%; max-width: 100%; padding: 18px 20px; font-size: 1.1rem; min-height: 56px; border-radius: 12px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.2);">
+                              <a href="javascript:;" class="btn btn-secondary cart-out-of-stock add-to-cart-btn" style="cursor: not-allowed; width: 100%; max-width: 400px; padding: 16px 24px; font-size: 1.05rem; height: 58px; border-radius: 14px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); order: 2; margin: 0 auto;">
                                   <i class="icofont-close-line me-2"></i>
                                   <span>{{ __('Out Of Stock') }}</span>
                               </a>
                               @else
                               @if ($productt->type != "Listing")
-                                <button type="button" id="addcrt" class="btn btn-outline-primary add-to-cart-btn flex-grow-1" style="width: 100%; max-width: 100%; flex: 1 1 0; padding: 18px 20px; font-size: 1.1rem; min-height: 56px; border-radius: 12px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.2); background: #1f2937; border: 2px solid #374151; color: #ffffff;">
-                                    <i class="icofont-cart me-2"></i>
-                                    <span>{{ __('Add to Cart')}}</span>
+                                <div style="display: flex; flex-direction: column; gap: 12px; width: 100%; max-width: 400px; margin: 0 auto;">
+                                <button type="button" id="addcrt" class="btn btn-outline-primary add-to-cart-btn" style="order: 2; width: 100%; padding: 18px 24px; font-size: 1.1rem; height: 58px; border-radius: 14px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 10px; box-shadow: 0 6px 20px rgba(16, 185, 129, 0.35); background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important; border: none !important; color: #ffffff !important; transition: all 0.3s ease; text-transform: uppercase; letter-spacing: 0.5px;">
+                                    <i class="icofont-cart" style="color: #ffffff !important; font-size: 1.3rem;"></i>
+                                    <span style="color: #ffffff !important;">{{ __('Add to Cart')}}</span>
                                     <span class="btn-loader" style="display: none;">
                                         <i class="icofont-spinner icofont-spin"></i>
                                     </span>
                                 </button>
 
-                                <button type="button" id="qaddcrt" class="btn btn-primary buy-now-btn flex-grow-1" style="width: 100%; max-width: 100%; flex: 1 1 0; padding: 18px 20px; font-size: 1.1rem; min-height: 56px; border-radius: 12px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 10px; box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4); background: linear-gradient(135deg, #10b981 0%, #059669 100%); border: none; color: #ffffff;">
-                                    <i class="icofont-check-circled me-2"></i>
-                                    <span>{{ __('Buy Now') }}</span>
+                                <button type="button" id="qaddcrt" class="btn btn-primary buy-now-btn" style="order: 3; width: 100%; padding: 18px 24px; font-size: 1.1rem; height: 58px; border-radius: 14px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 10px; box-shadow: 0 6px 20px rgba(31, 41, 55, 0.3); background: linear-gradient(135deg, #1f2937 0%, #111827 100%) !important; border: 2px solid #374151 !important; color: #ffffff !important; transition: all 0.3s ease; text-transform: uppercase; letter-spacing: 0.5px;">
+                                    <i class="icofont-check-circled" style="color: #ffffff !important; font-size: 1.3rem;"></i>
+                                    <span style="color: #ffffff !important;">{{ __('Buy Now') }}</span>
                                     <span class="btn-loader" style="display: none;">
                                         <i class="icofont-spinner icofont-spin"></i>
                                     </span>
                                 </button>
+                                </div>
                               @endif
 
                               @if ($productt->type == "Listing")
@@ -1511,38 +1535,89 @@
                          @endif
 
                           {{-- Share This Product Section - Moved Outside action-buttons --}}
-                          <div class="share-section" style="width: 100%; text-align: center; margin-top: 20px; padding-top: 20px; border-top: 1px solid #e5e7eb;">
-                              <h5 class="mb-3" style="font-weight: 600; color: #6b7280; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.5px; text-align: center;">{{ __('Share This Product') }}</h5>
+                          <div class="share-section" style="width: 100%; text-align: center; margin-top: 30px; padding: 25px 20px; border-top: 2px solid #e5e7eb; background: linear-gradient(135deg, #f9fafb 0%, #ffffff 100%); border-radius: 16px;">
+                              <h5 class="mb-4" style="font-weight: 700; color: #1f2937; font-size: 1rem; text-transform: uppercase; letter-spacing: 1px; text-align: center;">{{ __('Share This Product') }}</h5>
                               <div class="social-linkss social-sharing a2a_kit a2a_kit_size_32">
-                              <ul class="social-icons d-flex flex-wrap gap-2 list-unstyled mb-0" style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: center; padding: 5px 0;">
+                              <ul class="social-icons d-flex flex-wrap gap-3 list-unstyled mb-0" style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: center; padding: 5px 0;">
                                   <li style="flex-shrink: 0;">
-                                  <a class="facebook a2a_button_facebook d-flex align-items-center justify-content-center rounded-circle" href="" style="width: 48px; height: 48px; background: #1877f2; color: white; transition: all 0.3s ease; flex-shrink: 0; box-shadow: 0 2px 8px rgba(24, 119, 242, 0.3); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
-                                      <i class="fab fa-facebook-f" style="font-size: 18px;"></i>
+                                  <a class="facebook a2a_button_facebook d-flex align-items-center justify-content-center rounded-circle" href="" style="width: 52px; height: 52px; background: linear-gradient(135deg, #1877f2 0%, #0c5fcd 100%); color: white; transition: all 0.3s ease; flex-shrink: 0; box-shadow: 0 4px 12px rgba(24, 119, 242, 0.4); border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 3px solid rgba(24, 119, 242, 0.1);">
+                                      <i class="fab fa-facebook-f" style="font-size: 20px;"></i>
                                   </a>
                                   </li>
                                   <li style="flex-shrink: 0;">
-                                  <a class="twitter a2a_button_twitter d-flex align-items-center justify-content-center rounded-circle" href="" style="width: 48px; height: 48px; background: #1da1f2; color: white; transition: all 0.3s ease; flex-shrink: 0; box-shadow: 0 2px 8px rgba(29, 161, 242, 0.3); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
-                                      <i class="fab fa-twitter" style="font-size: 18px;"></i>
+                                  <a class="twitter a2a_button_twitter d-flex align-items-center justify-content-center rounded-circle" href="" style="width: 52px; height: 52px; background: linear-gradient(135deg, #1da1f2 0%, #0d8bd9 100%); color: white; transition: all 0.3s ease; flex-shrink: 0; box-shadow: 0 4px 12px rgba(29, 161, 242, 0.4); border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 3px solid rgba(29, 161, 242, 0.1);">
+                                      <i class="fab fa-twitter" style="font-size: 20px;"></i>
                                   </a>
                                   </li>
                                   <li style="flex-shrink: 0;">
-                                  <a class="linkedin a2a_button_linkedin d-flex align-items-center justify-content-center rounded-circle" href="" style="width: 48px; height: 48px; background: #0077b5; color: white; transition: all 0.3s ease; flex-shrink: 0; box-shadow: 0 2px 8px rgba(0, 119, 181, 0.3); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
-                                      <i class="fab fa-linkedin-in" style="font-size: 18px;"></i>
+                                  <a class="linkedin a2a_button_linkedin d-flex align-items-center justify-content-center rounded-circle" href="" style="width: 52px; height: 52px; background: linear-gradient(135deg, #0077b5 0%, #005885 100%); color: white; transition: all 0.3s ease; flex-shrink: 0; box-shadow: 0 4px 12px rgba(0, 119, 181, 0.4); border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 3px solid rgba(0, 119, 181, 0.1);">
+                                      <i class="fab fa-linkedin-in" style="font-size: 20px;"></i>
                                   </a>
                                   </li>
                                   <li style="flex-shrink: 0;">
-                                  <a class="pinterest a2a_button_pinterest d-flex align-items-center justify-content-center rounded-circle" href="" style="width: 48px; height: 48px; background: #e60023; color: white; transition: all 0.3s ease; flex-shrink: 0; box-shadow: 0 2px 8px rgba(230, 0, 35, 0.3); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
-                                      <i class="fab fa-pinterest-p" style="font-size: 18px;"></i>
+                                  <a class="pinterest a2a_button_pinterest d-flex align-items-center justify-content-center rounded-circle" href="" style="width: 52px; height: 52px; background: linear-gradient(135deg, #e60023 0%, #bd001c 100%); color: white; transition: all 0.3s ease; flex-shrink: 0; box-shadow: 0 4px 12px rgba(230, 0, 35, 0.4); border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 3px solid rgba(230, 0, 35, 0.1);">
+                                      <i class="fab fa-pinterest-p" style="font-size: 20px;"></i>
                                   </a>
                                   </li>
                                   <li style="flex-shrink: 0;">
-                                      <a class="instagram a2a_button_whatsapp d-flex align-items-center justify-content-center rounded-circle" href="" style="width: 48px; height: 48px; background: #25d366; color: white; transition: all 0.3s ease; flex-shrink: 0; box-shadow: 0 2px 8px rgba(37, 211, 102, 0.3); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
-                                      <i class="fab fa-whatsapp" style="font-size: 18px;"></i>
+                                      <a class="instagram a2a_button_whatsapp d-flex align-items-center justify-content-center rounded-circle" href="" style="width: 52px; height: 52px; background: linear-gradient(135deg, #25d366 0%, #1ebe57 100%); color: white; transition: all 0.3s ease; flex-shrink: 0; box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4); border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 3px solid rgba(37, 211, 102, 0.1);">
+                                      <i class="fab fa-whatsapp" style="font-size: 20px;"></i>
                                       </a>
                                   </li>
                               </ul>
                               </div>
                           </div>
+                          <style>
+                              /* Hover Effects for Share Buttons */
+                              .social-icons a:hover {
+                                  transform: translateY(-4px) scale(1.08);
+                                  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25) !important;
+                              }
+                              
+                              .facebook:hover {
+                                  background: linear-gradient(135deg, #0c5fcd 0%, #1877f2 100%) !important;
+                              }
+                              
+                              .twitter:hover {
+                                  background: linear-gradient(135deg, #0d8bd9 0%, #1da1f2 100%) !important;
+                              }
+                              
+                              .linkedin:hover {
+                                  background: linear-gradient(135deg, #005885 0%, #0077b5 100%) !important;
+                              }
+                              
+                              .pinterest:hover {
+                                  background: linear-gradient(135deg, #bd001c 0%, #e60023 100%) !important;
+                              }
+                              
+                              .instagram:hover,
+                              a.a2a_button_whatsapp:hover {
+                                  background: linear-gradient(135deg, #1ebe57 0%, #25d366 100%) !important;
+                              }
+                              
+                              /* Quantity Buttons Hover Effects */
+                              .qtminus:hover,
+                              .qtplus:hover {
+                                  background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+                                  color: white !important;
+                                  border-color: #10b981 !important;
+                                  transform: scale(1.05);
+                              }
+                              
+                              /* Add to Cart Button Hover */
+                              #addcrt:hover {
+                                  transform: translateY(-2px);
+                                  box-shadow: 0 10px 30px rgba(16, 185, 129, 0.5) !important;
+                                  background: linear-gradient(135deg, #059669 0%, #10b981 100%) !important;
+                              }
+                              
+                              /* Buy Now Button Hover */
+                              #qaddcrt:hover {
+                                  transform: translateY(-2px);
+                                  box-shadow: 0 10px 30px rgba(31, 41, 55, 0.5) !important;
+                                  background: linear-gradient(135deg, #111827 0%, #1f2937 100%) !important;
+                              }
+                          </style>
                           <script async src="https://static.addtoany.com/menu/page.js"></script>
                    </div>
 

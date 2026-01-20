@@ -49,6 +49,65 @@
 
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
+<!-- Onset Font -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@100..900&display=swap" rel="stylesheet">
+<style>
+    /* Apply Onest font to all elements by default */
+    * {
+        font-family: 'Onest', sans-serif !important;
+        font-weight: 500 !important;
+    }
+
+    /* Make headings bolder */
+    h1, h2, h3, h4, h5, h6, .font-weight-bold, strong, b {
+        font-weight: 700 !important;
+    }
+
+    /* Override for icofont icons - target all icofont elements */
+    i[class^="icofont-"],
+    i[class*=" icofont-"],
+    .icofont,
+    i[class^="icofont-"]::before,
+    i[class*=" icofont-"]::before,
+    .icofont::before {
+        font-family: "icofont" !important;
+        font-weight: normal !important;
+        font-style: normal !important;
+    }
+
+    /* Override for FontAwesome solid icons */
+    i[class^="fa-"],
+    i[class*=" fa-"],
+    .fa,
+    .fas,
+    i[class^="fa-"]::before,
+    i[class*=" fa-"]::before,
+    .fa::before,
+    .fas::before {
+        font-family: "Font Awesome 5 Free" !important;
+        font-weight: 900 !important;
+        font-style: normal !important;
+    }
+
+    /* Override for FontAwesome regular icons */
+    .far,
+    .far::before {
+        font-family: "Font Awesome 5 Free" !important;
+        font-weight: 400 !important;
+        font-style: normal !important;
+    }
+
+    /* Override for FontAwesome brands */
+    .fab,
+    .fab::before {
+        font-family: "Font Awesome 5 Brands" !important;
+        font-weight: 400 !important;
+        font-style: normal !important;
+    }
+</style>
+
 	</head>
 	<body id="page-top">
 

@@ -78,6 +78,7 @@ Route::prefix('admin')->group(function () {
         Route::get('/order/{id}/invoice', 'Admin\OrderController@invoice')->name('admin-order-invoice');
         Route::get('/order/{id}/print', 'Admin\OrderController@printpage')->name('admin-order-print');
         Route::get('/order/{id1}/status/{status}', 'Admin\OrderController@status')->name('admin-order-status');
+        Route::delete('/order/{id}', 'Admin\OrderController@destroy')->name('admin-order-delete');
         Route::post('/order/email/', 'Admin\OrderController@emailsub')->name('admin-order-emailsub');
         Route::post('/order/{id}/license', 'Admin\OrderController@license')->name('admin-order-license');
         Route::post('/order/product-submit', 'Admin\OrderController@product_submit')->name('admin-order-product-submit');

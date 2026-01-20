@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-     
+
 @section('styles')
 
 <style type="text/css">
@@ -17,13 +17,13 @@
                         <div class="mr-breadcrumb">
                             <div class="row">
                                 <div class="col-lg-12">
-                                        <h4 class="heading">{{ __('Order Details') }} <a class="add-btn" href="javascript:history.back();"><i class="fas fa-arrow-left"></i> {{ __('Back') }}</a></h4>
+                                        <h4 class="heading">{{ __('Order Details') }} <a class="add-btn" href="{{ route('admin-orders-all') }}"><i class="fas fa-arrow-left"></i> {{ __('Back') }}</a></h4>
                                         <ul class="links">
                                             <li>
                                                 <a href="{{ route('admin.dashboard') }}">{{ __('Dashboard') }} </a>
                                             </li>
                                             <li>
-                                                <a href="javascript:;">{{ __('Orders') }}</a>
+                                                <a href="{{ route('admin-orders-all') }}">{{ __('Orders') }}</a>
                                             </li>
                                             <li>
                                                 <a href="javascript:;">{{ __('Order Details') }}</a>
@@ -54,25 +54,58 @@
                                                     <td class="45%" width="45%">{{$order->order_number}}</td>
                                                 </tr>
                                                 <tr>
+                                                    <th width="45%">{{ __('Customer Name') }}</th>
+                                                    <td width="10%">:</td>
+                                                    <td width="45%">{{$order->customer_name}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th width="45%">{{ __('Phone Number') }}</th>
+                                                    <td width="10%">:</td>
+                                                    <td width="45%">{{$order->customer_phone}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th width="45%">{{ __('Shipping Method') }}</th>
+                                                    <td width="10%">:</td>
+                                                    <td width="45%">
+                                                        @if(!empty($order->shipping_title))
+                                                            @php
+                                                                $displayTitle = $order->shipping_title;
+                                                                // Always show Arabic in admin dashboard if available
+                                                                $shipping = \App\Models\Shipping::where('title', $order->shipping_title)->first();
+                                                                if($shipping && !empty($shipping->title_ar)) {
+                                                                    $displayTitle = $shipping->title_ar;
+                                                                }
+                                                            @endphp
+                                                            <strong>{{ $displayTitle }}</strong>
+                                                        @elseif($order->shipping == "pickup")
+                                                            <strong>{{ __('Pickup') }}</strong>
+                                                        @elseif($order->shipping == "shipto")
+                                                            @if($order->shipping_cost > 0)
+                                                                <strong>{{ __('Delivery') }}</strong>
+                                                            @else
+                                                                <strong>{{ __('Pickup') }}</strong>
+                                                            @endif
+                                                        @else
+                                                            <strong>{{ ucfirst($order->shipping) }}</strong>
+                                                        @endif
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th width="45%">{{ __('Shipping Cost') }}</th>
+                                                    <td width="10%">:</td>
+                                                    <td width="45%">
+                                                        @if($order->shipping_cost > 0)
+                                                            <strong>{{ \PriceHelper::showOrderCurrencyPrice($order->shipping_cost,$order->currency_sign) }}</strong>
+                                                        @else
+                                                            <span class="badge badge-success">{{ __('Free') }}</span>
+                                                        @endif
+                                                    </td>
+                                                </tr>
+                                                <tr>
                                                     <th width="45%">{{ __('Total Product') }}</th>
                                                     <td width="10%">:</td>
                                                     <td width="45%">{{$order->totalQty}}</td>
                                                 </tr>
-                                                @if($order->shipping_title != null)
-                                                    <tr>
-                                                        <th width="45%">{{ __('Shipping Method') }}</th>
-                                                        <td width="10%">:</td>
-                                                        <td width="45%">{{ $order->shipping_title }}</td>
-                                                    </tr>
-                                                @endif
-
-                                                @if($order->shipping_cost != 0)
-                                                <tr>
-                                                    <th width="45%">{{ __('Shipping Cost') }}</th>
-                                                    <td width="10%">:</td>
-                                                    <td width="45%">{{ \PriceHelper::showOrderCurrencyPrice($order->shipping_cost,$order->currency_sign) }}</td>
-                                                </tr>
-                                                @endif
 
                                                 @if($order->tax != 0)
                                                 <tr>
@@ -107,7 +140,7 @@
                                                     <td width="10%">:</td>
                                                     <td width="45%">{{ \PriceHelper::showOrderCurrencyPrice(($order->wallet_price  * $order->currency_value),$order->currency_sign) }}</td>
                                                 </tr>
-    
+
                                                     @if($order->method != "Wallet")
                                                     <tr>
                                                         <th width="45%">{{$order->method}}</th>
@@ -133,36 +166,54 @@
                                                     <td width="10%">:</td>
                                                     <td width="45%">{{$order->method}}</td>
                                                 </tr>
-                
+
                                                 @if($order->method != "Cash On Delivery" && $order->method != "Wallet")
                                                 @if($order->method=="Stripe")
                                                 <tr>
                                                     <th width="45%">{{$order->method}} {{ __('Charge ID') }}</th>
                                                     <td width="10%">:</td>
                                                     <td width="45%">{{$order->charge_id}}</td>
-                                                </tr>                        
+                                                </tr>
                                                 @endif
                                                 <tr>
                                                     <th width="45%">{{$order->method}} {{ __('Transaction ID') }}</th>
                                                     <td width="10%">:</td>
                                                     <td width="45%">{{$order->txnid}}</td>
-                                                </tr>                         
+                                                </tr>
                                                 @endif
 
 
+                                                <tr>
                                                     <th width="45%">{{ __('Payment Status') }}</th>
-                                                    <th width="10%">:</th>
+                                                    <td width="10%">:</td>
+                                                    <td width="45%">
+                                                        @if($order->payment_status == 'Pending')
+                                                            <span class='badge badge-danger'>{{__('Unpaid')}}</span>
+                                                        @else
+                                                            <span class='badge badge-success'>{{__('Paid')}}</span>
+                                                        @endif
+                                                    </td>
+                                                </tr>
 
-                                                    @if($order->payment_status == 'Pending')
-                                                        <span class='badge badge-danger'>{{__('Unpaid')}}</span>
-                                                    @else 
-                                                        <span class='badge badge-success'>{{__('Paid')}}</span>
-                                                    @endif
+                                                <tr>
+                                                    <th width="45%">{{ __('Order Status') }}</th>
+                                                    <td width="10%">:</td>
+                                                    <td width="45%">
+                                                        <select class="form-control order-status-select" data-order-id="{{ $order->id }}" style="padding: 5px 10px; font-size: 13px;">
+                                                            <option value="pending" {{ $order->status == 'pending' ? 'selected' : '' }}>{{ __('Pending') }}</option>
+                                                            <option value="processing" {{ $order->status == 'processing' ? 'selected' : '' }}>{{ __('Processing') }}</option>
+                                                            <option value="completed" {{ $order->status == 'completed' ? 'selected' : '' }}>{{ __('Completed') }}</option>
+                                                            <option value="declined" {{ $order->status == 'declined' ? 'selected' : '' }}>{{ __('Declined') }}</option>
+                                                        </select>
+                                                    </td>
+                                                </tr>
 
                                                 @if(!empty($order->order_note))
+                                                <tr>
                                                     <th width="45%">{{ __('Order Note') }}</th>
-                                                    <th width="10%">:</th>
+                                                    <td width="10%">:</td>
                                                     <td width="45%">{{$order->order_note}}</td>
+                                                </tr>
                                                 @endif
 
                                                 </tbody>
@@ -177,179 +228,140 @@
                                     <div class="special-box">
                                         <div class="heading-area">
                                             <h4 class="title">
-                                            {{ __('Billing Details') }} 
-                                            <a class="f15" href="javascript:;" data-toggle="modal" data-target="#billing-details-edit"><i class="fas fa-edit"></i>{{ __("Edit") }}</a>
+                                            {{ __('Products Ordered') }}
+                                            <a class="f15" href="javascript:;" data-toggle="modal" data-target="#add-product"><i class="fas fa-plus"></i>{{ __("Add Product") }}</a>
                                             </h4>
                                         </div>
                                         <div class="table-responsive-sm">
-                                            <table class="table">
+                                            <table class="table table-sm">
+                                                <thead>
+                                                    <tr>
+                                                        <th>{{ __('Product') }}</th>
+                                                        <th>{{ __('Details') }}</th>
+                                                        <th>{{ __('Qty') }}</th>
+                                                        <th>{{ __('Unit Price') }}</th>
+                                                        <th>{{ __('Total') }}</th>
+                                                    </tr>
+                                                </thead>
                                                 <tbody>
+                                                    @php
+                                                        // Get products from vendor_orders relationship
+                                                        $vendorOrders = $order->vendororders;
+                                                        $allProducts = [];
+
+                                                        // Debug: Check vendor orders
+                                                        if(config('app.debug')) {
+                                                            echo "<!-- Vendor Orders Count: " . count($vendorOrders) . " -->";
+                                                        }
+
+                                                        // Try to get products from vendor_orders first
+                                                        foreach($vendorOrders as $vo) {
+                                                            if(!empty($vo->cart)) {
+                                                                $voCart = json_decode($vo->cart, true);
+                                                                if(config('app.debug')) {
+                                                                    echo "<!-- Vendor Order Cart Keys: " . print_r(array_keys($voCart ?? []), true) . " -->";
+                                                                }
+                                                                // Cart structure: {"5348": {...product data...}}
+                                                                // The key is the product ID
+                                                                if(is_array($voCart)) {
+                                                                    foreach($voCart as $productId => $productData) {
+                                                                        // Skip non-product keys like 'items', 'totalQty', etc
+                                                                        if(is_numeric($productId)) {
+                                                                            $productData['product_id'] = $productId;
+                                                                            $allProducts[] = $productData;
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+
+                                                        // If no products found in vendor_orders, try main order cart
+                                                        if(count($allProducts) == 0 && !empty($order->cart)) {
+                                                            $mainCart = json_decode($order->cart, true);
+                                                            if(config('app.debug')) {
+                                                                echo "<!-- Main Order Cart Keys: " . print_r(array_keys($mainCart ?? []), true) . " -->";
+                                                            }
+
+                                                            if(is_array($mainCart)) {
+                                                                foreach($mainCart as $productId => $productData) {
+                                                                    // Skip non-product keys
+                                                                    if(is_numeric($productId)) {
+                                                                        $productData['product_id'] = $productId;
+                                                                        $allProducts[] = $productData;
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    @endphp
+
+                                                    @if(count($allProducts) > 0)
+                                                        @foreach($allProducts as $product)
                                                         <tr>
-                                                            <th width="45%">{{ __('Name') }}</th>
-                                                            <th width="10%">:</th>
-                                                            <td width="45%">{{$order->customer_name}}</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th width="45%">{{ __('Email') }}</th>
-                                                            <th width="10%">:</th>
-                                                            <td width="45%">{{$order->customer_email}}</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th width="45%">{{ __('Phone') }}</th>
-                                                            <th width="10%">:</th>
-                                                            <td width="45%">{{$order->customer_phone}}</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th width="45%">{{ __('Address') }}</th>
-                                                            <th width="10%">:</th>
-                                                            <td width="45%">{{$order->customer_address}}</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th width="45%">{{ __('Country') }}</th>
-                                                            <th width="10%">:</th>
-                                                            <td width="45%">{{$order->customer_country}}</td>
-                                                        </tr>
-                                                        @if($order->customer_state != null)
-                                                        <tr>
-                                                            <th width="45%">{{ __('State') }}</th>
-                                                            <th width="10%">:</th>
-                                                            <td width="45%">{{$order->customer_state}}</td>
-                                                        </tr>
-                                                        @endif
-                                                        <tr>
-                                                            <th width="45%">{{ __('City') }}</th>
-                                                            <th width="10%">:</th>
-                                                            <td width="45%">{{$order->customer_city}}</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th width="45%">{{ __('Postal Code') }}</th>
-                                                            <th width="10%">:</th>
-                                                            <td width="45%">{{$order->customer_zip}}</td>
-                                                        </tr>
-                                                        @if($order->coupon_code != null)
-                                                        <tr>
-                                                            <th width="45%">{{ __('Coupon Code') }}</th>
-                                                            <th width="10%">:</th>
-                                                            <td width="45%">{{$order->coupon_code}}</td>
-                                                        </tr>
-                                                        @endif
-                                                        @if($order->coupon_discount != null)
-                                                        <tr>
-                                                            <th width="45%">{{ __('Coupon Discount') }}</th>
-                                                            <th width="10%">:</th>
-                                                            @if($gs->currency_format == 0)
-                                                            <td width="45%">{{ $order->currency_sign }}{{ $order->coupon_discount }}</td>
-                                                            @else 
-                                                            <td width="45%">{{ $order->coupon_discount }}{{ $order->currency_sign }}</td>
-                                                            @endif
-                                                        </tr>
-                                                        @endif
-                                                        @if($order->affilate_user != null)
-                                                        <tr>
-                                                            <th width="45%">{{ __('Affilate User') }}</th>
-                                                            <th width="10%">:</th>
-                                                            <td width="45%">
-                                                                @if( App\Models\User::where('id', $order->affilate_user)->exists() )
-                                                                {{  App\Models\User::where('id', $order->affilate_user)->first()->name  }}
-                                                                @else 
-                                                                {{ __('Deleted') }}
+                                                            <td>
+                                                                @if(isset($product['item']['name']))
+                                                                    <strong>{{ $product['item']['name'] }}</strong>
+                                                                    @if(isset($product['item']['photo']))
+                                                                        <br><img src="{{ asset('assets/images/products/'.$product['item']['photo']) }}" alt="" style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px; margin-top: 5px;">
+                                                                    @endif
+                                                                @else
+                                                                    {{ __('Product') }}
+                                                                @endif
+                                                            </td>
+                                                            <td>
+                                                                @if(!empty($product['size']))
+                                                                    <span class="badge badge-secondary">{{ __('Size') }}: {{ $product['size'] }}</span><br>
+                                                                @endif
+                                                                @if(!empty($product['color']))
+                                                                    <span class="badge badge-info">{{ __('Color') }}: {{ $product['color'] }}</span><br>
+                                                                @endif
+                                                                @if(isset($product['item']['stock']))
+                                                                    <small class="text-muted">{{ __('Stock') }}: {{ $product['item']['stock'] ?? 'N/A' }}</small>
+                                                                @endif
+                                                            </td>
+                                                            <td>
+                                                                <strong>{{ $product['qty'] ?? 1 }}</strong>
+                                                            </td>
+                                                            <td>
+                                                                @php
+                                                                    $unitPrice = $product['item_price'] ?? $product['price'] ?? 0;
+                                                                @endphp
+                                                                @if($unitPrice > 0)
+                                                                    {{ \PriceHelper::showOrderCurrencyPrice(($unitPrice * $order->currency_value), $order->currency_sign) }}
+                                                                @else
+                                                                    -
+                                                                @endif
+                                                            </td>
+                                                            <td>
+                                                                @php
+                                                                    $unitPrice = $product['item_price'] ?? $product['price'] ?? 0;
+                                                                    $qty = $product['qty'] ?? 1;
+                                                                    $totalPrice = $unitPrice * $qty;
+                                                                @endphp
+                                                                @if($totalPrice > 0)
+                                                                    <strong>{{ \PriceHelper::showOrderCurrencyPrice(($totalPrice * $order->currency_value), $order->currency_sign) }}</strong>
+                                                                @else
+                                                                    -
                                                                 @endif
                                                             </td>
                                                         </tr>
-                                                        @endif
-                                                        @if($order->affilate_charge != null)
+                                                        @endforeach
+                                                    @else
                                                         <tr>
-                                                            <th width="45%">{{ __('Affilate Charge') }}</th>
-                                                            <th width="10%">:</th>
-                                                            <td width="45%">
-                                                                {{ \PriceHelper::showOrderCurrencyPrice(($order->affilate_charge * $order->currency_value),$order->currency_sign) }}
+                                                            <td colspan="5" class="text-center text-muted">
+                                                                <small>{{ __('No products found') }}</small>
                                                             </td>
-
                                                         </tr>
-                                                        @endif
+                                                    @endif
                                                 </tbody>
                                             </table>
                                         </div>
                                     </div>
                                 </div>
-
-                                @if($order->dp == 0)
-                                <div class="col-lg-6">
-                                    <div class="special-box">
-                                        <div class="heading-area">
-                                            <h4 class="title">
-                                            {{ __('Shipping Details') }} 
-                                            <a class="f15" href="javascript:;" data-toggle="modal" data-target="#shipping-details-edit"><i class="fas fa-edit"></i>{{ __("Edit") }}</a>
-                                            </h4>
-                                        </div>
-                                        <div class="table-responsive-sm">
-                                            <table class="table">
-                                                <tbody>
-                            @if($order->shipping == "pickup")
-                        <tr>
-                                    <th width="45%"><strong>{{ __('Pickup Location') }}:</strong></th>
-                                    <th width="10%">:</th>
-                                    <td width="45%">{{$order->pickup_location}}</td>
-                                </tr>
-                            @else
-                                <tr>
-                                    <th width="45%"><strong>{{ __('Name') }}:</strong></th>
-                                    <th width="10%">:</th>
-                <td>{{$order->shipping_name == null ? $order->customer_name : $order->shipping_name}}</td>
-                                </tr>
-                                <tr>
-                                    <th width="45%"><strong>{{ __('Email') }}:</strong></th>
-                                    <th width="10%">:</th>
-                <td width="45%">{{$order->shipping_email == null ? $order->customer_email : $order->shipping_email}}</td>
-                                </tr>
-                                <tr>
-                                    <th width="45%"><strong>{{ __('Phone') }}:</strong></th>
-                                    <th width="10%">:</th>
-                <td width="45%">{{$order->shipping_phone == null ? $order->customer_phone : $order->shipping_phone}}</td>
-                                </tr>
-                                <tr>
-                                    <th width="45%"><strong>{{ __('Address') }}:</strong></th>
-                                    <th width="10%">:</th>
-                <td width="45%">{{$order->shipping_address == null ? $order->customer_address : $order->shipping_address}}</td>
-                                </tr>
-                                <tr>
-                                    <th width="45%"><strong>{{ __('Country') }}:</strong></th>
-                                    <th width="10%">:</th>
-                <td width="45%">{{$order->shipping_country == null ? $order->customer_country : $order->shipping_country}}</td>
-                                </tr>
-
-
-                                <tr>
-                                    <th width="45%">{{ __('State') }}</th>
-                                    <th width="10%">:</th>
-                                    <td width="45%">{{$order->shipping_state == null ?  $order->customer_state: $order->shipping_state }}</td>
-                                </tr>
-
-
-
-                                <tr>
-                                    <th width="45%"><strong>{{ __('City') }}:</strong></th>
-                                    <th width="10%">:</th>
-                <td width="45%">{{$order->shipping_city == null ? $order->customer_city : $order->shipping_city}}</td>
-                                </tr>
-                                <tr>
-                                    <th width="45%"><strong>{{ __('Postal Code') }}:</strong></th>
-                                    <th width="10%">:</th>
-                <td width="45%">{{$order->shipping_zip == null ? $order->customer_zip : $order->shipping_zip}}</td>
-                                </tr>
-
-
-                                @endif
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                                @endif
                             </div>
 
 
 
+                            {{-- Products section moved to top, this is commented out
                             <div class="row">
                                     <div class="col-lg-12 order-details-table">
                                         <div class="mr-table">
@@ -373,11 +385,18 @@
                                                             </tr>
                                                         </thead>
                                                         <tbody>
+                                                    {{-- Debug: Show cart structure --}}
+                                                    @if(config('app.debug'))
+                                                        <!-- Cart structure: {{ print_r(array_keys($cart ?? []), true) }} -->
+                                                        @if(isset($cart['items']))
+                                                            <!-- Items count: {{ count($cart['items']) }} -->
+                                                        @endif
+                                                    @endif
 
-                                                          
+                                                    @if(isset($cart['items']) && is_array($cart['items']) && count($cart['items']) > 0)
                                                     @foreach($cart['items'] as $key1 => $product)
                                                     <tr>
-                                            
+
                                                 <td><input type="hidden" value="{{$key1}}">{{ $product['item']['id'] }}</td>
 
                                                 <td>
@@ -390,7 +409,7 @@
                                                 @else
                                                 {{ __('Vendor Removed') }}
                                                 @endif
-                                                @else 
+                                                @else
                                                 <a  href="javascript:;">{{ App\Models\Admin::find(1)->shop_name }}</a>
                                                 @endif
 
@@ -399,8 +418,8 @@
                                                 @if($product['item']['user_id'] != 0)
                                                 @php
                                                 $user = App\Models\VendorOrder::where('order_id','=',$order->id)->where('user_id','=',$product['item']['user_id'])->first();
-                                              
-                                                
+
+
                                                 @endphp
 
                                                     @if($order->dp == 1 && $order->payment_status == 'Completed')
@@ -437,10 +456,10 @@
                                                 @else
                                                 <a target="_blank" href="{{ route('front.product', $product['item']['slug']) }}">{{mb_strlen($product['item']['name'],'utf-8') > 30 ? mb_substr($product['item']['name'],0,30,'utf-8').'...' : $product['item']['name']}}</a>
                                                 @endif
-                                                @else 
+                                                @else
 
                                                 <a target="_blank" href="{{ route('front.product', $product['item']['slug']) }}">{{mb_strlen($product['item']['name'],'utf-8') > 30 ? mb_substr($product['item']['name'],0,30,'utf-8').'...' : $product['item']['name']}}</a>
-                                            
+
                                                 @endif
 
 
@@ -478,7 +497,7 @@
                                                     @foreach( array_combine(explode(',', $product['keys']), explode(',', $product['values']))  as $key => $value)
                                                     <p>
 
-                                                        <b>{{ ucwords(str_replace('_', ' ', $key))  }} : </b> {{ $value }} 
+                                                        <b>{{ ucwords(str_replace('_', ' ', $key))  }} : </b> {{ $value }}
 
                                                     </p>
                                                     @endforeach
@@ -507,6 +526,11 @@
 
                                     </tr>
                                 @endforeach
+                                @else
+                                    <tr>
+                                        <td colspan="7" class="text-center">{{ __('No items found in cart') }}</td>
+                                    </tr>
+                                @endif
                                                         </tbody>
                                                     </table>
                                             </div>
@@ -518,6 +542,7 @@
                                         </a>
                                     </div>
                                 </div>
+                            --}}
                         </div>
                     </div>
                     <!-- Main Content Area End -->
@@ -583,7 +608,7 @@
 {{--  EDIT PRODUCT MODAL --}}
 
 <div class="modal fade" id="edit-product-modal" tabindex="-1" role="dialog" aria-labelledby="edit-product-modal" aria-hidden="true">
-																		
+
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="submit-loader">
@@ -617,31 +642,31 @@
 <div class="modal fade" id="delete-product-modal" tabindex="-1" role="dialog" aria-labelledby="modal1" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
-  
+
       <div class="modal-header d-block text-center">
           <h4 class="modal-title d-inline-block">{{ __('Confirm Delete') }}</h4>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
               </button>
       </div>
-  
+
         <!-- Modal body -->
         <div class="modal-body">
               <p class="text-center">{{ __('You are about to delete this item from this cart.') }}</p>
               <p class="text-center">{{ __('Do you want to proceed?') }}</p>
         </div>
-  
+
         <!-- Modal footer -->
         <div class="modal-footer justify-content-center">
               <button type="button" class="btn btn-default" data-dismiss="modal">{{ __('Cancel') }}</button>
               <a class="btn btn-danger btn-ok">{{ __('Delete') }}</a>
 
         </div>
-  
+
       </div>
     </div>
   </div>
-  
+
   {{-- DELETE PRODUCT MODAL ENDS --}}
 
 
@@ -733,6 +758,32 @@
 (function($) {
 		"use strict";
 
+  // Order Status Change Handler
+  $('.order-status-select').on('change', function() {
+      var orderId = $(this).data('order-id');
+      var newStatus = $(this).val();
+      var selectElement = $(this);
+
+      if(confirm('Are you sure you want to change the order status to "' + newStatus + '"?')) {
+          $.ajax({
+              url: '{{ url('admin/order') }}/' + orderId + '/status/' + newStatus,
+              type: 'GET',
+              success: function(response) {
+                  alert('Order status updated successfully!');
+                  location.reload();
+              },
+              error: function(xhr) {
+                  alert('Error updating order status. Please try again.');
+                  // Revert to previous value
+                  selectElement.prop('selectedIndex', 0);
+              }
+          });
+      } else {
+          // User cancelled, revert to original value
+          selectElement.prop('selectedIndex', 0);
+      }
+  });
+
   function disablekey()
   {
     document.onkeydown = function (e)
@@ -762,8 +813,8 @@ $('#example2').dataTable( {
      $(document).on('click','.license' , function(e){
         var id = $(this).parent().find('input[type=hidden]').val();
         var key = $(this).parent().parent().find('input[type=hidden]').val();
-        $('#key').html(id);  
-        $('#license-key').val(key);    
+        $('#key').html(id);
+        $('#license-key').val(key);
     });
     $(document).on('click','#license-edit' , function(e){
         $(this).hide();

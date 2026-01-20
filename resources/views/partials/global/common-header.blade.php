@@ -262,6 +262,80 @@
        text-decoration: none !important;
    }
 
+   /* ============================================
+      CRITICAL ICON FIX - Prevent Font Override
+      ============================================ */
+
+   /* FontAwesome Icons - Must use FontAwesome font */
+   .fa, .fas, .far, .fal, .fab,
+   i.fa, i.fas, i.far, i.fal, i.fab,
+   [class*="fa-"],
+   i[class*="fa-"] {
+       font-family: 'Font Awesome 5 Free', 'Font Awesome 5 Brands', 'FontAwesome' !important;
+       font-weight: 900 !important;
+   }
+
+   /* Flaticon Icons - Must use Flaticon font */
+   [class*="flaticon"],
+   i[class*="flaticon"],
+   .flaticon-menu-2,
+   .flaticon-search,
+   .flaticon-user-3,
+   i.flaticon-menu-2,
+   i.flaticon-search,
+   i.flaticon-user-3 {
+       font-family: 'Flaticon' !important;
+       font-weight: normal !important;
+   }
+
+   /* Icofont Icons - Must use Icofont font */
+   .icofont,
+   i.icofont,
+   [class*="icofont"],
+   i[class*="icofont"] {
+       font-family: 'IcoFont' !important;
+       font-weight: normal !important;
+   }
+
+   /* Override Arabic font for all icons */
+   html[lang="ar"] .fa,
+   html[lang="ar"] i.fa,
+   html[lang="ar"] .fas,
+   html[lang="ar"] i.fas,
+   html[lang="ar"] .far,
+   html[lang="ar"] i.far,
+   html[lang="ar"] .fal,
+   html[lang="ar"] i.fal,
+   html[lang="ar"] .fab,
+   html[lang="ar"] i.fab,
+   html[lang="ar"] [class*="fa-"],
+   html[lang="ar"] i[class*="fa-"] {
+       font-family: 'Font Awesome 5 Free', 'Font Awesome 5 Brands', 'FontAwesome' !important;
+       font-weight: 900 !important;
+   }
+
+   html[lang="ar"] [class*="flaticon"],
+   html[lang="ar"] i[class*="flaticon"] {
+       font-family: 'Flaticon' !important;
+       font-weight: normal !important;
+   }
+
+   html[lang="ar"] .icofont,
+   html[lang="ar"] i.icofont,
+   html[lang="ar"] [class*="icofont"],
+   html[lang="ar"] i[class*="icofont"] {
+       font-family: 'IcoFont' !important;
+       font-weight: normal !important;
+   }
+
+   /* Ensure icons are NOT text (prevent font inheritance) */
+   .fa::before, .fas::before, .far::before, .fal::before, .fab::before,
+   [class*="flaticon"]::before,
+   [class*="icofont"]::before {
+       font-family: inherit !important;
+   }
+
+
    /* DISABLE any fixed-top or alternate headers */
    /* Make header sticky on scroll */
    .ecommerce-header {
@@ -298,31 +372,31 @@
        overflow-x: hidden !important;
    }
 
-   /* Logo Sizing - Bigger 150px height */
+   /* Logo Sizing - 20% smaller (120px from 150px) */
    img.nav-logo.header-logo-responsive,
    .navbar-brand img.nav-logo,
    .header-logo-responsive {
-       height: 150px !important;
+       height: 120px !important;
        width: auto !important;
-       max-height: 150px !important;
+       max-height: 120px !important;
        object-fit: contain !important;
    }
    @media (min-width: 768px) {
        img.nav-logo.header-logo-responsive,
        .navbar-brand img.nav-logo,
        .header-logo-responsive {
-           height: 150px !important;
+           height: 120px !important;
            width: auto !important;
-           max-height: 150px !important;
+           max-height: 120px !important;
        }
    }
    @media (min-width: 1200px) {
        img.nav-logo.header-logo-responsive,
        .navbar-brand img.nav-logo,
        .header-logo-responsive {
-           height: 150px !important;
+           height: 120px !important;
            width: auto !important;
-           max-height: 150px !important;
+           max-height: 120px !important;
        }
    }
 
@@ -383,30 +457,42 @@
        }
    }
 
-   /* Mobile Menu Improvements - Keep items in one line */
+   /* Mobile Menu Improvements - 20% height reduction, vertically centered */
    @media (max-width: 991px) {
        .ecommerce-header {
-           height: 70px !important; /* Increased height */
-           padding: 8px 20px !important; /* Better padding */
-           min-height: 70px !important;
+           height: 56px !important; /* 20% smaller from 70px */
+           padding: 6px 16px !important;
+           min-height: 56px !important;
+           max-height: 56px !important;
+           display: flex !important;
+           align-items: center !important;
+           justify-content: center !important;
        }
 
        .main-nav {
-           width: 100% !important; /* Full width */
+           width: 100% !important;
            padding: 0 !important;
+           height: 56px !important;
+           display: flex !important;
+           align-items: center !important;
        }
 
        .main-nav .container-fluid {
            width: 100% !important;
            max-width: 100% !important;
-           padding: 0 15px !important;
+           padding: 0 12px !important;
+           height: 56px !important;
+           display: flex !important;
+           align-items: center !important;
        }
 
        .main-nav-row {
-           height: 80px !important;
-           min-height: 80px !important;
+           height: 56px !important; /* 20% smaller from 70px */
+           min-height: 56px !important;
+           max-height: 56px !important;
            display: flex !important;
            align-items: center !important;
+           justify-content: space-between !important;
            flex-wrap: nowrap !important;
            width: 100% !important;
        }
@@ -419,7 +505,9 @@
            text-align: left !important;
            display: flex !important;
            align-items: center !important;
-           height: 100% !important;
+           justify-content: flex-start !important;
+           height: 56px !important;
+           max-height: 56px !important;
        }
 
        .icons-col {
@@ -428,7 +516,9 @@
            width: auto !important;
            display: flex !important;
            align-items: center !important;
-           height: 100% !important;
+           justify-content: center !important;
+           height: 56px !important;
+           max-height: 56px !important;
        }
 
        .language-col {
@@ -438,22 +528,26 @@
            text-align: right !important;
            display: flex !important;
            align-items: center !important;
-           height: 100% !important;
+           justify-content: flex-end !important;
+           height: 56px !important;
+           max-height: 56px !important;
        }
 
        .phone-flag-col {
            display: flex !important;
            align-items: center !important;
-           height: 100% !important;
+           justify-content: center !important;
+           height: 56px !important;
+           max-height: 56px !important;
        }
 
-       /* Logo - BIGGER on mobile (60px + 20% = 72px) */
+       /* Logo - Mobile size (58px, 20% smaller from 72px) */
        img.nav-logo.header-logo-responsive,
        .navbar-brand img.nav-logo,
        .header-logo-responsive {
-           height: 72px !important;
+           height: 58px !important;
            width: auto !important;
-           max-height: 72px !important;
+           max-height: 58px !important;
        }
 
        .logo-col .navbar,
@@ -866,19 +960,19 @@
        display: inline-flex;
        align-items: center;
        justify-content: center;
-       padding: 6px;
-       border-radius: 8px;
+       padding: 0 !important;
+       border-radius: 0 !important;
        transition: all 0.3s ease;
-       background: #f8fafc;
-       border: 2px solid #e2e8f0;
-       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+       background: transparent !important;
+       border: none !important;
+       box-shadow: none !important;
    }
 
    .language-flag-selector .flag-link:hover {
        transform: translateY(-2px) scale(1.05);
-       box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
-       border-color: #10b981;
-       background: #f0fdf4;
+       box-shadow: none !important;
+       border: none !important;
+       background: transparent !important;
    }
 
    .language-flag-selector .flag-icon {
@@ -893,8 +987,8 @@
    /* Desktop - Larger and more prominent */
    @media (min-width: 992px) {
        .language-flag-selector .flag-link {
-           padding: 8px;
-           border-radius: 10px;
+           padding: 0 !important;
+           border-radius: 0 !important;
        }
 
        .language-flag-selector .flag-icon {
@@ -2089,17 +2183,6 @@ $pages = App\Models\Page::get();
                         </a>
                     </div>
 
-                    <!-- Shopping Cart Icon -->
-                    <div class="header-cart-1 header-icon-enhanced">
-                        <a href="{{ route('front.cart') }}" class="cart" title="View Cart">
-                            <div class="cart-icon"><i class="flaticon-shopping-cart flat-mini"></i> <span class="header-cart-count" id="cart-count">{{ Session::has('cart') ? count(Session::get('cart')->items) : '0' }}</span></div>
-                            <div class="cart-wrap">
-                                <div class="cart-text">Cart</div>
-                                <span class="header-cart-count">{{ Session::has('cart') ? count(Session::get('cart')->items) : '0' }}</span>
-                            </div>
-                        </a>
-                    </div>
-
                     <!-- Account Icon - redirects based on login status -->
                     <div class="header-cart-1 header-icon-enhanced">
                         @if (Auth::check())
@@ -2137,11 +2220,11 @@ $pages = App\Models\Page::get();
                     @foreach($languges as $language)
                         @if(($language->language == 'Arabic' || $language->language == 'العربية' || $language->language == 'ar') && ($currentLangCode != 'Arabic' && $currentLangCode != 'العربية' && $currentLangCode != 'ar'))
                             <a href="{{route('front.language',$language->id)}}" class="flag-link" title="العربية">
-                                <img src="https://flagcdn.com/w40/jo.png" alt="Jordan Flag" class="flag-icon">
+                                <img src="{{asset('assets/images/ar.png')}}" alt="Arabic" class="flag-icon">
                             </a>
                         @elseif(($language->language == 'English' || $language->language == 'en') && ($currentLangCode == 'Arabic' || $currentLangCode == 'العربية' || $currentLangCode == 'ar'))
                             <a href="{{route('front.language',$language->id)}}" class="flag-link" title="English">
-                                <img src="https://flagcdn.com/w40/gb.png" alt="UK Flag" class="flag-icon">
+                                <img src="{{asset('assets/images/uk.png')}}" alt="English" class="flag-icon">
                             </a>
                         @endif
                     @endforeach

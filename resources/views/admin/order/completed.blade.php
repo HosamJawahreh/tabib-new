@@ -1,6 +1,6 @@
-@extends('layouts.admin') 
+@extends('layouts.admin')
 
-@section('content')  
+@section('content')
 
 
 <input type="hidden" id="headerdata" value="{{ __('ORDER') }}">
@@ -24,11 +24,54 @@
                                 </div>
                             </div>
                         </div>
+
+                        <!-- Professional Order Filters -->
+                        <div class="order-filters-container">
+                            <div class="filter-header">
+                                <div class="filter-title">
+                                    <i class="fas fa-filter"></i>
+                                    {{ __('Order Filters') }}
+                                </div>
+                            </div>
+
+                            <div class="status-filters">
+                                <a href="{{ route('admin-orders-all') }}" class="status-btn all">
+                                    <i class="fas fa-list"></i>
+                                    <span>{{ __('All Orders') }}</span>
+                                    <span class="status-count">{{ \App\Models\Order::count() }}</span>
+                                </a>
+
+                                <a href="{{ route('admin-orders-all') }}?status=pending" class="status-btn pending">
+                                    <i class="fas fa-clock"></i>
+                                    <span>{{ __('Pending') }}</span>
+                                    <span class="status-count">{{ \App\Models\Order::where('status', 'pending')->count() }}</span>
+                                </a>
+
+                                <a href="{{ route('admin-orders-all') }}?status=processing" class="status-btn processing">
+                                    <i class="fas fa-spinner"></i>
+                                    <span>{{ __('Processing') }}</span>
+                                    <span class="status-count">{{ \App\Models\Order::where('status', 'processing')->count() }}</span>
+                                </a>
+
+                                <a href="{{ route('admin-orders-all') }}?status=completed" class="status-btn completed active">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>{{ __('Completed') }}</span>
+                                    <span class="status-count">{{ \App\Models\Order::where('status', 'completed')->count() }}</span>
+                                </a>
+
+                                <a href="{{ route('admin-orders-all') }}?status=declined" class="status-btn declined">
+                                    <i class="fas fa-times-circle"></i>
+                                    <span>{{ __('Declined') }}</span>
+                                    <span class="status-count">{{ \App\Models\Order::where('status', 'declined')->count() }}</span>
+                                </a>
+                            </div>
+                        </div>
+
                         <div class="product-area">
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="mr-table allproduct">
-                                        @include('alerts.admin.form-success') 
+                                        @include('alerts.admin.form-success')
                                         <div class="table-responsive">
                                         <div class="gocover" style="background: url({{asset('assets/images/'.$gs->admin_loader)}}) no-repeat scroll center center rgba(45, 45, 45, 0.5);"></div>
                                                 <table id="geniustable" class="table table-hover dt-responsive" cellspacing="0" width="100%">
@@ -131,7 +174,7 @@
 {{-- ADD / EDIT MODAL --}}
 
                 <div class="modal fade" id="modal1" tabindex="-1" role="dialog" aria-labelledby="modal1" aria-hidden="true">
-                                        
+
                     <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content">
                                                 <div class="submit-loader">
@@ -156,7 +199,7 @@
 
 {{-- ADD / EDIT MODAL ENDS --}}
 
-@endsection    
+@endsection
 
 @section('scripts')
 
@@ -183,7 +226,7 @@
                     processing: '<img src="{{asset('assets/images/'.$gs->admin_loader)}}">'
                 },
                 drawCallback : function( settings ) {
-                        $('.select').niceSelect();  
+                        $('.select').niceSelect();
                 }
             });
 
@@ -192,5 +235,5 @@
     </script>
 
 {{-- DATA TABLE --}}
-    
-@endsection   
+
+@endsection

@@ -324,19 +324,55 @@
 
     /* Responsive Design */
     @media (max-width: 768px) {
+        /* Reduce category section size on mobile */
+        .category-navigation-section {
+            padding: 5px 0;
+            margin-bottom: 10px;
+        }
+
+        .main-categories-row {
+            gap: 6px;
+            padding: 3px;
+            margin-bottom: 3px;
+        }
+
         .main-category-item {
-            font-size: 14px;
-            padding: 10px 18px;
+            font-size: 12px;
+            padding: 8px 14px;
+            border-radius: 20px;
+        }
+
+        .subcategories-row {
+            gap: 6px;
+            padding: 3px;
+            margin-bottom: 3px;
         }
 
         .subcategory-item {
-            font-size: 13px;
-            padding: 8px 16px;
+            font-size: 11px;
+            padding: 6px 12px;
+            border-radius: 16px;
+        }
+
+        .childcategories-row {
+            gap: 5px;
+            padding: 3px;
         }
 
         .childcategory-item {
-            font-size: 12px;
-            padding: 6px 14px;
+            font-size: 10px;
+            padding: 5px 10px;
+            border-radius: 14px;
+        }
+
+        .badge-count {
+            font-size: 9px;
+            padding: 0px 3px;
+        }
+
+        .badge-count-sm {
+            font-size: 8px;
+            padding: 0px 3px;
         }
     }
 

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ app()->getLocale() }}">
+<html lang="{{ app()->getLocale() }}" dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}">
 
 <head>
     <meta charset="UTF-8">
@@ -64,6 +64,13 @@
     <link rel="stylesheet" href="{{ asset('assets/front/css/responsive-fixes.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/front/css/header-responsive.css') }}?v={{ time() }}">
     <link rel="stylesheet" href="{{ asset('assets/front/css/slider-header-fix.css') }}?v={{ time() }}">
+    <link rel="stylesheet" href="{{ asset('assets/front/css/footer-spacing-fix.css') }}?v={{ time() }}">
+
+    <!-- RTL/LTR Support with Professional Arabic Font -->
+    <link rel="stylesheet" href="{{ asset('assets/front/css/rtl-ltr-arabic-font.css') }}?v={{ time() }}">
+
+    <!-- Product Image & Scrollbar Fixes -->
+    <link rel="stylesheet" href="{{ asset('assets/front/css/product-image-scrollbar-fix.css') }}?v={{ time() }}">
 
     <link rel="stylesheet" href="{{ asset('assets/front/css/category/default.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/front/css/toastr.min.css') }}">

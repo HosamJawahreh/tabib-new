@@ -21,7 +21,7 @@
 </div>
 <!-- breadcrumb -->
 <!-- Check Out Area Start -->
-<section class="checkout">
+<section class="checkout" style="padding-bottom: 30px !important; min-height: auto !important; height: auto !important;">
    <div class="container">
       <div class="row">
          <div class="col-lg-12">
@@ -254,10 +254,11 @@
                               <div class="row">
                                  <div class="col-lg-12 mt-4">
                                     <div class="bottom-area text-center">
-                                       <button type="submit" id="place-order-btn" class="place-order-btn">
-                                          <span class="btn-text">{{ __('Place Order') }}</span>
+                                       <button type="submit" id="place-order-btn" class="place-order-btn" style="flex: 1 1 auto; min-width: 250px; max-width: 350px; padding: 16px 24px; font-size: 1.05rem; height: 56px; border-radius: 12px; font-weight: 600; display: inline-flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.2); background: #1f2937 !important; border: 2px solid #374151 !important; color: #ffffff !important; transition: all 0.3s ease; text-transform: none; letter-spacing: normal;">
+                                          <i class="icofont-check-circled" style="color: #ffffff !important; font-size: 1.2rem;"></i>
+                                          <span class="btn-text" style="color: #ffffff !important;">{{ __('Place Order') }}</span>
                                           <span class="btn-loader d-none">
-                                             <i class="fas fa-spinner fa-spin"></i> {{ __('Processing...') }}
+                                             <i class="fas fa-spinner fa-spin"></i>
                                           </span>
                                        </button>
                                     </div>
@@ -535,36 +536,69 @@
                   @if($digital == 0)
                   {{-- Shipping Method Area --}}
                   <div class="packeging-area">
-                     <h4 class="title">طريقة الشحن</h4>
-                     @foreach($shipping_data as $data)
-                     <div class="radio-design">
-                        <input type="radio" class="shipping" data-form="{{$data->title}}" id="free-shepping{{ $data->id }}" name="shipping" value="{{ round($data->price * $curr->value,2) }}" {{ ($loop->first) ? 'checked' : '' }}>
-                        <span class="checkmark"></span>
-                        <label for="free-shepping{{ $data->id }}">
-                        <strong>{{ $data->title }}</strong>
-                        @if($data->price != 0)
-                        - <strong>{{ $curr->sign }}{{ round($data->price * $curr->value,2) }}</strong>
+                     <h4 class="title" style="font-size: 16px; font-weight: 600; margin-bottom: 15px; color: #333;">
+                        @if($langg->rtl == 1)
+                        طريقة الشحن
                         @else
-                        - <strong>{{ __('Free') }}</strong>
+                        {{ __('Shipping Method') }}
                         @endif
-                        </label>
+                     </h4>
+                     @foreach($shipping_data as $data)
+                     <div class="shipping-option" style="margin-bottom: 10px; padding: 12px 15px; border: 1px solid #e0e0e0; border-radius: 8px; background: #fff; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: all 0.3s ease;"
+                          onclick="document.getElementById('free-shepping{{ $data->id }}').click();">
+                        <div style="display: flex; align-items: center; flex: 1;">
+                           <input type="radio"
+                                  class="shipping"
+                                  data-form="{{$data->title}}"
+                                  id="free-shepping{{ $data->id }}"
+                                  name="shipping"
+                                  value="{{ round($data->price * $curr->value,2) }}"
+                                  {{ ($loop->first) ? 'checked' : '' }}
+                                  style="margin-left: 0; margin-right: 10px; width: 18px; height: 18px; cursor: pointer;">
+                           <label for="free-shepping{{ $data->id }}" style="margin: 0; cursor: pointer; font-size: 14px; color: #333; display: flex; align-items: center; justify-content: space-between; width: 100%;">
+                              <span style="font-weight: 500;">
+                                 @if($langg->rtl == 1 && !empty($data->title_ar))
+                                 {{ $data->title_ar }}
+                                 @else
+                                 {{ $data->title }}
+                                 @endif
+                              </span>
+                              <span style="font-weight: 600; color: #28a745; margin-right: 10px;">
+                                 @if($data->price != 0)
+                                 {{ $curr->sign }}{{ round($data->price * $curr->value,2) }}
+                                 @else
+                                 @if($langg->rtl == 1)
+                                 استلام من الفرع - {{ $curr->sign }}0.01
+                                 @else
+                                 {{ __('Free') }}
+                                 @endif
+                                 @endif
+                              </span>
+                           </label>
+                        </div>
                      </div>
                      @endforeach
                   </div>
 
                   {{-- Final Price Area --}}
-                  <div class="final-price">
-                     <span>{{ __('Final Price') }} :</span>
+                  <div class="final-price" style="margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
+                     <span style="font-size: 16px; font-weight: 600; color: #333;">
+                        @if($langg->rtl == 1)
+                        السعر النهائي :
+                        @else
+                        {{ __('Final Price') }} :
+                        @endif
+                     </span>
                      @if(Session::has('coupon_total'))
                      @if($gs->currency_format == 0)
-                     <span id="final-cost">{{ $curr->sign }}{{ $totalPrice }}</span>
+                     <span id="final-cost" style="font-size: 18px; font-weight: 700; color: #28a745;">{{ $curr->sign }}{{ $totalPrice }}</span>
                      @else
-                     <span id="final-cost">{{ $totalPrice }}{{ $curr->sign }}</span>
+                     <span id="final-cost" style="font-size: 18px; font-weight: 700; color: #28a745;">{{ $totalPrice }}{{ $curr->sign }}</span>
                      @endif
                      @elseif(Session::has('coupon_total1'))
-                     <span id="final-cost"> {{ Session::get('coupon_total1') }}</span>
+                     <span id="final-cost" style="font-size: 18px; font-weight: 700; color: #28a745;"> {{ Session::get('coupon_total1') }}</span>
                      @else
-                     <span id="final-cost">{{ App\Models\Product::convertPrice($totalPrice) }}</span>
+                     <span id="final-cost" style="font-size: 18px; font-weight: 700; color: #28a745;">{{ App\Models\Product::convertPrice($totalPrice) }}</span>
                      @endif
                   </div>
                   @endif
@@ -1353,8 +1387,17 @@
          }
       });
 
+      // Add shipping cost
+      var shippingCost = 0;
+      var selectedShipping = $('input[name="shipping"]:checked');
+      if (selectedShipping.length > 0) {
+         shippingCost = parseFloat(selectedShipping.val()) || 0;
+      }
+
+      var finalTotal = grandTotal + shippingCost;
+
       // Update grand total and final cost
-      var formattedTotal = grandTotal.toFixed(2);
+      var formattedTotal = finalTotal.toFixed(2);
       if (currencyFormat == 0) {
          $('#total-cost').text(currencySign + formattedTotal);
          $('#final-cost').text(currencySign + formattedTotal);
@@ -1363,8 +1406,14 @@
          $('#final-cost').text(formattedTotal + currencySign);
       }
 
-      console.log('Prices updated. Grand total:', formattedTotal);
+      console.log('Prices updated. Grand total:', grandTotal, 'Shipping:', shippingCost, 'Final:', formattedTotal);
    }
+
+   // Update prices when shipping method changes
+   $(document).on('change', 'input[name="shipping"]', function() {
+      console.log('Shipping method changed');
+      updateCheckoutPrices();
+   });
 
    $(document).on('click', '.qtplus-checkout', function() {
       console.log('Plus button clicked');
@@ -1387,6 +1436,10 @@
 
 
 </script>
+
+<!-- Footer Spacing Fix CSS -->
+<link rel="stylesheet" href="{{asset('assets/front/css/footer-spacing-fix.css')}}">
+
 <style>
 .cart-products-list {
    max-height: 400px;
@@ -1404,6 +1457,27 @@
 
 .cart-product-item .qty-controls input {
    border-radius: 3px;
+}
+
+/* Shipping Options Styling */
+.shipping-option {
+   transition: all 0.3s ease;
+}
+
+.shipping-option:hover {
+   border-color: #28a745 !important;
+   background: #f8fff8 !important;
+   box-shadow: 0 2px 8px rgba(40, 167, 69, 0.1);
+}
+
+.shipping-option:has(input[type="radio"]:checked) {
+   border-color: #28a745 !important;
+   background: #f0fff4 !important;
+   box-shadow: 0 2px 8px rgba(40, 167, 69, 0.15);
+}
+
+.shipping-option input[type="radio"] {
+   accent-color: #28a745;
 }
 
 .payment-method-section .radio-design {
@@ -1495,59 +1569,42 @@
    user-select: none;
 }
 
-/* Place Order Button Styling */
+/* Place Order Button Styling - Matches Buy Now Button Design */
 .place-order-btn {
-   background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
-   color: #ffffff;
-   border: none;
-   padding: 16px 60px;
-   font-size: 18px;
-   font-weight: 600;
-   border-radius: 50px;
-   cursor: pointer;
-   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-   box-shadow: 0 6px 20px rgba(44, 62, 80, 0.3);
-   position: relative;
-   overflow: hidden;
-   text-transform: uppercase;
-   letter-spacing: 1px;
-   min-width: 250px;
+   background: #1f2937 !important;
+   border: 2px solid #374151 !important;
+   color: #ffffff !important;
+   transition: all 0.3s ease !important;
+}
+
+.place-order-btn:hover,
+.place-order-btn:focus,
+.place-order-btn:active {
+   background: #111827 !important;
+   color: #ffffff !important;
+   transform: translateY(-2px);
+   box-shadow: 0 6px 16px rgba(0,0,0,0.3) !important;
+   border-color: #4b5563 !important;
+}
+
+.place-order-btn:hover span,
+.place-order-btn:focus span,
+.place-order-btn:active span,
+.place-order-btn:hover i,
+.place-order-btn:focus i,
+.place-order-btn:active i {
+   color: #ffffff !important;
 }
 
 .place-order-btn::before {
-   content: '';
-   position: absolute;
-   top: 50%;
-   left: 50%;
-   width: 0;
-   height: 0;
-   border-radius: 50%;
-   background: rgba(255, 255, 255, 0.1);
-   transform: translate(-50%, -50%);
-   transition: width 0.6s, height 0.6s;
-}
-
-.place-order-btn:hover::before {
-   width: 300px;
-   height: 300px;
-}
-
-.place-order-btn:hover {
-   transform: translateY(-3px);
-   box-shadow: 0 10px 30px rgba(44, 62, 80, 0.4);
-   background: linear-gradient(135deg, #34495e 0%, #2c3e50 100%);
-}
-
-.place-order-btn:active {
-   transform: translateY(-1px);
-   box-shadow: 0 4px 15px rgba(44, 62, 80, 0.3);
+   display: none;
 }
 
 .place-order-btn:disabled {
-   background: #95a5a6;
+   background: #6b7280 !important;
    cursor: not-allowed;
-   transform: none;
-   box-shadow: 0 2px 10px rgba(149, 165, 166, 0.2);
+   transform: none !important;
+   box-shadow: 0 2px 10px rgba(107, 114, 128, 0.2) !important;
 }
 
 .place-order-btn .btn-text,
@@ -1581,6 +1638,30 @@
 @keyframes spin {
    0% { transform: rotate(0deg); }
    100% { transform: rotate(360deg); }
+}
+
+/* Checkout Page Footer Spacing Fixes */
+.checkout {
+   padding-bottom: 30px !important;
+   min-height: auto !important;
+}
+
+body {
+   min-height: auto !important;
+   height: auto !important;
+}
+
+#page_wrapper {
+   min-height: auto !important;
+   height: auto !important;
+}
+
+.min-vh-100 {
+   min-height: auto !important;
+}
+
+.vh-100 {
+   height: auto !important;
 }
 </style>
 

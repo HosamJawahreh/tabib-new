@@ -29,7 +29,7 @@ class FrontendController extends FrontBaseController
     public function language($id)
     {
         Session::put('language', $id);
-        return redirect()->route('front.index');
+        return redirect()->back();
     }
 
     // LANGUAGE SECTION ENDS

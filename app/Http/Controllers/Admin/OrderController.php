@@ -66,23 +66,91 @@ class OrderController extends AdminBaseController
             $datas = Order::where('status','=','declined')->latest('id')->get();
         }
         else{
-          $datas = Order::latest('id')->get();  
+          $datas = Order::latest('id')->get();
         }
-         
+
          //--- Integrating This Collection Into Datatables
          return Datatables::of($datas)
+                            ->addColumn('customer_name', function(Order $data) {
+                                return $data->customer_name;
+                            })
+                            ->addColumn('customer_phone', function(Order $data) {
+                                return $data->customer_phone;
+                            })
                             ->editColumn('id', function(Order $data) {
                                 $id = '<a href="'.route('admin-order-invoice',$data->id).'">'.$data->order_number.'</a>';
                                 return $id;
                             })
+                            ->addColumn('shipping_method', function(Order $data) {
+                                // Show Arabic title if available (always in admin dashboard)
+                                if(!empty($data->shipping_title)) {
+                                    $displayTitle = $data->shipping_title;
+
+                                    // Try to get the shipping record to check for Arabic title
+                                    $shipping = \App\Models\Shipping::where('title', $data->shipping_title)->first();
+                                    if($shipping && !empty($shipping->title_ar)) {
+                                        // Always show Arabic in admin dashboard
+                                        $displayTitle = $shipping->title_ar;
+                                    }
+
+                                    return '<span style="font-size: 12px; font-weight: 600;">'.$displayTitle.'</span>';
+                                }
+                                // Check shipping field value
+                                elseif($data->shipping == 'pickup') {
+                                    return '<span class="badge badge-info" style="font-size: 11px;">Pickup</span>';
+                                }
+                                elseif($data->shipping == 'shipto') {
+                                    // Check if shipping cost indicates delivery method
+                                    if($data->shipping_cost > 0) {
+                                        return '<span class="badge badge-success" style="font-size: 11px;">Delivery</span>';
+                                    } else {
+                                        return '<span class="badge badge-info" style="font-size: 11px;">Pickup</span>';
+                                    }
+                                }
+                                else {
+                                    return '<span class="badge badge-secondary" style="font-size: 11px;">'.ucfirst($data->shipping).'</span>';
+                                }
+                            })
+                            ->addColumn('shipping_cost', function(Order $data) {
+                                if($data->shipping_cost > 0) {
+                                    return \PriceHelper::showOrderCurrencyPrice($data->shipping_cost, $data->currency_sign);
+                                } else {
+                                    return '<span class="badge badge-success" style="font-size: 11px;">Free</span>';
+                                }
+                            })
                             ->editColumn('pay_amount', function (Order $data) {
                                 return \PriceHelper::showOrderCurrencyPrice((($data->pay_amount + $data->wallet_price) * $data->currency_value),$data->currency_sign);
                             })
+                            ->addColumn('status', function(Order $data) {
+                                $statusOptions = [
+                                    'pending' => __('New Order'),
+                                    'processing' => __('Processing'),
+                                    'completed' => __('Completed'),
+                                    'declined' => __('Declined')
+                                ];
+
+                                $dropdown = '<select class="order-status-select form-control" data-order-id="'.$data->id.'" style="width: auto; display: inline-block; font-size: 13px;">';
+                                foreach($statusOptions as $value => $label) {
+                                    $selected = ($data->status == $value) ? 'selected' : '';
+                                    $dropdown .= '<option value="'.$value.'" '.$selected.'>'.$label.'</option>';
+                                }
+                                $dropdown .= '</select>';
+
+                                return $dropdown;
+                            })
                             ->addColumn('action', function(Order $data) {
-                                $orders = '<a href="javascript:;" data-href="'. route('admin-order-edit',$data->id) .'" class="delivery" data-toggle="modal" data-target="#modal1"><i class="fas fa-dollar-sign"></i> '.__('Delivery Status').'</a>';
-                                return '<div class="godropdown"><button class="go-dropdown-toggle">'.__('Actions').'<i class="fas fa-chevron-down"></i></button><div class="action-list"><a href="' . route('admin-order-show',$data->id) . '" > <i class="fas fa-eye"></i> '.__('View Details').'</a><a href="javascript:;" class="send" data-email="'. $data->customer_email .'" data-toggle="modal" data-target="#vendorform"><i class="fas fa-envelope"></i> '.__('Send').'</a><a href="javascript:;" data-href="'. route('admin-order-track',$data->id) .'" class="track" data-toggle="modal" data-target="#modal1"><i class="fas fa-truck"></i> '.__('Track Order').'</a>'.$orders.'</div></div>';
-                            }) 
-                            ->rawColumns(['id','action'])
+                                $actions = '
+                                <div class="action-btns-inline">
+                                    <a href="' . route('admin-order-show',$data->id) . '" class="btn-action btn-view" title="'.__('View Details').'">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                    <a href="javascript:;" data-href="'. route('admin-order-delete',$data->id) .'" class="btn-action btn-delete" data-toggle="modal" data-target="#confirm-delete" title="'.__('Delete').'">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                </div>';
+                                return $actions;
+                            })
+                            ->rawColumns(['id','shipping_method','shipping_cost','status','action'])
                             ->toJson(); //--- Returning Json Data To Client Side
     }
 
@@ -90,6 +158,16 @@ class OrderController extends AdminBaseController
     {
         $order = Order::findOrFail($id);
         $cart = json_decode($order->cart, true);
+
+        // Debug: Check cart structure
+        // If cart doesn't have items or is null, initialize empty structure
+        if (!is_array($cart)) {
+            $cart = ['items' => [], 'totalQty' => 0, 'totalPrice' => 0];
+        } elseif (!isset($cart['items'])) {
+            // Cart exists but no items key, initialize it
+            $cart['items'] = [];
+        }
+
         return view('admin.order.details',compact('order','cart'));
     }
 
@@ -112,14 +190,14 @@ class OrderController extends AdminBaseController
             ];
 
             $mailer = new GeniusMailer();
-            $mailer->sendCustomMail($data);                
+            $mailer->sendCustomMail($data);
         }
         else
         {
             $data = 0;
             $headers = "From: ".$gs->from_name."<".$gs->from_email.">";
             $mail = mail($request->to,$request->subject,$request->message,$headers);
-            if($mail) {   
+            if($mail) {
                 $data = 1;
             }
         }
@@ -141,7 +219,7 @@ class OrderController extends AdminBaseController
         $cart['items'][$request->license_key]['license'] = $request->license;
         $new_cart = json_encode($cart);
         $order->cart = $new_cart;
-        $order->update();       
+        $order->update();
         $msg = __('Successfully Changed The License Key.');
         return redirect()->back()->with('license',$msg);
     }
@@ -166,15 +244,15 @@ class OrderController extends AdminBaseController
                     $input['status'] = "completed";
                     $data->update($input);
                     //--- Logic Section Ends
-            
-                //--- Redirect Section          
+
+                //--- Redirect Section
                 $msg = __('Status Updated Successfully.');
-                return response()->json($msg);    
-                //--- Redirect Section Ends     
+                return response()->json($msg);
+                //--- Redirect Section Ends
 
                 }else{
                 if ($input['status'] == "completed"){
-        
+
                     foreach($data->vendororders as $vorder)
                     {
                         $uprice = User::find($vorder->user_id);
@@ -211,9 +289,9 @@ class OrderController extends AdminBaseController
                         'subject' => 'Your order '.$data->order_number.' is Confirmed!',
                         'body' => "Hello ".$data->customer_name.","."\n Thank you for shopping with us. We are looking forward to your next visit.",
                     ];
-        
+
                     $mailer = new GeniusMailer();
-                    $mailer->sendCustomMail($maildata);                
+                    $mailer->sendCustomMail($maildata);
 
                 }
                 if ($input['status'] == "declined"){
@@ -237,10 +315,10 @@ class OrderController extends AdminBaseController
                         $x = (string)$prod['stock'];
                         if($x != null)
                         {
-            
+
                             $product = Product::findOrFail($prod['item']['id']);
                             $product->stock = $product->stock + $prod['qty'];
-                            $product->update();               
+                            $product->update();
                         }
                     }
 
@@ -256,7 +334,7 @@ class OrderController extends AdminBaseController
                             $temp[$prod['size_key']] = $x;
                             $temp1 = implode(',', $temp);
                             $product->size_qty =  $temp1;
-                            $product->update();               
+                            $product->update();
                         }
                     }
 
@@ -267,7 +345,7 @@ class OrderController extends AdminBaseController
                     ];
                     $mailer = new GeniusMailer();
                     $mailer->sendCustomMail($maildata);
-                    
+
                 }
 
                 $data->update($input);
@@ -280,36 +358,36 @@ class OrderController extends AdminBaseController
                             $ck->order_id = $id;
                             $ck->title = $title;
                             $ck->text = $request->track_text;
-                            $ck->update();  
+                            $ck->update();
                         }
                         else {
                             $data = new OrderTrack;
                             $data->order_id = $id;
                             $data->title = $title;
                             $data->text = $request->track_text;
-                            $data->save();            
-                        }    
-                } 
+                            $data->save();
+                        }
+                }
 
-            //--- Redirect Section          
+            //--- Redirect Section
             $msg = __('Status Updated Successfully.');
-            return response()->json($msg);    
-            //--- Redirect Section Ends    
-        
+            return response()->json($msg);
+            //--- Redirect Section Ends
+
             }
         }
 
         $data->update($input);
-        //--- Redirect Section          
+        //--- Redirect Section
         $msg = __('Data Updated Successfully.');
-        return redirect()->back()->with('success',$msg);    
-        //--- Redirect Section Ends  
+        return redirect()->back()->with('success',$msg);
+        //--- Redirect Section Ends
 
     }
 
     public function product_submit(Request $request)
     {
-       
+
         $order_id = $request->order_id;
         $order = Order::find($order_id);
         $sku = $request->sku;
@@ -334,7 +412,7 @@ class OrderController extends AdminBaseController
 
     public function addcart($id)
     {
-       
+
         $order = Order::find($id);
         $id = $_GET['id'];
         $qty = $_GET['qty'];
@@ -380,29 +458,29 @@ class OrderController extends AdminBaseController
                 {
                     $lcheck = 1;
                     break;
-                }                    
+                }
             }
                 if($lcheck == 0)
                 {
-                    return 0;            
+                    return 0;
                 }
         }
         if(empty($size))
         {
             if(!empty($prod->size))
-            { 
+            {
             $size = trim($prod->size[0]);
-            } 
-            $size = str_replace(' ','-',$size);          
+            }
+            $size = str_replace(' ','-',$size);
         }
- 
+
         if(empty($color))
         {
             if(!empty($prod->color))
-            { 
+            {
             $color = $prod->color[0];
-                    
-            }          
+
+            }
         }
         $color = str_replace('#','',$color);
         $oldCart = Session::has('admin_cart') ? Session::get('admin_cart') : null;
@@ -420,7 +498,7 @@ class OrderController extends AdminBaseController
                     $minimum_qty = (int)$prod->minimum_qty;
                     if($qty < $minimum_qty){
                         return redirect()->back()->with('unsuccess',__('Minimum Quantity is:').' '.$prod->minimum_qty);
-                    } 
+                    }
                 }
             }
         }else{
@@ -428,10 +506,10 @@ class OrderController extends AdminBaseController
             if($prod->minimum_qty != null){
                 if($qty < $minimum_qty){
                     return redirect()->back()->with('unsuccess',__('Minimum Quantity is:').' '.$prod->minimum_qty);
-                } 
+                }
             }
         }
-        
+
         $cart->addnum($prod, $prod->id, $qty, $size,$color,$size_qty,$size_price,$size_key,$keys,$values,$affilate_user);
         if($cart->items[$id.$size.$color.str_replace(str_split(' ,'),'',$values)]['dp'] == 1)
         {
@@ -446,12 +524,12 @@ class OrderController extends AdminBaseController
             if($cart->items[$id.$size.$color.str_replace(str_split(' ,'),'',$values)]['qty'] > $cart->items[$id.$size.$color.str_replace(str_split(' ,'),'',$values)]['size_qty'])
             {
                 return redirect()->back()->with('unsuccess',__('Out Of Stock.'));
-            }           
+            }
         }
 
         $cart->totalPrice = 0;
         foreach($cart->items as $data)
-        $cart->totalPrice += $data['price'];       
+        $cart->totalPrice += $data['price'];
         $o_cart = json_decode($order->cart, true);
 
         $order->totalQty = $order->totalQty + $cart->items[$id.$size.$color.str_replace(str_split(' ,'),'',$values)]['qty'];
@@ -474,7 +552,7 @@ class OrderController extends AdminBaseController
         $order->cart = json_encode($o_cart);
         $order->update();
         return redirect()->back()->with('success',__('Successfully Added To Cart.'));
-    } 
+    }
 
 
     public function product_edit($id,$itemid,$orderid)
@@ -545,29 +623,29 @@ class OrderController extends AdminBaseController
                 {
                     $lcheck = 1;
                     break;
-                }                    
+                }
             }
                 if($lcheck == 0)
                 {
-                    return 0;            
+                    return 0;
                 }
         }
         if(empty($size))
         {
             if(!empty($prod->size))
-            { 
+            {
             $size = trim($prod->size[0]);
-            } 
-            $size = str_replace(' ','-',$size);          
+            }
+            $size = str_replace(' ','-',$size);
         }
- 
+
         if(empty($color))
         {
             if(!empty($prod->color))
-            { 
+            {
             $color = $prod->color[0];
-                    
-            }          
+
+            }
         }
         $color = str_replace('#','',$color);
         $oldCart = Session::has('admin_cart') ? Session::get('admin_cart') : null;
@@ -585,7 +663,7 @@ class OrderController extends AdminBaseController
                     $minimum_qty = (int)$prod->minimum_qty;
                     if($qty < $minimum_qty){
                         return redirect()->back()->with('unsuccess',__('Minimum Quantity is:').' '.$prod->minimum_qty);
-                    } 
+                    }
                 }
             }
         }else{
@@ -593,10 +671,10 @@ class OrderController extends AdminBaseController
             if($prod->minimum_qty != null){
                 if($qty < $minimum_qty){
                     return redirect()->back()->with('unsuccess',__('Minimum Quantity is:').' '.$prod->minimum_qty);
-                } 
+                }
             }
         }
-        
+
         $cart->addnum($prod, $prod->id, $qty, $size,$color,$size_qty,$size_price,$size_key,$keys,$values,$affilate_user);
         if($cart->items[$id.$size.$color.str_replace(str_split(' ,'),'',$values)]['dp'] == 1)
         {
@@ -611,12 +689,12 @@ class OrderController extends AdminBaseController
             if($cart->items[$id.$size.$color.str_replace(str_split(' ,'),'',$values)]['qty'] > $cart->items[$id.$size.$color.str_replace(str_split(' ,'),'',$values)]['size_qty'])
             {
                 return redirect()->back()->with('unsuccess',__('Out Of Stock.'));
-            }           
+            }
         }
 
         $cart->totalPrice = 0;
         foreach($cart->items as $data)
-        $cart->totalPrice += $data['price'];       
+        $cart->totalPrice += $data['price'];
         $o_cart = json_decode($order->cart, true);
 
         if(!empty($o_cart['items'][$id.$size.$color.str_replace(str_split(' ,'),'',$values)])){
@@ -665,15 +743,15 @@ class OrderController extends AdminBaseController
 
             $order->totalQty = $order->totalQty + $cart->items[$id.$size.$color.str_replace(str_split(' ,'),'',$values)]['qty'];
             $order->pay_amount = $order->pay_amount + $cart->items[$id.$size.$color.str_replace(str_split(' ,'),'',$values)]['price'];
-    
+
             $prev_qty = 0;
             $prev_price = 0;
-    
+
             if(!empty($o_cart['items'][$id.$size.$color.str_replace(str_split(' ,'),'',$values)])){
                 $prev_qty = $o_cart['items'][$id.$size.$color.str_replace(str_split(' ,'),'',$values)]['qty'];
                 $prev_price = $o_cart['items'][$id.$size.$color.str_replace(str_split(' ,'),'',$values)]['price'];
             }
-    
+
             $prev_qty += $cart->items[$id.$size.$color.str_replace(str_split(' ,'),'',$values)]['qty'];
             $prev_price += $cart->items[$id.$size.$color.str_replace(str_split(' ,'),'',$values)]['price'];
 
@@ -689,7 +767,7 @@ class OrderController extends AdminBaseController
         $order->update();
         return redirect()->back()->with('success',__('Successfully Updated The Cart.'));
 
-    } 
+    }
 
 
     public function product_delete($id,$orderid)
@@ -710,5 +788,34 @@ class OrderController extends AdminBaseController
         return redirect()->back()->with('success',__('Successfully Deleted From The Cart.'));
     }
 
+    public function status($id1, $status)
+    {
+        $data = Order::findOrFail($id1);
+        $data->status = $status;
+        $data->update();
+
+        // Also update all vendor orders with the same status
+        foreach($data->vendororders as $vo) {
+            $vo->status = $status;
+            $vo->update();
+        }
+
+        return response()->json(['success' => true, 'message' => 'Order status updated successfully']);
+    }
+
+    public function destroy($id)
+    {
+        $order = Order::findOrFail($id);
+
+        // Delete related vendor orders
+        foreach($order->vendororders as $vo) {
+            $vo->delete();
+        }
+
+        // Delete the order
+        $order->delete();
+
+        return response()->json(['success' => true, 'message' => 'Order deleted successfully']);
+    }
 
 }

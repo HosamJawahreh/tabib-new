@@ -58,7 +58,8 @@
 												<div class="col-lg-6">
 													<div class="form-group">
 														<label style="font-weight: 600; color: #2d3748; font-size: 14px; display: flex; align-items: center; margin-bottom: 8px;">
-															<img src="{{ asset('assets/flags/english.png') }}"
+															<img src="{{ asset('assets/images/uk.png') }}"
+																 alt="English"
 																 style="width: 24px; height: 18px; margin-right: 10px; border-radius: 3px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);"
 																 onerror="this.style.display='none'">
 															{{ __('Product Name (English)') }} *
@@ -78,9 +79,14 @@
 														<div class="col-lg-6">
 															<div class="form-group">
 																<label style="font-weight: 600; color: #2d3748; font-size: 14px; display: flex; align-items: center; margin-bottom: 8px;">
-																	<img src="{{ asset('assets/flags/'.strtolower($language->language).'.png') }}"
+																	@php
+																		$flagMap = ['arabic' => 'ar', 'english' => 'uk'];
+																		$flagCode = $flagMap[strtolower($language->language)] ?? strtolower(substr($language->language, 0, 2));
+																	@endphp
+																	<img src="{{ asset('assets/images/'.$flagCode.'.png') }}"
+																		 alt="{{ $language->language }}"
 																		 style="width: 24px; height: 18px; margin-right: 10px; border-radius: 3px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);"
-																		 onerror="this.src='{{ asset('assets/flags/arabic.png') }}'">
+																		 onerror="this.style.display='none'">
 																	{{ __('Product Name (Arabic)') }} *
 																</label>
 																<input type="text"
@@ -316,7 +322,8 @@
 												{{-- English Description --}}
 												<div class="col-lg-6">
 													<label style="font-weight: 600; color: #2d3748; font-size: 14px; display: flex; align-items: center; margin-bottom: 10px;">
-														<img src="{{ asset('assets/flags/english.png') }}"
+														<img src="{{ asset('assets/images/uk.png') }}"
+															 alt="English"
 															 style="width: 24px; height: 18px; margin-right: 10px; border-radius: 3px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);"
 															 onerror="this.style.display='none'">
 														{{ __('Description (English)') }} *
@@ -334,9 +341,14 @@
 													@foreach($languages as $language)
 														<div class="col-lg-6">
 															<label style="font-weight: 600; color: #2d3748; font-size: 14px; display: flex; align-items: center; margin-bottom: 10px;">
-																<img src="{{ asset('assets/flags/'.strtolower($language->language).'.png') }}"
+																@php
+																	$flagMap = ['arabic' => 'ar', 'english' => 'uk'];
+																	$flagCode = $flagMap[strtolower($language->language)] ?? strtolower(substr($language->language, 0, 2));
+																@endphp
+																<img src="{{ asset('assets/images/'.$flagCode.'.png') }}"
+																	 alt="{{ $language->language }}"
 																	 style="width: 24px; height: 18px; margin-right: 10px; border-radius: 3px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);"
-																	 onerror="this.src='{{ asset('assets/flags/arabic.png') }}'">
+																	 onerror="this.style.display='none'">
 																{{ __('Description (Arabic)') }} *
 															</label>
 															<div class="text-editor">
