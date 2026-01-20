@@ -1254,7 +1254,7 @@
                   });
 
                   // Touch handling - ONLY when zoomed (buttons clicked)
-                  wrapper.addEventListener('touchstart', function(e) {
+                  mainImage.addEventListener('touchstart', function(e) {
                       if (!isZoomActive || scale <= 1) {
                           // NOT zoomed = Allow normal page scrolling
                           return;
@@ -1273,7 +1273,7 @@
                       }
                   }, { passive: false });
 
-                  wrapper.addEventListener('touchmove', function(e) {
+                  mainImage.addEventListener('touchmove', function(e) {
                       if (!isZoomActive || scale <= 1 || !isPanning) {
                           // NOT zoomed or not panning = Allow page scroll
                           return;
@@ -1295,11 +1295,11 @@
                       }
                   }, { passive: false });
 
-                  wrapper.addEventListener('touchend', function(e) {
+                  mainImage.addEventListener('touchend', function(e) {
                       isPanning = false;
                   }, { passive: false });
 
-                  wrapper.addEventListener('touchcancel', function(e) {
+                  mainImage.addEventListener('touchcancel', function(e) {
                       isPanning = false;
                   }, { passive: false });
 
@@ -1419,8 +1419,8 @@
                       window.scrollTo(0, parseInt(scrollY || '0') * -1);
                   }
 
-                  // Touch start - CRITICAL: Only handle two-finger touches or zoomed state
-                  wrapper.addEventListener('touchstart', function(e) {
+                  // Touch start - CRITICAL: Only handle two-finger touches or zoomed state on IMAGE only
+                  mainImage.addEventListener('touchstart', function(e) {
                       touchStarted = true;
 
                       if (e.touches.length === 2) {
@@ -1455,7 +1455,7 @@
                               e.preventDefault();
                               e.stopPropagation();
 
-                              const rect = wrapper.getBoundingClientRect();
+                              const rect = mainImage.getBoundingClientRect();
                               const touchX = e.touches[0].clientX - rect.left;
                               const touchY = e.touches[0].clientY - rect.top;
 
@@ -1474,7 +1474,7 @@
                   }, { passive: false });
 
                   // Touch move - CRITICAL: Only prevent default for two-finger or when panning zoomed image
-                  wrapper.addEventListener('touchmove', function(e) {
+                  mainImage.addEventListener('touchmove', function(e) {
                       if (e.touches.length === 2 && isPinching) {
                           // TWO FINGERS = Pinch zoom
                           e.preventDefault();
@@ -1506,7 +1506,7 @@
                   }, { passive: false });
 
                   // Touch end
-                  wrapper.addEventListener('touchend', function(e) {
+                  mainImage.addEventListener('touchend', function(e) {
                       if (e.touches.length === 0) {
                           isPinching = false;
                           isPanning = false;
@@ -1527,7 +1527,7 @@
                   }, { passive: false });
 
                   // Touch cancel - cleanup
-                  wrapper.addEventListener('touchcancel', function(e) {
+                  mainImage.addEventListener('touchcancel', function(e) {
                       isPinching = false;
                       isPanning = false;
                       touchStarted = false;
@@ -1542,7 +1542,7 @@
                   }, { passive: false });
 
                   // Double tap when zoomed to reset
-                  wrapper.addEventListener('touchend', function(e) {
+                  mainImage.addEventListener('touchend', function(e) {
                       if (e.touches.length === 0 && scale > 1 && !isPinching && !isPanning) {
                           const now = Date.now();
                           const timeSinceLastTap = now - lastTapTime;
