@@ -1182,25 +1182,25 @@
                           // ONE FINGER + Not zoomed = Check for double tap, otherwise allow scroll
                           const now = Date.now();
                           const timeSinceLastTap = now - lastTapTime;
-                          
+
                           if (timeSinceLastTap < 300 && timeSinceLastTap > 0) {
                               // Double tap detected - zoom in
                               e.preventDefault();
                               e.stopPropagation();
-                              
+
                               const rect = wrapper.getBoundingClientRect();
                               const touchX = e.touches[0].clientX - rect.left;
                               const touchY = e.touches[0].clientY - rect.top;
-                              
+
                               scale = 2;
                               posX = 0;
                               posY = 0;
                               lastScale = 2;
-                              
+
                               updateTransform(true);
                               lockBody();
                           }
-                          
+
                           lastTapTime = now;
                       }
                       // ONE FINGER + Not zoomed + Not double tap = Let page scroll normally (do nothing)
@@ -1279,7 +1279,7 @@
                       if (e.touches.length === 0 && scale > 1 && !isPinching && !isPanning) {
                           const now = Date.now();
                           const timeSinceLastTap = now - lastTapTime;
-                          
+
                           if (timeSinceLastTap < 300 && timeSinceLastTap > 0) {
                               // Double tap while zoomed - reset zoom
                               e.preventDefault();
