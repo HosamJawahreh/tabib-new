@@ -1,0 +1,162 @@
+/* ===============================================
+ * DESKTOP HEADER COMPLETE FIX
+ * ===============================================
+ * Fixes cart icon visibility issue
+ * Ensures proper z-index and visibility for all header elements
+ * =============================================== */
+
+@media (min-width: 992px) {
+    /* CART ICON FIX - Ensure it's visible and above search bar when needed */
+    .icons-col,
+    .col-auto.order-3.icons-col {
+        position: relative !important;
+        z-index: 1200 !important; /* Higher than search bar (1100) */
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        order: 3 !important;
+        margin-left: 0 !important;
+        padding-left: 15px !important;
+    }
+
+    /* Cart icon wrapper */
+    .header-cart-1,
+    .header-icon-enhanced {
+        position: relative !important;
+        z-index: 1200 !important;
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+
+    /* Cart icon itself */
+    .cart-icon,
+    .flaticon-shopping-cart {
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        position: relative !important;
+        z-index: 1200 !important;
+    }
+
+    /* Ensure cart count badge is visible */
+    .header-cart-count,
+    #cart-count {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        z-index: 1201 !important;
+    }
+
+    /* Account icon should also be visible */
+    .header-account,
+    .account-icon {
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        position: relative !important;
+        z-index: 1200 !important;
+    }
+
+    /* Phone icon should be visible */
+    .header-phone {
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        position: relative !important;
+        z-index: 1200 !important;
+    }
+
+    /* Ensure col-icons wrapper is visible */
+    .col-icons {
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        gap: 15px !important;
+        align-items: center !important;
+        position: relative !important;
+        z-index: 1200 !important;
+    }
+
+    /* Search bar should NOT cover icons */
+    .search-col,
+    .col.order-2.search-col {
+        z-index: 1100 !important; /* Lower than icons (1200) */
+        pointer-events: none !important; /* Let clicks pass through to icons */
+    }
+
+    /* But search input and button should be clickable */
+    .desktop-search-wrapper,
+    .enhanced-search-form,
+    .search-field,
+    .search-submit-btn,
+    .search-input-group {
+        pointer-events: auto !important;
+    }
+
+    /* Adjust header row to prevent overlap */
+    .header .row,
+    header .row {
+        position: relative !important;
+        min-height: 80px !important;
+    }
+}
+
+/* Additional specificity for cart icon visibility */
+@media (min-width: 992px) {
+    /* Force display for all icon elements */
+    .icons-col .header-cart-1,
+    .icons-col .header-icon-enhanced,
+    .icons-col a.cart,
+    .icons-col .cart-icon,
+    .icons-col i.flaticon-shopping-cart {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+
+    /* Flex for icon containers */
+    .icons-col > div,
+    .col-icons > div {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+
+    /* =================================================================
+       FLAG SIZE OVERRIDE - 64px × 64px
+       ================================================================= */
+
+    /* NUCLEAR OVERRIDE for flag size - 64px × 64px - Remove ALL borders */
+    .language-flag-selector .flag-link .flag-icon,
+    .language-flag-selector .flag-icon,
+    .flag-icon,
+    img.flag-icon {
+        width: 64px !important;
+        height: 64px !important;
+        min-width: 64px !important;
+        min-height: 64px !important;
+        max-width: 64px !important;
+        max-height: 64px !important;
+        border: none !important;
+        border-radius: 0px !important;
+        outline: none !important;
+        box-shadow: none !important;
+        object-fit: cover !important;
+    }
+
+    /* Remove borders from flag link */
+    .language-flag-selector .flag-link {
+        border: none !important;
+        border-radius: 0px !important;
+        padding: 0 !important;
+        outline: none !important;
+        box-shadow: none !important;
+    }
+
+    /* Ensure container allows size */
+    .language-flag-selector {
+        min-width: 80px !important;
+        width: auto !important;
+    }
+}

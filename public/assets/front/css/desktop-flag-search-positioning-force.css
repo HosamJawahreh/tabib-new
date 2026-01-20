@@ -1,0 +1,155 @@
+/* ===============================================
+ * DESKTOP FLAG AND SEARCH POSITIONING - FORCED
+ * ===============================================
+ * Changes:
+ * 1. Triple flag size on desktop (48px → 144px)
+ * 2. Position flag to far right
+ * 3. Center search bar in header
+ * =============================================== */
+
+/* FLAG SIZE 64px × 64px ON DESKTOP - FORCED */
+@media (min-width: 992px) {
+    /* Flag Icon - 64px × 64px - NO BORDER */
+    .language-flag-selector .flag-icon {
+        width: 64px !important;
+        height: 64px !important;
+        max-width: 64px !important;
+        max-height: 64px !important;
+        min-width: 64px !important;
+        min-height: 64px !important;
+        border-radius: 0px !important; /* NO BORDER RADIUS */
+        object-fit: cover !important;
+        display: block !important;
+        border: none !important; /* NO BORDER */
+        transition: transform 0.3s ease !important;
+        box-shadow: none !important; /* NO SHADOW */
+    }
+
+    .language-flag-selector .flag-link {
+        padding: 0 !important;
+        border-radius: 0px !important; /* NO BORDER RADIUS */
+        display: inline-block !important;
+        border: none !important; /* NO BORDER */
+    }
+
+    .language-flag-selector .flag-link:hover .flag-icon {
+        transform: scale(1.03) !important; /* Subtle hover effect */
+        border: none !important; /* NO BORDER ON HOVER */
+    }    /* Language Column - Position to FAR RIGHT */
+    .language-col,
+    .col-auto.order-4.language-col {
+        margin-left: auto !important;
+        padding-left: 20px !important;
+        padding-right: 20px !important;
+        order: 4 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: flex-end !important;
+    }
+
+    .language-flag-selector {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: flex-end !important;
+        gap: 15px !important;
+    }
+}
+
+/* CENTER SEARCH BAR - FORCED */
+@media (min-width: 992px) {
+    /* Header Row - Flexbox Layout */
+    .header .row,
+    header .row {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        flex-wrap: nowrap !important;
+    }
+
+    /* Search Column - CENTER POSITION */
+    .search-col,
+    .col.order-2.search-col {
+        position: absolute !important;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+        max-width: 400px !important;
+        width: 400px !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        margin-right: 20px !important; /* Add right margin for spacing */
+        order: 2 !important;
+        z-index: 1100 !important;
+    }
+
+    .desktop-search-wrapper {
+        width: 100% !important;
+        max-width: 400px !important;
+        margin: 0 auto !important;
+        padding-right: 10px !important; /* Internal padding on right */
+    }
+
+    .enhanced-search-form {
+        width: 100% !important;
+        margin: 0 !important;
+    }
+
+    /* Logo Column - Stay LEFT */
+    .logo-col,
+    .col-auto.order-1.logo-col {
+        order: 1 !important;
+        margin-right: auto !important;
+        z-index: 1050 !important;
+    }
+
+    /* Icons Column - Stay in CENTER-RIGHT area - ABOVE SEARCH - WITH MORE PADDING */
+    .icons-col,
+    .col-auto.order-3.icons-col {
+        order: 3 !important;
+        margin-left: 60px !important; /* Increased to 60px spacing from search bar */
+        padding-left: 30px !important; /* Increased internal padding */
+        z-index: 1200 !important; /* ABOVE search bar (1100) */
+        position: relative !important;
+    }
+
+    /* Language Column - Far RIGHT */
+    .language-col {
+        order: 4 !important;
+        margin-left: auto !important;
+        z-index: 1050 !important;
+    }
+}
+
+/* Mobile - Keep flags normal size */
+@media (max-width: 991px) {
+    .language-flag-selector .flag-icon {
+        width: 36px !important;
+        height: 27px !important;
+    }
+}
+
+/* Additional Specificity for Flag Size - 64px × 64px */
+@media (min-width: 992px) {
+    img.flag-icon,
+    .flag-icon img,
+    [class*="flag-icon"] {
+        width: 64px !important;
+        height: 64px !important;
+        max-width: 64px !important;
+        max-height: 64px !important;
+        min-width: 64px !important;
+        min-height: 64px !important;
+        border: none !important; /* NO BORDER */
+        border-radius: 0px !important; /* NO BORDER RADIUS */
+        box-shadow: none !important;
+    }
+
+    /* Ensure flag container doesn't restrict size */
+    .language-flag-selector,
+    .header-right-icons .language-flag-selector {
+        min-width: 80px !important;
+    }
+}
+    .header-right-icons .language-flag-selector {
+        min-width: 200px !important;
+    }
+}

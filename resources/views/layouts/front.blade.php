@@ -141,6 +141,18 @@
     {{-- Desktop Search Nuclear Fix - Force Functionality --}}
     <link rel="stylesheet" href="{{ asset('assets/front/css/desktop-search-nuclear-fix.css') }}?v={{ time() }}">
 
+    {{-- SEARCH Z-INDEX AND POSITIONING FIX - Fixes navbar blocking input & positioning --}}
+    <link rel="stylesheet" href="{{ asset('assets/front/css/search-zindex-positioning-fix.css') }}?v={{ time() }}">
+
+    {{-- DESKTOP FLAG & SEARCH POSITIONING FORCE - Triple flag size, center search, flag to right --}}
+    <link rel="stylesheet" href="{{ asset('assets/front/css/desktop-flag-search-positioning-force.css') }}?v={{ time() }}">
+
+    {{-- DESKTOP HEADER COMPLETE FIX - Ensures cart icon visibility and proper z-index --}}
+    <link rel="stylesheet" href="{{ asset('assets/front/css/desktop-header-complete-fix.css') }}?v={{ time() }}">
+
+    {{-- CART BADGE CENTER FIX - Centers number and adds spacing --}}
+    <link rel="stylesheet" href="{{ asset('assets/front/css/cart-badge-center-fix.css') }}?v={{ time() }}">
+
     {{-- SLIDER SIZE FORCE - Desktop +25%, Mobile -35% - ABSOLUTE LAST --}}
     <link rel="stylesheet" href="{{ asset('assets/front/css/slider-size-force.css') }}?v={{ time() }}">
 

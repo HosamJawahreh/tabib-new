@@ -112,13 +112,15 @@
    TABLET AND DESKTOP - MAINTAIN NORMAL SIZE
    ================================================================= */
 
-/* Tablets (768px+) - Normal size (no change) */
-@media (min-width: 768px) {
+/* Tablets (768px+) - UPDATED: Changed from 28px to 64px as requested */
+@media (min-width: 768px) and (max-width: 991px) {
     .language-flag-selector .flag-link .flag-icon {
-        width: 28px !important;
-        height: 28px !important;
+        width: 64px !important;  /* Changed from 28px to 64px */
+        height: 64px !important; /* Changed from 28px to 64px */
         object-fit: contain !important;
         display: inline-block !important;
+        border: none !important; /* NO BORDER */
+        border-radius: 0px !important; /* NO BORDER RADIUS */
     }
 
     .language-flag-selector .flag-link {
@@ -126,8 +128,12 @@
         align-items: center !important;
         justify-content: center !important;
         padding: 3px !important;
+        border: none !important; /* NO BORDER */
     }
 }
+
+/* Desktop (992px+) - Let desktop-flag-search-positioning-force.css handle it */
+/* Removing conflicting desktop rules to allow larger flag size */
 
 /* =================================================================
    ACCESSIBILITY & QUALITY

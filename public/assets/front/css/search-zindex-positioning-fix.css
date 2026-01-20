@@ -52,27 +52,51 @@ header,
     position: absolute !important;
 }
 
-/* Fix search bar positioning - move closer to cart */
+/* Fix search bar positioning - move closer to cart - FORCED */
 @media (min-width: 992px) {
     .desktop-search-wrapper {
         margin-right: 0px !important;
+        margin-left: auto !important;
+        max-width: 320px !important;
+    }
+
+    /* FORCE search column to move right and reduce width */
+    .search-col,
+    .col.order-2.search-col {
+        padding-right: 0px !important;
+        padding-left: 0px !important;
+        margin-right: 0px !important;
+        margin-left: auto !important;
+        max-width: 350px !important;
+        flex: 0 0 auto !important;
+    }
+
+    /* Reduce gap between search and cart/icons - AGGRESSIVE */
+    .icons-col,
+    .col-auto.order-3.icons-col {
+        padding-left: 0px !important;
+        margin-left: -10px !important; /* Negative margin to pull closer */
+    }
+
+    /* Pull search form to the right edge */
+    .enhanced-search-form {
+        margin-left: auto !important;
+        margin-right: 0 !important;
+    }
+
+    /* NUCLEAR: Force header row to use flexbox properly */
+    .header .row,
+    header .row {
+        display: flex !important;
+        flex-wrap: nowrap !important;
+        gap: 0px !important;
+    }
+
+    /* Ensure icons column stays at the end */
+    .order-3 {
         margin-left: 0px !important;
     }
-
-    /* Adjust search column spacing */
-    .col-lg-4.desktop-search-wrapper,
-    .header .col-lg-4:has(.desktop-search-wrapper) {
-        padding-right: 5px !important;
-        padding-left: 5px !important;
-    }
-
-    /* Reduce gap between search and cart/icons */
-    .header .row > .col-lg-4:last-child {
-        padding-left: 5px !important;
-    }
-}
-
-/* Force input interactivity */
+}/* Force input interactivity */
 .search-field input,
 input.search-field,
 .enhanced-search-form input {

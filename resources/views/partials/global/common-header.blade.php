@@ -563,13 +563,22 @@
            align-items: center !important;
            justify-content: center !important;
            height: 100% !important;
-           gap: 10px !important;
+           gap: 20px !important; /* Space between icons */
            padding: 0 !important;
+           padding-left: 25px !important; /* Space from search bar */
        }
 
        /* Force center alignment on mobile - override any desktop styles */
        .icons-col .col-icons {
            justify-content: center !important;
+       }
+
+       /* Desktop search to cart spacing */
+       .search-col,
+       .header-search-form,
+       form.search-form {
+           margin-right: 25px !important;
+           padding-right: 15px !important;
        }
 
        /* Ensure all header items are vertically centered with equal spacing */
@@ -1105,26 +1114,64 @@
        color: #4a5568 !important;
    }
 
-   /* Cart count badge - visible positioning */
-   .header-cart-count {
+   /* Cart count badge - ULTRA FORCEFUL GREEN ROUNDED BADGE */
+   header.ecommerce-header .header-cart-count,
+   header.ecommerce-header #cart-count,
+   header.ecommerce-header .cart-count,
+   header .header-cart-1 .header-cart-count,
+   header .cart-icon .header-cart-count,
+   .ecommerce-header .header-cart-count,
+   .ecommerce-header #cart-count,
+   .header-cart-count,
+   #cart-count,
+   span.header-cart-count,
+   span#cart-count {
        visibility: visible !important;
        opacity: 1 !important;
        display: inline-flex !important;
+       display: flex !important;
        align-items: center !important;
        justify-content: center !important;
-       background: #4299e1 !important;
-       color: white !important;
-       font-size: 10px !important;
-       padding: 3px 6px !important;
-       border-radius: 12px !important;
+       background: #28a745 !important; /* GREEN not blue */
+       background-color: #28a745 !important;
+       color: #ffffff !important;
+       font-size: 12px !important;
+       padding: 0 !important; /* No padding for perfect circle */
+       margin: 0 !important;
+       border-radius: 50% !important; /* Perfect circle */
+       border-radius: 11px !important; /* Fallback */
        font-weight: 700 !important;
-       min-width: 20px !important;
-       height: 18px !important;
+       min-width: 22px !important;
+       width: 22px !important;
+       height: 22px !important;
+       max-width: 22px !important;
+       max-height: 22px !important;
+       line-height: 1 !important;
        text-align: center !important;
        position: absolute !important;
-       top: 2px !important;
-       right: 2px !important;
-       z-index: 10 !important;
+       top: -8px !important;
+       right: -8px !important;
+       z-index: 1201 !important;
+       border: 2px solid #ffffff !important;
+       box-shadow: 0 2px 6px rgba(40, 167, 69, 0.4) !important;
+       box-sizing: border-box !important;
+       overflow: hidden !important;
+   }
+
+   /* Force text centering inside badge */
+   header.ecommerce-header .header-cart-count span,
+   header.ecommerce-header #cart-count span,
+   .header-cart-count span,
+   #cart-count span {
+       display: flex !important;
+       align-items: center !important;
+       justify-content: center !important;
+       width: 100% !important;
+       height: 100% !important;
+       line-height: 1 !important;
+       color: #ffffff !important;
+       padding: 0 !important;
+       margin: 0 !important;
    }
 
    .cart-wrap {
@@ -1172,11 +1219,33 @@
            font-size: 18px !important;
        }
 
-       .header-cart-count {
-           font-size: 9px !important;
-           padding: 2px 5px !important;
+       /* Mobile badge - GREEN ROUNDED */
+       header.ecommerce-header .header-cart-count,
+       header.ecommerce-header #cart-count,
+       .header-cart-count,
+       #cart-count,
+       span.header-cart-count,
+       span#cart-count {
+           font-size: 10px !important;
+           padding: 0 !important;
+           margin: 0 !important;
            min-width: 18px !important;
-           height: 16px !important;
+           width: 18px !important;
+           height: 18px !important;
+           max-width: 18px !important;
+           max-height: 18px !important;
+           border-radius: 50% !important;
+           border-radius: 9px !important; /* Fallback */
+           background: #28a745 !important;
+           background-color: #28a745 !important;
+           color: #ffffff !important;
+           border: 2px solid #ffffff !important;
+           top: -6px !important;
+           right: -6px !important;
+           display: flex !important;
+           align-items: center !important;
+           justify-content: center !important;
+           line-height: 1 !important;
        }
    }
 
@@ -1187,7 +1256,7 @@
        }
 
        .col-icons {
-           gap: 10px !important;
+           gap: 25px !important; /* More space on large screens */
        }
 
        .header-icon-enhanced {
@@ -1202,14 +1271,77 @@
            font-size: 22px !important;
        }
 
-       .header-cart-count {
-           top: 4px !important;
-           right: 4px !important;
-           font-size: 10px !important;
-           padding: 3px 6px !important;
-           min-width: 20px !important;
-           height: 18px !important;
+       /* Large screen badge - GREEN ROUNDED */
+       header.ecommerce-header .header-cart-count,
+       header.ecommerce-header #cart-count,
+       .header-cart-count,
+       #cart-count,
+       span.header-cart-count,
+       span#cart-count {
+           top: -8px !important;
+           right: -8px !important;
+           font-size: 12px !important;
+           padding: 0 !important;
+           margin: 0 !important;
+           min-width: 24px !important;
+           width: 24px !important;
+           height: 24px !important;
+           max-width: 24px !important;
+           max-height: 24px !important;
+           border-radius: 50% !important;
+           border-radius: 12px !important; /* Fallback */
+           background: #28a745 !important;
+           background-color: #28a745 !important;
+           color: #ffffff !important;
+           border: 2px solid #ffffff !important;
+           display: flex !important;
+           align-items: center !important;
+           justify-content: center !important;
+           line-height: 1 !important;
        }
+   }
+
+   /* ============================================
+    * FINAL ULTRA-FORCEFUL BADGE OVERRIDE
+    * This overrides EVERYTHING above
+    * ============================================ */
+   
+   /* All viewports - force green rounded badge */
+   html body header.ecommerce-header span.header-cart-count,
+   html body header.ecommerce-header span#cart-count,
+   html body .ecommerce-header span.header-cart-count,
+   html body .ecommerce-header span#cart-count,
+   html body span.header-cart-count,
+   html body span#cart-count,
+   html body #cart-count {
+       background: #28a745 !important;
+       background-color: #28a745 !important;
+       border-radius: 50% !important;
+       color: #ffffff !important;
+       display: flex !important;
+       align-items: center !important;
+       justify-content: center !important;
+       padding: 0 !important;
+       margin: 0 !important;
+       line-height: 1 !important;
+       text-align: center !important;
+       border: 2px solid #ffffff !important;
+       box-shadow: 0 2px 6px rgba(40, 167, 69, 0.4) !important;
+       box-sizing: border-box !important;
+   }
+   
+   /* Desktop spacing */
+   @media (min-width: 768px) {
+       html body .search-col,
+       html body .header-search-form {
+           margin-right: 25px !important;
+       }
+       
+       html body .col-icons {
+           gap: 20px !important;
+           padding-left: 20px !important;
+       }
+   }
    }
    }
 
@@ -2173,7 +2305,7 @@ $pages = App\Models\Page::get();
             </div>
 
             <!-- Search Column - DESKTOP ONLY - Between Logo and Icons -->
-            <div class="col order-2 search-col d-none d-md-block">
+            <div class="col order-2 search-col d-none d-md-block" style="margin-right: 40px; padding-right: 20px;">
                 <div class="desktop-search-wrapper">
                     <form class="enhanced-search-form" action="{{ route('front.category') }}" method="GET">
                         <div class="search-input-group">
@@ -2196,7 +2328,7 @@ $pages = App\Models\Page::get();
 
             <!-- Icons Column - CENTER - Search, Cart, Account -->
             <div class="col-auto order-3 icons-col">
-                <div class="d-flex align-items-center justify-content-center h-100 col-icons">
+                <div class="d-flex align-items-center justify-content-center h-100 col-icons" style="gap: 30px; padding-left: 30px;">
 
                     <!-- Mobile Search Icon - Matches Cart/Account Design -->
                     <div class="header-cart-1 header-icon-enhanced mobile-search-icon d-md-none">
@@ -2210,9 +2342,9 @@ $pages = App\Models\Page::get();
                     <!-- Cart Icon - redirects to checkout if has items -->
                     <div class="header-cart-1 header-icon-enhanced">
                         <a href="javascript:;" id="cartIconLink" class="cart" title="Shopping Cart">
-                            <div class="cart-icon">
+                            <div class="cart-icon" style="position: relative;">
                                 <i class="flaticon-shopping-cart flat-mini mx-auto"></i>
-                                <span class="header-cart-count" id="cart-count">{{ Session::has('cart') ? count(Session::get('cart')->items) : 0 }}</span>
+                                <span class="header-cart-count" id="cart-count" style="display: flex !important; align-items: center !important; justify-content: center !important; background: #28a745 !important; color: #fff !important; font-size: 12px !important; font-weight: 700 !important; line-height: 1 !important; padding: 0 !important; margin: 0 !important; border-radius: 50% !important; width: 22px !important; height: 22px !important; min-width: 22px !important; max-width: 22px !important; min-height: 22px !important; max-height: 22px !important; position: absolute !important; top: -8px !important; right: -8px !important; z-index: 1201 !important; border: 2px solid #fff !important; box-shadow: 0 2px 6px rgba(40,167,69,0.4) !important; box-sizing: border-box !important; text-align: center !important; overflow: hidden !important;">{{ Session::has('cart') ? count(Session::get('cart')->items) : 0 }}</span>
                             </div>
                         </a>
                     </div>
@@ -2317,6 +2449,82 @@ $pages = App\Models\Page::get();
 <!--==================== Header Section End ====================-->
 
 <script>
+// FORCE CART BADGE & SPACING STYLES - SAFE VERSION
+(function() {
+    'use strict';
+    
+    function forceCartBadgeStyles() {
+        // Get all cart badge elements
+        const badges = document.querySelectorAll('.header-cart-count, #cart-count, .cart-count');
+        
+        badges.forEach(function(badge) {
+            // Force inline styles with maximum priority
+            badge.style.cssText = `
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                background: #28a745 !important;
+                background-color: #28a745 !important;
+                color: #ffffff !important;
+                font-size: 12px !important;
+                font-weight: 700 !important;
+                line-height: 1 !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                border-radius: 50% !important;
+                width: 22px !important;
+                height: 22px !important;
+                min-width: 22px !important;
+                max-width: 22px !important;
+                min-height: 22px !important;
+                max-height: 22px !important;
+                position: absolute !important;
+                top: -8px !important;
+                right: -8px !important;
+                z-index: 1201 !important;
+                border: 2px solid #ffffff !important;
+                box-shadow: 0 2px 6px rgba(40, 167, 69, 0.4) !important;
+                box-sizing: border-box !important;
+                text-align: center !important;
+                overflow: hidden !important;
+            `;
+        });
+        
+        // Force spacing between search and cart
+        const searchCol = document.querySelector('.search-col');
+        if (searchCol) {
+            searchCol.style.marginRight = '40px';
+            searchCol.style.paddingRight = '20px';
+        }
+        
+        const colIcons = document.querySelector('.col-icons');
+        if (colIcons) {
+            colIcons.style.gap = '30px';
+            colIcons.style.paddingLeft = '30px';
+        }
+        
+        // Force cart icon to be relative
+        const cartIcons = document.querySelectorAll('.cart-icon');
+        cartIcons.forEach(function(icon) {
+            icon.style.position = 'relative';
+        });
+    }
+    
+    // Apply immediately
+    forceCartBadgeStyles();
+    
+    // Apply after DOM is fully loaded
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', forceCartBadgeStyles);
+    } else {
+        // DOM already loaded, apply now
+        forceCartBadgeStyles();
+    }
+    
+    // Apply once more after a short delay to override any other scripts
+    setTimeout(forceCartBadgeStyles, 500);
+})();
+
 // RTL ONLY for Arabic language - Run after DOM is ready
 document.addEventListener('DOMContentLoaded', function() {
     // Get language from Laravel (set in html tag)

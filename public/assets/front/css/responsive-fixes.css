@@ -267,9 +267,9 @@ html {
 .cart-backdrop { z-index: 9998 !important; }
 
 header,
-.header { z-index: 1000 !important; }
+.header { z-index: 60 !important; }
 
-.navbar { z-index: 999 !important; }
+.navbar { z-index: 50 !important; }
 
 /* ============================================
  * 8. SMOOTH ANIMATIONS
