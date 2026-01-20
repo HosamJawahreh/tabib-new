@@ -1305,7 +1305,7 @@
     * FINAL ULTRA-FORCEFUL BADGE OVERRIDE
     * This overrides EVERYTHING above
     * ============================================ */
-   
+
    /* All viewports - force green rounded badge */
    html body header.ecommerce-header span.header-cart-count,
    html body header.ecommerce-header span#cart-count,
@@ -1329,14 +1329,14 @@
        box-shadow: 0 2px 6px rgba(40, 167, 69, 0.4) !important;
        box-sizing: border-box !important;
    }
-   
+
    /* Desktop spacing */
    @media (min-width: 768px) {
        html body .search-col,
        html body .header-search-form {
            margin-right: 25px !important;
        }
-       
+
        html body .col-icons {
            gap: 20px !important;
            padding-left: 20px !important;
@@ -2452,11 +2452,11 @@ $pages = App\Models\Page::get();
 // FORCE CART BADGE & SPACING STYLES - SAFE VERSION
 (function() {
     'use strict';
-    
+
     function forceCartBadgeStyles() {
         // Get all cart badge elements
         const badges = document.querySelectorAll('.header-cart-count, #cart-count, .cart-count');
-        
+
         badges.forEach(function(badge) {
             // Force inline styles with maximum priority
             badge.style.cssText = `
@@ -2489,30 +2489,30 @@ $pages = App\Models\Page::get();
                 overflow: hidden !important;
             `;
         });
-        
+
         // Force spacing between search and cart
         const searchCol = document.querySelector('.search-col');
         if (searchCol) {
             searchCol.style.marginRight = '40px';
             searchCol.style.paddingRight = '20px';
         }
-        
+
         const colIcons = document.querySelector('.col-icons');
         if (colIcons) {
             colIcons.style.gap = '30px';
             colIcons.style.paddingLeft = '30px';
         }
-        
+
         // Force cart icon to be relative
         const cartIcons = document.querySelectorAll('.cart-icon');
         cartIcons.forEach(function(icon) {
             icon.style.position = 'relative';
         });
     }
-    
+
     // Apply immediately
     forceCartBadgeStyles();
-    
+
     // Apply after DOM is fully loaded
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', forceCartBadgeStyles);
@@ -2520,7 +2520,7 @@ $pages = App\Models\Page::get();
         // DOM already loaded, apply now
         forceCartBadgeStyles();
     }
-    
+
     // Apply once more after a short delay to override any other scripts
     setTimeout(forceCartBadgeStyles, 500);
 })();
