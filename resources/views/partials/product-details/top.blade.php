@@ -1225,6 +1225,8 @@
                       mainImage.removeEventListener('touchcancel', handleTouchEnd);
                       touchHandlersAttached = false;
                       wrapper.style.overflow = 'visible';
+                  }
+
                   // Update image transform
                   function updateTransform(animate = false) {
                       mainImage.style.transition = animate ? 'transform 0.3s ease' : 'none';
@@ -1240,8 +1242,6 @@
                           removeTouchListeners();
                       }
 
-                      updateButtonStates();
-                  }
                       updateButtonStates();
                   }
 
