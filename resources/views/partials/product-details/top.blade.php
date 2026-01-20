@@ -1167,16 +1167,24 @@
                   const maxScale = 4;
                   const zoomStep = 0.5;
 
+                  // Double tap detection
+                  let lastTapTime = 0;
+                  let lastTapX = 0;
+                  let lastTapY = 0;
+                  const doubleTapDelay = 300; // milliseconds
+                  const doubleTapDistance = 50; // pixels
+
                   // Touch handlers (defined once, attached/removed dynamically)
                   function handleTouchStart(e) {
-                      if (scale <= 1) return;
-
                       if (e.touches.length === 1) {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          isPanning = true;
-                          lastTouchX = e.touches[0].clientX;
-                          lastTouchY = e.touches[0].clientY;
+                          // Only pan if already zoomed
+                          if (scale > 1) {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              isPanning = true;
+                              lastTouchX = e.touches[0].clientX;
+                              lastTouchY = e.touches[0].clientY;
+                          }
                       }
                   }
 
@@ -1203,6 +1211,48 @@
 
                   function handleTouchEnd(e) {
                       isPanning = false;
+
+                      // Double tap detection - works whether zoomed or not
+                  // Attach touch listeners - ALWAYS attached for double tap, but only pan when zoomed
+                  function attachTouchListeners() {
+                      if (touchHandlersAttached) return;
+                      mainImage.addEventListener('touchstart', handleTouchStart, { passive: false });
+                      mainImage.addEventListener('touchmove', handleTouchMove, { passive: false });
+                      mainImage.addEventListener('touchend', handleTouchEnd, { passive: false });
+                      mainImage.addEventListener('touchcancel', handleTouchEnd, { passive: false });
+                      touchHandlersAttached = true;
+                  }
+                          // Check if it's a double tap
+                          if (timeSinceLastTap < doubleTapDelay && timeSinceLastTap > 0 && distanceFromLastTap < doubleTapDistance) {
+                              e.preventDefault();
+                              e.stopPropagation();
+
+                              if (scale === 1) {
+                                  // NOT zoomed - zoom in to 2x centered on tap
+                                  scale = 2;
+                                  posX = 0;
+                                  posY = 0;
+                                  constrainPosition();
+                                  updateTransform(true);
+                              } else {
+                                  // Already zoomed - zoom out completely
+                                  scale = 1;
+                                  posX = 0;
+                                  posY = 0;
+                                  updateTransform(true);
+                              }
+
+                              // Reset double tap detection
+                              lastTapTime = 0;
+                              lastTapX = 0;
+                              lastTapY = 0;
+                          } else {
+                              // Single tap - record for double tap detection
+                              lastTapTime = now;
+                              lastTapX = touchX;
+                              lastTapY = touchY;
+                          }
+                      }
                   }
 
                   // Attach touch listeners ONLY when zoomed
@@ -1217,15 +1267,15 @@
                   }
 
                   // Remove touch listeners when not zoomed
+                  // Remove touch listeners - not used anymore, listeners stay attached for double tap
                   function removeTouchListeners() {
-                      if (!touchHandlersAttached) return;
-                      mainImage.removeEventListener('touchstart', handleTouchStart);
-                      mainImage.removeEventListener('touchmove', handleTouchMove);
-                      mainImage.removeEventListener('touchend', handleTouchEnd);
-                      mainImage.removeEventListener('touchcancel', handleTouchEnd);
-                      touchHandlersAttached = false;
-                      wrapper.style.overflow = 'visible';
+                      // Keep listeners attached for double tap functionality
+                      // Just update wrapper overflow based on zoom state
                   }
+                  // Update image transform
+                  function updateTransform(animate = false) {
+                      mainImage.style.transition = animate ? 'transform 0.3s ease' : 'none';
+                      mainImage.style.transform = `translate(${posX}px, ${posY}px) scale(${scale})`;
 
                   // Update image transform
                   function updateTransform(animate = false) {
@@ -1235,20 +1285,15 @@
                       if (scale > 1) {
                           mainImage.classList.add('zoomed');
                           mainImage.style.pointerEvents = 'auto';
-                          attachTouchListeners();
+                          wrapper.style.overflow = 'hidden';
                       } else {
                           mainImage.classList.remove('zoomed');
                           mainImage.style.pointerEvents = 'none';
-                          removeTouchListeners();
+                          wrapper.style.overflow = 'visible';
                       }
 
                       updateButtonStates();
-                  }
-
-                  // Update button states
-                  function updateButtonStates() {
-                      zoomInBtn.disabled = scale >= maxScale;
-                      zoomOutBtn.disabled = scale <= minScale;
+                  }   zoomOutBtn.disabled = scale <= minScale;
                   }
 
                   // Constrain position to prevent image from going out of bounds
@@ -1321,7 +1366,8 @@
                       });
                   });
 
-                  // Initialize
+                  // Initialize - attach touch listeners immediately for double tap
+                  attachTouchListeners();
                   updateButtonStates();
               })();
               </script>
