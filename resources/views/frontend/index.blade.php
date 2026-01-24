@@ -114,12 +114,12 @@
         object-fit: contain;
         margin: 0 auto;
         display: block;
-        transform: scale(1.15);
+        transform: scale(0.98); /* 15% smaller: 1.15 * 0.85 = 0.9775 ≈ 0.98 */
         transition: transform 0.3s ease;
     }
 
     .product-card:hover .product-image {
-        transform: scale(1.2);
+        transform: scale(1.02); /* Proportionally smaller on hover: 1.2 * 0.85 = 1.02 */
     }
 
     /* Cart icon always visible */
@@ -317,11 +317,12 @@
         z-index: 1;
     }
 
-    /* Responsive slider heights - Decreased 25% for mobile */
+    /* Responsive slider heights - Decreased 10% for mobile (300px -> 270px) */
     /* Mobile Small (< 576px) */
     @media (max-width: 575px) {
         .home-slider-section {
             padding: 0 !important;
+            margin: 0 !important;
             margin-bottom: 0 !important;
             margin-top: 0 !important;
         }
@@ -329,9 +330,9 @@
         .slider-item,
         .home-slider .owl-item .slider-item,
         .owl-item .slider-item {
-            min-height: 165px !important;
-            max-height: 165px !important;
-            height: 165px !important;
+            min-height: 150px !important;
+            max-height: 150px !important;
+            height: 150px !important;
         }
 
         .slider-content h2 {
@@ -344,21 +345,66 @@
         }
 
         .home-slider-section .container-fluid {
-            padding-left: 0 !important;
-            padding-right: 0 !important;
+            padding: 0 !important;
+            margin: 0 !important;
+        }
+        
+        .home-slider {
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+        
+        .owl-carousel,
+        .owl-carousel .owl-stage-outer,
+        .owl-carousel .owl-stage {
+            margin: 0 !important;
+            padding: 0 !important;
         }
 
-        /* Remove spacing between slider and category section */
+        /* Remove ALL spacing between slider and category section */
+        .home-slider-section,
+        section.home-slider-section {
+            margin: 0 !important;
+            padding: 0 !important;
+            margin-bottom: 0 !important;
+        }
+        
+        .home-slider-section .container-fluid {
+            margin: 0 !important;
+            padding: 0 !important;
+            margin-bottom: 0 !important;
+        }
+        
+        .home-slider .owl-stage-outer {
+            margin-bottom: 0 !important;
+            padding-bottom: 0 !important;
+        }
+        
+        /* Category navigation section - zero spacing */
+        section.category-navigation-section,
         .category-navigation-section {
+            margin: 0 !important;
             margin-top: 0 !important;
             margin-bottom: 0 !important;
-            padding: 10px 0 !important;
+            padding: 0 !important;
+            padding-top: 0 !important;
+            padding-bottom: 0 !important;
+        }
+        
+        .category-navigation-section .container-fluid {
+            padding-left: 7.5px !important;
+            padding-right: 7.5px !important;
+            padding-top: 0 !important;
+            padding-bottom: 0 !important;
+            margin: 0 !important;
         }
 
-        /* Remove spacing between category and products */
+        /* Products section - minimal top spacing */
         .products-section {
+            margin: 0 !important;
             margin-top: 0 !important;
             padding: 10px 0 !important;
+            padding-top: 5px !important;
         }
 
         /* Product Grid - 50% smaller spacing (7.5px total instead of 15px) */
@@ -407,7 +453,7 @@
             object-fit: contain !important;
             margin: 0 auto !important;
             display: block !important;
-            transform: scale(1.3) !important; /* Scale up by 30% */
+            transform: scale(1.11) !important; /* 15% smaller than 1.3: 1.3 * 0.85 = 1.105 ≈ 1.11 */
         }
 
         .product-card {
@@ -424,8 +470,28 @@
         }
 
         .home-slider .owl-dots {
-            margin-top: -40px !important;
-            padding-bottom: 10px !important;
+            display: none !important; /* Hide dots on mobile */
+        }
+        
+        /* Ensure owl-carousel doesn't add extra space */
+        .home-slider.owl-carousel {
+            margin-bottom: 0 !important;
+            padding-bottom: 0 !important;
+        }
+        
+        /* Force remove ALL space after slider */
+        .home-slider-section,
+        .home-slider-section + *,
+        section.home-slider-section + section {
+            margin-bottom: 0 !important;
+            padding-bottom: 0 !important;
+        }
+        
+        /* Target the next element after slider */
+        .home-slider-section ~ section:first-of-type,
+        .home-slider-section + section {
+            margin-top: 0 !important;
+            padding-top: 5px !important;
         }
     }
 
@@ -771,6 +837,61 @@
         0% { transform: translate(-50%, -50%) rotate(0deg); }
         100% { transform: translate(-50%, -50%) rotate(360deg); }
     }
+
+    /* CRITICAL: Mobile slider height override - 50% smaller (300px -> 150px) */
+    @media only screen and (max-width: 575px) {
+        .home-slider-section,
+        section.home-slider-section {
+            min-height: 150px !important;
+            max-height: 150px !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            margin-bottom: 0 !important;
+        }
+        
+        .slider-item,
+        .home-slider .slider-item,
+        .home-slider .owl-item .slider-item,
+        .owl-carousel .slider-item,
+        .owl-carousel .owl-item .slider-item,
+        div.slider-item {
+            min-height: 150px !important;
+            max-height: 150px !important;
+            height: 150px !important;
+        }
+
+        .home-slider .owl-stage-outer,
+        .home-slider .owl-stage {
+            min-height: 150px !important;
+            max-height: 150px !important;
+            height: 150px !important;
+        }
+        
+        /* CRITICAL: Remove ALL space between slider and categories */
+        .home-slider-section + div,
+        .home-slider-section + div > section,
+        .category-navigation-section {
+            margin-top: 0 !important;
+            padding-top: 0 !important;
+        }
+        
+        /* Hide owl-carousel dots on mobile - they take up space */
+        .home-slider .owl-dots {
+            display: none !important;
+        }
+    }
+
+    /* Tablet slider height */
+    @media only screen and (min-width: 576px) and (max-width: 767px) {
+        .slider-item,
+        .home-slider .slider-item,
+        .home-slider .owl-item .slider-item,
+        div.slider-item {
+            min-height: 220px !important;
+            max-height: 220px !important;
+            height: 220px !important;
+        }
+    }
 </style>
 @endsection
 
@@ -780,11 +901,11 @@
 
 {{-- Slider Section - Rounded with Same Width as Products --}}
 @if(isset($ps) && isset($sliders) && $ps->slider == 1 && count($sliders) > 0)
-<section class="home-slider-section" style="display: block !important; visibility: visible !important; min-height: 300px;">
-    <div class="container-fluid px-4">
+<section class="home-slider-section" style="margin: 0; padding: 0;">
+    <div class="container-fluid" style="margin: 0; padding: 0;">
         <div class="home-slider owl-carousel owl-theme">
             @foreach($sliders as $slider)
-            <div class="slider-item" style="background-image: url('{{asset('assets/images/sliders/'.$slider->photo)}}'); height: 300px; background-size: cover; background-position: center;">
+            <div class="slider-item" style="background-image: url('{{asset('assets/images/sliders/'.$slider->photo)}}');">
                 <div class="slider-content text-{{ $slider->position ?? 'left' }}">
 
                 </div>
@@ -803,8 +924,10 @@
 </div>
 @endif
 
-{{-- Category Navigation Section --}}
+{{-- Category Navigation Section - NO SPACE --}}
+<div style="margin: 0 !important; padding: 0 !important; margin-top: -5px !important;">
 @include('partials.category.category-nav')
+</div>
 
 {{-- Products Grid Section with Infinite Scroll - Full Width Container --}}
 <section class="products-section">

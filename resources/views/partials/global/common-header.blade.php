@@ -381,6 +381,18 @@
        max-height: 120px !important;
        object-fit: contain !important;
    }
+   
+   /* Mobile Logo - 25% smaller (90px) */
+   @media (max-width: 767px) {
+       img.nav-logo.header-logo-responsive,
+       .navbar-brand img.nav-logo,
+       .header-logo-responsive {
+           height: 90px !important;
+           width: auto !important;
+           max-height: 90px !important;
+       }
+   }
+   
    @media (min-width: 768px) {
        img.nav-logo.header-logo-responsive,
        .navbar-brand img.nav-logo,
@@ -822,14 +834,14 @@
        }
 
        .language-selector-modern {
-           max-width: 70px !important;
+           max-width: 52px !important;
        }
 
        .language-selector-modern select {
-           font-size: 11px !important;
-           padding: 3px 4px !important;
-           width: 65px !important;
-           max-width: 65px !important;
+           font-size: 8px !important;
+           padding: 2px 3px !important;
+           width: 49px !important;
+           max-width: 49px !important;
        }
 
        .header-cart-count {
