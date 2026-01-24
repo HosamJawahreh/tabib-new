@@ -8,3 +8,5 @@ npm-debug.log
 yarn-error.log
 /.idea
 /.vscode
+*.tar.gz
+backup-*.tar.gz
