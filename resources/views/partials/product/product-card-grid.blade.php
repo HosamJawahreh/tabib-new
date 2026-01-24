@@ -1,8 +1,8 @@
 @foreach($products as $product)
-<div class="col-lg-2 col-md-3 col-sm-4 col-6 product-item" style="margin-bottom: 0.25rem !important; padding-bottom: 0.25rem !important; padding-left: 0.25rem !important; padding-right: 0.25rem !important;" data-product-id="{{ $product->id }}">
-    <div class="product-card h-100 shadow-sm">
-        <div class="product-thumb position-relative">
-            <a href="{{ route('front.product', $product->slug) }}" class="d-block">
+<div class="col-lg-2 col-md-3 col-sm-4 col-6 product-item" style="margin-bottom: 0.25rem !important; padding-bottom: 0.25rem !important; padding-left: 0.25rem !important; padding-right: 0.25rem !important; overflow: hidden !important;" data-product-id="{{ $product->id }}">
+    <div class="product-card h-100 shadow-sm" style="overflow: hidden !important; position: relative !important;">
+        <div class="product-thumb position-relative" style="overflow: hidden !important;">
+            <a href="{{ route('front.product', $product->slug) }}" class="d-block" style="overflow: hidden !important;">
                 @php
                     // Use thumbnail for grid view (ultra-compressed for fast loading)
                     $imageSrc = asset('assets/images/noimage.png');
@@ -64,19 +64,19 @@
             </div>
         </div>
 
-        <div class="product-content" style="padding: 0.35rem !important; padding-bottom: 0 !important;">
+        <div class="product-content" style="padding: 0.5rem !important; padding-top: 0.35rem !important; padding-bottom: 0.35rem !important; margin-top: 0 !important;">
             @php
                 $isArabic = isset($langg) && ($langg->language == 'العربية' || $langg->language == 'Arabic' || $langg->language == 'ar');
             @endphp
-            <h6 class="product-title mb-2" style="min-height: 40px; text-align: {{ $isArabic ? 'right' : 'left' }}; direction: {{ $isArabic ? 'rtl' : 'ltr' }};">
+            <h6 class="product-title mb-1" style="min-height: 38px; margin-top: 0 !important; margin-bottom: 4px !important; text-align: {{ $isArabic ? 'right' : 'left' }}; direction: {{ $isArabic ? 'rtl' : 'ltr' }};">
                 <a href="{{ route('front.product', $product->slug) }}" class="text-dark text-decoration-none">
                     {{ Str::limit($product->translated_name, 60) }}
                 </a>
             </h6>
 
-            <div class="product-price" style="margin-bottom: 0 !important; padding-bottom: 0 !important; text-align: {{ $isArabic ? 'right' : 'left' }}; direction: {{ $isArabic ? 'rtl' : 'ltr' }};">
+            <div class="product-price" style="margin-bottom: 0 !important; padding-bottom: 0 !important; margin-top: 2px !important; text-align: {{ $isArabic ? 'right' : 'left' }}; direction: ltr !important; display: block;">
                 @if($product->previous_price && $product->previous_price > $product->price)
-                    <span class="price-old text-muted text-decoration-line-through me-2 small" style="margin-bottom: 0 !important; padding-bottom: 0 !important;">
+                    <span class="price-old text-muted text-decoration-line-through small" style="margin-bottom: 0 !important; padding-bottom: 0 !important; {{ $isArabic ? 'margin-left' : 'margin-right' }}: 8px;">
                         {{ number_format($product->previous_price, 2) }} {{ $gs->curr_code ?? 'JD' }}
                     </span>
                 @endif

@@ -79,17 +79,15 @@
 <!--==================== Product Description Section End ====================-->
 <!--==================== Featured Products Section Start ====================-->
 <style>
-    /* Featured Products Horizontal Slider - Compact Strip Design */
+    /* Featured Products Section - Matches Homepage Design */
     .featured-products-strip {
-        background: linear-gradient(135deg, #f9fafb 0%, #ffffff 100%);
+        background: #ffffff;
         padding: 25px 0;
         margin: 20px 0;
-        border-top: 1px solid #e5e7eb;
-        border-bottom: 1px solid #e5e7eb;
     }
 
     .featured-section-title {
-        font-size: 20px;
+        font-size: 24px;
         font-weight: 700;
         color: #1f2937;
         margin: 0 0 20px 0;
@@ -103,121 +101,93 @@
     .featured-section-title::before {
         content: '⭐';
         font-size: 20px;
-        animation: sparkle 2s ease-in-out infinite;
     }
 
-    @keyframes sparkle {
-        0%, 100% { opacity: 0.7; transform: rotate(0deg) scale(1); }
-        50% { opacity: 1; transform: rotate(15deg) scale(1.15); }
-    }
-
-    /* Compact Product Card for Strip */
-    .featured-strip-product {
-        padding: 10px;
-        background: white;
-        border-radius: 12px;
+    /* Use same product card styles as homepage */
+    .featured-carousel .product-card {
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
         transition: all 0.3s ease;
-        border: 1px solid #e5e7eb;
-        height: 100%;
-    }
-
-    .featured-strip-product:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-        border-color: #10b981;
-    }
-
-    .featured-strip-product .product-image {
-        position: relative;
         overflow: hidden;
-        border-radius: 10px;
-        margin-bottom: 10px;
-        aspect-ratio: 1;
+        background: #fff;
+        margin: 0 5px;
     }
 
-    .featured-strip-product .product-image img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        transition: transform 0.4s ease;
+    .featured-carousel .product-card:hover {
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        transform: translateY(-2px);
     }
 
-    .featured-strip-product:hover .product-image img {
-        transform: scale(1.08);
-    }
-
-    .featured-strip-product .on-sale {
-        position: absolute;
-        top: 8px;
-        right: 8px;
-        background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-        color: white;
-        padding: 4px 8px;
-        border-radius: 20px;
-        font-size: 11px;
-        font-weight: 700;
-        z-index: 2;
-        box-shadow: 0 2px 8px rgba(239, 68, 68, 0.4);
-    }
-
-    .featured-strip-product .product-info {
-        padding: 5px;
-    }
-
-    .featured-strip-product .product-title {
-        font-size: 13px;
-        font-weight: 600;
-        margin: 0 0 8px 0;
-        line-height: 1.4;
-        height: 36px;
+    .featured-carousel .product-thumb {
         overflow: hidden;
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-    }
-
-    .featured-strip-product .product-title a {
-        color: #1f2937;
-        text-decoration: none;
-        transition: color 0.3s ease;
-    }
-
-    .featured-strip-product .product-title a:hover {
-        color: #10b981;
-    }
-
-    .featured-strip-product .product-price {
-        margin-bottom: 8px;
-    }
-
-    .featured-strip-product .price ins {
-        font-size: 16px;
-        font-weight: 700;
-        color: #10b981;
-        text-decoration: none;
-        margin-right: 6px;
-    }
-
-    .featured-strip-product .price del {
-        font-size: 13px;
-        color: #9ca3af;
-    }
-
-    .featured-strip-product .star-rating {
         display: flex;
         align-items: center;
-        gap: 6px;
-        font-size: 11px;
+        justify-content: center;
+        position: relative;
+        padding: 15px;
+        min-height: 200px !important;
+        max-height: 200px !important;
+        height: 200px !important;
+        background: #f8f9fa;
     }
 
-    .featured-strip-product .star-rating i {
-        color: #fbbf24;
-        font-size: 12px;
+    .featured-carousel .product-image {
+        max-height: 90%;
+        max-width: 90%;
+        width: auto !important;
+        height: auto !important;
+        object-fit: contain;
+        margin: 0 auto;
+        display: block;
+        transform: scale(0.98);
+        transition: transform 0.3s ease;
     }
 
-    .featured-strip-product .star-rating span {
-        color: #6b7280;
-        font-weight: 600;
+    .featured-carousel .product-card:hover .product-image {
+        transform: scale(1.02);
+    }
+
+    /* Cart icon styling */
+    .featured-carousel .cart-icon-clean {
+        width: 36px;
+        height: 36px;
+        background: #000000;
+        color: #ffffff;
+        border-radius: 50%;
+        display: inline-flex !important;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        font-size: 14px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+
+    .featured-carousel .cart-icon-clean:hover {
+        background: #28a745;
+        transform: scale(1.1);
+    }
+
+    /* Price styling */
+    .featured-carousel .price-current {
+        font-size: 1.1rem;
+        color: #7caa53;
+        font-weight: 700;
+    }
+
+    .featured-carousel .price-old {
+        font-size: 0.95rem !important;
+        color: #999;
+    }
+
+    /* Discount Badge */
+    .featured-carousel .on-sale {
+        font-size: 13px !important;
+        font-weight: 700 !important;
+        padding: 2px 6px !important;
+        line-height: 1.1 !important;
+        background: #ff0000 !important;
+        color: #ffffff !important;
+        border-radius: 3px !important;
     }
 
     /* Owl Carousel Navigation for Strip */
@@ -314,36 +284,115 @@
          <div class="col-12">
             @if(isset($featured_products) && $featured_products->count() > 0)
                <div class="featured-carousel owl-carousel owl-theme">
-                  @foreach ($featured_products as $item)
+                  @foreach ($featured_products as $product)
                   <div class="item">
-                     <div class="featured-strip-product">
-                        <div class="product-image">
-                           <a href="{{ route('front.product', $item->slug) }}">
-                              <img class="lazy" data-src="{{ $item->photo ? asset('assets/images/products/'.$item->photo):asset('assets/images/noimage.png')}}" alt="{{ $item->showName() }}">
+                     <div class="product-card h-100 shadow-sm">
+                        <div class="product-thumb position-relative">
+                           <a href="{{ route('front.product', $product->slug) }}" class="d-block">
+                              @php
+                                  // Use thumbnail for grid view (ultra-compressed for fast loading)
+                                  $imageSrc = asset('assets/images/noimage.png');
+                                  if($product->thumbnail) {
+                                      $imageSrc = asset('assets/images/thumbnails/'.$product->thumbnail);
+                                  } elseif($product->photo) {
+                                      $imageSrc = asset('assets/images/products/'.$product->photo);
+                                  }
+                              @endphp
+                              <img src="{{ $imageSrc }}"
+                                   alt="{{ $product->name }}"
+                                   class="img-fluid product-image"
+                                   loading="lazy"
+                                   onerror="this.onerror=null; this.src='{{ asset('assets/images/noimage.png') }}';">
                            </a>
-                           @if($item->offPercentage())
-                           <div class="on-sale">-{{ round((float)$item->offPercentage(), 2) }}%</div>
+
+                           {{-- Discount Badge --}}
+                           @if($product->previous_price && $product->previous_price > $product->price)
+                           <div class="on-sale position-absolute" style="top: 5px; left: 5px; margin: 0; background: #ff0000; color: #ffffff; padding: 2px 6px; border-radius: 3px; font-size: 13px; font-weight: 700; z-index: 5; border: none; box-shadow: none; line-height: 1.1;">
+                              -{{ round(((float)$product->previous_price - (float)$product->price) / (float)$product->previous_price * 100) }}%
+                           </div>
                            @endif
-                        </div>
-                        <div class="product-info">
-                           <h3 class="product-title">
-                              <a href="{{ route('front.product', $item->slug) }}">
-                                 {{ $item->showName() }}
-                              </a>
-                           </h3>
-                           <div class="product-price">
-                              <div class="price">
-                                 <ins>{{ $item->showPrice()}}</ins>
-                                 @if($item->showPreviousPrice())
-                                 <del>{{ $item->showPreviousPrice() }}</del>
+
+                           {{-- Add to Cart Button - Upper Right Corner, Clean Black Icon --}}
+                           <div class="cart-action-buttons position-absolute" style="top: 10px; right: 10px; z-index: 10; display: flex !important; opacity: 1 !important; visibility: visible !important;">
+                              @if($product->product_type == "affiliate")
+                                 {{-- Affiliate Product --}}
+                                 <a href="javascript:;"
+                                    data-href="{{ $product->affiliate_link }}"
+                                    class="cart-icon-clean affilate-btn"
+                                    data-bs-toggle="tooltip"
+                                    data-bs-placement="left"
+                                    title="{{ __('Add To Cart') }}"
+                                    style="display: inline-flex !important; opacity: 1 !important; visibility: visible !important;">
+                                    <i class="fas fa-shopping-cart"></i>
+                                 </a>
+                              @else
+                                 @if($product->emptyStock())
+                                    {{-- Out of Stock --}}
+                                    <a class="cart-icon-clean cart-out-of-stock"
+                                       href="#"
+                                       style="cursor: not-allowed; opacity: 0.4; display: inline-flex !important; visibility: visible !important;"
+                                       title="{{ __('Out Of Stock') }}">
+                                       <i class="fas fa-times-circle"></i>
+                                    </a>
+                                 @else
+                                    {{-- Add to Cart --}}
+                                    <a href="javascript:;"
+                                       data-href="{{ route('product.cart.add', $product->id) }}"
+                                       class="cart-icon-clean add-cart"
+                                       data-bs-toggle="tooltip"
+                                       data-bs-placement="left"
+                                       title="{{ __('Add To Cart') }}"
+                                       style="display: inline-flex !important; opacity: 1 !important; visibility: visible !important;">
+                                       <i class="fas fa-shopping-cart"></i>
+                                    </a>
                                  @endif
+                              @endif
+                           </div>
+                        </div>
+
+                        <div class="product-content" style="padding: 0.35rem !important; padding-bottom: 0 !important;">
+                           @php
+                              $isArabic = isset($langg) && ($langg->language == 'العربية' || $langg->language == 'Arabic' || $langg->language == 'ar');
+                           @endphp
+                           <h6 class="product-title mb-2" style="min-height: 40px; text-align: {{ $isArabic ? 'right' : 'left' }}; direction: {{ $isArabic ? 'rtl' : 'ltr' }};">
+                              <a href="{{ route('front.product', $product->slug) }}" class="text-dark text-decoration-none">
+                                 {{ Str::limit($product->name, 60) }}
+                              </a>
+                           </h6>
+
+                           <div class="product-price" style="margin-bottom: 0 !important; padding-bottom: 0 !important; text-align: {{ $isArabic ? 'right' : 'left' }}; direction: {{ $isArabic ? 'rtl' : 'ltr' }};">
+                              @if($product->previous_price && $product->previous_price > $product->price)
+                                 <span class="price-old text-muted text-decoration-line-through me-2 small" style="margin-bottom: 0 !important; padding-bottom: 0 !important;">
+                                    @if($isArabic)
+                                       {{ $gs->curr_code ?? 'JD' }} {{ number_format($product->previous_price, 2) }}
+                                    @else
+                                       {{ number_format($product->previous_price, 2) }} {{ $gs->curr_code ?? 'JD' }}
+                                    @endif
+                                 </span>
+                              @endif
+                              <span class="price-current fw-bold" style="color: #7caa53; margin-bottom: 0 !important; padding-bottom: 0 !important;">
+                                 @if($isArabic)
+                                    {{ $gs->curr_code ?? 'JD' }} {{ number_format($product->price, 2) }}
+                                 @else
+                                    {{ number_format($product->price, 2) }} {{ $gs->curr_code ?? 'JD' }}
+                                 @endif
+                              </span>
+                           </div>
+
+                           @if($product->ratings_count > 0)
+                           <div class="product-rating d-flex align-items-center">
+                              <div class="stars me-2">
+                                 @for($i = 1; $i <= 5; $i++)
+                                    @if($i <= round($product->ratings_avg_rating ?? 0))
+                                       <i class="icofont-star text-warning"></i>
+                                    @else
+                                       <i class="icofont-star text-muted"></i>
+                                    @endif
+                                 @endfor
                               </div>
+                              <span class="rating-count text-muted small">({{ $product->ratings_count }})</span>
                            </div>
-                           <div class="star-rating">
-                              <i class="fas fa-star"></i>
-                              <span>{{ number_format($item->ratings_avg_rating ?? 0, 1) }}</span>
-                              <span>({{ $item->ratings_count ?? 0 }})</span>
-                           </div>
+                           @endif
                         </div>
                      </div>
                   </div>

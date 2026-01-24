@@ -77,6 +77,8 @@
         transition: all 0.3s ease;
         overflow: hidden;
         background: #fff;
+        position: relative;
+        isolation: isolate;
     }
 
     .product-card:hover {
@@ -90,11 +92,12 @@
         align-items: center;
         justify-content: center;
         position: relative;
-        padding: 15px;
+        padding: 10px;
+        padding-bottom: 5px;
         min-height: 300px !important;
         max-height: 300px !important;
         height: 300px !important;
-        background: #f8f9fa;
+        background: #ffffff;
         border-radius: 8px 8px 0 0;
     }
 
@@ -431,10 +434,14 @@
             display: flex !important;
             align-items: center !important;
             justify-content: center !important;
-            padding: 10px !important;
+            padding: 8px !important;
+            padding-bottom: 4px !important;
             min-height: 180px !important;
             max-height: 180px !important;
             height: 180px !important;
+            overflow: hidden !important;
+            position: relative !important;
+            background: #ffffff !important;
         }
 
         .product-thumb a {
@@ -443,6 +450,7 @@
             justify-content: center !important;
             width: 100% !important;
             height: 100% !important;
+            overflow: hidden !important;
         }
 
         .product-image {
@@ -458,10 +466,56 @@
 
         .product-card {
             margin-bottom: 7.5px !important;
+            display: flex !important;
+            flex-direction: column !important;
+            overflow: hidden !important;
+            position: relative !important;
+            isolation: isolate !important;
+            contain: layout style paint !important;
         }
 
         .product-item {
             margin-bottom: 0 !important;
+            overflow: hidden !important;
+            contain: layout style !important;
+        }
+
+        /* Fix product content spacing on mobile */
+        .product-content {
+            padding: 6px !important;
+            padding-top: 4px !important;
+            padding-bottom: 6px !important;
+            flex: 1 !important;
+            display: flex !important;
+            flex-direction: column !important;
+            position: relative !important;
+            z-index: 1 !important;
+            margin-top: 0 !important;
+        }
+
+        .product-title {
+            font-size: 0.75rem !important;
+            line-height: 1.2 !important;
+            min-height: 30px !important;
+            margin-bottom: 3px !important;
+            margin-top: 0 !important;
+        }
+
+        .product-price {
+            font-size: 0.85rem !important;
+            margin-top: auto !important;
+            display: block !important;
+            white-space: nowrap !important;
+        }
+
+        .price-current {
+            font-size: 0.9rem !important;
+            display: inline-block !important;
+        }
+
+        .price-old {
+            font-size: 0.75rem !important;
+            display: inline-block !important;
         }
 
         /* Hide slider navigation on mobile */
@@ -492,6 +546,34 @@
         .home-slider-section + section {
             margin-top: 0 !important;
             padding-top: 5px !important;
+        }
+
+        /* Android Chrome/WebView specific fixes */
+        .product-item,
+        .product-card,
+        .product-thumb,
+        .product-content {
+            -webkit-transform: translateZ(0) !important;
+            transform: translateZ(0) !important;
+            -webkit-backface-visibility: hidden !important;
+            backface-visibility: hidden !important;
+            -webkit-perspective: 1000 !important;
+            perspective: 1000 !important;
+        }
+
+        /* Force hardware acceleration and prevent overflow glitches */
+        .col-6 {
+            -webkit-transform: translate3d(0, 0, 0) !important;
+            transform: translate3d(0, 0, 0) !important;
+        }
+
+        /* Ensure no pseudo-elements escape on Android */
+        .product-card::before,
+        .product-card::after,
+        .product-item::before,
+        .product-item::after {
+            content: none !important;
+            display: none !important;
         }
     }
 
@@ -548,8 +630,14 @@
             display: flex !important;
             align-items: center !important;
             justify-content: center !important;
-            padding: 12px !important;
+            padding: 8px !important;
+            padding-bottom: 4px !important;
             min-height: 170px !important;
+            max-height: 170px !important;
+            height: 170px !important;
+            overflow: hidden !important;
+            position: relative !important;
+            background: #ffffff !important;
         }
 
         .product-thumb a {
@@ -558,6 +646,7 @@
             justify-content: center !important;
             width: 100% !important;
             height: 100% !important;
+            overflow: hidden !important;
         }
 
         .product-image {
@@ -566,6 +655,41 @@
             width: auto !important;
             height: auto !important;
             object-fit: contain !important;
+            margin: 0 auto !important;
+            display: block !important;
+        }
+
+        .product-card {
+            margin-bottom: 7.5px !important;
+            display: flex !important;
+            flex-direction: column !important;
+            overflow: hidden !important;
+            position: relative !important;
+        }
+
+        /* Fix product content spacing on mobile large */
+        .product-content {
+            padding: 6px !important;
+            padding-top: 4px !important;
+            padding-bottom: 6px !important;
+            flex: 1 !important;
+            display: flex !important;
+            flex-direction: column !important;
+            margin-top: 0 !important;
+        }
+
+        .product-title {
+            font-size: 0.8rem !important;
+            line-height: 1.2 !important;
+            min-height: 30px !important;
+            margin-bottom: 3px !important;
+            margin-top: 0 !important;
+        }
+
+        .product-price {
+            font-size: 0.85rem !important;
+            margin-top: auto !important;
+        }
             margin: 0 auto !important;
             display: block !important;
         }
