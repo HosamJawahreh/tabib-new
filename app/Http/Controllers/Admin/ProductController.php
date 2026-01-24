@@ -96,7 +96,7 @@ class ProductController extends AdminBaseController
                 // Calculate order count from cart JSON in orders table
                 $orders = DB::table('orders')->select('cart')->get();
                 $totalQty = 0;
-                
+
                 foreach ($orders as $order) {
                     $cart = json_decode($order->cart, true);
                     if (is_array($cart) && isset($cart['items'])) {
@@ -107,21 +107,21 @@ class ProductController extends AdminBaseController
                         }
                     }
                 }
-                
+
                 return '<div style="text-align: center;"><span style="font-weight: 600; color: #667eea;">' . $totalQty . '</span></div>';
             })
             ->addColumn('status', function (Product $data) {
                 $checked = $data->status == 1 ? 'checked' : '';
                 $category = '';
-                
+
                 // Get categories from many-to-many relationship (category_product pivot table)
                 $categories = $data->categories()->pluck('name')->toArray();
-                
+
                 if (!empty($categories)) {
                     $categoryNames = implode(', ', $categories);
                     $category = '<div style="margin-top: 8px;"><small style="color: #718096;"><i class="fas fa-tags"></i> ' . $categoryNames . '</small></div>';
                 }
-                
+
                 return '<div style="text-align: center;">
                             <label class="switch">
                                 <input type="checkbox" class="status-toggle" data-id="'.$data->id.'" '.$checked.'>
@@ -251,16 +251,16 @@ class ProductController extends AdminBaseController
     {
         $sku = $request->input('sku');
         $productId = $request->input('product_id', null);
-        
+
         $query = Product::where('sku', $sku);
-        
+
         // If editing, exclude current product
         if ($productId) {
             $query->where('id', '!=', $productId);
         }
-        
+
         $exists = $query->exists();
-        
+
         return response()->json([
             'available' => !$exists,
             'message' => $exists ? __('This SKU is already in use.') : __('SKU is available.')
@@ -289,22 +289,22 @@ class ProductController extends AdminBaseController
         $image = base64_decode($image);
         $image_name = time() . Str::random(8) . '.webp';
         $path = 'assets/images/products/' . $image_name;
-        
+
         // Create temporary file
         $tempPath = 'assets/images/products/temp_' . time() . '.png';
         file_put_contents($tempPath, $image);
-        
+
         try {
             $img = Image::make($tempPath);
-            
+
             // Resize to max 1200px and compress
             $img->resize(1200, 1200, function ($constraint) {
                 $constraint->aspectRatio();
                 $constraint->upsize();
             });
-            
+
             $img->encode('webp', 75)->save($path);
-            
+
             if (file_exists($tempPath)) {
                 unlink($tempPath);
             }
@@ -312,7 +312,7 @@ class ProductController extends AdminBaseController
             file_put_contents($path, $image);
             $image_name = str_replace('.webp', '.png', $image_name);
         }
-        
+
         if ($data->photo != null) {
             if (file_exists(public_path() . '/assets/images/products/' . $data->photo)) {
                 unlink(public_path() . '/assets/images/products/' . $data->photo);
@@ -379,30 +379,30 @@ class ProductController extends AdminBaseController
         $image = base64_decode($image);
         $image_name = time() . Str::random(8) . '.webp';
         $path = 'assets/images/products/' . $image_name;
-        
+
         // Create temporary file from base64 to process with Intervention Image
         $tempPath = 'assets/images/products/temp_' . time() . '.png';
         file_put_contents($tempPath, $image);
-        
+
         // Convert to WebP with AGGRESSIVE compression for smallest file size
         try {
             $img = Image::make($tempPath);
-            
+
             // Resize to reasonable dimensions (max 1200px) to reduce file size dramatically
             $img->resize(1200, 1200, function ($constraint) {
                 $constraint->aspectRatio();
                 $constraint->upsize(); // Don't upscale small images
             });
-            
+
             // Use quality 75 for WebP - provides excellent compression with minimal quality loss
             // WebP is much more efficient than JPEG, so 75% WebP looks like 90% JPEG
             $img->encode('webp', 75)->save($path);
-            
+
             // Delete temporary file
             if (file_exists($tempPath)) {
                 unlink($tempPath);
             }
-            
+
             $fileSize = filesize($path);
             Log::info('Product image converted to WebP: ' . $image_name . ' (' . round($fileSize / 1024, 2) . ' KB)');
         } catch (\Exception $e) {
@@ -412,7 +412,7 @@ class ProductController extends AdminBaseController
             $input['photo'] = $image_name;
             Log::error('WebP conversion failed, using PNG: ' . $e->getMessage());
         }
-        
+
         $input['photo'] = $image_name;
 
         if ($request->type == "Physical" || $request->type == "Listing") {
@@ -661,25 +661,25 @@ class ProductController extends AdminBaseController
                 if (!file_exists(public_path() . '/assets/images/thumbnails/')) {
                     mkdir(public_path() . '/assets/images/thumbnails/', 0755, true);
                 }
-                
+
                 // Check if photo file exists
                 if (file_exists($photoPath)) {
                     $img = Image::make($photoPath);
-                    
+
                     // Ultra-compress thumbnails at 60% quality for smallest file size
                     // This matches our optimization strategy for fastest homepage loading
                     $img->resize(285, 285, function ($constraint) {
                         $constraint->aspectRatio();
                         $constraint->upsize();
                     });
-                    
+
                     $thumbnail = time() . Str::random(8) . '.webp';
                     $thumbnailPath = public_path() . '/assets/images/thumbnails/' . $thumbnail;
-                    
+
                     // Save as WebP with 60% quality for ultra-compression (smallest size)
                     $img->encode('webp', 60)->save($thumbnailPath);
                     $prod->thumbnail = $thumbnail;
-                    
+
                     $fileSize = filesize($thumbnailPath);
                     Log::info('Thumbnail created (WebP): ' . $thumbnail . ' (' . round($fileSize / 1024, 2) . ' KB)');
                 } else {

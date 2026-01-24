@@ -1,7 +1,7 @@
 <?php
 /**
  * Check Product Translation Issue
- * 
+ *
  * This script identifies products where the main name and translations
  * might have been entered in reverse (English in Arabic field, etc.)
  */
@@ -31,20 +31,20 @@ foreach ($products as $product) {
     echo "Product ID: {$product->id}" . PHP_EOL;
     echo "SKU: {$product->sku}" . PHP_EOL;
     echo "Main Name (products.name): {$product->name}" . PHP_EOL;
-    
+
     // Check if main name looks like English (basic check)
     $isMainNameEnglish = preg_match('/^[a-zA-Z0-9\s\-]+$/', $product->name);
     if ($isMainNameEnglish) {
         echo "⚠️  WARNING: Main name appears to be in English (should be Arabic)" . PHP_EOL;
     }
-    
+
     echo PHP_EOL . "Translations:" . PHP_EOL;
     $translations = $product->translations;
-    
+
     if ($translations->count() > 0) {
         foreach ($translations as $trans) {
             echo "  [{$trans->lang_code}] Name: {$trans->name}" . PHP_EOL;
-            
+
             // Check if translation looks like Arabic (basic check)
             if ($trans->lang_code == 'en_US') {
                 $isTransNameArabic = preg_match('/[\x{0600}-\x{06FF}]/u', $trans->name);
@@ -56,7 +56,7 @@ foreach ($products as $product) {
     } else {
         echo "  No translations found" . PHP_EOL;
     }
-    
+
     echo PHP_EOL;
 }
 

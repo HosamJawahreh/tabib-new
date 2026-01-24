@@ -1,7 +1,7 @@
 <?php
 /**
  * Fix "test" Translations
- * 
+ *
  * This script removes all English translations that were set to "test"
  * while keeping the correct Arabic names intact.
  */
