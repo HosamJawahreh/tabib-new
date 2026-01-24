@@ -303,11 +303,17 @@
                @else
                   {{ __('Featured Products') }}
                @endif
+               {{-- Debug: Show count --}}
+               @if(isset($featured_products))
+                  <small style="color: #999; font-size: 12px; margin-left: 10px;">({{ $featured_products->count() }} products)</small>
+               @else
+                  <small style="color: red; font-size: 12px; margin-left: 10px;">(Variable not set!)</small>
+               @endif
             </h4>
          </div>
          <div class="col-12">
-            <div class="featured-carousel owl-carousel owl-theme">
-               @if(isset($featured_products) && $featured_products->count() > 0)
+            @if(isset($featured_products) && $featured_products->count() > 0)
+               <div class="featured-carousel owl-carousel owl-theme">
                   @foreach ($featured_products as $item)
                   <div class="item">
                      <div class="featured-strip-product">
@@ -342,12 +348,17 @@
                      </div>
                   </div>
                   @endforeach
-               @else
-                  <div class="col-12 text-center py-4">
-                     <p>{{ __('No featured products available') }}</p>
-                  </div>
-               @endif
-            </div>
+               </div>
+            @else
+               <div class="col-12 text-center py-4">
+                  <p style="color: red;">{{ __('No featured products available') }}</p>
+                  @if(isset($featured_products))
+                     <small>Count: {{ $featured_products->count() }}</small>
+                  @else
+                     <small>Featured products variable is not set!</small>
+                  @endif
+               </div>
+            @endif
          </div>
       </div>
    </div>
@@ -355,38 +366,47 @@
 
 <script>
 jQuery(document).ready(function($) {
-    $('.featured-carousel').owlCarousel({
-        loop: true,
-        margin: 15,
-        nav: true,
-        dots: false,
-        autoplay: true,
-        autoplayTimeout: 4000,
-        autoplayHoverPause: true,
-        navText: ['<i class="fas fa-chevron-left"></i>', '<i class="fas fa-chevron-right"></i>'],
-        responsive: {
-            0: {
-                items: 2,
-                margin: 10
-            },
-            576: {
-                items: 3,
-                margin: 12
-            },
-            768: {
-                items: 4,
-                margin: 15
-            },
-            992: {
-                items: 5,
-                margin: 15
-            },
-            1200: {
-                items: 6,
-                margin: 15
+    console.log('Featured Products Script Loaded');
+    console.log('Featured carousel elements:', $('.featured-carousel').length);
+    console.log('Featured carousel items:', $('.featured-carousel .item').length);
+    
+    if ($('.featured-carousel').length > 0) {
+        $('.featured-carousel').owlCarousel({
+            loop: true,
+            margin: 15,
+            nav: true,
+            dots: false,
+            autoplay: true,
+            autoplayTimeout: 4000,
+            autoplayHoverPause: true,
+            navText: ['<i class="fas fa-chevron-left"></i>', '<i class="fas fa-chevron-right"></i>'],
+            responsive: {
+                0: {
+                    items: 2,
+                    margin: 10
+                },
+                576: {
+                    items: 3,
+                    margin: 12
+                },
+                768: {
+                    items: 4,
+                    margin: 15
+                },
+                992: {
+                    items: 5,
+                    margin: 15
+                },
+                1200: {
+                    items: 6,
+                    margin: 15
+                }
             }
-        }
-    });
+        });
+        console.log('Featured carousel initialized successfully');
+    } else {
+        console.error('Featured carousel element not found!');
+    }
 });
 </script>
 <!--==================== Featured Products Section End ====================-->

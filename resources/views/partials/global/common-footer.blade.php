@@ -229,7 +229,8 @@ html {
 
 @if(isset($visited))
 
-@if($gs->is_cookie == 1)
+{{-- Cookie bar disabled --}}
+@if(false && $gs->is_cookie == 1)
     <div class="cookie-bar-wrap show">
         <div class="container d-flex justify-content-center">
             <div class="col-xl-10 col-lg-12">
