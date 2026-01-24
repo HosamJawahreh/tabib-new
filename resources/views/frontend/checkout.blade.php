@@ -1867,7 +1867,7 @@
       padding: 10px 12px;
       min-height: 70px;
    }
-   
+
    .checkout-area .col-lg-12.mt-3 {
       padding-left: 15px;
       padding-right: 15px;

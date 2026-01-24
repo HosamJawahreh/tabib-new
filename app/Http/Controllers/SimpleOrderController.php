@@ -70,14 +70,14 @@ class SimpleOrderController extends Controller
             $phoneDigits = preg_replace('/\D/', '', $customerPhone);
             if (strlen($phoneDigits) < 9) {
                 Log::warning('Phone validation failed: ' . $customerPhone);
-                
+
                 if ($request->expectsJson() || $request->ajax()) {
                     return response()->json([
                         'success' => false,
                         'error' => 'Phone number must be at least 9 digits'
                     ], 400);
                 }
-                
+
                 return redirect()->back()
                     ->with('error', 'Phone number must be at least 9 digits')
                     ->withInput();
