@@ -130,7 +130,8 @@ class CatalogController extends FrontBaseController
         }
       })
       ->when(empty($sort), function ($query, $sort) {
-        return $query->latest('id');
+        // Default: Hot products first, then latest
+        return $query->orderByRaw('hot DESC, id DESC');
       })
       ->with('categories') // Load multi-categories relationship
       ->withCount('ratings')

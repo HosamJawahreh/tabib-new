@@ -200,10 +200,8 @@
                                                     <td width="10%">:</td>
                                                     <td width="45%">
                                                         <select class="form-control order-status-select" data-order-id="{{ $order->id }}" style="padding: 5px 10px; font-size: 13px;">
-                                                            <option value="pending" {{ $order->status == 'pending' ? 'selected' : '' }}>{{ __('Pending') }}</option>
-                                                            <option value="processing" {{ $order->status == 'processing' ? 'selected' : '' }}>{{ __('Processing') }}</option>
+                                                            <option value="pending" {{ $order->status == 'pending' ? 'selected' : '' }}>{{ __('New Order') }}</option>
                                                             <option value="completed" {{ $order->status == 'completed' ? 'selected' : '' }}>{{ __('Completed') }}</option>
-                                                            <option value="declined" {{ $order->status == 'declined' ? 'selected' : '' }}>{{ __('Declined') }}</option>
                                                         </select>
                                                     </td>
                                                 </tr>
@@ -299,7 +297,16 @@
                                                         <tr>
                                                             <td>
                                                                 @if(isset($product['item']['name']))
-                                                                    <strong>{{ $product['item']['name'] }}</strong>
+                                                                    @php
+                                                                        $productId = $product['product_id'] ?? (isset($product['item']['id']) ? $product['item']['id'] : null);
+                                                                    @endphp
+                                                                    @if($productId)
+                                                                        <a href="{{ route('admin-prod-edit', $productId) }}" target="_blank" style="color: #007bff; font-weight: 600; text-decoration: none;">
+                                                                            <strong>{{ $product['item']['name'] }}</strong>
+                                                                        </a>
+                                                                    @else
+                                                                        <strong>{{ $product['item']['name'] }}</strong>
+                                                                    @endif
                                                                     @if(isset($product['item']['photo']))
                                                                         <br><img src="{{ asset('assets/images/products/'.$product['item']['photo']) }}" alt="" style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px; margin-top: 5px;">
                                                                     @endif

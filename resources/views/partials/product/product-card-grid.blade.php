@@ -4,11 +4,12 @@
         <div class="product-thumb position-relative">
             <a href="{{ route('front.product', $product->slug) }}" class="d-block">
                 @php
+                    // Use thumbnail for grid view (ultra-compressed for fast loading)
                     $imageSrc = asset('assets/images/noimage.png');
-                    if($product->photo) {
-                        $imageSrc = asset('assets/images/products/'.$product->photo);
-                    } elseif($product->thumbnail) {
+                    if($product->thumbnail) {
                         $imageSrc = asset('assets/images/thumbnails/'.$product->thumbnail);
+                    } elseif($product->photo) {
+                        $imageSrc = asset('assets/images/products/'.$product->photo);
                     }
                 @endphp
                 <img src="{{ $imageSrc }}"

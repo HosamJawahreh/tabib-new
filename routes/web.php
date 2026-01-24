@@ -240,6 +240,7 @@ Route::prefix('admin')->group(function () {
         Route::get('/products/{slug}/create', 'Admin\ProductController@create')->name('admin-prod-create');
         Route::post('/products/store', 'Admin\ProductController@store')->name('admin-prod-store');
         Route::get('/getattributes', 'Admin\ProductController@getAttributes')->name('admin-prod-getattributes');
+        Route::get('/products/check-sku', 'Admin\ProductController@checkSku')->name('admin-prod-check-sku');
         // CREATE SECTION
 
         // EDIT SECTION

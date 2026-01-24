@@ -34,6 +34,122 @@
 			<form id="geniusform" action="{{route('admin-prod-update', $data->id)}}" method="POST" enctype="multipart/form-data">
 				{{csrf_field()}}
 				@include('alerts.admin.form-both')
+				
+				{{-- STICKY TOP ACTION BAR --}}
+				<div style="position: sticky; top: 0; z-index: 1000; background: white; border-bottom: 2px solid #e2e8f0; padding: 15px 30px; margin: -15px -15px 20px -15px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+					<div class="row align-items-center">
+						<div class="col-md-4">
+							<h5 style="margin: 0; color: #2d3748; font-weight: 600;">
+								<i class="fas fa-edit"></i> {{ __('Edit Product') }}
+							</h5>
+							<small style="color: #718096;">{{ $data->name }}</small>
+						</div>
+						<div class="col-md-8 text-right">
+							<div class="d-inline-flex align-items-center" style="gap: 15px;">
+								{{-- Product Status Toggle --}}
+								<div class="d-inline-flex align-items-center">
+									<label style="margin: 0; font-weight: 600; color: #2d3748; margin-right: 8px; font-size: 13px;">{{ __('Status') }}:</label>
+									<label class="switch switch-sm" style="margin: 0;">
+										<input type="checkbox" id="status-toggle-top" name="status" value="1" {{ $data->status == 1 ? 'checked' : '' }}>
+										<span class="slider round"></span>
+									</label>
+									<span id="status-text-top" style="margin-left: 8px; padding: 3px 10px; border-radius: 12px; font-size: 11px; font-weight: 600; {{ $data->status == 1 ? 'background-color: #d4edda; color: #155724;' : 'background-color: #f8d7da; color: #721c24;' }}">
+										{{ $data->status == 1 ? __('Active') : __('Inactive') }}
+									</span>
+								</div>
+
+								{{-- Featured Toggle --}}
+								<div class="d-inline-flex align-items-center">
+									<label style="margin: 0; font-weight: 600; color: #2d3748; margin-right: 8px; font-size: 13px;">
+										<i class="fas fa-star" style="color: #f59e0b;"></i> {{ __('Featured') }}:
+									</label>
+									<label class="switch switch-sm" style="margin: 0;">
+										<input type="checkbox" id="featured-toggle-top" name="featured" value="1" {{ $data->featured == 1 ? 'checked' : '' }}>
+										<span class="slider round" style="background-color: {{ $data->featured == 1 ? '#fbbf24' : '#cbd5e0' }};"></span>
+									</label>
+								</div>
+
+								{{-- Hot Toggle --}}
+								<div class="d-inline-flex align-items-center">
+									<label style="margin: 0; font-weight: 600; color: #2d3748; margin-right: 8px; font-size: 13px;">
+										<i class="fas fa-fire" style="color: #ef4444;"></i> {{ __('Hot') }}:
+									</label>
+									<label class="switch switch-sm" style="margin: 0;">
+										<input type="checkbox" id="hot-toggle-top" name="hot" value="1" {{ $data->hot == 1 ? 'checked' : '' }}>
+										<span class="slider round" style="background-color: {{ $data->hot == 1 ? '#3b82f6' : '#cbd5e0' }};"></span>
+									</label>
+								</div>
+								
+								{{-- Save Button --}}
+								<button class="btn" type="submit" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 8px 25px; font-size: 13px; font-weight: 600; border: none; border-radius: 6px; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);">
+									<i class="fas fa-save" style="margin-right: 6px;"></i>
+									{{ __('Save') }}
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<style>
+					/* Switch Styles */
+					.switch {
+						position: relative;
+						display: inline-block;
+						width: 60px;
+						height: 34px;
+					}
+					.switch-sm {
+						width: 48px;
+						height: 26px;
+					}
+					.switch input {
+						opacity: 0;
+						width: 0;
+						height: 0;
+					}
+					.slider {
+						position: absolute;
+						cursor: pointer;
+						top: 0;
+						left: 0;
+						right: 0;
+						bottom: 0;
+						background-color: #cbd5e0;
+						transition: .4s;
+					}
+					.slider:before {
+						position: absolute;
+						content: "";
+						height: 26px;
+						width: 26px;
+						left: 4px;
+						bottom: 4px;
+						background-color: white;
+						transition: .4s;
+					}
+					.switch-sm .slider:before {
+						height: 20px;
+						width: 20px;
+						left: 3px;
+						bottom: 3px;
+					}
+					input:checked + .slider {
+						background-color: #10b981;
+					}
+					input:checked + .slider:before {
+						transform: translateX(26px);
+					}
+					.switch-sm input:checked + .slider:before {
+						transform: translateX(22px);
+					}
+					.slider.round {
+						border-radius: 34px;
+					}
+					.slider.round:before {
+						border-radius: 50%;
+					}
+				</style>
+
 				<div class="row">
 					<div class="col-lg-12">
 						<div class="add-product-content">
@@ -42,6 +158,45 @@
 									<div class="product-description">
 										<div class="body-area" style="padding: 30px;">
 											<div class="gocover" style="background: url({{asset('assets/images/'.$gs->admin_loader)}}) no-repeat scroll center center rgba(45, 45, 45, 0.5);"></div>
+
+											{{-- PRICING SECTION (MOVED TO TOP) --}}
+											<div class="row">
+												<div class="col-lg-12 mb-3">
+													<h4 class="heading" style="color: #2d3748; font-size: 16px; border-bottom: 2px solid #4299e1; padding-bottom: 8px; margin-bottom: 15px;">
+														<i class="fas fa-tag"></i> {{ __('Product Identification & Pricing') }}
+													</h4>
+												</div>
+
+												{{-- Product SKU --}}
+												<div class="col-lg-4">
+													<div class="form-group">
+														<label style="font-weight: 600; color: #2d3748; font-size: 14px; margin-bottom: 8px;">
+															{{ __('Product SKU') }} *
+														</label>
+														<input type="text" class="input-field" placeholder="{{ __('Enter Product SKU') }}" name="sku" required="" value="{{ $data->sku }}" dir="auto" style="border: 2px solid #e2e8f0; border-radius: 6px; padding: 12px; font-size: 14px;">
+													</div>
+												</div>
+
+												{{-- Current Price --}}
+												<div class="col-lg-4">
+													<div class="form-group">
+														<label style="font-weight: 600; color: #2d3748; font-size: 14px; margin-bottom: 8px;">
+															{{ __('Current Price') }} * <small style="color: #718096;">({{$sign->name}})</small>
+														</label>
+														<input name="price" type="number" class="input-field" placeholder="{{ __('Enter Price') }}" step="0.01" min="0" required="" value="{{ round($data->price * $sign->value, 2) }}" dir="auto" style="border: 2px solid #e2e8f0; border-radius: 6px; padding: 12px; font-size: 14px;">
+													</div>
+												</div>
+
+												{{-- Discount Price --}}
+												<div class="col-lg-4">
+													<div class="form-group">
+														<label style="font-weight: 600; color: #2d3748; font-size: 14px; margin-bottom: 8px;">
+															{{ __('Discount Price') }} <small style="color: #718096;">({{ __('Optional') }})</small>
+														</label>
+														<input name="previous_price" step="0.01" min="0" type="number" class="input-field" placeholder="{{ __('Enter Discount Price') }}" value="{{ round($data->previous_price * $sign->value, 2) }}" dir="auto" style="border: 2px solid #e2e8f0; border-radius: 6px; padding: 12px; font-size: 14px;">
+													</div>
+												</div>
+											</div>
 
 											{{-- PRODUCT NAME SECTION (2 COLUMNS: ARABIC & ENGLISH) --}}
 											<div class="row">
@@ -99,66 +254,6 @@
 														</div>
 													@endforeach
 												@endif
-											</div>
-
-											{{-- SKU & PRICES SECTION (3 COLUMNS IN ONE LINE) --}}
-											<div class="row">
-												<div class="col-lg-12 mb-3 mt-4">
-													<h4 class="heading" style="color: #2d3748; font-size: 16px; border-bottom: 2px solid #48bb78; padding-bottom: 8px; margin-bottom: 15px;">
-														<i class="fas fa-dollar-sign"></i> {{ __('Pricing & SKU') }}
-													</h4>
-												</div>
-
-												{{-- Product SKU --}}
-												<div class="col-lg-4 col-md-4">
-													<div class="form-group">
-														<label style="font-weight: 600; color: #2d3748; font-size: 14px; margin-bottom: 8px; display: block;">
-															{{ __('Product SKU') }} *
-														</label>
-														<input type="text"
-															   class="input-field"
-															   placeholder="{{ __('Enter Product SKU') }}"
-															   name="sku"
-															   required=""
-															   value="{{ $data->sku }}"
-															   style="border: 2px solid #e2e8f0; border-radius: 6px; padding: 12px; font-size: 14px;">
-													</div>
-												</div>
-
-												{{-- Current Price --}}
-												<div class="col-lg-4 col-md-4">
-													<div class="form-group">
-														<label style="font-weight: 600; color: #2d3748; font-size: 14px; margin-bottom: 8px; display: block;">
-															{{ __('Current Price') }} * <small style="color: #718096;">({{$sign->name}})</small>
-														</label>
-														<input name="price"
-															   type="number"
-															   class="input-field"
-															   placeholder="20.00"
-															   step="0.01"
-															   required=""
-															   min="0"
-															   value="{{ round($data->price * $sign->value, 2) }}"
-															   style="border: 2px solid #e2e8f0; border-radius: 6px; padding: 12px; font-size: 14px;">
-													</div>
-												</div>
-
-												{{-- Discount Price --}}
-												<div class="col-lg-4 col-md-4">
-													<div class="form-group">
-														<label style="font-weight: 600; color: #2d3748; font-size: 14px; margin-bottom: 8px; display: block;">
-															{{ __('Discount Price') }} <small style="color: #718096;">({{ __('Optional') }})</small>
-														</label>
-														<input name="previous_price"
-															   step="0.01"
-															   type="number"
-															   class="input-field"
-															   placeholder="15.00"
-															   min="0"
-															   value="{{ round($data->previous_price * $sign->value, 2) }}"
-															   style="border: 2px solid #e2e8f0; border-radius: 6px; padding: 12px; font-size: 14px;">
-													</div>
-												</div>
 											</div>
 
 											{{-- CATEGORIES SECTION --}}
@@ -855,111 +950,44 @@
 												</div>
 											</div>
 
-											{{-- PRODUCT STATUS SECTION --}}
-											<div class="row">
-												<div class="col-lg-12 mb-3 mt-4">
-													<h4 class="heading" style="color: #2d3748; font-size: 16px; border-bottom: 2px solid #10b981; padding-bottom: 8px; margin-bottom: 15px;">
-														<i class="fas fa-toggle-on"></i> {{ __('Product Status') }}
-													</h4>
-												</div>
-
-												<div class="col-lg-12">
-													<div class="form-group">
-														<label style="font-weight: 600; color: #2d3748; font-size: 14px; margin-bottom: 10px; display: flex; align-items: center;">
-															{{ __('Product Visibility') }} *
-															<span id="status-text" style="margin-left: 10px; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; {{ $data->status == 1 ? 'background-color: #d4edda; color: #155724;' : 'background-color: #f8d7da; color: #721c24;' }}">
-																{{ $data->status == 1 ? __('Activated') : __('Deactivated') }}
-															</span>
-														</label>
-
-														<div style="display: flex; align-items: center; gap: 15px; padding: 15px; background: #f9fafb; border-radius: 8px; border: 2px solid #e2e8f0;">
-															<label class="switch" style="position: relative; display: inline-block; width: 60px; height: 34px; margin: 0;">
-																<input type="checkbox" id="status-toggle" name="status" value="1" {{ $data->status == 1 ? 'checked' : '' }} style="opacity: 0; width: 0; height: 0;">
-																<span class="slider round" style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 34px;"></span>
-															</label>
-															<div>
-																<div style="font-weight: 600; color: #2d3748; font-size: 14px;">{{ __('Enable Product') }}</div>
-																<small class="form-text text-muted" style="margin: 0;">
-																	<i class="fas fa-info-circle"></i> <span id="status-help">{{ $data->status == 1 ? __('Product is visible to customers') : __('Product is hidden from customers') }}</span>
-																</small>
-															</div>
-														</div>
-
-														<input type="hidden" id="status-hidden" name="status" value="{{ $data->status }}">
-													</div>
-												</div>
-											</div>
-
-											<style>
-												.switch input:checked + .slider {
-													background-color: #10b981;
-												}
-
-												.switch input:focus + .slider {
-													box-shadow: 0 0 1px #10b981;
-												}
-
-												.switch input:checked + .slider:before {
-													transform: translateX(26px);
-												}
-
-												.slider:before {
-													position: absolute;
-													content: "";
-													height: 26px;
-													width: 26px;
-													left: 4px;
-													bottom: 4px;
-													background-color: white;
-													transition: .4s;
-													border-radius: 50%;
-												}
-											</style>
-
 											<script>
 												document.addEventListener('DOMContentLoaded', function() {
-													const toggle = document.getElementById('status-toggle');
-													const hidden = document.getElementById('status-hidden');
-													const statusText = document.getElementById('status-text');
-													const statusHelp = document.getElementById('status-help');
+													// Status toggle
+													const toggleTop = document.getElementById('status-toggle-top');
+													if (toggleTop) {
+														toggleTop.addEventListener('change', function() {
+															const statusTextTop = document.getElementById('status-text-top');
+															if (this.checked) {
+																statusTextTop.textContent = '{{ __("Active") }}';
+																statusTextTop.style.backgroundColor = '#d4edda';
+																statusTextTop.style.color = '#155724';
+															} else {
+																statusTextTop.textContent = '{{ __("Inactive") }}';
+																statusTextTop.style.backgroundColor = '#f8d7da';
+																statusTextTop.style.color = '#721c24';
+															}
+														});
+													}
 
-													toggle.addEventListener('change', function() {
-														if (this.checked) {
-															hidden.value = '1';
-															statusText.textContent = '{{ __("Activated") }}';
-															statusText.style.backgroundColor = '#d4edda';
-															statusText.style.color = '#155724';
-															statusHelp.textContent = '{{ __("Product is visible to customers") }}';
-														} else {
-															hidden.value = '0';
-															statusText.textContent = '{{ __("Deactivated") }}';
-															statusText.style.backgroundColor = '#f8d7da';
-															statusText.style.color = '#721c24';
-															statusHelp.textContent = '{{ __("Product is hidden from customers") }}';
-														}
-													});
+													// Featured toggle color change
+													const featuredToggle = document.getElementById('featured-toggle-top');
+													if (featuredToggle) {
+														featuredToggle.addEventListener('change', function() {
+															const slider = this.nextElementSibling;
+															slider.style.backgroundColor = this.checked ? '#fbbf24' : '#cbd5e0';
+														});
+													}
+
+													// Hot toggle color change
+													const hotToggle = document.getElementById('hot-toggle-top');
+													if (hotToggle) {
+														hotToggle.addEventListener('change', function() {
+															const slider = this.nextElementSibling;
+															slider.style.backgroundColor = this.checked ? '#3b82f6' : '#cbd5e0';
+														});
+													}
 												});
 											</script>
-
-											{{-- Submit Button --}}
-											<div class="row mt-5 mb-4">
-												<div class="col-12 text-center">
-													<button class="btn btn-lg"
-															type="submit"
-															style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-																   color: white;
-																   padding: 15px 60px;
-																   font-size: 16px;
-																   font-weight: 600;
-																   border: none;
-																   border-radius: 8px;
-																   box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
-																   transition: all 0.3s ease;">
-														<i class="fas fa-save" style="margin-right: 8px;"></i>
-														{{ __('Update Product') }}
-													</button>
-												</div>
-											</div>
 
 											<input type="hidden" name="type" value="Physical">
 

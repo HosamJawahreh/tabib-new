@@ -104,14 +104,15 @@ class FrontendController extends FrontBaseController
         // Get footer blogs for footer section
         $data['footer_blogs'] = Blog::orderBy('created_at', 'desc')->limit(3)->get();
 
-        // Get initial 24 products for homepage with infinite scroll (alphabetically by name)
+        // Get initial 24 products for homepage with infinite scroll
+        // Hot products first, then alphabetically by name
         $data['products'] = Product::where('status', 1)
             ->with(['user' => function ($query) {
                 $query->select('id', 'is_vendor');
             }, 'categories']) // Load multi-categories
             ->withCount('ratings')
             ->withAvg('ratings', 'rating')
-            ->orderBy('name', 'asc')
+            ->orderByRaw('hot DESC, name ASC') // Hot products first, then alphabetical
             ->paginate(24);
 
         $data['total_products_count'] = Product::where('status', 1)->count();
@@ -132,7 +133,7 @@ class FrontendController extends FrontBaseController
             }, 'categories']) // Load multi-categories
             ->withCount('ratings')
             ->withAvg('ratings', 'rating')
-            ->orderBy('name', 'asc')
+            ->orderByRaw('hot DESC, name ASC') // Hot products first, then alphabetical
             ->paginate(24, ['*'], 'page', $page);
 
         if ($request->ajax()) {
@@ -205,8 +206,8 @@ class FrontendController extends FrontBaseController
         // Get total count BEFORE pagination
         $totalCount = $query->count();
 
-        // Order alphabetically by name
-        $query->orderBy('name', 'asc');
+        // Order: Hot products first, then alphabetically by name
+        $query->orderByRaw('hot DESC, name ASC');
 
         // Paginate (24 per page)
         $products = $query->paginate(24);
@@ -216,7 +217,7 @@ class FrontendController extends FrontBaseController
 
         return response()->json([
             'html' => $view,
-            'products_count' => $products->count(),
+            'products_count' => $products->total(),
             'total_count' => $totalCount,
             'has_more' => $products->hasMorePages(),
             'current_page' => $products->currentPage(),

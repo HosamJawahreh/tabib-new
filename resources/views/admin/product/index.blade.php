@@ -88,14 +88,17 @@
 										</div>
 
 										<div class="table-responsive">
-												<table id="geniustable" class="table table-hover dt-responsive" cellspacing="0" width="100%">
+												<table id="geniustable" class="table table-hover table-striped dt-responsive" cellspacing="0" width="100%">
 													<thead>
 														<tr>
-									                        <th>{{ __("Image") }}</th>
-									                        <th>{{ __("Name") }}</th>
-									                        <th>{{ __("Price") }}</th>
-									                        <th>{{ __("Status") }}</th>
-									                        <th>{{ __("Options") }}</th>
+									                        <th style="text-align: center;">{{ __("SKU") }}</th>
+									                        <th style="text-align: center;">{{ __("Image") }}</th>
+									                        <th style="text-align: center;">{{ __("Name") }}</th>
+									                        <th style="text-align: center;">{{ __("Price") }}</th>
+									                        <th style="text-align: center;">{{ __("Order Count") }}</th>
+									                        <th style="text-align: center;">{{ __("Status") }}</th>
+									                        <th style="text-align: center;">{{ __("Edit") }}</th>
+									                        <th style="text-align: center;">{{ __("Delete") }}</th>
 														</tr>
 													</thead>
 												</table>
@@ -271,15 +274,23 @@
 					}
 			   },
                columns: [
+                        { data: 'sku', name: 'sku' },
                         { data: 'image', name: 'photo', searchable: false, orderable: false },
                         { data: 'name', name: 'name' },
                         { data: 'price', name: 'price' },
+                        { data: 'order_count', name: 'order_count', searchable: false, orderable: false },
                         { data: 'status', searchable: false, orderable: false},
-            			{ data: 'action', searchable: false, orderable: false }
+            			{ data: 'edit', searchable: false, orderable: false },
+            			{ data: 'delete', searchable: false, orderable: false }
                      ],
                columnDefs: [
                    {
                        targets: 0,
+                       width: '100px',
+                       className: 'text-center'
+                   },
+                   {
+                       targets: 1,
                        width: '80px',
                        className: 'text-center'
                    }

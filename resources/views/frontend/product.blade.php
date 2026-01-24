@@ -307,45 +307,46 @@
          </div>
          <div class="col-12">
             <div class="featured-carousel owl-carousel owl-theme">
-               @foreach (App\Models\Product::where('featured', 1)
-               ->where('status', 1)
-               ->withCount('ratings')
-               ->withAvg('ratings','rating')
-               ->inRandomOrder()
-               ->take(12)->get() as $item)
-               <div class="item">
-                  <div class="featured-strip-product">
-                     <div class="product-image">
-                        <a href="{{ route('front.product', $item->slug) }}">
-                           <img class="lazy" data-src="{{ $item->photo ? asset('assets/images/products/'.$item->photo):asset('assets/images/noimage.png')}}" alt="{{ $item->showName() }}">
-                        </a>
-                        @if($item->offPercentage())
-                        <div class="on-sale">-{{ round((float)$item->offPercentage(), 2) }}%</div>
-                        @endif
-                     </div>
-                     <div class="product-info">
-                        <h3 class="product-title">
+               @if(isset($featured_products) && $featured_products->count() > 0)
+                  @foreach ($featured_products as $item)
+                  <div class="item">
+                     <div class="featured-strip-product">
+                        <div class="product-image">
                            <a href="{{ route('front.product', $item->slug) }}">
-                              {{ $item->showName() }}
+                              <img class="lazy" data-src="{{ $item->photo ? asset('assets/images/products/'.$item->photo):asset('assets/images/noimage.png')}}" alt="{{ $item->showName() }}">
                            </a>
-                        </h3>
-                        <div class="product-price">
-                           <div class="price">
-                              <ins>{{ $item->showPrice()}}</ins>
-                              @if($item->showPreviousPrice())
-                              <del>{{ $item->showPreviousPrice() }}</del>
-                              @endif
-                           </div>
+                           @if($item->offPercentage())
+                           <div class="on-sale">-{{ round((float)$item->offPercentage(), 2) }}%</div>
+                           @endif
                         </div>
-                        <div class="star-rating">
-                           <i class="fas fa-star"></i>
-                           <span>{{ number_format($item->ratings_avg_rating,1) }}</span>
-                           <span>({{ $item->ratings_count }})</span>
+                        <div class="product-info">
+                           <h3 class="product-title">
+                              <a href="{{ route('front.product', $item->slug) }}">
+                                 {{ $item->showName() }}
+                              </a>
+                           </h3>
+                           <div class="product-price">
+                              <div class="price">
+                                 <ins>{{ $item->showPrice()}}</ins>
+                                 @if($item->showPreviousPrice())
+                                 <del>{{ $item->showPreviousPrice() }}</del>
+                                 @endif
+                              </div>
+                           </div>
+                           <div class="star-rating">
+                              <i class="fas fa-star"></i>
+                              <span>{{ number_format($item->ratings_avg_rating ?? 0, 1) }}</span>
+                              <span>({{ $item->ratings_count ?? 0 }})</span>
+                           </div>
                         </div>
                      </div>
                   </div>
-               </div>
-               @endforeach
+                  @endforeach
+               @else
+                  <div class="col-12 text-center py-4">
+                     <p>{{ __('No featured products available') }}</p>
+                  </div>
+               @endif
             </div>
          </div>
       </div>

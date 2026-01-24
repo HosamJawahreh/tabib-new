@@ -12,6 +12,7 @@ use App\Models\Product;
 use App\Models\Subcategory;
 use Yajra\DataTables\Facades\DataTables as Datatables;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 use Illuminate\Http\Request;
 
@@ -73,42 +74,77 @@ class ProductController extends AdminBaseController
 
         //--- Integrating This Collection Into Datatables with Query Builder (optimized)
         return Datatables::eloquent($query)
+            ->addColumn('sku', function (Product $data) {
+                if ($data->type == 'Physical' && $data->sku) {
+                    return '<div style="text-align: center;"><span style="font-weight: 600; color: #2d3748;">' . $data->sku . '</span></div>';
+                }
+                return '<div style="text-align: center;"><span style="color: #a0aec0;">-</span></div>';
+            })
             ->addColumn('image', function (Product $data) {
                 $photo = $data->thumbnail ? asset('assets/images/thumbnails/' . $data->thumbnail) : asset('assets/images/noimage.png');
-                return '<img src="' . $photo . '" alt="Product" style="width: 60px; height: 60px; object-fit: cover; border-radius: 4px;">';
+                return '<div style="text-align: center;"><img src="' . $photo . '" alt="Product" style="width: 60px; height: 60px; object-fit: cover; border-radius: 4px;"></div>';
             })
             ->editColumn('name', function (Product $data) {
                 $name = mb_strlen($data->name, 'UTF-8') > 50 ? mb_substr($data->name, 0, 50, 'UTF-8') . '...' : $data->name;
-                $id = '<small>' . __("ID") . ': <a href="' . route('front.product', $data->slug) . '" target="_blank">' . sprintf("%'.08d", $data->id) . '</a></small>';
-                $id3 = $data->type == 'Physical' ? '<small class="ml-2"> ' . __("SKU") . ': <a href="' . route('front.product', $data->slug) . '" target="_blank">' . $data->sku . '</a>' : '';
-                return $name . '<br>' . $id . $id3 . $data->checkVendor();
+                return '<div style="text-align: center;"><span style="font-weight: 500;">' . $name . '</span></div>';
             })
             ->editColumn('price', function (Product $data) {
                 $price = $data->price * $this->curr->value;
-                return PriceHelper::showAdminCurrencyPrice($price);
+                return '<div style="text-align: center;"><span style="font-weight: 600; color: #10b981;">' . PriceHelper::showAdminCurrencyPrice($price) . '</span></div>';
+            })
+            ->addColumn('order_count', function (Product $data) {
+                // Calculate order count from cart JSON in orders table
+                $orders = DB::table('orders')->select('cart')->get();
+                $totalQty = 0;
+                
+                foreach ($orders as $order) {
+                    $cart = json_decode($order->cart, true);
+                    if (is_array($cart) && isset($cart['items'])) {
+                        foreach ($cart['items'] as $item) {
+                            if (isset($item['item']['id']) && $item['item']['id'] == $data->id) {
+                                $totalQty += isset($item['qty']) ? $item['qty'] : 0;
+                            }
+                        }
+                    }
+                }
+                
+                return '<div style="text-align: center;"><span style="font-weight: 600; color: #667eea;">' . $totalQty . '</span></div>';
             })
             ->addColumn('status', function (Product $data) {
                 $checked = $data->status == 1 ? 'checked' : '';
-                return '<label class="switch">
-                            <input type="checkbox" class="status-toggle" data-id="'.$data->id.'" '.$checked.'>
-                            <span class="slider round"></span>
-                        </label>';
+                $category = '';
+                
+                // Get categories from many-to-many relationship (category_product pivot table)
+                $categories = $data->categories()->pluck('name')->toArray();
+                
+                if (!empty($categories)) {
+                    $categoryNames = implode(', ', $categories);
+                    $category = '<div style="margin-top: 8px;"><small style="color: #718096;"><i class="fas fa-tags"></i> ' . $categoryNames . '</small></div>';
+                }
+                
+                return '<div style="text-align: center;">
+                            <label class="switch">
+                                <input type="checkbox" class="status-toggle" data-id="'.$data->id.'" '.$checked.'>
+                                <span class="slider round"></span>
+                            </label>
+                            '.$category.'
+                        </div>';
             })
-            ->addColumn('action', function (Product $data) {
-                return '<div class="action-btns" style="display: flex; gap: 8px; justify-content: center;">
+            ->addColumn('edit', function (Product $data) {
+                return '<div style="text-align: center;">
                     <a href="' . route('admin-prod-edit', $data->id) . '" class="btn btn-sm btn-primary" title="' . __("Edit") . '" style="padding: 6px 12px;">
                         <i class="fas fa-edit"></i>
                     </a>
-                    <a href="javascript:void(0)" class="btn btn-sm btn-info set-gallery" data-toggle="modal" data-target="#setgallery" title="' . __("View Gallery") . '" style="padding: 6px 12px;">
-                        <input type="hidden" value="' . $data->id . '">
-                        <i class="fas fa-images"></i>
-                    </a>
+                </div>';
+            })
+            ->addColumn('delete', function (Product $data) {
+                return '<div style="text-align: center;">
                     <a href="javascript:void(0)" data-href="' . route('admin-prod-delete', $data->id) . '" data-toggle="modal" data-target="#confirm-delete" class="btn btn-sm btn-danger delete" title="' . __("Delete") . '" style="padding: 6px 12px;">
                         <i class="fas fa-trash-alt"></i>
                     </a>
                 </div>';
             })
-            ->rawColumns(['image', 'name', 'status', 'action'])
+            ->rawColumns(['sku', 'image', 'name', 'price', 'order_count', 'status', 'edit', 'delete'])
             ->toJson(); //--- Returning Json Data To Client Side
     }
 
@@ -210,6 +246,27 @@ class ProductController extends AdminBaseController
         //--- Redirect Section Ends
     }
 
+    //*** GET Request - Check SKU Uniqueness
+    public function checkSku(Request $request)
+    {
+        $sku = $request->input('sku');
+        $productId = $request->input('product_id', null);
+        
+        $query = Product::where('sku', $sku);
+        
+        // If editing, exclude current product
+        if ($productId) {
+            $query->where('id', '!=', $productId);
+        }
+        
+        $exists = $query->exists();
+        
+        return response()->json([
+            'available' => !$exists,
+            'message' => $exists ? __('This SKU is already in use.') : __('SKU is available.')
+        ]);
+    }
+
     //*** POST Request
     public function uploadUpdate(Request $request, $id)
     {
@@ -230,9 +287,32 @@ class ProductController extends AdminBaseController
         list($type, $image) = explode(';', $image);
         list(, $image) = explode(',', $image);
         $image = base64_decode($image);
-        $image_name = time() . Str::random(8) . '.png';
+        $image_name = time() . Str::random(8) . '.webp';
         $path = 'assets/images/products/' . $image_name;
-        file_put_contents($path, $image);
+        
+        // Create temporary file
+        $tempPath = 'assets/images/products/temp_' . time() . '.png';
+        file_put_contents($tempPath, $image);
+        
+        try {
+            $img = Image::make($tempPath);
+            
+            // Resize to max 1200px and compress
+            $img->resize(1200, 1200, function ($constraint) {
+                $constraint->aspectRatio();
+                $constraint->upsize();
+            });
+            
+            $img->encode('webp', 75)->save($path);
+            
+            if (file_exists($tempPath)) {
+                unlink($tempPath);
+            }
+        } catch (\Exception $e) {
+            file_put_contents($path, $image);
+            $image_name = str_replace('.webp', '.png', $image_name);
+        }
+        
         if ($data->photo != null) {
             if (file_exists(public_path() . '/assets/images/products/' . $data->photo)) {
                 unlink(public_path() . '/assets/images/products/' . $data->photo);
@@ -246,9 +326,14 @@ class ProductController extends AdminBaseController
             }
         }
 
-        $img = Image::make(public_path() . '/assets/images/products/' . $data->photo)->resize(285, 285);
-        $thumbnail = time() . Str::random(8) . '.jpg';
-        $img->save(public_path() . '/assets/images/thumbnails/' . $thumbnail);
+        $img = Image::make(public_path() . '/assets/images/products/' . $data->photo);
+        $img->resize(285, 285, function ($constraint) {
+            $constraint->aspectRatio();
+            $constraint->upsize();
+        });
+        $thumbnail = time() . Str::random(8) . '.webp';
+        // Ultra-compress thumbnail at 60% quality for smallest file size
+        $img->encode('webp', 60)->save(public_path() . '/assets/images/thumbnails/' . $thumbnail);
         $data->thumbnail = $thumbnail;
         $data->update();
         return response()->json(['status' => true, 'file_name' => $image_name]);
@@ -275,6 +360,11 @@ class ProductController extends AdminBaseController
         $sign = $this->curr;
         $input = $request->all();
 
+        // Handle checkbox fields - hidden fields send '0' or '1' as strings
+        $input['status'] = $request->input('status', 0) == '1' ? 1 : 0;
+        $input['featured'] = $request->input('featured', 0) == '1' ? 1 : 0;
+        $input['hot'] = $request->input('hot', 0) == '1' ? 1 : 0;
+
         // Check File
         if ($file = $request->file('file')) {
             $name = time() . Str::random(8) . str_replace(' ', '', $file->getClientOriginalExtension());
@@ -282,13 +372,47 @@ class ProductController extends AdminBaseController
             $input['file'] = $name;
         }
 
+        // Process and convert image to WebP with MAXIMUM compression
         $image = $request->photo;
         list($type, $image) = explode(';', $image);
         list(, $image) = explode(',', $image);
         $image = base64_decode($image);
-        $image_name = time() . Str::random(8) . '.png';
+        $image_name = time() . Str::random(8) . '.webp';
         $path = 'assets/images/products/' . $image_name;
-        file_put_contents($path, $image);
+        
+        // Create temporary file from base64 to process with Intervention Image
+        $tempPath = 'assets/images/products/temp_' . time() . '.png';
+        file_put_contents($tempPath, $image);
+        
+        // Convert to WebP with AGGRESSIVE compression for smallest file size
+        try {
+            $img = Image::make($tempPath);
+            
+            // Resize to reasonable dimensions (max 1200px) to reduce file size dramatically
+            $img->resize(1200, 1200, function ($constraint) {
+                $constraint->aspectRatio();
+                $constraint->upsize(); // Don't upscale small images
+            });
+            
+            // Use quality 75 for WebP - provides excellent compression with minimal quality loss
+            // WebP is much more efficient than JPEG, so 75% WebP looks like 90% JPEG
+            $img->encode('webp', 75)->save($path);
+            
+            // Delete temporary file
+            if (file_exists($tempPath)) {
+                unlink($tempPath);
+            }
+            
+            $fileSize = filesize($path);
+            Log::info('Product image converted to WebP: ' . $image_name . ' (' . round($fileSize / 1024, 2) . ' KB)');
+        } catch (\Exception $e) {
+            // Fallback to PNG if WebP conversion fails
+            file_put_contents($path, $image);
+            $image_name = str_replace('.webp', '.png', $image_name);
+            $input['photo'] = $image_name;
+            Log::error('WebP conversion failed, using PNG: ' . $e->getMessage());
+        }
+        
         $input['photo'] = $image_name;
 
         if ($request->type == "Physical" || $request->type == "Listing") {
@@ -402,7 +526,7 @@ class ProductController extends AdminBaseController
 
         }
 
-        if (in_array(null, $request->features) || in_array(null, $request->colors)) {
+        if (empty($request->features) || empty($request->colors) || in_array(null, $request->features ?? []) || in_array(null, $request->colors ?? [])) {
             $input['features'] = null;
             $input['colors'] = null;
         } else {
@@ -528,11 +652,47 @@ class ProductController extends AdminBaseController
             $prod->slug = Str::slug($data->name, '-') . '-' . strtolower($data->sku);
         }
 
-        // Set Thumbnail
-        $img = Image::make(public_path() . '/assets/images/products/' . $prod->photo)->resize(285, 285);
-        $thumbnail = time() . Str::random(8) . '.jpg';
-        $img->save(public_path() . '/assets/images/thumbnails/' . $thumbnail);
-        $prod->thumbnail = $thumbnail;
+        // Set Thumbnail - only if photo exists
+        $photoPath = public_path() . '/assets/images/products/' . $prod->photo;
+        if (file_exists($photoPath)) {
+            // Create thumbnail with MAXIMUM compression
+            try {
+                // Ensure thumbnails directory exists
+                if (!file_exists(public_path() . '/assets/images/thumbnails/')) {
+                    mkdir(public_path() . '/assets/images/thumbnails/', 0755, true);
+                }
+                
+                // Check if photo file exists
+                if (file_exists($photoPath)) {
+                    $img = Image::make($photoPath);
+                    
+                    // Ultra-compress thumbnails at 60% quality for smallest file size
+                    // This matches our optimization strategy for fastest homepage loading
+                    $img->resize(285, 285, function ($constraint) {
+                        $constraint->aspectRatio();
+                        $constraint->upsize();
+                    });
+                    
+                    $thumbnail = time() . Str::random(8) . '.webp';
+                    $thumbnailPath = public_path() . '/assets/images/thumbnails/' . $thumbnail;
+                    
+                    // Save as WebP with 60% quality for ultra-compression (smallest size)
+                    $img->encode('webp', 60)->save($thumbnailPath);
+                    $prod->thumbnail = $thumbnail;
+                    
+                    $fileSize = filesize($thumbnailPath);
+                    Log::info('Thumbnail created (WebP): ' . $thumbnail . ' (' . round($fileSize / 1024, 2) . ' KB)');
+                } else {
+                    Log::error('Photo file does not exist for thumbnail creation: ' . $photoPath);
+                    $prod->thumbnail = null;
+                }
+            } catch (\Exception $e) {
+                // Log the error so we can see what went wrong
+                Log::error('Thumbnail creation failed: ' . $e->getMessage() . ' - Photo path: ' . $photoPath);
+                // Set thumbnail to null if creation fails
+                $prod->thumbnail = null;
+            }
+        }
         $prod->update();
 
         // Add To Gallery If any
@@ -552,8 +712,8 @@ class ProductController extends AdminBaseController
         //logic Section Ends
 
         //--- Redirect Section
-        $msg = __("New Product Added Successfully.") . '<a href="' . route('admin-prod-index') . '">' . __("View Product Lists.") . '</a>';
-        return response()->json($msg);
+        $msg = __("New Product Added Successfully.");
+        return response()->json(['status' => true, 'msg' => $msg, 'redirect' => route('admin-prod-index')]);
         //--- Redirect Section Ends
     }
 
@@ -721,26 +881,26 @@ class ProductController extends AdminBaseController
 
                     if (strpos($contentType, 'image/') !== false) {
                         try {
-                            // Download and convert to WebP
+                            // Download and convert to WebP with MAXIMUM compression
                             $imgData = @file_get_contents($line[5]);
                             if ($imgData !== false) {
-                                $fimg = Image::make($imgData)->resize(800, 800, function ($constraint) {
+                                $fimg = Image::make($imgData)->resize(1200, 1200, function ($constraint) {
                                     $constraint->aspectRatio();
                                     $constraint->upsize();
                                 });
 
-                                // Save as WebP
+                                // Save as WebP with 75% quality for best compression
                                 $fphoto = time() . Str::random(8) . '.webp';
-                                $fimg->encode('webp', 85)->save(base_path('public/assets/images/products/' . $fphoto));
+                                $fimg->encode('webp', 75)->save(base_path('public/assets/images/products/' . $fphoto));
                                 $input['photo'] = $fphoto;
 
-                                // Create thumbnail as WebP
+                                // Create thumbnail as WebP with 70% quality
                                 $timg = Image::make($imgData)->resize(285, 285, function ($constraint) {
                                     $constraint->aspectRatio();
                                     $constraint->upsize();
                                 });
                                 $thumbnail = time() . Str::random(8) . '_thumb.webp';
-                                $timg->encode('webp', 85)->save(base_path('public/assets/images/thumbnails/' . $thumbnail));
+                                $timg->encode('webp', 70)->save(base_path('public/assets/images/thumbnails/' . $thumbnail));
                                 $input['thumbnail'] = $thumbnail;
 
                                 $log .= "<br>" . __('Row No') . ": " . $i . " - " . __('Image converted to WebP') . "<br>";
@@ -749,28 +909,34 @@ class ProductController extends AdminBaseController
                             }
                         } catch (\Exception $e) {
                             // Use default noimage
-                            $fimg = Image::make(base_path('public/assets/images/noimage.png'))->resize(800, 800);
+                            $fimg = Image::make(base_path('public/assets/images/noimage.png'))->resize(1200, 1200, function ($constraint) {
+                                $constraint->aspectRatio();
+                                $constraint->upsize();
+                            });
                             $fphoto = time() . Str::random(8) . '.webp';
-                            $fimg->encode('webp', 85)->save(base_path('public/assets/images/products/' . $fphoto));
+                            $fimg->encode('webp', 75)->save(base_path('public/assets/images/products/' . $fphoto));
                             $input['photo'] = $fphoto;
 
                             $timg = Image::make(base_path('public/assets/images/noimage.png'))->resize(285, 285);
                             $thumbnail = time() . Str::random(8) . '_thumb.webp';
-                            $timg->encode('webp', 85)->save(base_path('public/assets/images/thumbnails/' . $thumbnail));
+                            $timg->encode('webp', 70)->save(base_path('public/assets/images/thumbnails/' . $thumbnail));
                             $input['thumbnail'] = $thumbnail;
 
                             $log .= "<br>" . __('Row No') . ": " . $i . " - " . __('Used default image (download failed)') . "<br>";
                         }
                     } else {
                         // Use default noimage for non-image content
-                        $fimg = Image::make(base_path('public/assets/images/noimage.png'))->resize(800, 800);
+                        $fimg = Image::make(base_path('public/assets/images/noimage.png'))->resize(1200, 1200, function ($constraint) {
+                            $constraint->aspectRatio();
+                            $constraint->upsize();
+                        });
                         $fphoto = time() . Str::random(8) . '.webp';
-                        $fimg->encode('webp', 85)->save(base_path('public/assets/images/products/' . $fphoto));
+                        $fimg->encode('webp', 75)->save(base_path('public/assets/images/products/' . $fphoto));
                         $input['photo'] = $fphoto;
 
                         $timg = Image::make(base_path('public/assets/images/noimage.png'))->resize(285, 285);
                         $thumbnail = time() . Str::random(8) . '_thumb.webp';
-                        $timg->encode('webp', 85)->save(base_path('public/assets/images/thumbnails/' . $thumbnail));
+                        $timg->encode('webp', 70)->save(base_path('public/assets/images/thumbnails/' . $thumbnail));
                         $input['thumbnail'] = $thumbnail;
                     }
 
@@ -852,6 +1018,11 @@ class ProductController extends AdminBaseController
         $data = Product::findOrFail($id);
         $sign = $this->curr;
         $input = $request->all();
+
+        // Handle checkbox fields (unchecked checkboxes don't send values)
+        $input['status'] = $request->has('status') ? 1 : 0;
+        $input['featured'] = $request->has('featured') ? 1 : 0;
+        $input['hot'] = $request->has('hot') ? 1 : 0;
 
         //Check Types
         if ($request->type_check == 1) {

@@ -75,7 +75,17 @@ class ProductDetailsController extends FrontBaseController
         // Get footer blogs for footer section
         $footer_blogs = \App\Models\Blog::orderBy('created_at', 'desc')->limit(3)->get();
 
-        return view('frontend.product', compact('productt', 'curr', 'affilate_user', 'vendor_products', 'footer_blogs'));
+        // Get featured products for the featured section
+        $featured_products = Product::where('featured', 1)
+            ->where('status', 1)
+            ->where('id', '!=', $productt->id) // Exclude current product
+            ->withCount('ratings')
+            ->withAvg('ratings', 'rating')
+            ->inRandomOrder()
+            ->take(12)
+            ->get();
+
+        return view('frontend.product', compact('productt', 'curr', 'affilate_user', 'vendor_products', 'footer_blogs', 'featured_products'));
     }
 
     public function report(Request $request)

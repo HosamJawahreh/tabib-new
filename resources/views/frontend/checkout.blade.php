@@ -345,7 +345,7 @@
                                  <div class="order-item">
                                     <div class="product-img">
                                        <div class="d-flex">
-                                          <img src=" {{ asset('assets/images/products/'.$product['item']['photo']) }}"
+                                          <img src="{{ $product['item']['thumbnail'] ? asset('assets/images/thumbnails/'.$product['item']['thumbnail']) : asset('assets/images/products/'.$product['item']['photo']) }}"
                                              height="80" width="80" class="p-1">
                                        </div>
                                     </div>
@@ -582,7 +582,7 @@
                           data-product-index="{{ $index }}"
                           data-item-id="{{ $product['item']['id'] }}"
                           data-unit-price="{{ $product['item_price'] }}">
-                        <img src="{{ asset('assets/images/products/'.$product['item']['photo']) }}"
+                        <img src="{{ $product['item']['thumbnail'] ? asset('assets/images/thumbnails/'.$product['item']['thumbnail']) : asset('assets/images/products/'.$product['item']['photo']) }}"
                              alt="{{ $product['item']['name'] }}"
                              style="width: 45px; height: 45px; object-fit: cover; border-radius: 4px;"
                              class="{{ $langg->rtl == 1 ? 'ml-2' : 'mr-2' }}">

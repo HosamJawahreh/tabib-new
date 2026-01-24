@@ -762,6 +762,14 @@
 
   $(document).on("submit", "#geniusform", function (e) {
     e.preventDefault();
+    
+    // Disable submit button immediately to prevent double submission
+    var submitBtn = $(this).find('button[type="submit"]');
+    if (submitBtn.prop('disabled')) {
+      return false; // Already submitting, ignore
+    }
+    submitBtn.prop("disabled", true);
+    
     if (admin_loader == 1) {
       $(".gocover").show();
     }
@@ -798,6 +806,8 @@
       cache: false,
       processData: false,
       success: function (data) {
+        console.log("Response received:", data); // Debug log
+        
         if (data.errors) {
           geniusform.parent().find(".alert-success").hide();
           geniusform.parent().find(".alert-danger").show();
@@ -806,20 +816,53 @@
             $(".alert-danger ul").append("<li>" + data.errors[error] + "</li>");
           }
           geniusform.find("input , select , textarea").eq(1).focus();
+          // Re-enable button on error
+          submitBtn.prop("disabled", false);
+          $("button.addProductSubmit-btn").prop("disabled", false);
         } else {
-          geniusform.parent().find(".alert-danger").hide();
-          geniusform.parent().find(".alert-success").show();
-          geniusform.parent().find(".alert-success p").html(data);
-          geniusform.find("input , select , textarea").eq(1).focus();
+          // Check if redirect URL is provided
+          if (data.redirect) {
+            console.log("Redirecting to:", data.redirect); // Debug log
+            // Show success message briefly then redirect
+            geniusform.parent().find(".alert-danger").hide();
+            geniusform.parent().find(".alert-success").show();
+            geniusform.parent().find(".alert-success p").html(data.msg || data);
+            
+            if (admin_loader == 1) {
+              $(".gocover").hide();
+            }
+            
+            // Redirect after short delay
+            setTimeout(function() {
+              console.log("Executing redirect now"); // Debug log
+              window.location.href = data.redirect;
+            }, 1000);
+            return; // Don't re-enable button, we're redirecting
+          } else {
+            // Normal behavior without redirect
+            geniusform.parent().find(".alert-danger").hide();
+            geniusform.parent().find(".alert-success").show();
+            geniusform.parent().find(".alert-success p").html(data.msg || data);
+            geniusform.find("input , select , textarea").eq(1).focus();
+            // Re-enable button for forms that don't redirect
+            submitBtn.prop("disabled", false);
+            $("button.addProductSubmit-btn").prop("disabled", false);
+          }
         }
         if (admin_loader == 1) {
           $(".gocover").hide();
         }
 
-        $("button.addProductSubmit-btn").prop("disabled", false);
-
         $(window).scrollTop(0);
       },
+      error: function() {
+        // Re-enable button on error
+        submitBtn.prop("disabled", false);
+        $("button.addProductSubmit-btn").prop("disabled", false);
+        if (admin_loader == 1) {
+          $(".gocover").hide();
+        }
+      }
     });
   });
 

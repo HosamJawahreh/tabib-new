@@ -322,13 +322,11 @@
                             <div class="row">
                                 <div class="col-lg-12">
                                         @php
-                                            $statusText = 'All Orders';
-                                            $currentStatus = request()->get('status', 'all');
+                                            $currentStatus = request()->get('status', 'pending');
                                             if($currentStatus == 'pending') $statusText = 'New Orders';
-                                            elseif($currentStatus == 'processing') $statusText = 'Processing Orders';
                                             elseif($currentStatus == 'completed') $statusText = 'Completed Orders';
-                                            elseif($currentStatus == 'declined') $statusText = 'Declined Orders';
-                                            else $statusText = 'All Orders';
+                                            elseif($currentStatus == 'all') $statusText = 'All Orders';
+                                            else $statusText = 'New Orders';
                                         @endphp
                                         <h4 class="heading">{{ __($statusText) }}</h4>
                                         <ul class="links">
@@ -357,26 +355,17 @@
 
                             <div class="status-filters">
                                 @php
-                                    $currentStatus = request()->get('status', 'all');
+                                    $currentStatus = request()->get('status', 'pending');
                                     $allOrders = \App\Models\Order::count();
                                     $pendingOrders = \App\Models\Order::where('status', 'pending')->count();
-                                    $processingOrders = \App\Models\Order::where('status', 'processing')->count();
                                     $completedOrders = \App\Models\Order::where('status', 'completed')->count();
-                                    $declinedOrders = \App\Models\Order::where('status', 'declined')->count();
                                 @endphp
 
                                 <a href="javascript:;" data-status="pending"
                                    class="status-btn pending filter-status-btn {{ $currentStatus == 'pending' ? 'active' : '' }}">
                                     <i class="fas fa-clock"></i>
-                                    <span>{{ __('New Orders') }}</span>
+                                    <span>{{ __('New') }}</span>
                                     <span class="status-count">{{ $pendingOrders }}</span>
-                                </a>
-
-                                <a href="javascript:;" data-status="processing"
-                                   class="status-btn processing filter-status-btn {{ $currentStatus == 'processing' ? 'active' : '' }}">
-                                    <i class="fas fa-sync-alt"></i>
-                                    <span>{{ __('Processing') }}</span>
-                                    <span class="status-count">{{ $processingOrders }}</span>
                                 </a>
 
                                 <a href="javascript:;" data-status="completed"
@@ -386,17 +375,10 @@
                                     <span class="status-count">{{ $completedOrders }}</span>
                                 </a>
 
-                                <a href="javascript:;" data-status="declined"
-                                   class="status-btn declined filter-status-btn {{ $currentStatus == 'declined' ? 'active' : '' }}">
-                                    <i class="fas fa-times-circle"></i>
-                                    <span>{{ __('Declined') }}</span>
-                                    <span class="status-count">{{ $declinedOrders }}</span>
-                                </a>
-
                                 <a href="javascript:;" data-status="all"
-                                   class="status-btn all filter-status-btn {{ $currentStatus == 'all' || !in_array($currentStatus, ['pending', 'processing', 'completed', 'declined']) ? 'active' : '' }}">
+                                   class="status-btn all filter-status-btn {{ $currentStatus == 'all' ? 'active' : '' }}">
                                     <i class="fas fa-list"></i>
-                                    <span>{{ __('All Orders') }}</span>
+                                    <span>{{ __('All') }}</span>
                                     <span class="status-count">{{ $allOrders }}</span>
                                 </a>
                             </div>
@@ -585,9 +567,9 @@
 (function($) {
 		"use strict";
 
-        // Get current status from URL
+        // Get current status from URL, default to 'pending' (New Orders)
         var urlParams = new URLSearchParams(window.location.search);
-        var currentStatus = urlParams.get('status') || 'all';
+        var currentStatus = urlParams.get('status') || 'pending';
 
         // Set active button on page load based on URL
         $('.filter-status-btn').removeClass('active');
@@ -639,9 +621,7 @@
             // Update page title
             var statusTitles = {
                 'pending': '{{ __('New Orders') }}',
-                'processing': '{{ __('Processing Orders') }}',
                 'completed': '{{ __('Completed Orders') }}',
-                'declined': '{{ __('Declined Orders') }}',
                 'all': '{{ __('All Orders') }}'
             };
 

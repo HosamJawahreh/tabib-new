@@ -124,9 +124,7 @@ class OrderController extends AdminBaseController
                             ->addColumn('status', function(Order $data) {
                                 $statusOptions = [
                                     'pending' => __('New Order'),
-                                    'processing' => __('Processing'),
-                                    'completed' => __('Completed'),
-                                    'declined' => __('Declined')
+                                    'completed' => __('Completed')
                                 ];
 
                                 $dropdown = '<select class="order-status-select form-control" data-order-id="'.$data->id.'" style="width: auto; display: inline-block; font-size: 13px;">';
@@ -143,9 +141,6 @@ class OrderController extends AdminBaseController
                                 <div class="action-btns-inline">
                                     <a href="' . route('admin-order-show',$data->id) . '" class="btn-action btn-view" title="'.__('View Details').'">
                                         <i class="fas fa-eye"></i>
-                                    </a>
-                                    <a href="javascript:;" data-href="'. route('admin-order-delete',$data->id) .'" class="btn-action btn-delete" data-toggle="modal" data-target="#confirm-delete" title="'.__('Delete').'">
-                                        <i class="fas fa-trash"></i>
                                     </a>
                                 </div>';
                                 return $actions;
