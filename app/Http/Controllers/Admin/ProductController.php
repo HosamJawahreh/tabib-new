@@ -894,13 +894,13 @@ class ProductController extends AdminBaseController
                                 $fimg->encode('webp', 75)->save(base_path('public/assets/images/products/' . $fphoto));
                                 $input['photo'] = $fphoto;
 
-                                // Create thumbnail as WebP with 70% quality
+                                // Ultra-compress thumbnails at 60% quality for smallest file size
                                 $timg = Image::make($imgData)->resize(285, 285, function ($constraint) {
                                     $constraint->aspectRatio();
                                     $constraint->upsize();
                                 });
                                 $thumbnail = time() . Str::random(8) . '_thumb.webp';
-                                $timg->encode('webp', 70)->save(base_path('public/assets/images/thumbnails/' . $thumbnail));
+                                $timg->encode('webp', 60)->save(base_path('public/assets/images/thumbnails/' . $thumbnail));
                                 $input['thumbnail'] = $thumbnail;
 
                                 $log .= "<br>" . __('Row No') . ": " . $i . " - " . __('Image converted to WebP') . "<br>";
@@ -919,7 +919,7 @@ class ProductController extends AdminBaseController
 
                             $timg = Image::make(base_path('public/assets/images/noimage.png'))->resize(285, 285);
                             $thumbnail = time() . Str::random(8) . '_thumb.webp';
-                            $timg->encode('webp', 70)->save(base_path('public/assets/images/thumbnails/' . $thumbnail));
+                            $timg->encode('webp', 60)->save(base_path('public/assets/images/thumbnails/' . $thumbnail));
                             $input['thumbnail'] = $thumbnail;
 
                             $log .= "<br>" . __('Row No') . ": " . $i . " - " . __('Used default image (download failed)') . "<br>";
@@ -936,7 +936,7 @@ class ProductController extends AdminBaseController
 
                         $timg = Image::make(base_path('public/assets/images/noimage.png'))->resize(285, 285);
                         $thumbnail = time() . Str::random(8) . '_thumb.webp';
-                        $timg->encode('webp', 70)->save(base_path('public/assets/images/thumbnails/' . $thumbnail));
+                        $timg->encode('webp', 60)->save(base_path('public/assets/images/thumbnails/' . $thumbnail));
                         $input['thumbnail'] = $thumbnail;
                     }
 
