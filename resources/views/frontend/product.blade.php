@@ -364,51 +364,6 @@
    </div>
 </div>
 
-<script>
-jQuery(document).ready(function($) {
-    console.log('Featured Products Script Loaded');
-    console.log('Featured carousel elements:', $('.featured-carousel').length);
-    console.log('Featured carousel items:', $('.featured-carousel .item').length);
-    
-    if ($('.featured-carousel').length > 0) {
-        $('.featured-carousel').owlCarousel({
-            loop: true,
-            margin: 15,
-            nav: true,
-            dots: false,
-            autoplay: true,
-            autoplayTimeout: 4000,
-            autoplayHoverPause: true,
-            navText: ['<i class="fas fa-chevron-left"></i>', '<i class="fas fa-chevron-right"></i>'],
-            responsive: {
-                0: {
-                    items: 2,
-                    margin: 10
-                },
-                576: {
-                    items: 3,
-                    margin: 12
-                },
-                768: {
-                    items: 4,
-                    margin: 15
-                },
-                992: {
-                    items: 5,
-                    margin: 15
-                },
-                1200: {
-                    items: 6,
-                    margin: 15
-                }
-            }
-        });
-        console.log('Featured carousel initialized successfully');
-    } else {
-        console.error('Featured carousel element not found!');
-    }
-});
-</script>
 <!--==================== Featured Products Section End ====================-->
 @includeIf('partials.global.common-footer')
 
@@ -640,6 +595,63 @@ $('.add-to-affilate').on('click',function(){
 
 // Product page buttons are handled globally in main.js (IDs: #addcrt, #qaddcrt).
 // We intentionally avoid overriding those handlers here to keep behavior consistent.
+
+// Initialize Featured Products Carousel
+jQuery(document).ready(function($) {
+    console.log('=== Featured Products Carousel Initialization ===');
+    console.log('jQuery version:', $.fn.jquery);
+    console.log('Owl Carousel available:', typeof $.fn.owlCarousel !== 'undefined');
+    console.log('Featured carousel elements:', $('.featured-carousel').length);
+    console.log('Featured carousel items:', $('.featured-carousel .item').length);
+    
+    // Wait a bit for DOM to be fully ready
+    setTimeout(function() {
+        if ($('.featured-carousel').length > 0) {
+            try {
+                $('.featured-carousel').owlCarousel({
+                    loop: $('.featured-carousel .item').length > 2, // Only loop if more than 2 items
+                    margin: 15,
+                    nav: true,
+                    dots: false,
+                    autoplay: true,
+                    autoplayTimeout: 4000,
+                    autoplayHoverPause: true,
+                    navText: ['<i class="fas fa-chevron-left"></i>', '<i class="fas fa-chevron-right"></i>'],
+                    responsive: {
+                        0: {
+                            items: 2,
+                            margin: 10
+                        },
+                        576: {
+                            items: 3,
+                            margin: 12
+                        },
+                        768: {
+                            items: 4,
+                            margin: 15
+                        },
+                        992: {
+                            items: 5,
+                            margin: 15
+                        },
+                        1200: {
+                            items: 6,
+                            margin: 15
+                        }
+                    }
+                });
+                console.log('✓ Featured carousel initialized successfully');
+                
+                // Initialize lazy loading for carousel images
+                lazy();
+            } catch (error) {
+                console.error('✗ Error initializing featured carousel:', error);
+            }
+        } else {
+            console.error('✗ Featured carousel element not found!');
+        }
+    }, 100);
+});
 
 </script>
 @endsection
