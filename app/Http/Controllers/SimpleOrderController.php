@@ -63,11 +63,33 @@ class SimpleOrderController extends Controller
             $customerName = $request->input('customer_name', 'Guest Customer');
             $customerPhone = $request->input('customer_phone', '');
             $customerEmail = $request->input('customer_email', 'noemail@example.com');
+            $countryCode = $request->input('country_code', '+962');
+            $deliveryDetails = $request->input('delivery_details', '');
 
-            Log::info('Customer Data: Name=' . $customerName . ', Email=' . $customerEmail . ', Phone=' . $customerPhone);
+            // Phone validation - must be at least 9 digits
+            $phoneDigits = preg_replace('/\D/', '', $customerPhone);
+            if (strlen($phoneDigits) < 9) {
+                Log::warning('Phone validation failed: ' . $customerPhone);
+                
+                if ($request->expectsJson() || $request->ajax()) {
+                    return response()->json([
+                        'success' => false,
+                        'error' => 'Phone number must be at least 9 digits'
+                    ], 400);
+                }
+                
+                return redirect()->back()
+                    ->with('error', 'Phone number must be at least 9 digits')
+                    ->withInput();
+            }
+
+            // Combine country code with phone number for storage
+            $fullPhone = $countryCode . ' ' . $customerPhone;
+
+            Log::info('Customer Data: Name=' . $customerName . ', Email=' . $customerEmail . ', Phone=' . $fullPhone);
 
             if (config('app.debug')) {
-                file_put_contents($debugLog, "Customer: $customerName, Phone: $customerPhone\n", FILE_APPEND);
+                file_put_contents($debugLog, "Customer: $customerName, Phone: $fullPhone\n", FILE_APPEND);
             }
 
             // Get cart data
@@ -112,9 +134,9 @@ class SimpleOrderController extends Controller
             // Customer details - Ensure no NULL values for required fields
             $order->customer_name = $customerName;
             $order->customer_email = $customerEmail;
-            $order->customer_phone = $customerPhone;
+            $order->customer_phone = $fullPhone;
             $order->customer_country = $request->input('customer_country', 'Jordan');
-            $order->customer_address = $request->input('customer_address', 'N/A');
+            $order->customer_address = $deliveryDetails ?: $request->input('customer_address', 'N/A');
             $order->customer_city = $request->input('customer_city', 'N/A');
             $order->customer_zip = $request->input('customer_zip', '00000');
             $order->customer_state = $request->input('customer_state', 'N/A');
@@ -122,7 +144,7 @@ class SimpleOrderController extends Controller
             // Shipping (same as customer for COD)
             $order->shipping_name = $customerName;
             $order->shipping_email = $customerEmail;
-            $order->shipping_phone = $customerPhone;
+            $order->shipping_phone = $fullPhone;
             $order->shipping_country = $order->customer_country;
             $order->shipping_address = $order->customer_address;
             $order->shipping_city = $order->customer_city;
@@ -130,7 +152,7 @@ class SimpleOrderController extends Controller
             $order->shipping_state = $order->customer_state;
 
             // Other fields - Use the calculated values, not direct from request
-            $order->order_note = $request->input('order_note', '');
+            $order->order_note = $deliveryDetails ?: $request->input('order_note', '');
             $order->coupon_code = null;
             $order->coupon_discount = 0;
             $order->currency_sign = $request->input('currency_sign', 'JD');

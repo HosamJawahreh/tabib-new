@@ -1,5 +1,39 @@
 @extends('layouts.front')
 
+@section('css')
+<style>
+    @php
+        $isArabic = isset($langg) && ($langg->language == 'العربية' || $langg->language == 'Arabic' || $langg->language == 'ar');
+    @endphp
+
+    /* RTL Support for Register Page */
+    @if($isArabic)
+    .sign-in-form {
+        direction: rtl;
+        text-align: right;
+    }
+
+    .sign-in-form h3 {
+        text-align: right;
+    }
+
+    .sign-in-form label {
+        text-align: right;
+        display: block;
+    }
+
+    .sign-in-form .form-control {
+        text-align: right;
+        direction: rtl;
+    }
+
+    .sign-in-form .d-flex {
+        flex-direction: row-reverse;
+    }
+    @endif
+</style>
+@endsection
+
 @section('content')
 @include('partials.global.common-header')
 

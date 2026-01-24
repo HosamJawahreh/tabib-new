@@ -1,0 +1,271 @@
+/**
+ * Global Arabic RTL Support for All Pages
+ * Automatically applies RTL when Arabic language is active
+ */
+
+/* Check if HTML has RTL direction or Arabic language */
+html[dir="rtl"],
+html[lang="ar"],
+html[lang="arabic"],
+html[lang="Arabic"],
+html[lang="العربية"],
+body[dir="rtl"],
+body.rtl,
+body.ar {
+    direction: rtl;
+    text-align: right;
+}
+
+/* ===== FORM ELEMENTS RTL ===== */
+html[dir="rtl"] input,
+html[dir="rtl"] textarea,
+html[dir="rtl"] select,
+html[dir="rtl"] .form-control,
+body[dir="rtl"] input,
+body[dir="rtl"] textarea,
+body[dir="rtl"] select,
+body[dir="rtl"] .form-control {
+    text-align: right;
+    direction: rtl;
+}
+
+html[dir="rtl"] label,
+body[dir="rtl"] label {
+    text-align: right;
+    display: block;
+}
+
+/* ===== PRODUCT CARDS RTL ===== */
+html[dir="rtl"] .product-title,
+html[dir="rtl"] .product-price,
+html[dir="rtl"] .product-content,
+html[dir="rtl"] .product-description,
+body[dir="rtl"] .product-title,
+body[dir="rtl"] .product-price,
+body[dir="rtl"] .product-content,
+body[dir="rtl"] .product-description {
+    text-align: right !important;
+    direction: rtl !important;
+}
+
+/* ===== LOGIN PAGE RTL ===== */
+html[dir="rtl"] .sign-in-form,
+body[dir="rtl"] .sign-in-form {
+    direction: rtl;
+    text-align: right;
+}
+
+html[dir="rtl"] .sign-in-form h3,
+html[dir="rtl"] .sign-in-form h4,
+html[dir="rtl"] .sign-in-form h5,
+body[dir="rtl"] .sign-in-form h3,
+body[dir="rtl"] .sign-in-form h4,
+body[dir="rtl"] .sign-in-form h5 {
+    text-align: right;
+}
+
+/* ===== CHECKOUT PAGE RTL ===== */
+html[dir="rtl"] .checkout-area,
+html[dir="rtl"] .checkout,
+body[dir="rtl"] .checkout-area,
+body[dir="rtl"] .checkout {
+    direction: rtl;
+    text-align: right;
+}
+
+html[dir="rtl"] .checkout-area h1,
+html[dir="rtl"] .checkout-area h2,
+html[dir="rtl"] .checkout-area h3,
+html[dir="rtl"] .checkout-area h4,
+html[dir="rtl"] .checkout-area h5,
+body[dir="rtl"] .checkout-area h1,
+body[dir="rtl"] .checkout-area h2,
+body[dir="rtl"] .checkout-area h3,
+body[dir="rtl"] .checkout-area h4,
+body[dir="rtl"] .checkout-area h5 {
+    text-align: right;
+}
+
+html[dir="rtl"] .order-summary,
+body[dir="rtl"] .order-summary {
+    direction: rtl;
+    text-align: right;
+}
+
+html[dir="rtl"] .order-summary table,
+html[dir="rtl"] .order-summary th,
+html[dir="rtl"] .order-summary td,
+body[dir="rtl"] .order-summary table,
+body[dir="rtl"] .order-summary th,
+body[dir="rtl"] .order-summary td {
+    text-align: right;
+}
+
+/* ===== PRODUCT DETAILS RTL ===== */
+html[dir="rtl"] .product-info,
+html[dir="rtl"] .single-product-content,
+html[dir="rtl"] .product-tabs,
+html[dir="rtl"] .tab-content,
+html[dir="rtl"] .product-meta,
+html[dir="rtl"] .product-attributes,
+html[dir="rtl"] .price-section,
+body[dir="rtl"] .product-info,
+body[dir="rtl"] .single-product-content,
+body[dir="rtl"] .product-tabs,
+body[dir="rtl"] .tab-content,
+body[dir="rtl"] .product-meta,
+body[dir="rtl"] .product-attributes,
+body[dir="rtl"] .price-section {
+    direction: rtl;
+    text-align: right;
+}
+
+html[dir="rtl"] .product-info h1,
+html[dir="rtl"] .product-info h2,
+html[dir="rtl"] .product-info h3,
+html[dir="rtl"] .product-info h4,
+html[dir="rtl"] .product-info h5,
+html[dir="rtl"] .product-info h6,
+html[dir="rtl"] .product-info p,
+html[dir="rtl"] .product-info div,
+body[dir="rtl"] .product-info h1,
+body[dir="rtl"] .product-info h2,
+body[dir="rtl"] .product-info h3,
+body[dir="rtl"] .product-info h4,
+body[dir="rtl"] .product-info h5,
+body[dir="rtl"] .product-info h6,
+body[dir="rtl"] .product-info p,
+body[dir="rtl"] .product-info div {
+    text-align: right;
+    direction: rtl;
+}
+
+/* ===== BREADCRUMBS RTL ===== */
+html[dir="rtl"] .breadcrumb,
+html[dir="rtl"] .breadcrumb-item,
+body[dir="rtl"] .breadcrumb,
+body[dir="rtl"] .breadcrumb-item {
+    text-align: right;
+    direction: rtl;
+}
+
+/* ===== ALERTS & MESSAGES RTL ===== */
+html[dir="rtl"] .alert,
+html[dir="rtl"] .alert p,
+body[dir="rtl"] .alert,
+body[dir="rtl"] .alert p {
+    text-align: right;
+    direction: rtl;
+}
+
+/* ===== BUTTONS RTL ===== */
+html[dir="rtl"] .btn,
+body[dir="rtl"] .btn {
+    text-align: center;
+}
+
+/* ===== TABLES RTL ===== */
+html[dir="rtl"] table,
+html[dir="rtl"] th,
+html[dir="rtl"] td,
+body[dir="rtl"] table,
+body[dir="rtl"] th,
+body[dir="rtl"] td {
+    text-align: right;
+    direction: rtl;
+}
+
+/* ===== PAGINATION RTL ===== */
+html[dir="rtl"] .pagination,
+body[dir="rtl"] .pagination {
+    direction: rtl;
+}
+
+/* ===== MODALS RTL ===== */
+html[dir="rtl"] .modal-body,
+html[dir="rtl"] .modal-header,
+html[dir="rtl"] .modal-footer,
+body[dir="rtl"] .modal-body,
+body[dir="rtl"] .modal-header,
+body[dir="rtl"] .modal-footer {
+    text-align: right;
+    direction: rtl;
+}
+
+/* ===== CART & WISHLIST RTL ===== */
+html[dir="rtl"] .cart-items,
+html[dir="rtl"] .wishlist-items,
+body[dir="rtl"] .cart-items,
+body[dir="rtl"] .wishlist-items {
+    direction: rtl;
+    text-align: right;
+}
+
+/* ===== FOOTER RTL ===== */
+html[dir="rtl"] footer,
+html[dir="rtl"] .footer,
+body[dir="rtl"] footer,
+body[dir="rtl"] .footer {
+    direction: rtl;
+    text-align: right;
+}
+
+/* ===== NAVIGATION RTL ===== */
+html[dir="rtl"] .navbar,
+html[dir="rtl"] .nav,
+body[dir="rtl"] .navbar,
+body[dir="rtl"] .nav {
+    direction: rtl;
+}
+
+/* ===== GENERAL TEXT ELEMENTS RTL ===== */
+html[dir="rtl"] p,
+html[dir="rtl"] span,
+html[dir="rtl"] div,
+html[dir="rtl"] h1,
+html[dir="rtl"] h2,
+html[dir="rtl"] h3,
+html[dir="rtl"] h4,
+html[dir="rtl"] h5,
+html[dir="rtl"] h6,
+body[dir="rtl"] p,
+body[dir="rtl"] span,
+body[dir="rtl"] div,
+body[dir="rtl"] h1,
+body[dir="rtl"] h2,
+body[dir="rtl"] h3,
+body[dir="rtl"] h4,
+body[dir="rtl"] h5,
+body[dir="rtl"] h6 {
+    text-align: right;
+    direction: rtl;
+}
+
+/* Keep icons and numbers LTR */
+html[dir="rtl"] .fa,
+html[dir="rtl"] .fas,
+html[dir="rtl"] .far,
+html[dir="rtl"] .fal,
+html[dir="rtl"] .fab,
+html[dir="rtl"] [class*="flaticon"],
+html[dir="rtl"] [class*="icon-"],
+body[dir="rtl"] .fa,
+body[dir="rtl"] .fas,
+body[dir="rtl"] .far,
+body[dir="rtl"] .fal,
+body[dir="rtl"] .fab,
+body[dir="rtl"] [class*="flaticon"],
+body[dir="rtl"] [class*="icon-"] {
+    direction: ltr !important;
+}
+
+/* Keep prices and numbers readable */
+html[dir="rtl"] .price,
+html[dir="rtl"] .amount,
+html[dir="rtl"] .quantity,
+body[dir="rtl"] .price,
+body[dir="rtl"] .amount,
+body[dir="rtl"] .quantity {
+    direction: ltr !important;
+    display: inline-block;
+}

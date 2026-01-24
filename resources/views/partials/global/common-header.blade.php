@@ -935,13 +935,13 @@
        border-radius: 20px !important;
        font-size: 12px !important;
        background: #ffffff !important;
-       color: #4a5568 !important;
+       color: #000000 !important;
        cursor: pointer;
        transition: all 0.3s ease;
        appearance: none;
        -webkit-appearance: none;
        -moz-appearance: none;
-       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cpath fill='%234a5568' d='M5 7L1 3h8z'/%3E%3C/svg%3E") !important;
+       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cpath fill='%23000000' d='M5 7L1 3h8z'/%3E%3C/svg%3E") !important;
        background-repeat: no-repeat !important;
        background-position: right 8px center !important;
        background-size: 10px !important;
@@ -963,6 +963,69 @@
        align-items: center;
        justify-content: center;
        padding: 0 !important;
+   }
+
+   /* Text-based Language Selector (EN / AR) */
+   .language-text-selector {
+       display: flex;
+       align-items: center;
+       justify-content: center;
+       padding: 0 !important;
+   }
+
+   .language-text-selector .lang-link {
+       display: inline-flex;
+       align-items: center;
+       justify-content: center;
+       padding: 8px 16px !important;
+       border-radius: 6px;
+       transition: all 0.3s ease;
+       background: rgba(124, 170, 83, 0.1) !important;
+       border: 2px solid #7caa53 !important;
+       text-decoration: none;
+       cursor: pointer;
+   }
+
+   .language-text-selector .lang-link:hover {
+       transform: translateY(-2px);
+       box-shadow: 0 4px 12px rgba(124, 170, 83, 0.3) !important;
+       background: rgba(124, 170, 83, 0.2) !important;
+   }
+
+   .language-text-selector .lang-text {
+       font-size: 16px;
+       font-weight: 700;
+       color: #000000;
+       letter-spacing: 0.5px;
+       line-height: 1;
+   }
+
+   /* Desktop - Larger text */
+   @media (min-width: 992px) {
+       .language-text-selector .lang-link {
+           padding: 10px 20px !important;
+       }
+
+       .language-text-selector .lang-text {
+           font-size: 18px;
+       }
+   }
+
+   /* Mobile - Compact */
+   @media (max-width: 991px) {
+       .language-text-selector {
+           margin-right: 2px !important;
+           margin-left: 0 !important;
+           padding: 0 !important;
+       }
+
+       .language-text-selector .lang-link {
+           padding: 6px 12px !important;
+       }
+
+       .language-text-selector .lang-text {
+           font-size: 14px;
+       }
    }
 
    .language-flag-selector .flag-link {
@@ -1478,7 +1541,7 @@
    .header-phone-link {
        font-size: 15px !important;
        font-weight: 600 !important;
-       color: #4a5568 !important;
+       color: #000000 !important;
        text-decoration: none !important;
        padding: 6px 12px !important;
        border-radius: 6px !important;
@@ -1489,7 +1552,7 @@
    }
    .header-phone-link:hover {
        background-color: #f0f8ea !important;
-       color: #7caa53 !important;
+       color: #000000 !important;
        transform: translateY(-1px);
    }
 
@@ -2394,21 +2457,21 @@
        .header-phone-link {
            font-size: 15px !important;
            font-weight: 600 !important;
-           color: #10b981 !important;
+           color: #000000 !important;
            text-decoration: none !important;
            padding: 8px 15px !important;
            border-radius: 8px !important;
-           background: #f0fdf4 !important;
-           border: 2px solid #10b981 !important;
+           background: transparent !important;
+           border: none !important;
            transition: all 0.3s ease !important;
            white-space: nowrap !important;
        }
 
        .header-phone-link:hover {
-           background: #10b981 !important;
-           color: white !important;
-           transform: translateY(-2px) !important;
-           box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3) !important;
+           background: #f5f5f5 !important;
+           color: #000000 !important;
+           transform: translateY(-1px) !important;
+           box-shadow: none !important;
        }
    }
 
@@ -2574,16 +2637,16 @@ $pages = App\Models\Page::get();
                     </a>
                 </div>
 
-                <!-- Language Flag Selector -->
-                <div class="language-flag-selector">
+                <!-- Language Text Selector (EN / AR) -->
+                <div class="language-text-selector">
                     @foreach($languges as $language)
                         @if(($language->language == 'Arabic' || $language->language == 'العربية' || $language->language == 'ar') && ($currentLangCode != 'Arabic' && $currentLangCode != 'العربية' && $currentLangCode != 'ar'))
-                            <a href="{{route('front.language',$language->id)}}" class="flag-link" title="العربية">
-                                <img src="{{asset('assets/images/ar.png')}}" alt="Arabic" class="flag-icon">
+                            <a href="{{route('front.language',$language->id)}}" class="lang-link" title="العربية">
+                                <span class="lang-text">AR</span>
                             </a>
                         @elseif(($language->language == 'English' || $language->language == 'en') && ($currentLangCode == 'Arabic' || $currentLangCode == 'العربية' || $currentLangCode == 'ar'))
-                            <a href="{{route('front.language',$language->id)}}" class="flag-link" title="English">
-                                <img src="{{asset('assets/images/uk.png')}}" alt="English" class="flag-icon">
+                            <a href="{{route('front.language',$language->id)}}" class="lang-link" title="English">
+                                <span class="lang-text">EN</span>
                             </a>
                         @endif
                     @endforeach

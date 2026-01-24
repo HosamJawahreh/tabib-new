@@ -69,6 +69,9 @@
     <!-- RTL/LTR Support with Professional Arabic Font -->
     <link rel="stylesheet" href="{{ asset('assets/front/css/rtl-ltr-arabic-font.css') }}?v={{ time() }}">
 
+    <!-- Global Arabic RTL Support for All Pages -->
+    <link rel="stylesheet" href="{{ asset('assets/front/css/arabic-rtl-global.css') }}?v={{ time() }}">
+
     <!-- Product Image & Scrollbar Fixes -->
     <link rel="stylesheet" href="{{ asset('assets/front/css/product-image-scrollbar-fix.css') }}?v={{ time() }}">
 

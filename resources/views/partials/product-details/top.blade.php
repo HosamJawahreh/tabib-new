@@ -1,5 +1,78 @@
 <style>
 /* Enhanced Product Page Styles */
+
+/* RTL Support for Product Details */
+@php
+    $isArabic = isset($langg) && ($langg->language == 'العربية' || $langg->language == 'Arabic' || $langg->language == 'ar');
+@endphp
+
+@if($isArabic)
+/* Arabic RTL Styles */
+.product-info {
+    direction: rtl;
+    text-align: right;
+}
+
+.product-info h1,
+.product-info h2,
+.product-info h3,
+.product-info h4,
+.product-info h5,
+.product-info h6 {
+    text-align: right;
+}
+
+.product-info p,
+.product-info div,
+.product-info label,
+.product-info span {
+    text-align: right;
+    direction: rtl;
+}
+
+.product-description {
+    direction: rtl;
+    text-align: right;
+}
+
+.price-section {
+    direction: rtl;
+    text-align: right;
+}
+
+.product-attributes {
+    direction: rtl;
+    text-align: right;
+}
+
+.product-meta {
+    direction: rtl;
+    text-align: right;
+}
+
+.single-product-content {
+    direction: rtl;
+    text-align: right;
+}
+
+.product-tabs {
+    direction: rtl;
+    text-align: right;
+}
+
+.tab-content {
+    direction: rtl;
+    text-align: right;
+}
+
+select,
+input,
+textarea {
+    text-align: right;
+    direction: rtl;
+}
+@endif
+
 .product-images .item a:hover {
     transform: scale(1.05);
     box-shadow: 0 6px 12px rgba(0,0,0,0.15) !important;
@@ -1371,7 +1444,7 @@
               <div class="summary entry-summary">
                   <div class="summary-inner">
 
-                      <h1 class="product_title entry-title mb-3" style="font-size: 2rem; font-weight: 700; color: #2d3748;">{{ $productt->translated_name }}</h1>                      {{-- Rating Section - Only show if ratings exist --}}
+                      <h1 class="product_title entry-title mb-3" style="font-size: 2rem; font-weight: 700; color: #2d3748; {{ isset($langg) && $langg->rtl == 1 ? 'direction: rtl; text-align: right;' : '' }}">{{ $productt->translated_name }}</h1>                      {{-- Rating Section - Only show if ratings exist --}}
                       @php
                           $ratingCount = App\Models\Rating::ratingCount($productt->id);
                           $ratingValue = App\Models\Rating::ratings($productt->id);
@@ -1636,33 +1709,33 @@
                           </div>
                          @endif
 
-                          {{-- Share This Product Section - Moved Outside action-buttons --}}
-                          <div class="share-section" style="width: 100%; text-align: center; margin-top: 30px; padding: 25px 20px; border-top: 2px solid #e5e7eb; background: linear-gradient(135deg, #f9fafb 0%, #ffffff 100%); border-radius: 16px;">
-                              <h5 class="mb-4" style="font-weight: 700; color: #1f2937; font-size: 1rem; text-transform: uppercase; letter-spacing: 1px; text-align: center;">{{ __('Share This Product') }}</h5>
+                          {{-- Share This Product Section - Compact Version --}}
+                          <div class="share-section" style="width: 100%; text-align: center; margin-top: 20px; padding: 15px; border-top: 1px solid #e5e7eb; background: linear-gradient(135deg, #f9fafb 0%, #ffffff 100%); border-radius: 12px;">
+                              <h5 class="mb-3" style="font-weight: 600; color: #1f2937; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.5px; text-align: center;">{{ __('Share This Product') }}</h5>
                               <div class="social-linkss social-sharing a2a_kit a2a_kit_size_32">
-                              <ul class="social-icons d-flex flex-wrap gap-3 list-unstyled mb-0" style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: center; padding: 5px 0;">
+                              <ul class="social-icons d-flex flex-wrap gap-2 list-unstyled mb-0" style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: center; padding: 0;">
                                   <li style="flex-shrink: 0;">
-                                  <a class="facebook a2a_button_facebook d-flex align-items-center justify-content-center rounded-circle" href="" style="width: 52px; height: 52px; background: linear-gradient(135deg, #1877f2 0%, #0c5fcd 100%); color: white; transition: all 0.3s ease; flex-shrink: 0; box-shadow: 0 4px 12px rgba(24, 119, 242, 0.4); border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 3px solid rgba(24, 119, 242, 0.1);">
+                                  <a class="facebook a2a_button_facebook d-flex align-items-center justify-content-center" href="" style="width: 32px; height: 32px; background: transparent; color: #1877f2; transition: all 0.3s ease; flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
                                       <i class="fab fa-facebook-f" style="font-size: 20px;"></i>
                                   </a>
                                   </li>
                                   <li style="flex-shrink: 0;">
-                                  <a class="twitter a2a_button_twitter d-flex align-items-center justify-content-center rounded-circle" href="" style="width: 52px; height: 52px; background: linear-gradient(135deg, #1da1f2 0%, #0d8bd9 100%); color: white; transition: all 0.3s ease; flex-shrink: 0; box-shadow: 0 4px 12px rgba(29, 161, 242, 0.4); border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 3px solid rgba(29, 161, 242, 0.1);">
+                                  <a class="twitter a2a_button_twitter d-flex align-items-center justify-content-center" href="" style="width: 32px; height: 32px; background: transparent; color: #1da1f2; transition: all 0.3s ease; flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
                                       <i class="fab fa-twitter" style="font-size: 20px;"></i>
                                   </a>
                                   </li>
                                   <li style="flex-shrink: 0;">
-                                  <a class="linkedin a2a_button_linkedin d-flex align-items-center justify-content-center rounded-circle" href="" style="width: 52px; height: 52px; background: linear-gradient(135deg, #0077b5 0%, #005885 100%); color: white; transition: all 0.3s ease; flex-shrink: 0; box-shadow: 0 4px 12px rgba(0, 119, 181, 0.4); border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 3px solid rgba(0, 119, 181, 0.1);">
+                                  <a class="linkedin a2a_button_linkedin d-flex align-items-center justify-content-center" href="" style="width: 32px; height: 32px; background: transparent; color: #0077b5; transition: all 0.3s ease; flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
                                       <i class="fab fa-linkedin-in" style="font-size: 20px;"></i>
                                   </a>
                                   </li>
                                   <li style="flex-shrink: 0;">
-                                  <a class="pinterest a2a_button_pinterest d-flex align-items-center justify-content-center rounded-circle" href="" style="width: 52px; height: 52px; background: linear-gradient(135deg, #e60023 0%, #bd001c 100%); color: white; transition: all 0.3s ease; flex-shrink: 0; box-shadow: 0 4px 12px rgba(230, 0, 35, 0.4); border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 3px solid rgba(230, 0, 35, 0.1);">
+                                  <a class="pinterest a2a_button_pinterest d-flex align-items-center justify-content-center" href="" style="width: 32px; height: 32px; background: transparent; color: #e60023; transition: all 0.3s ease; flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
                                       <i class="fab fa-pinterest-p" style="font-size: 20px;"></i>
                                   </a>
                                   </li>
                                   <li style="flex-shrink: 0;">
-                                      <a class="instagram a2a_button_whatsapp d-flex align-items-center justify-content-center rounded-circle" href="" style="width: 52px; height: 52px; background: linear-gradient(135deg, #25d366 0%, #1ebe57 100%); color: white; transition: all 0.3s ease; flex-shrink: 0; box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4); border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 3px solid rgba(37, 211, 102, 0.1);">
+                                      <a class="instagram a2a_button_whatsapp d-flex align-items-center justify-content-center" href="" style="width: 32px; height: 32px; background: transparent; color: #25d366; transition: all 0.3s ease; flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
                                       <i class="fab fa-whatsapp" style="font-size: 20px;"></i>
                                       </a>
                                   </li>
@@ -1670,10 +1743,10 @@
                               </div>
                           </div>
                           <style>
-                              /* Hover Effects for Share Buttons */
+                              /* Hover Effects for Share Buttons - Simple Square Icons */
                               .social-icons a:hover {
-                                  transform: translateY(-4px) scale(1.08);
-                                  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25) !important;
+                                  transform: scale(1.2);
+                                  opacity: 0.8;
                               }
 
                               .facebook:hover {

@@ -91,7 +91,11 @@
         justify-content: center;
         position: relative;
         padding: 15px;
-        min-height: 220px;
+        min-height: 300px !important;
+        max-height: 300px !important;
+        height: 300px !important;
+        background: #f8f9fa;
+        border-radius: 8px 8px 0 0;
     }
 
     .product-thumb a {
@@ -103,13 +107,19 @@
     }
 
     .product-image {
-        max-height: 100%;
-        max-width: 100%;
-        width: auto;
-        height: auto;
+        max-height: 90%;
+        max-width: 90%;
+        width: auto !important;
+        height: auto !important;
         object-fit: contain;
         margin: 0 auto;
         display: block;
+        transform: scale(1.15);
+        transition: transform 0.3s ease;
+    }
+
+    .product-card:hover .product-image {
+        transform: scale(1.2);
     }
 
     /* Cart icon always visible */
@@ -133,6 +143,62 @@
     .price-current {
         font-size: 1.1rem;
         color: #28a745;
+    }
+
+    /* Increase old price font size */
+    .price-old {
+        font-size: 1rem !important; /* Increased from default ~0.875rem */
+    }
+
+    /* Discount Badge - Typical style like in image */
+    .on-sale {
+        font-size: 13px !important;
+        font-weight: 700 !important;
+        padding: 2px 6px !important;
+        line-height: 1.1 !important;
+        background: #ff0000 !important;
+        color: #ffffff !important;
+        border-radius: 3px !important;
+        box-shadow: none !important;
+        border: none !important;
+        letter-spacing: 0 !important;
+        z-index: 10 !important;
+        position: absolute !important;
+        top: 5px !important;
+        left: 5px !important;
+        margin: 0 !important;
+    }
+
+    /* RTL Support for Product Cards */
+    html[lang="ar"] .product-title,
+    html[lang="arabic"] .product-title,
+    html[lang="Arabic"] .product-title,
+    html[lang="العربية"] .product-title,
+    html[dir="rtl"] .product-title,
+    body[dir="rtl"] .product-title,
+    body.rtl .product-title,
+    body.ar .product-title {
+        text-align: right !important;
+        direction: rtl !important;
+    }
+
+    html[lang="ar"] .product-price,
+    html[lang="arabic"] .product-price,
+    html[lang="Arabic"] .product-price,
+    html[lang="العربية"] .product-price,
+    html[dir="rtl"] .product-price,
+    body[dir="rtl"] .product-price,
+    body.rtl .product-price,
+    body.ar .product-price {
+        text-align: right !important;
+        direction: rtl !important;
+    }
+
+    /* Force RTL for product content when Arabic */
+    .rtl .product-content,
+    [dir="rtl"] .product-content {
+        text-align: right !important;
+        direction: rtl !important;
     }
 
     .product-title {
@@ -320,7 +386,9 @@
             align-items: center !important;
             justify-content: center !important;
             padding: 10px !important;
-            min-height: 150px !important;
+            min-height: 180px !important;
+            max-height: 180px !important;
+            height: 180px !important;
         }
 
         .product-thumb a {
@@ -339,6 +407,7 @@
             object-fit: contain !important;
             margin: 0 auto !important;
             display: block !important;
+            transform: scale(1.3) !important; /* Scale up by 30% */
         }
 
         .product-card {
@@ -989,6 +1058,25 @@
                     isLoading = false;
                 }
             });
+        }
+
+        // ===== SCROLL POSITION RESTORATION =====
+        // Save scroll position when clicking a product
+        productsGrid.on('click', '.product-card a, .product-item a', function() {
+            const scrollPosition = $(window).scrollTop();
+            sessionStorage.setItem('homepage_scroll_position', scrollPosition);
+            console.log('💾 Saved scroll position:', scrollPosition);
+        });
+
+        // Restore scroll position when returning to homepage
+        const savedScrollPosition = sessionStorage.getItem('homepage_scroll_position');
+        if (savedScrollPosition) {
+            console.log('📍 Restoring scroll position:', savedScrollPosition);
+            setTimeout(function() {
+                $('html, body').scrollTop(parseInt(savedScrollPosition));
+                sessionStorage.removeItem('homepage_scroll_position');
+                console.log('✅ Scroll position restored');
+            }, 100);
         }
 
         // Scroll to Top Button Logic

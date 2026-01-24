@@ -20,7 +20,7 @@
 
             {{-- Discount Badge --}}
             @if($product->previous_price && $product->previous_price > $product->price)
-            <div class="on-sale position-absolute" style="top: 10px; left: 10px; background: #ff0000; color: white; padding: 5px 10px; border-radius: 3px; font-size: 12px; font-weight: bold; z-index: 5;">
+            <div class="on-sale position-absolute" style="top: 5px; left: 5px; margin: 0; background: #ff0000; color: #ffffff; padding: 2px 6px; border-radius: 3px; font-size: 13px; font-weight: 700; z-index: 5; border: none; box-shadow: none; line-height: 1.1;">
                 -{{ round(((float)$product->previous_price - (float)$product->price) / (float)$product->previous_price * 100) }}%
             </div>
             @endif
@@ -64,13 +64,16 @@
         </div>
 
         <div class="product-content" style="padding: 0.35rem !important; padding-bottom: 0 !important;">
-            <h6 class="product-title mb-2" style="min-height: 40px;">
+            @php
+                $isArabic = isset($langg) && ($langg->language == 'العربية' || $langg->language == 'Arabic' || $langg->language == 'ar');
+            @endphp
+            <h6 class="product-title mb-2" style="min-height: 40px; text-align: {{ $isArabic ? 'right' : 'left' }}; direction: {{ $isArabic ? 'rtl' : 'ltr' }};">
                 <a href="{{ route('front.product', $product->slug) }}" class="text-dark text-decoration-none">
                     {{ Str::limit($product->translated_name, 60) }}
                 </a>
             </h6>
 
-            <div class="product-price" style="margin-bottom: 0 !important; padding-bottom: 0 !important;">
+            <div class="product-price" style="margin-bottom: 0 !important; padding-bottom: 0 !important; text-align: {{ $isArabic ? 'right' : 'left' }}; direction: {{ $isArabic ? 'rtl' : 'ltr' }};">
                 @if($product->previous_price && $product->previous_price > $product->price)
                     <span class="price-old text-muted text-decoration-line-through me-2 small" style="margin-bottom: 0 !important; padding-bottom: 0 !important;">
                         {{ number_format($product->previous_price, 2) }} {{ $gs->curr_code ?? 'JD' }}

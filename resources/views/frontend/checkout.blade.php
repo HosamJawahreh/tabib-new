@@ -1,4 +1,67 @@
 @extends('layouts.front')
+
+@section('css')
+<style>
+    @php
+        $isArabic = isset($langg) && ($langg->language == 'العربية' || $langg->language == 'Arabic' || $langg->language == 'ar');
+    @endphp
+
+    /* RTL Support for Checkout Page */
+    @if($isArabic)
+    .checkout-area {
+        direction: rtl;
+        text-align: right;
+    }
+
+    .checkout-area h5,
+    .checkout-area h4,
+    .checkout-area h3 {
+        text-align: right;
+    }
+
+    .checkout-area label {
+        text-align: right;
+        display: block;
+    }
+
+    .checkout-area .form-control,
+    .checkout-area input,
+    .checkout-area textarea,
+    .checkout-area select {
+        text-align: right;
+        direction: rtl;
+    }
+
+    .checkout-area .row {
+        direction: rtl;
+    }
+
+    /* Mobile Responsive Textarea */
+    @media (max-width: 768px) {
+        .checkout-area textarea#delivery_details {
+            font-size: 14px;
+            padding: 10px;
+            min-height: 80px;
+        }
+    }
+
+    .order-summary {
+        direction: rtl;
+        text-align: right;
+    }
+
+    .order-summary table {
+        direction: rtl;
+    }
+
+    .order-summary th,
+    .order-summary td {
+        text-align: right;
+    }
+    @endif
+</style>
+@endsection
+
 @section('content')
 @include('partials.global.common-header')
 <!-- breadcrumb -->
@@ -126,7 +189,7 @@
                                     </div>
                                     <div class="col-lg-6">
                                        <input class="form-control" type="text" name="customer_name"
-                                          placeholder="{{ __('Full Name') }}" required=""
+                                          placeholder="{{ $langg->rtl == 1 ? 'الاسم الكامل' : __('Full Name') }}" required=""
                                           value="{{ Auth::check() ? Auth::user()->name : '' }}">
                                     </div>
                                     <div class="col-lg-6 d-none">
@@ -147,9 +210,15 @@
                                              <option value="+970" data-placeholder="59 123 4567">🇵🇸 +970</option>
                                           </select>
                                           <input class="form-control" type="tel" name="customer_phone" id="customer_phone"
-                                             placeholder="079*******" required=""
+                                             placeholder="079*******" required="" minlength="9"
                                              value="{{ Auth::check() ? Auth::user()->phone : '' }}" style="flex: 1;">
                                        </div>
+                                       <small id="phone-error" style="color: red; display: none;">{{ __('Phone number must be at least 9 digits') }}</small>
+                                    </div>
+                                    <div class="col-lg-12 mt-3">
+                                       <textarea class="form-control" name="delivery_details" id="delivery_details"
+                                          placeholder="{{ $langg->rtl == 1 ? 'تفاصيل إضافية (اسم المنطقة، رقم المبنى، إلخ)' : __('Details (Area name, building number, etc.)') }}"
+                                          rows="3">{{ Auth::check() ? Auth::user()->address : '' }}</textarea>
                                     </div>
                                     <div class="col-lg-6 d-none">
                                        <input class="form-control" type="text" name="customer_address"
@@ -495,10 +564,10 @@
 
          {{-- PRICE DETAILS - Right side on desktop, first on mobile --}}
          @if(Session::has('cart'))
-         <div class="col-lg-4 order-1 order-lg-2">
-            <div class="right-area">
-               <div class="order-box">
-                  <h4 class="title" style="margin-bottom: 12px;">
+         <div class="col-lg-4 order-1 order-lg-2" style="{{ $langg->rtl == 1 ? 'padding-right: 15px; padding-left: 15px;' : '' }}">
+            <div class="right-area" style="{{ $langg->rtl == 1 ? 'margin-right: 0; margin-left: 0;' : '' }}">
+               <div class="order-box" style="{{ $langg->rtl == 1 ? 'padding: 15px; direction: rtl; text-align: right;' : '' }}">
+                  <h4 class="title" style="margin-bottom: 12px; {{ $langg->rtl == 1 ? 'text-align: right; direction: rtl;' : '' }}">
                      @if($langg->rtl == 1)
                      تفاصيل السعر
                      @else
@@ -507,19 +576,29 @@
                   </h4>
 
                   {{-- Products List --}}
-                  <div class="cart-products-list mb-2">
+                  <div class="cart-products-list mb-2" style="{{ $langg->rtl == 1 ? 'direction: rtl;' : '' }}">
                      @foreach($products as $index => $product)
-                     <div class="cart-product-item d-flex align-items-center mb-1 pb-1" style="border-bottom: 1px solid #eee; position: relative;"
+                     <div class="cart-product-item d-flex align-items-center mb-1 pb-1" style="border-bottom: 1px solid #eee; position: relative; {{ $langg->rtl == 1 ? 'direction: rtl;' : '' }}"
                           data-product-index="{{ $index }}"
                           data-item-id="{{ $product['item']['id'] }}"
                           data-unit-price="{{ $product['item_price'] }}">
                         <img src="{{ asset('assets/images/products/'.$product['item']['photo']) }}"
                              alt="{{ $product['item']['name'] }}"
                              style="width: 45px; height: 45px; object-fit: cover; border-radius: 4px;"
-                             class="mr-2">
+                             class="{{ $langg->rtl == 1 ? 'ml-2' : 'mr-2' }}">
                         <div class="flex-grow-1" style="min-width: 0;">
-                           <p class="mb-0" style="font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                              {{ $product['item']['name'] }}
+                           <p class="mb-0" style="font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; {{ $langg->rtl == 1 ? 'text-align: right;' : '' }}">
+                              @php
+                                 $productItem = App\Models\Product::find($product['item']['id']);
+                                 $productName = $productItem ? $productItem->name : $product['item']['name'];
+                                 if ($productItem) {
+                                    $translation = $productItem->translation();
+                                    if ($translation && $translation->name) {
+                                       $productName = $translation->name;
+                                    }
+                                 }
+                              @endphp
+                              {{ $productName }}
                            </p>
                            <div class="d-flex align-items-center justify-content-between">
                               <div class="qty-controls d-flex align-items-center" style="gap: 5px;">
@@ -531,14 +610,25 @@
                                  <button type="button" class="btn btn-sm btn-outline-secondary qtplus-checkout" style="padding: 2px 8px; font-size: 12px;">+</button>
                               </div>
                               <span class="product-total-price" style="font-size: 13px; font-weight: 600; white-space: nowrap;">
-                                 {{ App\Models\Product::convertPrice($product['price']) }}
+                                 @if($langg->rtl == 1)
+                                    @php
+                                       $convertedPrice = App\Models\Product::convertPrice($product['price']);
+                                       preg_match('/([0-9.,]+)/', $convertedPrice, $matches);
+                                       $amount = $matches[1] ?? $convertedPrice;
+                                       preg_match('/([A-Z]{2,3}|[^\d.,\s]+)/', $convertedPrice, $currencyMatches);
+                                       $currency = $currencyMatches[1] ?? $curr->sign;
+                                    @endphp
+                                    {{ $amount }}{{ $currency }}
+                                 @else
+                                    {{ App\Models\Product::convertPrice($product['price']) }}
+                                 @endif
                               </span>
                            </div>
                         </div>
                         <button type="button" class="remove-from-checkout"
                                 data-href="{{ route('product.cart.remove',$product['item']['id'].$product['size'].$product['color'].str_replace(str_split(' ,'),'',$product['values'])) }}"
                                 title="{{ __('Remove this item') }}"
-                                style="position: absolute; top: 5px; right: 5px; background: transparent; border: none; color: #dc3545; font-size: 18px; line-height: 1; padding: 0; width: 20px; height: 20px; cursor: pointer; opacity: 0.7; transition: opacity 0.2s;">
+                                style="position: absolute; top: 5px; {{ $langg->rtl == 1 ? 'left: 5px;' : 'right: 5px;' }} background: transparent; border: none; color: #dc3545; font-size: 18px; line-height: 1; padding: 0; width: 20px; height: 20px; cursor: pointer; opacity: 0.7; transition: opacity 0.2s;">
                            <i class="fas fa-times"></i>
                         </button>
                      </div>
@@ -548,7 +638,7 @@
                   @if($digital == 0)
                   {{-- Shipping Method Area --}}
                   <div class="packeging-area" style="margin-top: 10px;">
-                     <h4 class="title" style="font-size: 16px; font-weight: 600; margin-bottom: 10px; color: #333;">
+                     <h4 class="title" style="font-size: 16px; font-weight: 600; margin-bottom: 10px; color: #333; {{ $langg->rtl == 1 ? 'text-align: right; direction: rtl;' : '' }}">
                         @if($langg->rtl == 1)
                         طريقة الشحن
                         @else
@@ -556,44 +646,46 @@
                         @endif
                      </h4>
                      @foreach($shipping_data as $data)
-                     <div class="shipping-option" style="margin-bottom: 8px; padding: 10px 12px; border: 1px solid #e0e0e0; border-radius: 8px; background: #fff; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: all 0.3s ease;"
+                     <div class="shipping-option" style="margin-bottom: 8px; padding: 10px 12px; border: 1px solid #e0e0e0; border-radius: 8px; background: #fff; display: flex; align-items: center; cursor: pointer; transition: all 0.3s ease; {{ $langg->rtl == 1 ? 'direction: rtl;' : '' }}"
                           onclick="document.getElementById('free-shepping{{ $data->id }}').click();">
-                        <div style="display: flex; align-items: center; flex: 1;">
-                           <input type="radio"
-                                  class="shipping"
-                                  data-form="{{$data->title}}"
-                                  id="free-shepping{{ $data->id }}"
-                                  name="shipping"
-                                  value="{{ round($data->price * $curr->value,2) }}"
-                                  {{ ($loop->first) ? 'checked' : '' }}
-                                  style="margin-left: 0; margin-right: 10px; width: 18px; height: 18px; cursor: pointer;">
-                           <label for="free-shepping{{ $data->id }}" style="margin: 0; cursor: pointer; font-size: 14px; color: #333; display: flex; align-items: center; justify-content: space-between; width: 100%;">
-                              <span style="font-weight: 500;">
-                                 @if($langg->rtl == 1 && !empty($data->title_ar))
-                                 {{ $data->title_ar }}
-                                 @else
-                                 {{ $data->title }}
-                                 @endif
-                              </span>
-                              <span style="font-weight: 600; color: #28a745; margin-right: 10px;">
-                                 @if($data->price != 0)
-                                 {{ $curr->sign }}{{ round($data->price * $curr->value,2) }}
-                                 @else
+                        <input type="radio"
+                               class="shipping"
+                               data-form="{{$data->title}}"
+                               id="free-shepping{{ $data->id }}"
+                               name="shipping"
+                               value="{{ round($data->price * $curr->value,2) }}"
+                               {{ ($loop->first) ? 'checked' : '' }}
+                               style="margin-left: {{ $langg->rtl == 1 ? '10px' : '0' }}; margin-right: {{ $langg->rtl == 1 ? '0' : '10px' }}; width: 18px; height: 18px; cursor: pointer; flex-shrink: 0;">
+                        <label for="free-shepping{{ $data->id }}" style="margin: 0; cursor: pointer; font-size: 14px; color: #333; display: flex; align-items: center; justify-content: space-between; width: 100%;">
+                           <span style="font-weight: 500;">
+                              @if($langg->rtl == 1 && !empty($data->title_ar))
+                              {{ $data->title_ar }}
+                              @else
+                              {{ $data->title }}
+                              @endif
+                           </span>
+                           <span style="font-weight: 600; color: #28a745; {{ $langg->rtl == 1 ? 'margin-right: 10px;' : 'margin-left: 10px;' }} white-space: nowrap;">
+                              @if($data->price != 0)
                                  @if($langg->rtl == 1)
-                                 استلام من الفرع - {{ $curr->sign }}0.01
+                                    {{ round($data->price * $curr->value,2) }}{{ $curr->sign }}
                                  @else
-                                 {{ __('Free') }}
+                                    {{ $curr->sign }}{{ round($data->price * $curr->value,2) }}
                                  @endif
+                              @else
+                                 @if($langg->rtl == 1)
+                                    0{{ $curr->sign }}
+                                 @else
+                                    {{ __('Free') }}
                                  @endif
-                              </span>
-                           </label>
-                        </div>
+                              @endif
+                           </span>
+                        </label>
                      </div>
                      @endforeach
                   </div>
 
                   {{-- Final Price Area --}}
-                  <div class="final-price" style="margin-top: 12px; padding: 12px; background: #f8f9fa; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
+                  <div class="final-price" style="margin-top: 12px; padding: 12px; background: #f8f9fa; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; {{ $langg->rtl == 1 ? 'direction: rtl;' : '' }}">
                      <span style="font-size: 16px; font-weight: 600; color: #333;">
                         @if($langg->rtl == 1)
                         السعر النهائي :
@@ -602,15 +694,43 @@
                         @endif
                      </span>
                      @if(Session::has('coupon_total'))
-                     @if($gs->currency_format == 0)
-                     <span id="final-cost" style="font-size: 18px; font-weight: 700; color: #28a745;">{{ $curr->sign }}{{ $totalPrice }}</span>
-                     @else
-                     <span id="final-cost" style="font-size: 18px; font-weight: 700; color: #28a745;">{{ $totalPrice }}{{ $curr->sign }}</span>
-                     @endif
+                        @if($langg->rtl == 1)
+                           <span id="final-cost" style="font-size: 18px; font-weight: 700; color: #28a745;">{{ $totalPrice }}{{ $curr->sign }}</span>
+                        @else
+                           @if($gs->currency_format == 0)
+                           <span id="final-cost" style="font-size: 18px; font-weight: 700; color: #28a745;">{{ $curr->sign }}{{ $totalPrice }}</span>
+                           @else
+                           <span id="final-cost" style="font-size: 18px; font-weight: 700; color: #28a745;">{{ $totalPrice }}{{ $curr->sign }}</span>
+                           @endif
+                        @endif
                      @elseif(Session::has('coupon_total1'))
-                     <span id="final-cost" style="font-size: 18px; font-weight: 700; color: #28a745;"> {{ Session::get('coupon_total1') }}</span>
+                        @if($langg->rtl == 1)
+                           @php
+                              $couponTotal = Session::get('coupon_total1');
+                              // Extract number and currency sign
+                              preg_match('/([0-9.,]+)/', $couponTotal, $matches);
+                              $amount = $matches[1] ?? $couponTotal;
+                              preg_match('/([A-Z]{2,3}|[^\d.,\s]+)/', $couponTotal, $currencyMatches);
+                              $currency = $currencyMatches[1] ?? $curr->sign;
+                           @endphp
+                           <span id="final-cost" style="font-size: 18px; font-weight: 700; color: #28a745;">{{ $amount }}{{ $currency }}</span>
+                        @else
+                           <span id="final-cost" style="font-size: 18px; font-weight: 700; color: #28a745;">{{ Session::get('coupon_total1') }}</span>
+                        @endif
                      @else
-                     <span id="final-cost" style="font-size: 18px; font-weight: 700; color: #28a745;">{{ App\Models\Product::convertPrice($totalPrice) }}</span>
+                        @if($langg->rtl == 1)
+                           @php
+                              $convertedPrice = App\Models\Product::convertPrice($totalPrice);
+                              // Extract number and currency
+                              preg_match('/([0-9.,]+)/', $convertedPrice, $matches);
+                              $amount = $matches[1] ?? $convertedPrice;
+                              preg_match('/([A-Z]{2,3}|[^\d.,\s]+)/', $convertedPrice, $currencyMatches);
+                              $currency = $currencyMatches[1] ?? $curr->sign;
+                           @endphp
+                           <span id="final-cost" style="font-size: 18px; font-weight: 700; color: #28a745;">{{ $amount }}{{ $currency }}</span>
+                        @else
+                           <span id="final-cost" style="font-size: 18px; font-weight: 700; color: #28a745;">{{ App\Models\Product::convertPrice($totalPrice) }}</span>
+                        @endif
                      @endif
                   </div>
                   @endif
@@ -1195,35 +1315,54 @@
 <script type="text/javascript">
    var ck = 1; // Set to 1 to allow direct submission
 
-   	$('.checkoutform').on('submit',function(e){
-   		// Log for debugging
-   		console.log('Form submitting to:', $(this).attr('action'));
-   		console.log('Form method:', $(this).attr('method'));
-   		console.log('Form data:', $(this).serialize());
+	$('.checkoutform').on('submit',function(e){
+		// Log for debugging
+		console.log('Form submitting to:', $(this).attr('action'));
+		console.log('Form method:', $(this).attr('method'));
+		console.log('Form data:', $(this).serialize());
 
-   		// Validate required fields
-   		var name = $('input[name="customer_name"]').val();
-   		var phone = $('input[name="customer_phone"]').val();
+		// Validate required fields
+		var name = $('input[name="customer_name"]').val();
+		var phone = $('input[name="customer_phone"]').val();
 
-   		if(!name || name.trim() === '') {
-   			alert('Please enter your name');
-   			e.preventDefault();
-   			return false;
-   		}
+		if(!name || name.trim() === '') {
+			alert('Please enter your name');
+			e.preventDefault();
+			return false;
+		}
 
-   		if(!phone || phone.trim() === '') {
-   			alert('Please enter your phone number');
-   			e.preventDefault();
-   			return false;
-   		}
+		if(!phone || phone.trim() === '') {
+			alert('Please enter your phone number');
+			e.preventDefault();
+			return false;
+		}
 
-   		// Direct submission - no step navigation
-   		$('#preloader').show();
-   		$('#place-order-btn').prop('disabled', true);
-   		$('#place-order-btn .btn-text').hide();
-   		$('#place-order-btn .btn-loader').removeClass('d-none');
-   	});
+		// Phone validation - at least 9 digits
+		var phoneDigits = phone.replace(/\D/g, ''); // Remove all non-digit characters
+		if(phoneDigits.length < 9) {
+			$('#phone-error').show();
+			$('#customer_phone').focus();
+			e.preventDefault();
+			return false;
+		}
 
+		// Direct submission - no step navigation
+		$('#preloader').show();
+		$('#place-order-btn').prop('disabled', true);
+		$('#place-order-btn .btn-text').hide();
+		$('#place-order-btn .btn-loader').removeClass('d-none');
+	});
+
+	// Phone input validation on keyup
+	$('#customer_phone').on('keyup', function() {
+		var phone = $(this).val();
+		var phoneDigits = phone.replace(/\D/g, '');
+		if(phoneDigits.length >= 9) {
+			$('#phone-error').hide();
+		} else {
+			$('#phone-error').show();
+		}
+	});
 
 
    // Step 2 btn DONE
@@ -1713,6 +1852,26 @@
 .checkout {
    padding-bottom: 30px !important;
    min-height: auto !important;
+}
+
+/* Delivery Details Textarea Responsive */
+#delivery_details {
+   width: 100%;
+   resize: vertical;
+   min-height: 80px;
+}
+
+@media (max-width: 768px) {
+   #delivery_details {
+      font-size: 14px;
+      padding: 10px 12px;
+      min-height: 70px;
+   }
+   
+   .checkout-area .col-lg-12.mt-3 {
+      padding-left: 15px;
+      padding-right: 15px;
+   }
 }
 
 body {

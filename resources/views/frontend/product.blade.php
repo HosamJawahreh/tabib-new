@@ -77,163 +77,318 @@
 <!--==================== Product Description Section Start ====================-->
 {{-- Description section moved under product name in top.blade.php --}}
 <!--==================== Product Description Section End ====================-->
-<!--==================== Related Products Section Start ====================-->
+<!--==================== Featured Products Section Start ====================-->
 <style>
-    /* Modern Related Products Section */
-    .modern-section-header {
-        position: relative;
-        padding: 30px 0 20px;
-        margin-bottom: 30px;
+    /* Featured Products Horizontal Slider - Compact Strip Design */
+    .featured-products-strip {
+        background: linear-gradient(135deg, #f9fafb 0%, #ffffff 100%);
+        padding: 25px 0;
+        margin: 20px 0;
+        border-top: 1px solid #e5e7eb;
+        border-bottom: 1px solid #e5e7eb;
     }
 
-    .modern-section-header::after {
-        content: '';
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 80px;
-        height: 4px;
-        background: linear-gradient(90deg, #10b981 0%, #34d399 100%);
-        border-radius: 2px;
-    }
-
-    .modern-section-title {
-        font-size: 28px;
+    .featured-section-title {
+        font-size: 20px;
         font-weight: 700;
         color: #1f2937;
-        margin: 0;
-        letter-spacing: -0.5px;
+        margin: 0 0 20px 0;
+        text-align: center;
         display: flex;
         align-items: center;
-        gap: 12px;
+        justify-content: center;
+        gap: 10px;
     }
 
-    .modern-section-title::before {
-        content: '✨';
-        font-size: 24px;
-        animation: pulse 2s ease-in-out infinite;
+    .featured-section-title::before {
+        content: '⭐';
+        font-size: 20px;
+        animation: sparkle 2s ease-in-out infinite;
     }
 
-    @keyframes pulse {
-        0%, 100% { opacity: 0.6; transform: scale(1); }
-        50% { opacity: 1; transform: scale(1.1); }
+    @keyframes sparkle {
+        0%, 100% { opacity: 0.7; transform: rotate(0deg) scale(1); }
+        50% { opacity: 1; transform: rotate(15deg) scale(1.15); }
     }
 
-    /* Hide review/ratings, wishlist, compare, cart buttons in related products */
-    .full-row.pt-0 .product .hover-area,
-    .full-row.pt-0 .product .shipping-feed-back {
+    /* Compact Product Card for Strip */
+    .featured-strip-product {
+        padding: 10px;
+        background: white;
+        border-radius: 12px;
+        transition: all 0.3s ease;
+        border: 1px solid #e5e7eb;
+        height: 100%;
+    }
+
+    .featured-strip-product:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+        border-color: #10b981;
+    }
+
+    .featured-strip-product .product-image {
+        position: relative;
+        overflow: hidden;
+        border-radius: 10px;
+        margin-bottom: 10px;
+        aspect-ratio: 1;
+    }
+
+    .featured-strip-product .product-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.4s ease;
+    }
+
+    .featured-strip-product:hover .product-image img {
+        transform: scale(1.08);
+    }
+
+    .featured-strip-product .on-sale {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+        color: white;
+        padding: 4px 8px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 700;
+        z-index: 2;
+        box-shadow: 0 2px 8px rgba(239, 68, 68, 0.4);
+    }
+
+    .featured-strip-product .product-info {
+        padding: 5px;
+    }
+
+    .featured-strip-product .product-title {
+        font-size: 13px;
+        font-weight: 600;
+        margin: 0 0 8px 0;
+        line-height: 1.4;
+        height: 36px;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+    }
+
+    .featured-strip-product .product-title a {
+        color: #1f2937;
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+
+    .featured-strip-product .product-title a:hover {
+        color: #10b981;
+    }
+
+    .featured-strip-product .product-price {
+        margin-bottom: 8px;
+    }
+
+    .featured-strip-product .price ins {
+        font-size: 16px;
+        font-weight: 700;
+        color: #10b981;
+        text-decoration: none;
+        margin-right: 6px;
+    }
+
+    .featured-strip-product .price del {
+        font-size: 13px;
+        color: #9ca3af;
+    }
+
+    .featured-strip-product .star-rating {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 11px;
+    }
+
+    .featured-strip-product .star-rating i {
+        color: #fbbf24;
+        font-size: 12px;
+    }
+
+    .featured-strip-product .star-rating span {
+        color: #6b7280;
+        font-weight: 600;
+    }
+
+    /* Owl Carousel Navigation for Strip */
+    .featured-carousel .owl-nav button {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 40px;
+        height: 40px;
+        background: white !important;
+        border-radius: 50%;
+        border: 2px solid #e5e7eb !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        color: #1f2937 !important;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .featured-carousel .owl-nav button:hover {
+        background: #10b981 !important;
+        color: white !important;
+        border-color: #10b981 !important;
+        transform: translateY(-50%) scale(1.1);
+    }
+
+    .featured-carousel .owl-nav .owl-prev {
+        left: -20px;
+    }
+
+    .featured-carousel .owl-nav .owl-next {
+        right: -20px;
+    }
+
+    /* Hide action buttons in featured products */
+    .featured-strip-product .hover-area {
         display: none !important;
     }
 
     @media (max-width: 767px) {
-        .modern-section-title {
-            font-size: 22px;
+        .featured-products-strip {
+            padding: 20px 0;
         }
 
-        .modern-section-title::before {
-            font-size: 20px;
+        .featured-section-title {
+            font-size: 18px;
+            margin-bottom: 15px;
         }
 
-        .modern-section-header {
-            padding: 20px 0 15px;
-            margin-bottom: 20px;
+        .featured-strip-product .product-title {
+            font-size: 12px;
+            height: 32px;
         }
 
-        .modern-section-header::after {
-            width: 60px;
-            height: 3px;
+        .featured-strip-product .price ins {
+            font-size: 14px;
+        }
+
+        .featured-carousel .owl-nav button {
+            width: 35px;
+            height: 35px;
+            font-size: 18px;
+        }
+
+        .featured-carousel .owl-nav .owl-prev {
+            left: -10px;
+        }
+
+        .featured-carousel .owl-nav .owl-next {
+            right: -10px;
         }
     }
 </style>
-<div class="full-row pt-0">
+<div class="featured-products-strip">
    <div class="container">
       <div class="row">
          <div class="col-12">
-            <div class="modern-section-header">
-               <h4 class="modern-section-title">{{ __('Related Products') }}</h4>
-            </div>
+            <h4 class="featured-section-title">
+               @if(isset($langg) && $langg->rtl == 1)
+                  المنتجات المميزة
+               @else
+                  {{ __('Featured Products') }}
+               @endif
+            </h4>
          </div>
          <div class="col-12">
-            <div class="products product-style-1 owl-mx-5">
-               <div class="five-carousel owl-carousel nav-top-right e-title-hover-primary e-image-bg-light e-hover-image-zoom e-info-center">
-                  @foreach (App\Models\Product::where('category_id', $productt->category_id)
-                  ->where('id', '!=', $productt->id)
-                  ->where('status', 1)
-                  ->withCount('ratings')
-                  ->withAvg('ratings','rating')
-                  ->inRandomOrder()
-                  ->take(12)->get() as $item)
-                  <div class="item">
-                     <div class="product type-product">
-                        <div class="product-wrapper">
-                           <div class="product-image">
-                              <a href="{{ route('front.product', $item->slug) }}" class="woocommerce-LoopProduct-link"><img class="lazy" data-src="{{ $item->photo ? asset('assets/images/products/'.$item->photo):asset('assets/images/noimage.png')}}" alt="Product Image"></a>
-                              @if($item->offPercentage())
-                              <div class="on-sale">-{{ round((float)$item->offPercentage(), 2) }}%</div>
+            <div class="featured-carousel owl-carousel owl-theme">
+               @foreach (App\Models\Product::where('featured', 1)
+               ->where('status', 1)
+               ->withCount('ratings')
+               ->withAvg('ratings','rating')
+               ->inRandomOrder()
+               ->take(12)->get() as $item)
+               <div class="item">
+                  <div class="featured-strip-product">
+                     <div class="product-image">
+                        <a href="{{ route('front.product', $item->slug) }}">
+                           <img class="lazy" data-src="{{ $item->photo ? asset('assets/images/products/'.$item->photo):asset('assets/images/noimage.png')}}" alt="{{ $item->showName() }}">
+                        </a>
+                        @if($item->offPercentage())
+                        <div class="on-sale">-{{ round((float)$item->offPercentage(), 2) }}%</div>
+                        @endif
+                     </div>
+                     <div class="product-info">
+                        <h3 class="product-title">
+                           <a href="{{ route('front.product', $item->slug) }}">
+                              {{ $item->showName() }}
+                           </a>
+                        </h3>
+                        <div class="product-price">
+                           <div class="price">
+                              <ins>{{ $item->showPrice()}}</ins>
+                              @if($item->showPreviousPrice())
+                              <del>{{ $item->showPreviousPrice() }}</del>
                               @endif
-                              <div class="hover-area">
-                                 @if($item->product_type == "affiliate")
-                                 <div class="cart-button">
-                                    <a href="javascript:;" data-href="{{ $item->affiliate_link }}" class="button add_to_cart_button affilate-btn" data-bs-toggle="tooltip" data-bs-placement="right" title="" data-bs-original-title="{{ __('Add To Cart') }}" aria-label="{{ __('Add To Cart') }}"></a>
-                                 </div>
-                                 @else
-                                 @if($item->emptyStock())
-                                 <div class="closed">
-                                    <a class="cart-out-of-stock button add_to_cart_button" href="#" title="{{ __('Out Of Stock') }}" ><i class="flaticon-cancel flat-mini mx-auto"></i></a>
-                                 </div>
-                                 @else
-                                 <div class="cart-button">
-                                    <a href="javascript:;" data-href="{{ route('product.cart.add',$item->id) }}" class="add-cart button add_to_cart_button" data-bs-toggle="tooltip" data-bs-placement="right" title="" data-bs-original-title="{{ __('Add To Cart') }}" aria-label="{{ __('Add To Cart') }}"></a>
-                                 </div>
-                                 <div class="closed">
-                                    <a  class="button add_to_cart_button add-to-cart-quick" href="javascript:;" data-bs-toggle="tooltip" data-href="{{ route('product.cart.quickadd',$item->id) }}" data-bs-placement="right" title="{{ __('Buy Now') }}" data-bs-original-title="{{ __('Buy Now') }}"><i class="flaticon-shopping-cart-1 flat-mini mx-auto"></i></a>
-                                 </div>
-                                 @endif
-                                 @endif
-                                 @if(Auth::check())
-                                 <div class="wishlist-button">
-                                    <a class="add_to_wishlist  new button add_to_cart_button" id="add-to-wish" href="javascript:;" data-href="{{ route('user-wishlist-add',$item->id) }}" data-bs-toggle="tooltip" data-bs-placement="right" title="" data-bs-original-title="Add to Wishlist" aria-label="Add to Wishlist">{{ __('Wishlist') }}</a>
-                                 </div>
-                                 @else
-                                 <div class="wishlist-button">
-                                    <a class="add_to_wishlist button add_to_cart_button" href="{{ route('user.login') }}" data-bs-toggle="tooltip" data-bs-placement="right" title="" data-bs-original-title="Add to Wishlist" aria-label="Add to Wishlist">{{ __('Wishlist') }}</a>
-                                 </div>
-                                 @endif
-                                 <div class="compare-button">
-                                    <a class="compare button add_to_cart_button" data-href="{{ route('product.compare.add',$item->id) }}" href="javascrit:;" data-bs-toggle="tooltip" data-bs-placement="right" title="" data-bs-original-title="Compare" aria-label="Compare">{{ __('Compare') }}</a>
-                                 </div>
-                              </div>
                            </div>
-                           <div class="product-info">
-                              <h3 class="product-title"><a href="{{ route('front.product', $item->slug) }}">{{ $item->showName()}}</a></h3>
-                              <div class="product-price">
-                                 <div class="price">
-                                    <ins>{{ $item->showPrice()}}</ins>
-                                    <del>{{ $item->showPreviousPrice() }}</del>
-                                 </div>
-                              </div>
-                              <div class="shipping-feed-back">
-                                 <div class="star-rating">
-                                     <div class="rating-wrap">
-                                         <p><i class="fas fa-star"></i><span>  {{ number_format($item->ratings_avg_rating,1) }}</span></p>
-                                     </div>
-                                     <div class="rating-counts-wrap">
-                                         <p>({{ $item->ratings_count }})</p>
-                                     </div>
-                                 </div>
-                             </div>
-                           </div>
+                        </div>
+                        <div class="star-rating">
+                           <i class="fas fa-star"></i>
+                           <span>{{ number_format($item->ratings_avg_rating,1) }}</span>
+                           <span>({{ $item->ratings_count }})</span>
                         </div>
                      </div>
                   </div>
-                  @endforeach
                </div>
+               @endforeach
             </div>
          </div>
       </div>
    </div>
 </div>
-<!--==================== Related Products Section End ====================-->
+
+<script>
+jQuery(document).ready(function($) {
+    $('.featured-carousel').owlCarousel({
+        loop: true,
+        margin: 15,
+        nav: true,
+        dots: false,
+        autoplay: true,
+        autoplayTimeout: 4000,
+        autoplayHoverPause: true,
+        navText: ['<i class="fas fa-chevron-left"></i>', '<i class="fas fa-chevron-right"></i>'],
+        responsive: {
+            0: {
+                items: 2,
+                margin: 10
+            },
+            576: {
+                items: 3,
+                margin: 12
+            },
+            768: {
+                items: 4,
+                margin: 15
+            },
+            992: {
+                items: 5,
+                margin: 15
+            },
+            1200: {
+                items: 6,
+                margin: 15
+            }
+        }
+    });
+});
+</script>
+<!--==================== Featured Products Section End ====================-->
 @includeIf('partials.global.common-footer')
 
 
