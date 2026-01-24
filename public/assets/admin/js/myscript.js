@@ -508,7 +508,7 @@
     // VERIFY FORM
 
 
- 
+
     $(document).on("submit", "#verifyform", function (e) {
       e.preventDefault();
       if (admin_loader == 1) {
@@ -762,14 +762,14 @@
 
   $(document).on("submit", "#geniusform", function (e) {
     e.preventDefault();
-    
+
     // Disable submit button immediately to prevent double submission
     var submitBtn = $(this).find('button[type="submit"]');
     if (submitBtn.prop('disabled')) {
       return false; // Already submitting, ignore
     }
     submitBtn.prop("disabled", true);
-    
+
     if (admin_loader == 1) {
       $(".gocover").show();
     }
@@ -807,7 +807,7 @@
       processData: false,
       success: function (data) {
         console.log("Response received:", data); // Debug log
-        
+
         if (data.errors) {
           geniusform.parent().find(".alert-success").hide();
           geniusform.parent().find(".alert-danger").show();
@@ -827,11 +827,11 @@
             geniusform.parent().find(".alert-danger").hide();
             geniusform.parent().find(".alert-success").show();
             geniusform.parent().find(".alert-success p").html(data.msg || data);
-            
+
             if (admin_loader == 1) {
               $(".gocover").hide();
             }
-            
+
             // Redirect after short delay
             setTimeout(function() {
               console.log("Executing redirect now"); // Debug log
