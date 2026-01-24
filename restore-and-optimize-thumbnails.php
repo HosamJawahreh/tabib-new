@@ -41,41 +41,41 @@ foreach ($thumbnails as $file) {
     try {
         $originalSize = filesize($file);
         $totalBefore += $originalSize;
-        
+
         // Load and ultra-compress (quality 60 = MINIMUM size with acceptable quality)
         $img = Image::make($file);
-        
+
         // Ensure small dimensions for thumbnails
         $img->resize(285, 285, function ($constraint) {
             $constraint->aspectRatio();
             $constraint->upsize();
         });
-        
+
         // Save with ULTRA compression (quality 60%)
         $tempFile = $file . '.tmp';
         $img->encode('webp', 60)->save($tempFile);
-        
+
         $newSize = filesize($tempFile);
         $totalAfter += $newSize;
-        
+
         // Only replace if smaller
         if ($newSize < $originalSize) {
             rename($tempFile, $file);
             $optimized++;
-            
+
             $savedKB = round(($originalSize - $newSize) / 1024, 2);
             echo "✓ " . basename($file) . " - Saved {$savedKB} KB\n";
         } else {
             unlink($tempFile);
         }
-        
+
         $processed++;
-        
+
         // Progress indicator every 500 files
         if ($processed % 500 === 0) {
             echo "\n--- Processed {$processed} thumbnails ---\n\n";
         }
-        
+
     } catch (Exception $e) {
         $errors++;
         echo "✗ Error on " . basename($file) . ": " . $e->getMessage() . "\n";

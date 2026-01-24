@@ -623,23 +623,35 @@ class ProductController extends AdminBaseController
         // Save Product Translations (if provided)
         if ($request->has('translations') && is_array($request->translations)) {
             foreach ($request->translations as $langId => $translation) {
-                if (!empty($translation['name']) || !empty($translation['description'])) {
-                    $langCode = $translation['lang_code'] ?? '';
-
-                    if (!empty($langCode)) {
-                        // Use updateOrCreate to prevent duplicates
-                        \App\Models\ProductTranslation::updateOrCreate(
-                            [
-                                'ec_products_id' => $data->id,
-                                'lang_code' => $langCode,
-                            ],
-                            [
-                                'name' => $translation['name'] ?? '',
-                                'description' => $translation['description'] ?? '',
-                                'content' => '' // You can add content field later if needed
-                            ]
-                        );
-                    }
+                // Get translation values and trim whitespace
+                $translationName = isset($translation['name']) ? trim($translation['name']) : '';
+                $translationDesc = isset($translation['description']) ? trim($translation['description']) : '';
+                $langCode = $translation['lang_code'] ?? '';
+                
+                // Skip if lang_code is missing
+                if (empty($langCode)) {
+                    continue;
+                }
+                
+                // **FIX: Prevent "test" or invalid placeholder values**
+                $invalidValues = ['test', 'testing', 'تجربة', 'اختبار'];
+                $isInvalidName = empty($translationName) || 
+                                in_array(strtolower($translationName), $invalidValues);
+                
+                // Only save if we have valid content (valid name OR description)
+                if (!$isInvalidName || !empty($translationDesc)) {
+                    // Use updateOrCreate to prevent duplicates
+                    \App\Models\ProductTranslation::updateOrCreate(
+                        [
+                            'ec_products_id' => $data->id,
+                            'lang_code' => $langCode,
+                        ],
+                        [
+                            'name' => $isInvalidName ? '' : $translationName,
+                            'description' => $translationDesc,
+                            'content' => '' // You can add content field later if needed
+                        ]
+                    );
                 }
             }
         }
@@ -1273,22 +1285,34 @@ class ProductController extends AdminBaseController
         // Update Product Translations (if provided)
         if ($request->has('translations') && is_array($request->translations)) {
             foreach ($request->translations as $langId => $translation) {
-                if (!empty($translation['name']) || !empty($translation['description'])) {
-                    $langCode = $translation['lang_code'] ?? '';
-
-                    if (!empty($langCode)) {
-                        // Use updateOrCreate for composite key tables
-                        \App\Models\ProductTranslation::updateOrCreate(
-                            [
-                                'ec_products_id' => $data->id,
-                                'lang_code' => $langCode,
-                            ],
-                            [
-                                'name' => $translation['name'] ?? '',
-                                'description' => $translation['description'] ?? '',
-                            ]
-                        );
-                    }
+                // Get translation values and trim whitespace
+                $translationName = isset($translation['name']) ? trim($translation['name']) : '';
+                $translationDesc = isset($translation['description']) ? trim($translation['description']) : '';
+                $langCode = $translation['lang_code'] ?? '';
+                
+                // Skip if lang_code is missing
+                if (empty($langCode)) {
+                    continue;
+                }
+                
+                // **FIX: Prevent "test" or invalid placeholder values**
+                $invalidValues = ['test', 'testing', 'تجربة', 'اختبار'];
+                $isInvalidName = empty($translationName) || 
+                                in_array(strtolower($translationName), $invalidValues);
+                
+                // Only save if we have valid content (valid name OR description)
+                if (!$isInvalidName || !empty($translationDesc)) {
+                    // Use updateOrCreate for composite key tables
+                    \App\Models\ProductTranslation::updateOrCreate(
+                        [
+                            'ec_products_id' => $data->id,
+                            'lang_code' => $langCode,
+                        ],
+                        [
+                            'name' => $isInvalidName ? '' : $translationName,
+                            'description' => $translationDesc,
+                        ]
+                    );
                 }
             }
         }

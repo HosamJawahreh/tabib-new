@@ -41,29 +41,29 @@ $stats['total_products'] = count($files);
 foreach ($files as $index => $file) {
     $num = $index + 1;
     $filename = basename($file);
-    
+
     if ($num % 100 == 0) {
         echo "Processed $num/{$stats['total_products']} products...\n";
     }
-    
+
     $oldSize = filesize($file);
     $stats['size_before_products'] += $oldSize;
-    
+
     try {
         $img = Image::make($file);
-        
+
         // Resize to max 1200px
         $img->resize(1200, 1200, function ($constraint) {
             $constraint->aspectRatio();
             $constraint->upsize();
         });
-        
+
         // Create temp file
         $tempFile = $productsPath . 'temp_' . $filename;
         $img->encode('webp', 75)->save($tempFile);
-        
+
         $newSize = filesize($tempFile);
-        
+
         // Only replace if we saved space
         if ($newSize < $oldSize) {
             unlink($file);
@@ -74,7 +74,7 @@ foreach ($files as $index => $file) {
             unlink($tempFile);
             $stats['size_after_products'] += $oldSize;
         }
-        
+
     } catch (\Exception $e) {
         $stats['size_after_products'] += $oldSize;
         $stats['errors']++;
@@ -95,29 +95,29 @@ $stats['total_thumbnails'] = count($files);
 foreach ($files as $index => $file) {
     $num = $index + 1;
     $filename = basename($file);
-    
+
     if ($num % 100 == 0) {
         echo "Processed $num/{$stats['total_thumbnails']} thumbnails...\n";
     }
-    
+
     $oldSize = filesize($file);
     $stats['size_before_thumbnails'] += $oldSize;
-    
+
     try {
         $img = Image::make($file);
-        
+
         // Resize thumbnails
         $img->resize(285, 285, function ($constraint) {
             $constraint->aspectRatio();
             $constraint->upsize();
         });
-        
+
         // Create temp file
         $tempFile = $thumbnailsPath . 'temp_' . $filename;
         $img->encode('webp', 70)->save($tempFile);
-        
+
         $newSize = filesize($tempFile);
-        
+
         // Only replace if we saved space
         if ($newSize < $oldSize) {
             unlink($file);
@@ -128,7 +128,7 @@ foreach ($files as $index => $file) {
             unlink($tempFile);
             $stats['size_after_thumbnails'] += $oldSize;
         }
-        
+
     } catch (\Exception $e) {
         $stats['size_after_thumbnails'] += $oldSize;
         $stats['errors']++;
@@ -181,12 +181,12 @@ echo "=================================================================\n";
 
 function formatBytes($bytes, $precision = 2) {
     $units = array('B', 'KB', 'MB', 'GB', 'TB');
-    
+
     $bytes = max($bytes, 0);
     $pow = floor(($bytes ? log($bytes) : 0) / log(1024));
     $pow = min($pow, count($units) - 1);
-    
+
     $bytes /= (1 << (10 * $pow));
-    
+
     return round($bytes, $precision) . ' ' . $units[$pow];
 }

@@ -32,7 +32,7 @@ foreach (scandir($productsPath) as $file) {
 if (!$testFile) {
     echo "❌ No PNG/JPG files found for testing.\n";
     echo "Looking for WebP to test re-compression...\n\n";
-    
+
     foreach (scandir($productsPath) as $file) {
         if (pathinfo($file, PATHINFO_EXTENSION) === 'webp') {
             $testFile = $productsPath . $file;
@@ -66,35 +66,35 @@ $results = [];
 foreach ($qualities as $quality) {
     try {
         $img = Image::make($testFile);
-        
+
         // Resize to max 1200px
         $img->resize(1200, 1200, function ($constraint) {
             $constraint->aspectRatio();
             $constraint->upsize();
         });
-        
+
         $outputFile = $testPath . 'test_q' . $quality . '.webp';
         $img->encode('webp', $quality)->save($outputFile);
-        
+
         $newSize = filesize($outputFile);
         $saved = $originalSize - $newSize;
         $percentSaved = round(($saved / $originalSize) * 100, 1);
-        
+
         $results[$quality] = [
             'size' => $newSize,
             'saved' => $saved,
             'percent' => $percentSaved
         ];
-        
+
         $recommendation = '';
         if ($quality == 75) {
             $recommendation = ' ⭐ RECOMMENDED for products';
         } elseif ($quality == 70) {
             $recommendation = ' ⭐ RECOMMENDED for thumbnails';
         }
-        
+
         echo "Quality $quality%: " . formatBytes($newSize) . " (saved {$percentSaved}%)" . $recommendation . "\n";
-        
+
     } catch (Exception $e) {
         echo "Quality $quality%: ❌ Error - " . $e->getMessage() . "\n";
     }
@@ -137,12 +137,12 @@ echo "=================================================================\n";
 
 function formatBytes($bytes, $precision = 2) {
     $units = array('B', 'KB', 'MB', 'GB', 'TB');
-    
+
     $bytes = max($bytes, 0);
     $pow = floor(($bytes ? log($bytes) : 0) / log(1024));
     $pow = min($pow, count($units) - 1);
-    
+
     $bytes /= (1 << (10 * $pow));
-    
+
     return round($bytes, $precision) . ' ' . $units[$pow];
 }

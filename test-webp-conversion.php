@@ -2,7 +2,7 @@
 
 /**
  * Test WebP Conversion on Sample Images
- * 
+ *
  * This script tests WebP conversion on a few sample images to show
  * the potential space savings before running the full conversion.
  */
@@ -45,43 +45,43 @@ if (!file_exists($testPath)) {
 
 foreach ($products as $index => $product) {
     echo "Sample " . ($index + 1) . " - Product ID: {$product->id}\n";
-    
+
     $originalPath = public_path('assets/images/products/' . $product->photo);
-    
+
     if (!file_exists($originalPath)) {
         echo "   ⚠️  File not found: {$product->photo}\n\n";
         continue;
     }
-    
+
     $extension = pathinfo($product->photo, PATHINFO_EXTENSION);
     $originalSize = filesize($originalPath);
     $totalOriginalSize += $originalSize;
-    
+
     try {
         // Test WebP conversion
         $img = Image::make($originalPath);
         $testWebpName = 'test_' . pathinfo($product->photo, PATHINFO_FILENAME) . '.webp';
         $testWebpPath = $testPath . '/' . $testWebpName;
-        
+
         $img->encode('webp', 85)->save($testWebpPath);
-        
+
         $webpSize = filesize($testWebpPath);
         $totalWebpSize += $webpSize;
-        
+
         $savedSpace = $originalSize - $webpSize;
         $savedPercentage = round(($savedSpace / $originalSize) * 100);
-        
+
         echo "   Original ({$extension}): " . round($originalSize / 1024) . " KB\n";
         echo "   WebP (85%):      " . round($webpSize / 1024) . " KB\n";
         echo "   💾 Saved:        " . round($savedSpace / 1024) . " KB ({$savedPercentage}%)\n";
-        
+
         // Clean up test file
         unlink($testWebpPath);
-        
+
     } catch (\Exception $e) {
         echo "   ❌ Conversion failed: " . $e->getMessage() . "\n";
     }
-    
+
     echo "\n";
 }
 
