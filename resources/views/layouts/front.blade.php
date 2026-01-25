@@ -5,36 +5,65 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="description" content="GeniusCart-New - Multivendor Ecommerce system">
-    <meta name="author" content="GeniusOcean">
 
     @if (isset($page->meta_tag) && isset($page->meta_description))
+        {{-- Page Meta --}}
         <meta name="keywords" content="{{ $page->meta_tag }}">
         <meta name="description" content="{{ $page->meta_description }}">
-        <title>{{ $gs->title }}</title>
+        <meta property="og:title" content="{{ $page->title }} - {{ $gs->title }}" />
+        <meta property="og:description" content="{{ $page->meta_description }}" />
+        <meta property="og:image" content="{{ asset('assets/images/' . $gs->logo) }}" />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="{{ url()->current() }}" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="{{ $page->title }} - {{ $gs->title }}" />
+        <meta name="twitter:description" content="{{ $page->meta_description }}" />
+        <meta name="twitter:image" content="{{ asset('assets/images/' . $gs->logo) }}" />
+        <title>{{ $page->title }} - {{ $gs->title }}</title>
     @elseif(isset($blog->meta_tag) && isset($blog->meta_description))
-        <meta property="og:title" content="{{ $blog->title }}" />
-        <meta property="og:description"
-            content="{{ $blog->meta_description != null ? $blog->meta_description : strip_tags($blog->meta_description) }}" />
-        <meta property="og:image" content="{{ asset('assets/images/blogs/' . $blog->photo) }}" />
+        {{-- Blog Meta --}}
         <meta name="keywords" content="{{ $blog->meta_tag }}">
         <meta name="description" content="{{ $blog->meta_description }}">
-        <title>{{ $gs->title }}</title>
+        <meta property="og:title" content="{{ $blog->title }}" />
+        <meta property="og:description" content="{{ $blog->meta_description != null ? $blog->meta_description : strip_tags($blog->meta_description) }}" />
+        <meta property="og:image" content="{{ asset('assets/images/blogs/' . $blog->photo) }}" />
+        <meta property="og:type" content="article" />
+        <meta property="og:url" content="{{ url()->current() }}" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="{{ $blog->title }}" />
+        <meta name="twitter:description" content="{{ $blog->meta_description }}" />
+        <meta name="twitter:image" content="{{ asset('assets/images/blogs/' . $blog->photo) }}" />
+        <title>{{ $blog->title }} - {{ $gs->title }}</title>
     @elseif(isset($productt))
-        <meta name="keywords" content="{{ !empty($productt->meta_tag) ? implode(',', $productt->meta_tag) : '' }}">
-        <meta name="description"
-            content="{{ $productt->meta_description != null ? $productt->meta_description : strip_tags($productt->description) }}">
+        {{-- Product Meta --}}
+        <meta name="keywords" content="{{ !empty($productt->meta_tag) ? implode(',', $productt->meta_tag) : $seo->meta_keys }}">
+        <meta name="description" content="{{ $productt->meta_description != null ? $productt->meta_description : strip_tags($productt->description) }}">
         <meta property="og:title" content="{{ $productt->name }}" />
-        <meta property="og:description"
-            content="{{ $productt->meta_description != null ? $productt->meta_description : strip_tags($productt->description) }}" />
+        <meta property="og:description" content="{{ $productt->meta_description != null ? $productt->meta_description : strip_tags($productt->description) }}" />
         <meta property="og:image" content="{{ asset('assets/images/thumbnails/' . $productt->thumbnail) }}" />
-        <meta name="author" content="GeniusOcean">
-        <title>{{ substr($productt->name, 0, 11) . '-' }}{{ $gs->title }}</title>
+        <meta property="og:type" content="product" />
+        <meta property="og:url" content="{{ url()->current() }}" />
+        <meta property="product:price:amount" content="{{ $productt->price }}" />
+        <meta property="product:price:currency" content="{{ $gs->curr_code ?? 'JD' }}" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="{{ $productt->name }}" />
+        <meta name="twitter:description" content="{{ $productt->meta_description != null ? $productt->meta_description : strip_tags($productt->description) }}" />
+        <meta name="twitter:image" content="{{ asset('assets/images/thumbnails/' . $productt->thumbnail) }}" />
+        <title>{{ $productt->name }} - {{ $gs->title }}</title>
     @else
-        <meta property="og:title" content="{{ $gs->title }}" />
-        <meta property="og:image" content="{{ asset('assets/images/' . $gs->logo) }}" />
+        {{-- Homepage / Default Meta from SEO Settings --}}
         <meta name="keywords" content="{{ $seo->meta_keys }}">
-        <meta name="author" content="GeniusOcean">
+        <meta name="description" content="{{ $seo->meta_description }}">
+        <meta property="og:title" content="{{ $gs->title }}" />
+        <meta property="og:description" content="{{ $seo->meta_description }}" />
+        <meta property="og:image" content="{{ asset('assets/images/' . $gs->logo) }}" />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="{{ url('/') }}" />
+        <meta property="og:site_name" content="{{ $gs->title }}" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="{{ $gs->title }}" />
+        <meta name="twitter:description" content="{{ $seo->meta_description }}" />
+        <meta name="twitter:image" content="{{ asset('assets/images/' . $gs->logo) }}" />
         <title>{{ $gs->title }}</title>
     @endif
 
