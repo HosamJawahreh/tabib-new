@@ -1254,7 +1254,7 @@
 
    .cart-icon i {
        font-size: 20px !important;
-       color: #4a5568 !important;
+       color: #000 !important;
    }
 
    /* Cart count badge - ULTRA FORCEFUL GREEN ROUNDED BADGE */
@@ -2611,8 +2611,11 @@ $pages = App\Models\Page::get();
                     <div class="header-cart-1 header-icon-enhanced">
                         <a href="javascript:;" id="cartIconLink" class="cart" title="Shopping Cart">
                             <div class="cart-icon" style="position: relative;">
-                                <i class="flaticon-shopping-cart flat-mini mx-auto"></i>
-                                <span class="header-cart-count" id="cart-count" style="display: flex !important; align-items: center !important; justify-content: center !important; background: #28a745 !important; color: #fff !important; font-size: 12px !important; font-weight: 700 !important; line-height: 1 !important; padding: 0 !important; margin: 0 !important; border-radius: 50% !important; width: 22px !important; height: 22px !important; min-width: 22px !important; max-width: 22px !important; min-height: 22px !important; max-height: 22px !important; position: absolute !important; top: -8px !important; right: -8px !important; z-index: 1201 !important; border: 2px solid #fff !important; box-shadow: 0 2px 6px rgba(40,167,69,0.4) !important; box-sizing: border-box !important; text-align: center !important; overflow: hidden !important;">{{ Session::has('cart') ? count(Session::get('cart')->items) : 0 }}</span>
+                                <i class="fas fa-shopping-cart" style="font-size: 20px !important; color: #000 !important;"></i>
+                                @php
+                                    $cartCount = Session::has('cart') ? count(Session::get('cart')->items) : 0;
+                                @endphp
+                                <span class="header-cart-count" id="cart-count" style="display: {{ $cartCount > 0 ? 'flex' : 'none' }} !important; align-items: center !important; justify-content: center !important; background: #28a745 !important; color: #fff !important; font-size: 12px !important; font-weight: 700 !important; line-height: 1 !important; padding: 0 !important; margin: 0 !important; border-radius: 50% !important; width: 22px !important; height: 22px !important; min-width: 22px !important; max-width: 22px !important; min-height: 22px !important; max-height: 22px !important; position: absolute !important; top: -8px !important; right: -8px !important; z-index: 1201 !important; border: 2px solid #fff !important; box-shadow: 0 2px 6px rgba(40,167,69,0.4) !important; box-sizing: border-box !important; text-align: center !important; overflow: hidden !important;">{{ $cartCount }}</span>
                             </div>
                         </a>
                     </div>

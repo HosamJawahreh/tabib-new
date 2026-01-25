@@ -193,6 +193,13 @@
                     if (response.success) {
                         $('.cart-total-amount').text(response.total);
                         $('.cart-count').text(response.count);
+                        // Update header cart count
+                        $('#cart-count').html(response.count);
+                        if (response.count > 0) {
+                            $('#cart-count').show();
+                        } else {
+                            $('#cart-count').hide();
+                        }
 
                         // Update item subtotal
                         $item.find('.cart-item-subtotal').text(response.item_total);
@@ -237,6 +244,13 @@
                             // Update cart totals
                             $('.cart-total-amount').text(response.total);
                             $('.cart-count').text(response.count);
+                            // Update header cart count
+                            $('#cart-count').html(response.count);
+                            if (response.count > 0) {
+                                $('#cart-count').show();
+                            } else {
+                                $('#cart-count').hide();
+                            }
 
                             // Show empty cart if no items
                             if (response.count === 0) {
@@ -268,6 +282,13 @@
                         $('.cart-items, .cart-body').html(response.html);
                         $('.cart-total-amount').text(response.total);
                         $('.cart-count').text(response.count);
+                        // Update header cart count
+                        $('#cart-count').html(response.count);
+                        if (response.count > 0) {
+                            $('#cart-count').show();
+                        } else {
+                            $('#cart-count').hide();
+                        }
                     }
                 }
             });

@@ -703,6 +703,12 @@
                     }
                     else {
                         $("#cart-count").html(data[0]);
+                        // Show badge when items added
+                        if (data[0] > 0) {
+                            $("#cart-count").show();
+                        } else {
+                            $("#cart-count").hide();
+                        }
                         $("#total-cost").html(data[1]);
                         $("#cart-items").load(mainurl+'/carts/view');
                         toastr.success("{{ __('Successfully Added To Cart.') }}");

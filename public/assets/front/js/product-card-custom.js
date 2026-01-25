@@ -86,6 +86,14 @@
                 // Update cart counts
                 $("#cart-count").html(data[0]);
                 $("#cart-count1").html(data[0]);
+                // Show badge when items added
+                if (data[0] > 0) {
+                    $("#cart-count").show();
+                    $("#cart-count1").show();
+                } else {
+                    $("#cart-count").hide();
+                    $("#cart-count1").hide();
+                }
                 $("#total-cost").html(data[1]);
                 $(".cart-popup").load(mainurl + "/carts/view");
                 
