@@ -36,76 +36,75 @@
                         <div class="gocover" style="background: url({{ asset('assets/images/xloading.gif') }}) no-repeat scroll center center rgba(45, 45, 45, 0.5);"></div>
                         
                         @if($products->count() > 0)
-                        <div class="row" id="product-sortable">
-                            @foreach($products as $product)
-                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 mb-4 product-item" data-id="{{ $product->id }}">
-                                <div class="card h-100 shadow-sm hover-shadow" style="border-radius: 12px; transition: all 0.3s ease;">
-                                    {{-- Drag Handle --}}
-                                    <div class="drag-handle text-center py-2" style="cursor: move; background: #f8f9fa; border-top-left-radius: 12px; border-top-right-radius: 12px;">
-                                        <i class="fas fa-grip-horizontal text-muted"></i>
-                                    </div>
-                                    
-                                    {{-- Product Image --}}
-                                    <div class="card-img-top d-flex align-items-center justify-content-center" style="height: 200px; background: #ffffff; padding: 15px;">
-                                        @if($product->image)
-                                        <img src="{{ asset('assets/images/brand-products/' . $product->image) }}" 
-                                             alt="{{ $product->name }}" 
-                                             style="max-width: 100%; max-height: 100%; object-fit: contain;">
-                                        @else
-                                        <div class="text-center">
-                                            <i class="fas fa-box-open" style="font-size: 60px; color: #dee2e6;"></i>
-                                            <p class="text-muted small mt-2">{{ __('No Image') }}</p>
-                                        </div>
-                                        @endif
-                                    </div>
-                                    
-                                    {{-- Card Body --}}
-                                    <div class="card-body">
-                                        <h5 class="card-title mb-2" style="font-weight: 600; font-size: 1rem;">{{ $product->name }}</h5>
-                                        
-                                        <div class="d-flex justify-content-between align-items-center mb-3">
-                                            <span class="badge badge-success" style="font-size: 0.9rem; padding: 6px 12px;">
-                                                ${{ number_format($product->price, 2) }}
-                                            </span>
+                        <div class="table-responsive">
+                            <table class="table table-hover" id="products-table">
+                                <thead>
+                                    <tr>
+                                        <th width="50"><i class="fas fa-grip-vertical"></i></th>
+                                        <th width="100">{{ __('Image') }}</th>
+                                        <th>{{ __('Name') }}</th>
+                                        <th width="120">{{ __('Price') }}</th>
+                                        <th width="100">{{ __('Status') }}</th>
+                                        <th width="100">{{ __('Order') }}</th>
+                                        <th width="150">{{ __('Actions') }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="product-sortable">
+                                    @foreach($products as $product)
+                                    <tr class="product-item" data-id="{{ $product->id }}">
+                                        <td class="drag-handle" style="cursor: move;">
+                                            <i class="fas fa-grip-vertical"></i>
+                                        </td>
+                                        <td>
+                                            @if($product->image)
+                                            <img src="{{ asset('assets/images/brand-products/' . $product->image) }}" 
+                                                 alt="{{ $product->name }}" 
+                                                 style="width: 60px; height: 60px; object-fit: contain; border-radius: 5px; border: 1px solid #dee2e6;">
+                                            @else
+                                            <div style="width: 60px; height: 60px; background: #f8f9fa; border-radius: 5px; display: flex; align-items: center; justify-content: center;">
+                                                <i class="fas fa-image text-muted"></i>
+                                            </div>
+                                            @endif
+                                        </td>
+                                        <td><strong>{{ $product->name }}</strong></td>
+                                        <td><span class="badge badge-success">${{ number_format($product->price, 2) }}</span></td>
+                                        <td>
                                             <span class="badge {{ $product->status == 1 ? 'badge-success' : 'badge-danger' }}">
                                                 {{ $product->status == 1 ? __('Active') : __('Inactive') }}
                                             </span>
-                                        </div>
-                                        
-                                        <div class="mb-3">
-                                            <small class="text-muted">{{ __('Sort Order') }}: <strong>{{ $product->sort_order }}</strong></small>
-                                        </div>
-                                        
-                                        {{-- Action Buttons --}}
-                                        <div class="d-flex justify-content-between">
-                                            <button class="btn btn-sm btn-primary edit-product flex-fill mr-1" 
-                                                    data-id="{{ $product->id }}"
-                                                    data-name="{{ $product->name }}"
-                                                    data-price="{{ $product->price }}"
-                                                    data-status="{{ $product->status }}"
-                                                    data-sort="{{ $product->sort_order }}"
-                                                    data-image="{{ $product->image }}"
-                                                    title="{{ __('Edit') }}">
-                                                <i class="fas fa-edit"></i> {{ __('Edit') }}
-                                            </button>
-                                            
-                                            <button class="btn btn-sm btn-{{ $product->status == 1 ? 'warning' : 'success' }} toggle-status mr-1" 
-                                                    data-id="{{ $product->id }}"
-                                                    data-status="{{ $product->status == 1 ? 0 : 1 }}"
-                                                    title="{{ $product->status == 1 ? __('Deactivate') : __('Activate') }}">
-                                                <i class="fas fa-{{ $product->status == 1 ? 'eye-slash' : 'eye' }}"></i>
-                                            </button>
-                                            
-                                            <button class="btn btn-sm btn-danger delete-product" 
-                                                    data-id="{{ $product->id }}"
-                                                    title="{{ __('Delete') }}">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            @endforeach
+                                        </td>
+                                        <td>{{ $product->sort_order }}</td>
+                                        <td>
+                                            <div class="btn-group btn-group-sm">
+                                                <button class="btn btn-primary edit-product" 
+                                                        data-id="{{ $product->id }}"
+                                                        data-name="{{ $product->name }}"
+                                                        data-price="{{ $product->price }}"
+                                                        data-status="{{ $product->status }}"
+                                                        data-sort="{{ $product->sort_order }}"
+                                                        data-image="{{ $product->image }}"
+                                                        title="{{ __('Edit') }}">
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
+                                                
+                                                <button class="btn btn-{{ $product->status == 1 ? 'warning' : 'success' }} toggle-status" 
+                                                        data-id="{{ $product->id }}"
+                                                        data-status="{{ $product->status == 1 ? 0 : 1 }}"
+                                                        title="{{ $product->status == 1 ? __('Deactivate') : __('Activate') }}">
+                                                    <i class="fas fa-{{ $product->status == 1 ? 'eye-slash' : 'eye' }}"></i>
+                                                </button>
+                                                
+                                                <button class="btn btn-danger delete-product" 
+                                                        data-id="{{ $product->id }}"
+                                                        title="{{ __('Delete') }}">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
                         </div>
                         @else
                         <div class="text-center py-5">
@@ -266,18 +265,10 @@ $(document).ready(function() {
                 order: order
             },
             success: function(response) {
-                if (typeof toastr !== 'undefined') {
-                    toastr.success(response.msg);
-                } else {
-                    alert(response.msg || 'Order updated successfully!');
-                }
+                toastr.success(response.msg);
             },
             error: function(xhr) {
-                if (typeof toastr !== 'undefined') {
-                    toastr.error('{{ __("Error updating order") }}');
-                } else {
-                    alert('Error updating order');
-                }
+                toastr.error('{{ __("Error updating order") }}');
             }
         });
     }
@@ -299,11 +290,7 @@ $(document).ready(function() {
                 $('.gocover').hide();
                 $('#addProductModal').modal('hide');
                 $('#addProductForm')[0].reset();
-                if (typeof toastr !== 'undefined') {
-                    toastr.success(response.msg);
-                } else {
-                    alert(response.msg || 'Product created successfully!');
-                }
+                toastr.success(response.msg);
                 setTimeout(function() {
                     location.reload();
                 }, 1500);
@@ -312,19 +299,10 @@ $(document).ready(function() {
                 $('.gocover').hide();
                 if (xhr.responseJSON && xhr.responseJSON.errors) {
                     $.each(xhr.responseJSON.errors, function(key, value) {
-                        if (typeof toastr !== 'undefined') {
-                            toastr.error(value[0]);
-                        } else {
-                            alert('Error: ' + value[0]);
-                        }
+                        toastr.error(value[0]);
                     });
                 } else {
-                    var errorMsg = xhr.responseJSON && xhr.responseJSON.message ? xhr.responseJSON.message : '{{ __("An error occurred") }}';
-                    if (typeof toastr !== 'undefined') {
-                        toastr.error(errorMsg);
-                    } else {
-                        alert('Error: ' + errorMsg);
-                    }
+                    toastr.error('{{ __("An error occurred") }}');
                 }
             }
         });
@@ -371,11 +349,7 @@ $(document).ready(function() {
             success: function(response) {
                 $('.gocover').hide();
                 $('#editProductModal').modal('hide');
-                if (typeof toastr !== 'undefined') {
-                    toastr.success(response.msg);
-                } else {
-                    alert(response.msg || 'Product updated successfully!');
-                }
+                toastr.success(response.msg);
                 setTimeout(function() {
                     location.reload();
                 }, 1500);
@@ -384,19 +358,10 @@ $(document).ready(function() {
                 $('.gocover').hide();
                 if (xhr.responseJSON && xhr.responseJSON.errors) {
                     $.each(xhr.responseJSON.errors, function(key, value) {
-                        if (typeof toastr !== 'undefined') {
-                            toastr.error(value[0]);
-                        } else {
-                            alert('Error: ' + value[0]);
-                        }
+                        toastr.error(value[0]);
                     });
                 } else {
-                    var errorMsg = xhr.responseJSON && xhr.responseJSON.message ? xhr.responseJSON.message : '{{ __("An error occurred") }}';
-                    if (typeof toastr !== 'undefined') {
-                        toastr.error(errorMsg);
-                    } else {
-                        alert('Error: ' + errorMsg);
-                    }
+                    toastr.error('{{ __("An error occurred") }}');
                 }
             }
         });
@@ -411,21 +376,13 @@ $(document).ready(function() {
             url: '{{ url("admin/brand-product/status") }}/' + productId + '/' + status,
             method: 'GET',
             success: function(response) {
-                if (typeof toastr !== 'undefined') {
-                    toastr.success(response.msg);
-                } else {
-                    alert(response.msg || 'Status updated successfully!');
-                }
+                toastr.success(response.msg);
                 setTimeout(function() {
                     location.reload();
                 }, 1500);
             },
             error: function(xhr) {
-                if (typeof toastr !== 'undefined') {
-                    toastr.error('{{ __("An error occurred") }}');
-                } else {
-                    alert('An error occurred');
-                }
+                toastr.error('{{ __("An error occurred") }}');
             }
         });
     });
@@ -445,70 +402,19 @@ $(document).ready(function() {
                 },
                 success: function(response) {
                     $('.gocover').hide();
-                    if (typeof toastr !== 'undefined') {
-                        toastr.success(response.msg);
-                    } else {
-                        alert(response.msg || 'Product deleted successfully!');
-                    }
+                    toastr.success(response.msg);
                     setTimeout(function() {
                         location.reload();
                     }, 1500);
                 },
                 error: function(xhr) {
                     $('.gocover').hide();
-                    var errorMsg = xhr.responseJSON && xhr.responseJSON.msg ? xhr.responseJSON.msg : '{{ __("An error occurred") }}';
-                    if (typeof toastr !== 'undefined') {
-                        toastr.error(errorMsg);
-                    } else {
-                        alert('Error: ' + errorMsg);
-                    }
+                    toastr.error(xhr.responseJSON.msg || '{{ __("An error occurred") }}');
                 }
             });
         }
     });
 });
 </script>
-
-<style>
-.hover-shadow {
-    transition: all 0.3s ease;
-}
-
-.hover-shadow:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15) !important;
-}
-
-.card {
-    border: 1px solid #e3e6f0;
-}
-
-.product-item {
-    transition: all 0.3s ease;
-}
-
-.drag-handle {
-    transition: background 0.2s ease;
-}
-
-.drag-handle:hover {
-    background: #e9ecef !important;
-}
-
-.card-title {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    min-height: 2.5rem;
-}
-
-@media (max-width: 768px) {
-    .col-sm-12 {
-        margin-bottom: 1rem;
-    }
-}
-</style>
 
 @endsection

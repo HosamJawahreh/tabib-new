@@ -7,6 +7,7 @@ use App\Models\Brand;
 use App\Models\BrandProduct;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Log;
 use Intervention\Image\Facades\Image;
 
 class BrandProductController extends Controller
@@ -47,15 +48,35 @@ class BrandProductController extends Controller
             $product->sort_order = $request->sort_order ?? 0;
 
             if ($request->hasFile('image')) {
-                $image = $request->file('image');
-                $imageName = time() . '_' . uniqid() . '.webp';
-                
-                // Convert to WebP
-                $img = Image::make($image->getRealPath());
-                $img->encode('webp', 90);
-                $img->save(public_path('assets/images/brand-products/' . $imageName));
-                
-                $product->image = $imageName;
+                try {
+                    $image = $request->file('image');
+                    $imageName = time() . '_' . uniqid() . '.webp';
+                    
+                    // Create directory if it doesn't exist
+                    $directory = base_path('public/assets/images/brand-products');
+                    if (!file_exists($directory)) {
+                        mkdir($directory, 0777, true);
+                    }
+                    
+                    // Convert to WebP
+                    $img = Image::make($image->getRealPath());
+                    $img->encode('webp', 90);
+                    $savePath = $directory . '/' . $imageName;
+                    $img->save($savePath);
+                    
+                    // Verify file was created
+                    if (!file_exists($savePath)) {
+                        throw new \Exception('Image file was not created at: ' . $savePath);
+                    }
+                    
+                    $product->image = $imageName;
+                } catch (\Exception $e) {
+                    Log::error('Brand Product image processing error: ' . $e->getMessage());
+                    return response()->json([
+                        'errors' => ['image' => ['Failed to process image: ' . $e->getMessage()]],
+                        'message' => 'Failed to process image'
+                    ], 500);
+                }
             }
 
             $product->save();
@@ -89,20 +110,40 @@ class BrandProductController extends Controller
             $product->sort_order = $request->sort_order ?? 0;
 
             if ($request->hasFile('image')) {
-                // Delete old image
-                if ($product->image && file_exists(public_path('assets/images/brand-products/' . $product->image))) {
-                    unlink(public_path('assets/images/brand-products/' . $product->image));
-                }
+                try {
+                    // Delete old image
+                    if ($product->image && file_exists(base_path('public/assets/images/brand-products/' . $product->image))) {
+                        unlink(base_path('public/assets/images/brand-products/' . $product->image));
+                    }
 
-                $image = $request->file('image');
-                $imageName = time() . '_' . uniqid() . '.webp';
-                
-                // Convert to WebP
-                $img = Image::make($image->getRealPath());
-                $img->encode('webp', 90);
-                $img->save(public_path('assets/images/brand-products/' . $imageName));
-                
-                $product->image = $imageName;
+                    $image = $request->file('image');
+                    $imageName = time() . '_' . uniqid() . '.webp';
+                    
+                    // Create directory if it doesn't exist
+                    $directory = base_path('public/assets/images/brand-products');
+                    if (!file_exists($directory)) {
+                        mkdir($directory, 0777, true);
+                    }
+                    
+                    // Convert to WebP
+                    $img = Image::make($image->getRealPath());
+                    $img->encode('webp', 90);
+                    $savePath = $directory . '/' . $imageName;
+                    $img->save($savePath);
+                    
+                    // Verify file was created
+                    if (!file_exists($savePath)) {
+                        throw new \Exception('Image file was not created at: ' . $savePath);
+                    }
+                    
+                    $product->image = $imageName;
+                } catch (\Exception $e) {
+                    Log::error('Brand Product image update error: ' . $e->getMessage());
+                    return response()->json([
+                        'errors' => ['image' => ['Failed to process image: ' . $e->getMessage()]],
+                        'message' => 'Failed to process image'
+                    ], 500);
+                }
             }
 
             $product->save();
@@ -119,8 +160,8 @@ class BrandProductController extends Controller
             $product = BrandProduct::findOrFail($id);
 
             // Delete image
-            if ($product->image && file_exists(public_path('assets/images/brand-products/' . $product->image))) {
-                unlink(public_path('assets/images/brand-products/' . $product->image));
+            if ($product->image && file_exists(base_path('public/assets/images/brand-products/' . $product->image))) {
+                unlink(base_path('public/assets/images/brand-products/' . $product->image));
             }
 
             $product->delete();

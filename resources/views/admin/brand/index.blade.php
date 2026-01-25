@@ -265,10 +265,18 @@ $(document).ready(function() {
                 order: order
             },
             success: function(response) {
-                toastr.success(response.msg);
+                if (typeof toastr !== 'undefined') {
+                    toastr.success(response.msg);
+                } else {
+                    alert(response.msg || 'Order updated successfully!');
+                }
             },
             error: function(xhr) {
-                toastr.error('{{ __("Error updating order") }}');
+                if (typeof toastr !== 'undefined') {
+                    toastr.error('{{ __("Error updating order") }}');
+                } else {
+                    alert('Error updating order');
+                }
             }
         });
     }
@@ -279,6 +287,12 @@ $(document).ready(function() {
         $('.gocover').show();
 
         var formData = new FormData(this);
+        
+        // Debug: Log form data
+        console.log('Submitting brand form...');
+        for (var pair of formData.entries()) {
+            console.log(pair[0]+ ': ' + pair[1]);
+        }
 
         $.ajax({
             url: '{{ route("admin-brand-store") }}',
@@ -287,22 +301,39 @@ $(document).ready(function() {
             processData: false,
             contentType: false,
             success: function(response) {
+                console.log('Success response:', response);
                 $('.gocover').hide();
                 $('#addBrandModal').modal('hide');
                 $('#addBrandForm')[0].reset();
-                toastr.success(response.msg);
+                if (typeof toastr !== 'undefined') {
+                    toastr.success(response.msg);
+                } else {
+                    alert(response.msg || 'Brand created successfully!');
+                }
                 setTimeout(function() {
                     location.reload();
                 }, 1500);
             },
             error: function(xhr) {
+                console.error('Error response:', xhr);
+                console.error('Status:', xhr.status);
+                console.error('Response:', xhr.responseJSON);
                 $('.gocover').hide();
                 if (xhr.responseJSON && xhr.responseJSON.errors) {
                     $.each(xhr.responseJSON.errors, function(key, value) {
-                        toastr.error(value[0]);
+                        if (typeof toastr !== 'undefined') {
+                            toastr.error(value[0]);
+                        } else {
+                            alert('Error: ' + value[0]);
+                        }
                     });
                 } else {
-                    toastr.error('{{ __("An error occurred") }}');
+                    var errorMsg = xhr.responseJSON && xhr.responseJSON.message ? xhr.responseJSON.message : '{{ __("An error occurred") }}';
+                    if (typeof toastr !== 'undefined') {
+                        toastr.error(errorMsg);
+                    } else {
+                        alert('Error: ' + errorMsg);
+                    }
                 }
             }
         });
@@ -347,7 +378,11 @@ $(document).ready(function() {
             success: function(response) {
                 $('.gocover').hide();
                 $('#editBrandModal').modal('hide');
-                toastr.success(response.msg);
+                if (typeof toastr !== 'undefined') {
+                    toastr.success(response.msg);
+                } else {
+                    alert(response.msg || 'Brand updated successfully!');
+                }
                 setTimeout(function() {
                     location.reload();
                 }, 1500);
@@ -356,10 +391,19 @@ $(document).ready(function() {
                 $('.gocover').hide();
                 if (xhr.responseJSON && xhr.responseJSON.errors) {
                     $.each(xhr.responseJSON.errors, function(key, value) {
-                        toastr.error(value[0]);
+                        if (typeof toastr !== 'undefined') {
+                            toastr.error(value[0]);
+                        } else {
+                            alert('Error: ' + value[0]);
+                        }
                     });
                 } else {
-                    toastr.error('{{ __("An error occurred") }}');
+                    var errorMsg = xhr.responseJSON && xhr.responseJSON.message ? xhr.responseJSON.message : '{{ __("An error occurred") }}';
+                    if (typeof toastr !== 'undefined') {
+                        toastr.error(errorMsg);
+                    } else {
+                        alert('Error: ' + errorMsg);
+                    }
                 }
             }
         });
@@ -374,13 +418,21 @@ $(document).ready(function() {
             url: '{{ url("admin/brand/status") }}/' + brandId + '/' + status,
             method: 'GET',
             success: function(response) {
-                toastr.success(response.msg);
+                if (typeof toastr !== 'undefined') {
+                    toastr.success(response.msg);
+                } else {
+                    alert(response.msg || 'Status updated successfully!');
+                }
                 setTimeout(function() {
                     location.reload();
                 }, 1500);
             },
             error: function(xhr) {
-                toastr.error('{{ __("An error occurred") }}');
+                if (typeof toastr !== 'undefined') {
+                    toastr.error('{{ __("An error occurred") }}');
+                } else {
+                    alert('An error occurred');
+                }
             }
         });
     });
@@ -400,14 +452,23 @@ $(document).ready(function() {
                 },
                 success: function(response) {
                     $('.gocover').hide();
-                    toastr.success(response.msg);
+                    if (typeof toastr !== 'undefined') {
+                        toastr.success(response.msg);
+                    } else {
+                        alert(response.msg || 'Brand deleted successfully!');
+                    }
                     setTimeout(function() {
                         location.reload();
                     }, 1500);
                 },
                 error: function(xhr) {
                     $('.gocover').hide();
-                    toastr.error(xhr.responseJSON.msg || '{{ __("An error occurred") }}');
+                    var errorMsg = xhr.responseJSON && xhr.responseJSON.msg ? xhr.responseJSON.msg : '{{ __("An error occurred") }}';
+                    if (typeof toastr !== 'undefined') {
+                        toastr.error(errorMsg);
+                    } else {
+                        alert('Error: ' + errorMsg);
+                    }
                 }
             });
         }

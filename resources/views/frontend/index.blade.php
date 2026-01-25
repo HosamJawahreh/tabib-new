@@ -93,12 +93,13 @@
         justify-content: center;
         position: relative;
         padding: 10px;
-        padding-bottom: 5px;
+        padding-bottom: 0px;
         min-height: 300px !important;
         max-height: 300px !important;
         height: 300px !important;
         background: #ffffff;
         border-radius: 8px 8px 0 0;
+        margin-bottom: 0;
     }
 
     .product-thumb a {
@@ -207,6 +208,20 @@
     .product-title {
         font-size: 0.9rem;
         line-height: 1.4;
+    }
+
+    /* Desktop: Reduce gap between image and name to 5px */
+    @media (min-width: 768px) {
+        .product-content,
+        .product-content-desktop {
+            padding-top: 5px !important;
+            margin-top: 0 !important;
+        }
+        
+        .product-thumb {
+            padding-bottom: 5px !important;
+            margin-bottom: 0 !important;
+        }
     }
 
     /* Cart Icon - Force Visibility */

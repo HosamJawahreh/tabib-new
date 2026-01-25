@@ -1442,6 +1442,12 @@ Route::group(['middleware' => 'maintenance'], function () {
     Route::get('/currency/{id}', 'Front\FrontendController@currency')->name('front.currency');
     Route::get('/language/{id}', 'Front\FrontendController@language')->name('front.language');
     Route::get('/order/track/{id}', 'Front\FrontendController@trackload')->name('front.track.search');
+    
+    // BRANDS SECTION
+    Route::get('/brands', 'Front\FrontendController@brands')->name('front.brands');
+    Route::get('/brand/{id}', 'Front\FrontendController@brandProducts')->name('front.brand.products');
+    // BRANDS SECTION ENDS
+    
     // BLOG SECTION
     Route::get('/blog', 'Front\FrontendController@blog')->name('front.blog');
     Route::get('/blog/{slug}', 'Front\FrontendController@blogshow')->name('front.blogshow');

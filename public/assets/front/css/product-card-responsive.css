@@ -165,7 +165,7 @@
     display: flex;
     flex-direction: column;
     padding: 0.35rem !important;
-    padding-top: 0.35rem !important;
+    padding-top: 0.35rem;  /* No !important here - let media query override */
     padding-bottom: 0 !important;
     background: white;
     margin-top: 0 !important; /* Remove any top margin */
@@ -282,7 +282,7 @@
 }
 
 /* Small Tablets & Large Phones (577px - 768px) */
-@media (min-width: 577px) and (max-width: 768px) {
+@media (min-width: 577px) and (max-width: 767px) {
     .product-thumb {
         padding-top: 100%; /* Keep square */
     }
@@ -311,10 +311,10 @@
         padding: 4px 8px;
     }
 
-    /* FIX: Reduce gap between image and title on large mobile */
+    /* MOBILE TABLET NEEDS MORE SPACE */
     .product-content {
         padding: 0.35rem !important;
-        padding-top: 0.35rem !important;
+        padding-top: 0.35rem !important;  /* Override desktop 5px for tablet */
         padding-bottom: 0 !important;
     }
 
@@ -385,10 +385,10 @@
         display: inline-flex !important;
     }
 
-    /* Content adjustments - FIX GAP */
+    /* Content adjustments - MOBILE NEEDS MORE SPACE */
     .product-content {
         padding: 0.35rem !important;
-        padding-top: 0.35rem !important;
+        padding-top: 0.35rem !important;  /* Override desktop 5px for mobile */
         padding-bottom: 0 !important;
         margin-top: 0 !important;
     }
@@ -428,7 +428,7 @@
 @media (min-width: 401px) and (max-width: 576px) {
     .product-content {
         padding: 0.35rem !important;
-        padding-top: 0.35rem !important;
+        padding-top: 0.35rem;  /* Removed !important for desktop override */
         padding-bottom: 0 !important;
         margin-top: 0 !important;
     }
@@ -550,4 +550,24 @@
 
 .product-item > div {
     width: 100%;
+}
+
+/* ========================================
+   DESKTOP: 5PX GAP OVERRIDE - MUST BE LAST
+   ======================================== */
+@media (min-width: 768px) {
+    /* High specificity to override inline styles */
+    .product-card .product-content[style],
+    .product-item .product-card .product-content[style],
+    .product-card .product-content,
+    .product-item .product-card .product-content,
+    div.product-content {
+        padding-top: 5px !important;
+    }
+    
+    .product-card .product-thumb,
+    .product-item .product-card .product-thumb {
+        padding-bottom: 5px !important;
+        margin-bottom: 0 !important;
+    }
 }

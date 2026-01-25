@@ -1,7 +1,7 @@
 @foreach($products as $product)
 <div class="col-lg-2 col-md-3 col-sm-4 col-6 product-item" style="margin-bottom: 0.25rem !important; padding-bottom: 0.25rem !important; padding-left: 0.25rem !important; padding-right: 0.25rem !important; overflow: visible !important;" data-product-id="{{ $product->id }}">
     <div class="product-card h-100 shadow-sm" style="overflow: visible !important; position: relative !important;">
-        <div class="product-thumb position-relative" style="overflow: hidden !important;">
+        <div class="product-thumb position-relative" style="overflow: hidden !important; padding-bottom: 0 !important; margin-bottom: 0 !important;">
             <a href="{{ route('front.product', $product->slug) }}" class="d-block" style="overflow: visible !important;">
                 @php
                     // Use thumbnail for grid view (ultra-compressed for fast loading)
@@ -67,7 +67,7 @@
             </div>
         </div>
 
-        <div class="product-content" style="padding: 0.5rem !important; padding-top: 0.35rem !important; padding-bottom: 0.35rem !important; margin-top: 0 !important;">
+        <div class="product-content" style="padding: 0.5rem !important; padding-top: 5px !important; padding-bottom: 0.35rem !important; margin-top: 0 !important; margin-block-start: 0 !important;">
             @php
                 $isArabic = isset($langg) && ($langg->language == 'العربية' || $langg->language == 'Arabic' || $langg->language == 'ar');
             @endphp

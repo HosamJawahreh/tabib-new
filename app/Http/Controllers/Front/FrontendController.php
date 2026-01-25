@@ -12,6 +12,8 @@ use App\Models\Product;
 use App\Models\Rating;
 
 use App\Models\Subscriber;
+use App\Models\Brand;
+use App\Models\BrandProduct;
 use Illuminate\Support\Facades\Artisan;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -741,4 +743,29 @@ class FrontendController extends FrontBaseController
     {
         return view('frontend.thank', compact('get'));
     }
+
+    // BRANDS SECTION
+    public function brands()
+    {
+        $brands = Brand::where('status', 1)
+            ->orderBy('sort_order', 'asc')
+            ->orderBy('id', 'desc')
+            ->get();
+        
+        return view('frontend.brands', compact('brands'));
+    }
+
+    public function brandProducts($id)
+    {
+        $brand = Brand::where('status', 1)->findOrFail($id);
+        
+        $products = BrandProduct::where('brand_id', $id)
+            ->where('status', 1)
+            ->orderBy('sort_order', 'asc')
+            ->orderBy('id', 'desc')
+            ->get();
+        
+        return view('frontend.brand-products', compact('brand', 'products'));
+    }
+    // BRANDS SECTION ENDS
 }
