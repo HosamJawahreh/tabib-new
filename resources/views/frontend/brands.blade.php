@@ -9,6 +9,19 @@
         flex-direction: column;
     }
 
+    /* Responsive Padding */
+    .brands-container {
+        padding-top: 60px !important;
+        padding-bottom: 60px !important;
+    }
+
+    @media (max-width: 768px) {
+        .brands-container {
+            padding-top: 30px !important;
+            padding-bottom: 30px !important;
+        }
+    }
+
     /* Product Card Styling - Matching Homepage */
     .product-card {
         background: #fff;
@@ -112,7 +125,7 @@
 @include('partials.global.common-header')
 
 <div class="brands-wrapper">
-<div class="container-fluid py-5" style="background: #ffffff;">
+<div class="container-fluid brands-container" style="background: #ffffff;">
     <div class="container">
         <div class="row g-4">
             @forelse($brands as $brand)
