@@ -273,6 +273,11 @@
     
     <!-- Professional Bilingual Font System -->
     <script src="{{ asset('assets/front/js/bilingual-fonts.js') }}?v={{ time() }}"></script>
+    
+    <!-- Professional Facebook Pixel E-commerce Tracking -->
+    @if (!empty($seo->facebook_pixel))
+    <script src="{{ asset('assets/front/js/facebook-pixel-ecommerce.js') }}?v={{ time() }}"></script>
+    @endif
 
     <script>
         lazy();

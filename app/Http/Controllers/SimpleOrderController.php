@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Front\FrontBaseController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
@@ -10,10 +11,13 @@ use App\Models\User;
 use App\Models\Order;
 use Carbon\Carbon;
 
-class SimpleOrderController extends Controller
+class SimpleOrderController extends FrontBaseController
 {
     public function __construct()
     {
+        // CRITICAL: Call parent constructor to set up language/currency
+        parent::__construct();
+        
         // PERFORMANCE: Remove debug logging in production
         // Only enable when debugging specific issues
         if (config('app.debug')) {

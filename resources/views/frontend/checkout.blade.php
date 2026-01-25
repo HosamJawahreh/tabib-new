@@ -1896,4 +1896,31 @@ body {
 <!-- Checkout Redirect Fix Script -->
 <script src="{{asset('assets/js/checkout-redirect-fix.js')}}"></script>
 
+<!-- Facebook Pixel: Track InitiateCheckout -->
+@if (!empty($seo->facebook_pixel))
+<script>
+    $(document).ready(function() {
+        // Track checkout initiation
+        if (typeof FacebookPixelTracker !== 'undefined') {
+            const cartProducts = [];
+            let totalValue = 0;
+            
+            // Collect cart products
+            @foreach(Session::get('cart')->items as $product)
+                cartProducts.push({
+                    id: {{ $product['item']['id'] }},
+                    name: '{{ addslashes($product['item']['name']) }}',
+                    price: {{ $product['price'] }},
+                    quantity: {{ $product['qty'] }}
+                });
+                totalValue += ({{ $product['price'] }} * {{ $product['qty'] }});
+            @endforeach
+            
+            // Track InitiateCheckout
+            FacebookPixelTracker.trackInitiateCheckout(cartProducts, totalValue);
+        }
+    });
+</script>
+@endif
+
 @endsection

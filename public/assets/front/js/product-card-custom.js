@@ -36,7 +36,9 @@
     // Override the default add-cart click handler to add animations
     // Use a very specific selector and stop all event propagation
     $(document).off('click', '.cart-icon-clean.add-cart');
-    $(document).on('click', '.cart-icon-clean.add-cart', function(e) {
+    $(document).off('click', '.add-cart');
+    
+    $(document).on('click', '.cart-icon-clean.add-cart, .add-cart', function(e) {
         e.preventDefault();
         e.stopPropagation();
         e.stopImmediatePropagation();
@@ -55,6 +57,11 @@
         // Add loading state
         setLoadingState($button);
         
+        // Get product data for Facebook Pixel
+        var productId = $button.data('product-id');
+        var productName = $button.data('product-name');
+        var productPrice = $button.data('product-price');
+        
         $.get(dataHref, function(data) {
             if (data == "digital") {
                 toastr.error(lang.cart_already);
@@ -72,6 +79,15 @@
                 // Success animation
                 setSuccessState($button);
                 toastr.success(lang.cart_success);
+                
+                // Track Facebook Pixel AddToCart (if available)
+                if (typeof FacebookPixelTracker !== 'undefined' && productId && productName && productPrice) {
+                    FacebookPixelTracker.trackAddToCart({
+                        id: productId,
+                        name: productName,
+                        price: productPrice
+                    }, 1);
+                }
             }
             
             // Reset flag after a short delay

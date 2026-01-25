@@ -865,5 +865,14 @@
     "Items": "عناصر",
     "Showing": "عرض",
     "of": "من",
-    "results": "نتيجة"
+    "results": "نتيجة",
+    "Order Placed Successfully": "تم استلام طلبك بنجاح",
+    "Note": "ملاحظة",
+    "Total Amount": "المبلغ الإجمالي",
+    "Ordered Products": "المنتجات المطلوبة",
+    "Shipping": "الشحن",
+    "FREE": "مجاني",
+    "Packing": "التعبئة والتغليف",
+    "Tax": "الضريبة",
+    "Discount": "خصم"
 }

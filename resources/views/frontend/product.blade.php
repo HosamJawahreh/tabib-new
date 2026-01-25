@@ -702,5 +702,21 @@ jQuery(document).ready(function($) {
     }, 100);
 });
 
+<!-- Facebook Pixel: Track ViewContent -->
+@if (!empty($seo->facebook_pixel))
+<script>
+    $(document).ready(function() {
+        // Track product view
+        if (typeof FacebookPixelTracker !== 'undefined') {
+            FacebookPixelTracker.trackViewContent({
+                id: {{ $productt->id }},
+                name: '{{ addslashes($productt->name) }}',
+                price: {{ $productt->price }}
+            });
+        }
+    });
+</script>
+@endif
+
 </script>
 @endsection
