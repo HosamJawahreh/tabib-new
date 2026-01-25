@@ -1,0 +1,338 @@
+/**
+ * Mobile Cart Icon Fix - Ensures cart icons are fully visible on all mobile devices
+ * This file specifically addresses cart icon visibility issues on small screens
+ */
+
+/* ========================================
+   CART ICON MOBILE OPTIMIZATIONS
+   ======================================== */
+
+/* Ensure product cards don't clip cart icons */
+.product-item {
+    overflow: visible !important;
+}
+
+.product-card {
+    overflow: visible !important;
+    position: relative;
+}
+
+.product-thumb {
+    position: relative;
+    overflow: hidden; /* Only image overflow is hidden */
+}
+
+.product-thumb > a {
+    overflow: visible !important; /* Allow cart buttons to show */
+}
+
+/* Cart action buttons container */
+.cart-action-buttons {
+    position: absolute;
+    z-index: 1000 !important;
+    display: flex !important;
+    flex-direction: column;
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: all !important;
+}
+
+/* ========================================
+   MOBILE RESPONSIVE BREAKPOINTS
+   ======================================== */
+
+/* Tablets and Small Laptops (769px - 992px) */
+@media (min-width: 769px) and (max-width: 992px) {
+    .cart-action-buttons {
+        top: 8px;
+        right: 8px;
+        gap: 6px;
+    }
+
+    .cart-icon-clean {
+        width: 40px !important;
+        height: 40px !important;
+    }
+
+    .cart-icon-clean i {
+        font-size: 17px !important;
+    }
+}
+
+/* Small Tablets (577px - 768px) */
+@media (min-width: 577px) and (max-width: 768px) {
+    .cart-action-buttons {
+        top: 7px;
+        right: 7px;
+        gap: 5px;
+    }
+
+    .cart-icon-clean {
+        width: 36px !important;
+        height: 36px !important;
+    }
+
+    .cart-icon-clean i {
+        font-size: 16px !important;
+    }
+}
+
+/* Large Phones (451px - 576px) */
+@media (min-width: 451px) and (max-width: 576px) {
+    .cart-action-buttons {
+        top: 5px !important;
+        right: 5px !important;
+        gap: 5px;
+    }
+
+    .cart-icon-clean {
+        width: 34px !important;
+        height: 34px !important;
+    }
+
+    .cart-icon-clean i {
+        font-size: 15px !important;
+    }
+}
+
+/* Standard Phones (376px - 450px) */
+@media (min-width: 376px) and (max-width: 450px) {
+    .cart-action-buttons {
+        top: 5px !important;
+        right: 5px !important;
+        gap: 4px;
+    }
+
+    .cart-icon-clean {
+        width: 32px !important;
+        height: 32px !important;
+    }
+
+    .cart-icon-clean i {
+        font-size: 14px !important;
+    }
+
+    .on-sale {
+        font-size: 9px;
+        padding: 2px 5px;
+        top: 5px !important;
+        left: 5px !important;
+    }
+}
+
+/* Small Phones (320px - 375px) */
+@media (min-width: 320px) and (max-width: 375px) {
+    .cart-action-buttons {
+        top: 4px !important;
+        right: 4px !important;
+        gap: 4px;
+    }
+
+    .cart-icon-clean {
+        width: 30px !important;
+        height: 30px !important;
+    }
+
+    .cart-icon-clean i {
+        font-size: 13px !important;
+    }
+
+    .on-sale {
+        font-size: 8px;
+        padding: 2px 4px;
+        top: 4px !important;
+        left: 4px !important;
+    }
+}
+
+/* Extra Small Phones (below 320px) */
+@media (max-width: 319px) {
+    .cart-action-buttons {
+        top: 3px;
+        right: 3px;
+        gap: 3px;
+    }
+
+    .cart-icon-clean {
+        width: 28px !important;
+        height: 28px !important;
+    }
+
+    .cart-icon-clean i {
+        font-size: 12px !important;
+    }
+
+    .on-sale {
+        font-size: 8px;
+        padding: 1px 3px;
+        top: 3px;
+        left: 3px;
+    }
+}
+
+/* ========================================
+   UNIVERSAL MOBILE STYLES (All Screens Below 768px)
+   ======================================== */
+
+@media (max-width: 768px) {
+    /* Ensure cart icons are always visible on mobile */
+    .product-card .cart-action-buttons {
+        opacity: 1 !important;
+        visibility: visible !important;
+        display: flex !important;
+    }
+
+    .product-card .cart-icon-clean {
+        opacity: 1 !important;
+        visibility: visible !important;
+        display: inline-flex !important;
+    }
+
+    /* Improve touch target size for mobile */
+    .cart-icon-clean {
+        min-width: 28px;
+        min-height: 28px;
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+    }
+
+    /* Better shadow for visibility on mobile */
+    .cart-icon-clean {
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25) !important;
+    }
+
+    /* Prevent double-tap zoom on cart buttons */
+    .cart-icon-clean {
+        touch-action: manipulation;
+        -ms-touch-action: manipulation;
+    }
+
+    /* Ensure icons don't get clipped */
+    .product-thumb {
+        overflow: hidden;
+        position: relative;
+        z-index: 1;
+    }
+
+    .cart-action-buttons {
+        z-index: 100;
+    }
+}
+
+/* ========================================
+   SPECIFIC FIXES FOR COL-6 LAYOUT (2 columns on mobile)
+   ======================================== */
+
+@media (max-width: 576px) {
+    /* When products are in 2-column layout */
+    .col-6 .cart-action-buttons {
+        /* Slightly adjust position to prevent edge clipping */
+        right: 5px;
+        top: 5px;
+    }
+
+    .col-6 .cart-icon-clean {
+        /* Ensure button fits well in smaller cards */
+        width: 32px !important;
+        height: 32px !important;
+    }
+
+    .col-6 .on-sale {
+        /* Adjust discount badge */
+        left: 5px;
+        top: 5px;
+    }
+}
+
+/* ========================================
+   LANDSCAPE MODE FIXES
+   ======================================== */
+
+@media (max-width: 768px) and (orientation: landscape) {
+    .cart-action-buttons {
+        top: 5px;
+        right: 5px;
+    }
+
+    .cart-icon-clean {
+        width: 32px !important;
+        height: 32px !important;
+    }
+
+    .cart-icon-clean i {
+        font-size: 14px !important;
+    }
+}
+
+/* ========================================
+   HOVER STATES FOR TOUCH DEVICES
+   ======================================== */
+
+@media (hover: none) and (pointer: coarse) {
+    /* Touch devices - remove hover effect, add active state instead */
+    .cart-icon-clean:hover {
+        transform: none;
+    }
+
+    .cart-icon-clean:active {
+        transform: scale(0.95);
+        background: #000 !important;
+    }
+
+    .cart-icon-clean:active i {
+        color: #fff !important;
+    }
+}
+
+/* ========================================
+   HIGH PIXEL DENSITY DISPLAYS (Retina)
+   ======================================== */
+
+@media (-webkit-min-device-pixel-ratio: 2) and (max-width: 768px),
+       (min-resolution: 192dpi) and (max-width: 768px) {
+    .cart-icon-clean {
+        /* Sharper rendering on retina displays */
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+
+    .cart-icon-clean i {
+        /* Ensure icons are sharp */
+        transform: translateZ(0);
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+    }
+}
+
+/* ========================================
+   SAFETY MARGINS
+   ======================================== */
+
+/* Ensure cart icons never get cut off */
+@media (max-width: 768px) {
+    .product-card {
+        /* Add minimal padding to prevent edge clipping */
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    .product-item {
+        /* Ensure item has proper boundaries */
+        position: relative;
+        overflow: visible !important;
+    }
+}
+
+/* ========================================
+   DARK MODE SUPPORT (Bonus)
+   ======================================== */
+
+@media (prefers-color-scheme: dark) and (max-width: 768px) {
+    .cart-icon-clean {
+        background: rgba(255, 255, 255, 0.95) !important;
+        box-shadow: 0 2px 8px rgba(255, 255, 255, 0.15) !important;
+    }
+
+    .cart-icon-clean:active {
+        background: #fff !important;
+    }
+}

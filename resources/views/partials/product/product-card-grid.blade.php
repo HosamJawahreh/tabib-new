@@ -1,8 +1,8 @@
 @foreach($products as $product)
-<div class="col-lg-2 col-md-3 col-sm-4 col-6 product-item" style="margin-bottom: 0.25rem !important; padding-bottom: 0.25rem !important; padding-left: 0.25rem !important; padding-right: 0.25rem !important; overflow: hidden !important;" data-product-id="{{ $product->id }}">
-    <div class="product-card h-100 shadow-sm" style="overflow: hidden !important; position: relative !important;">
+<div class="col-lg-2 col-md-3 col-sm-4 col-6 product-item" style="margin-bottom: 0.25rem !important; padding-bottom: 0.25rem !important; padding-left: 0.25rem !important; padding-right: 0.25rem !important; overflow: visible !important;" data-product-id="{{ $product->id }}">
+    <div class="product-card h-100 shadow-sm" style="overflow: visible !important; position: relative !important;">
         <div class="product-thumb position-relative" style="overflow: hidden !important;">
-            <a href="{{ route('front.product', $product->slug) }}" class="d-block" style="overflow: hidden !important;">
+            <a href="{{ route('front.product', $product->slug) }}" class="d-block" style="overflow: visible !important;">
                 @php
                     // Use thumbnail for grid view (ultra-compressed for fast loading)
                     $imageSrc = asset('assets/images/noimage.png');
@@ -27,7 +27,7 @@
             @endif
 
             {{-- Add to Cart Button - Upper Right Corner, Clean Black Icon --}}
-            <div class="cart-action-buttons position-absolute" style="top: 10px; right: 10px; z-index: 10; display: flex !important; opacity: 1 !important; visibility: visible !important;">
+            <div class="cart-action-buttons position-absolute" style="top: 5px; right: 5px; z-index: 10; display: flex !important; opacity: 1 !important; visibility: visible !important;">
                 @if($product->product_type == "affiliate")
                     {{-- Affiliate Product --}}
                     <a href="javascript:;"

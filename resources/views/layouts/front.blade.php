@@ -72,6 +72,8 @@
     <link rel="stylesheet" href="{{ asset('assets/front/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/front/css/product-card-custom.css') }}?v={{ time() }}">
     <link rel="stylesheet" href="{{ asset('assets/front/css/product-card-responsive.css') }}?v={{ time() }}">
+    <link rel="stylesheet" href="{{ asset('assets/front/css/cart-icon-mobile-fix.css') }}?v={{ time() }}">
+    <link rel="stylesheet" href="{{ asset('assets/front/css/cart-icon-overflow-fix.css') }}?v={{ time() }}">
     <link rel="stylesheet" href="{{ asset('assets/front/css/cart-sidebar-responsive.css') }}?v={{ time() }}">
     <link rel="stylesheet" href="{{ asset('assets/front/css/responsive-fixes.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/front/css/header-responsive.css') }}?v={{ time() }}">

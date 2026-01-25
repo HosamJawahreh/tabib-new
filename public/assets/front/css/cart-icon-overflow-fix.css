@@ -1,0 +1,95 @@
+/**
+ * CRITICAL FIX: Cart Icon Clipping Issue on Mobile
+ * This CSS overrides any conflicting styles that cause cart icons to be cut off
+ */
+
+/* HIGHEST PRIORITY - Override all overflow styles */
+.product-item,
+.col-6.product-item,
+.col-sm-4.product-item,
+.col-md-3.product-item,
+.col-lg-2.product-item {
+    overflow: visible !important;
+}
+
+.product-card,
+.product-item .product-card {
+    overflow: visible !important;
+    border-radius: 8px !important;
+}
+
+/* Keep only the image area with overflow hidden */
+.product-thumb {
+    overflow: hidden !important;
+    position: relative !important;
+    border-radius: 8px 8px 0 0 !important;
+}
+
+/* But allow the link to extend beyond */
+.product-thumb > a {
+    overflow: visible !important;
+}
+
+/* Cart buttons must be visible */
+.cart-action-buttons {
+    position: absolute !important;
+    z-index: 9999 !important;
+    display: flex !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* Mobile specific - smaller positioning to prevent edge clipping */
+@media (max-width: 768px) {
+    .cart-action-buttons {
+        top: 4px !important;
+        right: 4px !important;
+    }
+    
+    .on-sale {
+        top: 4px !important;
+        left: 4px !important;
+    }
+    
+    /* Ensure cart icons stay fully visible */
+    .cart-icon-clean {
+        width: 32px !important;
+        height: 32px !important;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+    }
+    
+    .cart-icon-clean i {
+        font-size: 14px !important;
+    }
+}
+
+/* Very small phones */
+@media (max-width: 400px) {
+    .cart-action-buttons {
+        top: 3px !important;
+        right: 3px !important;
+    }
+    
+    .cart-icon-clean {
+        width: 30px !important;
+        height: 30px !important;
+    }
+    
+    .cart-icon-clean i {
+        font-size: 13px !important;
+    }
+    
+    .on-sale {
+        top: 3px !important;
+        left: 3px !important;
+        font-size: 9px !important;
+        padding: 2px 4px !important;
+    }
+}
+
+/* Add slight padding to product-item to give space for icons */
+@media (max-width: 768px) {
+    .product-item {
+        padding: 2px !important;
+    }
+}
