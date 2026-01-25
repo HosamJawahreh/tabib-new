@@ -1666,7 +1666,11 @@ textarea {
                               @else
                               @if ($productt->type != "Listing")
                                 <div style="display: flex; flex-direction: column; gap: 12px; width: 100%; max-width: 400px; margin: 0 auto;">
-                                <button type="button" id="addcrt" class="btn btn-outline-primary add-to-cart-btn" style="order: 2; width: 100%; padding: 18px 24px; font-size: 1.1rem; height: 58px; border-radius: 14px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 10px; box-shadow: 0 6px 20px rgba(16, 185, 129, 0.35); background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important; border: none !important; color: #ffffff !important; transition: all 0.3s ease; text-transform: uppercase; letter-spacing: 0.5px;">
+                                <button type="button" id="addcrt" class="btn btn-outline-primary add-to-cart-btn" 
+                                        data-product-id="{{ $productt->id }}"
+                                        data-product-name="{{ $productt->name }}"
+                                        data-product-price="{{ $productt->price }}"
+                                        style="order: 2; width: 100%; padding: 18px 24px; font-size: 1.1rem; height: 58px; border-radius: 14px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 10px; box-shadow: 0 6px 20px rgba(16, 185, 129, 0.35); background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important; border: none !important; color: #ffffff !important; transition: all 0.3s ease; text-transform: uppercase; letter-spacing: 0.5px;">
                                     <i class="icofont-cart" style="color: #ffffff !important; font-size: 1.3rem;"></i>
                                     <span style="color: #ffffff !important;">{{ __('Add to Cart')}}</span>
                                     <span class="btn-loader" style="display: none;">

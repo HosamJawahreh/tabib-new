@@ -626,6 +626,12 @@
       $btn.find('span:not(.btn-loader)').hide();
       $btn.find('.btn-loader').show();
 
+      // Get product data for Facebook Pixel
+      var productId = $btn.data('product-id') || pid;
+      var productName = $btn.data('product-name');
+      var productPrice = $btn.data('product-price');
+      var quantity = 1;
+
       // Use the simple addcart route like homepage
       $.get(mainurl + "/addcart/" + pid, function (data) {
         try { console.log('[main.js] #addcrt response', data); } catch (e) {}
@@ -649,6 +655,20 @@
           setTimeout(function() {
             $btn.removeClass('success');
           }, 2000);
+
+          // Track Facebook Pixel AddToCart (if available)
+          if (typeof FacebookPixelTracker !== 'undefined' && productId && productName && productPrice) {
+            try {
+              FacebookPixelTracker.trackAddToCart({
+                id: productId,
+                name: productName,
+                price: productPrice
+              }, quantity);
+              console.log('✓ Facebook Pixel: AddToCart tracked from product details');
+            } catch (err) {
+              console.error('Facebook Pixel tracking error:', err);
+            }
+          }
         }
       }).fail(function(xhr, status, error) {
         try { console.error('[main.js] #addcrt ajax fail', status, error, xhr && xhr.responseText); } catch (e) {}

@@ -61,7 +61,7 @@
             @if($productt->categories->count() > 0)
             <div class="breadcrumb-categories-wrapper">
                @foreach($productt->categories as $index => $category)
-                  <span class="breadcrumb-category-badge">{{ $category->name }}</span>
+                  <span class="breadcrumb-category-badge">{{ $category->translated_name }}</span>
                   @if($index < $productt->categories->count() - 1)
                      <span class="breadcrumb-separator">•</span>
                   @endif

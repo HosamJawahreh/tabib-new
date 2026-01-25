@@ -1147,10 +1147,16 @@
             totalProducts: {{ $products->total() }}
         });
 
+        // 🔄 SCROLL POSITION RESTORATION ENABLED
+        // When you click a product and go to details page, then press back button,
+        // the page will automatically restore to your previous scroll position
+        console.log('🔄 Scroll restoration: ENABLED');
+
         // Infinite Scroll Implementation
         let isLoading = false;
         let currentPage = 2;
         let hasMorePages = {{ $products->hasMorePages() ? 'true' : 'false' }};
+        let isRestoringScroll = false; // Flag to prevent scroll events during restoration
 
         // Reset pagination state when category filter changes
         window.resetPaginationState = function(newHasMorePages) {
@@ -1161,6 +1167,10 @@
             // Hide end message and errors
             productsEndMessage.addClass('d-none').hide();
             productsError.addClass('d-none').hide();
+
+            // Clear scroll restoration data when filters change
+            sessionStorage.removeItem('homepage_scroll_position');
+            sessionStorage.removeItem('homepage_current_page');
 
             console.log('🔄 Pagination state reset:', { currentPage, hasMorePages });
         };
@@ -1308,22 +1318,114 @@
         }
 
         // ===== SCROLL POSITION RESTORATION =====
-        // Save scroll position when clicking a product
+        // Save scroll position and current page when clicking a product
         productsGrid.on('click', '.product-card a, .product-item a', function() {
             const scrollPosition = $(window).scrollTop();
             sessionStorage.setItem('homepage_scroll_position', scrollPosition);
-            console.log('💾 Saved scroll position:', scrollPosition);
+            sessionStorage.setItem('homepage_current_page', currentPage - 1); // Save last loaded page
+            console.log('💾 Saved scroll state:', {
+                scrollPosition: scrollPosition,
+                lastLoadedPage: currentPage - 1
+            });
         });
 
         // Restore scroll position when returning to homepage
         const savedScrollPosition = sessionStorage.getItem('homepage_scroll_position');
-        if (savedScrollPosition) {
-            console.log('📍 Restoring scroll position:', savedScrollPosition);
-            setTimeout(function() {
-                $('html, body').scrollTop(parseInt(savedScrollPosition));
-                sessionStorage.removeItem('homepage_scroll_position');
-                console.log('✅ Scroll position restored');
-            }, 100);
+        const savedPage = sessionStorage.getItem('homepage_current_page');
+        
+        if (savedScrollPosition && savedPage) {
+            const targetPage = parseInt(savedPage);
+            const targetScroll = parseInt(savedScrollPosition);
+            
+            console.log('📍 Restoring scroll state:', {
+                targetScroll: targetScroll,
+                targetPage: targetPage,
+                needsToLoad: targetPage > 1
+            });
+
+            // If we need to load more pages
+            if (targetPage > 1) {
+                isRestoringScroll = true;
+                productsLoading.removeClass('d-none').show(); // Show loading indicator
+                
+                // Function to load pages sequentially
+                function loadPagesSequentially(fromPage, toPage, callback) {
+                    if (fromPage > toPage) {
+                        callback();
+                        return;
+                    }
+
+                    console.log(`🔄 Loading page ${fromPage} of ${toPage} for restoration...`);
+
+                    // Get current filter state
+                    const filterState = window.CategoryFilter ? window.CategoryFilter.getState() : {};
+                    const hasActiveFilters = filterState.currentCategory || filterState.currentSubcategory || filterState.currentChildcategory;
+
+                    const requestData = { page: fromPage };
+                    if (hasActiveFilters) {
+                        if (filterState.currentCategory && filterState.currentCategory !== 'all') {
+                            requestData.category_id = filterState.currentCategory;
+                        }
+                        if (filterState.currentSubcategory && filterState.currentSubcategory !== 'all') {
+                            requestData.subcategory_id = filterState.currentSubcategory;
+                        }
+                        if (filterState.currentChildcategory && filterState.currentChildcategory !== 'all') {
+                            requestData.childcategory_id = filterState.currentChildcategory;
+                        }
+                    }
+
+                    const url = hasActiveFilters ? '{{ route("front.products.filter") }}' : '{{ route("front.products.load") }}';
+
+                    $.ajax({
+                        url: url,
+                        method: 'GET',
+                        data: requestData,
+                        success: function(response) {
+                            if (response.html && response.html.trim()) {
+                                productsGrid.append(response.html);
+                                console.log(`✅ Page ${fromPage} loaded`);
+                                
+                                // Load next page
+                                loadPagesSequentially(fromPage + 1, toPage, callback);
+                            } else {
+                                console.log(`⚠️ Page ${fromPage} has no content`);
+                                callback();
+                            }
+                        },
+                        error: function() {
+                            console.error(`❌ Failed to load page ${fromPage}`);
+                            callback();
+                        }
+                    });
+                }
+
+                // Load all pages from 2 to target page
+                loadPagesSequentially(2, targetPage, function() {
+                    console.log('✅ All pages loaded, restoring scroll...');
+                    currentPage = targetPage + 1; // Set next page to load
+                    productsLoading.addClass('d-none').hide(); // Hide loading indicator
+                    
+                    // Restore scroll position
+                    setTimeout(function() {
+                        $('html, body').scrollTop(targetScroll);
+                        isRestoringScroll = false;
+                        
+                        // Clear saved data
+                        sessionStorage.removeItem('homepage_scroll_position');
+                        sessionStorage.removeItem('homepage_current_page');
+                        
+                        console.log('✅ Scroll position restored to', targetScroll);
+                    }, 300);
+                });
+            } else {
+                // No need to load pages, just restore scroll
+                setTimeout(function() {
+                    $('html, body').scrollTop(targetScroll);
+                    sessionStorage.removeItem('homepage_scroll_position');
+                    sessionStorage.removeItem('homepage_current_page');
+                    console.log('✅ Scroll position restored (no pages needed)');
+                }, 100);
+            }
         }
 
         // Scroll to Top Button Logic
@@ -1336,6 +1438,11 @@
         // Single scroll event handler
         let scrollTimeout;
         $(window).on('scroll', function() {
+            // Don't handle scroll events during restoration
+            if (isRestoringScroll) {
+                return;
+            }
+
             clearTimeout(scrollTimeout);
 
             scrollTimeout = setTimeout(function() {
