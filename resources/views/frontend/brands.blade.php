@@ -104,26 +104,6 @@
     [dir="rtl"] .product-title {
         text-align: center;
     }
-
-    /* Page Title */
-    .page-title-section {
-        padding: 60px 0 40px;
-        background: #ffffff;
-    }
-
-    .page-title-section h1 {
-        font-size: 2rem;
-        font-weight: 600;
-        color: #2d3436;
-        margin-bottom: 10px;
-    }
-
-    .title-underline {
-        width: 60px;
-        height: 3px;
-        background: #28a745;
-        margin: 0 auto;
-    }
 </style>
 @endsection
 
@@ -132,15 +112,6 @@
 @include('partials.global.common-header')
 
 <div class="brands-wrapper">
-<div class="page-title-section">
-    <div class="container">
-        <div class="text-center">
-            <h1>{{ __('Our Brands') }}</h1>
-            <div class="title-underline"></div>
-        </div>
-    </div>
-</div>
-
 <div class="container-fluid py-5" style="background: #ffffff;">
     <div class="container">
         <div class="row g-4">
