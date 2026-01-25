@@ -267,7 +267,7 @@
     <script src="{{ asset('assets/front/js/toastr.min.js') }}"></script>
     <script src="{{ asset('assets/front/js/custom.js') }}"></script>
     <script src="{{ asset('assets/front/js/main.js') }}?v={{ \Illuminate\Support\Facades\File::exists(public_path('assets/front/js/main.js')) ? filemtime(public_path('assets/front/js/main.js')) : time() }}"></script>
-    <script src="{{ asset('assets/front/js/product-card-custom.js') }}"></script>
+    <script src="{{ asset('assets/front/js/product-card-custom.js') }}?v={{ \Illuminate\Support\Facades\File::exists(public_path('assets/front/js/product-card-custom.js')) ? filemtime(public_path('assets/front/js/product-card-custom.js')) : time() }}"></script>
     <script src="{{ asset('assets/front/js/cart-sidebar-responsive.js') }}"></script>
     <script src="{{ asset('assets/front/js/header-responsive.js') }}?v={{ time() }}"></script>
     

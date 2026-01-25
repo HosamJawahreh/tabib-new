@@ -46,8 +46,16 @@
         var $button = $(this);
         var dataHref = $button.data('href');
         
+        console.log('Cart button clicked:', {
+            hasDataHref: !!dataHref,
+            productId: $button.data('product-id'),
+            productName: $button.data('product-name'),
+            productPrice: $button.data('product-price')
+        });
+        
         // Prevent double-clicks and duplicate execution
         if ($button.hasClass('loading') || $button.prop('disabled') || cartAddInProgress) {
+            console.log('Cart add blocked - already in progress');
             return false;
         }
         
@@ -62,7 +70,12 @@
         var productName = $button.data('product-name');
         var productPrice = $button.data('product-price');
         
+        console.log('Making AJAX request to:', dataHref);
+        console.log('Making AJAX request to:', dataHref);
+        
         $.get(dataHref, function(data) {
+            console.log('Cart response:', data);
+            
             if (data == "digital") {
                 toastr.error(lang.cart_already);
                 removeLoadingState($button);
@@ -81,12 +94,45 @@
                 toastr.success(lang.cart_success);
                 
                 // Track Facebook Pixel AddToCart (if available)
-                if (typeof FacebookPixelTracker !== 'undefined' && productId && productName && productPrice) {
-                    FacebookPixelTracker.trackAddToCart({
+                if (productId && productName && productPrice) {
+                    console.log('Attempting Facebook Pixel tracking...', {
                         id: productId,
                         name: productName,
-                        price: productPrice
-                    }, 1);
+                        price: productPrice,
+                        hasTrackerObject: typeof FacebookPixelTracker !== 'undefined',
+                        hasFbq: typeof fbq !== 'undefined'
+                    });
+                    
+                    try {
+                        if (typeof FacebookPixelTracker !== 'undefined' && FacebookPixelTracker.trackAddToCart) {
+                            console.log('Using FacebookPixelTracker.trackAddToCart');
+                            FacebookPixelTracker.trackAddToCart({
+                                id: productId,
+                                name: productName,
+                                price: productPrice
+                            }, 1);
+                        } else if (typeof fbq !== 'undefined') {
+                            // Fallback to direct fbq call if FacebookPixelTracker is not available
+                            console.log('Using direct fbq call');
+                            fbq('track', 'AddToCart', {
+                                content_ids: [productId],
+                                content_name: productName,
+                                content_type: 'product',
+                                value: productPrice,
+                                currency: 'JOD'
+                            });
+                        } else {
+                            console.warn('No Facebook Pixel tracking method available');
+                        }
+                    } catch (err) {
+                        console.error('Facebook Pixel tracking error:', err);
+                    }
+                } else {
+                    console.warn('Missing product data for Facebook Pixel:', {
+                        productId: productId,
+                        productName: productName,
+                        productPrice: productPrice
+                    });
                 }
             }
             
