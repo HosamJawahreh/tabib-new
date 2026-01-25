@@ -12,7 +12,7 @@ class Category extends Model
 
     public function subs()
     {
-    	return $this->hasMany('App\Models\Subcategory')->where('status','=',1);
+    	return $this->hasMany('App\Models\Subcategory')->where('status','=',1)->orderBy('sort_order', 'desc');
     }
 
     // Multi-category relationship (many-to-many)
@@ -92,5 +92,48 @@ class Category extends Model
                 );
             }
         }
+    }
+
+    // Get total products count including all subcategories and child categories
+    public function getTotalProductsCountAttribute()
+    {
+        $count = $this->products()->count();
+        
+        // Add products from subcategories
+        foreach ($this->subs as $sub) {
+            $count += $sub->getProductsCount();
+            
+            // Add products from child categories
+            foreach ($sub->childs as $child) {
+                $count += $child->getProductsCount();
+            }
+        }
+        
+        return $count;
+    }
+
+    // Check if category can be deleted (no products in this category or any descendants)
+    public function canBeDeleted()
+    {
+        // Check if this category has products
+        if ($this->products()->count() > 0) {
+            return false;
+        }
+        
+        // Check if any subcategories have products
+        foreach ($this->subs as $sub) {
+            if ($sub->getProductsCount() > 0) {
+                return false;
+            }
+            
+            // Check if any child categories have products
+            foreach ($sub->childs as $child) {
+                if ($child->getProductsCount() > 0) {
+                    return false;
+                }
+            }
+        }
+        
+        return true;
     }
 }

@@ -196,9 +196,9 @@
                         // Update header cart count
                         $('#cart-count').html(response.count);
                         if (response.count > 0) {
-                            $('#cart-count').show();
+                            $('#cart-count').css('display', 'flex');
                         } else {
-                            $('#cart-count').hide();
+                            $('#cart-count').css('display', 'none');
                         }
 
                         // Update item subtotal
@@ -285,9 +285,9 @@
                         // Update header cart count
                         $('#cart-count').html(response.count);
                         if (response.count > 0) {
-                            $('#cart-count').show();
+                            $('#cart-count').css('display', 'flex');
                         } else {
-                            $('#cart-count').hide();
+                            $('#cart-count').css('display', 'none');
                         }
                     }
                 }

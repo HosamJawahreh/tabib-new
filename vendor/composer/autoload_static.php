@@ -1043,6 +1043,7 @@ class ComposerStaticInitd20c24590b16e95037338cc1fff00a35
         'App\\Providers\\BroadcastServiceProvider' => __DIR__ . '/../..' . '/app/Providers/BroadcastServiceProvider.php',
         'App\\Providers\\EventServiceProvider' => __DIR__ . '/../..' . '/app/Providers/EventServiceProvider.php',
         'App\\Providers\\RouteServiceProvider' => __DIR__ . '/../..' . '/app/Providers/RouteServiceProvider.php',
+        'App\\Services\\WhatsAppNotificationService' => __DIR__ . '/../..' . '/app/Services/WhatsAppNotificationService.php',
         'App\\Traits\\Paytm' => __DIR__ . '/../..' . '/app/Traits/Paytm.php',
         'Asm89\\Stack\\Cors' => __DIR__ . '/..' . '/asm89/stack-cors/src/Cors.php',
         'Asm89\\Stack\\CorsService' => __DIR__ . '/..' . '/asm89/stack-cors/src/CorsService.php',

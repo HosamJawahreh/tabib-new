@@ -84,19 +84,19 @@ class FrontendController extends FrontBaseController
         $data['sliders'] = DB::table('sliders')
             ->get();
 
-        $data['featured_categories'] = Category::withCount('products')->where('is_featured', 1)->get();
+        $data['featured_categories'] = Category::withCount('products')->where('is_featured', 1)->orderBy('sort_order', 'desc')->get();
 
         // Get only FEATURED main categories with subcategories and child categories for navigation
         // Only show categories marked as featured (is_featured = 1) and active (status = 1)
         $data['categories'] = Category::where('status', 1)
             ->where('is_featured', 1) // Only featured categories
             ->with(['subs' => function($query) {
-                $query->where('status', 1)->with(['childs' => function($q) {
-                    $q->where('status', 1);
+                $query->where('status', 1)->orderBy('sort_order', 'desc')->with(['childs' => function($q) {
+                    $q->where('status', 1)->orderBy('sort_order', 'desc');
                 }]);
             }])
             ->withCount('products')
-            ->orderBy('id', 'asc')
+            ->orderBy('sort_order', 'desc')
             ->get();
 
         $data['arrivals'] = ArrivalSection::get()->toArray();

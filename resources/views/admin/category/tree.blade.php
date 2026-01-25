@@ -1,6 +1,8 @@
 @extends('layouts.admin')
 
 @section('styles')
+<!-- SortableJS for drag and drop -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.css">
 <style>
     .category-tree-container {
         background: #fff;
@@ -41,6 +43,33 @@
         background: #218838;
         transform: translateY(-2px);
         box-shadow: 0 4px 12px rgba(40,167,69,0.3);
+    }
+    
+    /* Drag and Drop Styles */
+    .drag-handle {
+        cursor: grab;
+        padding: 5px 10px;
+        color: #6c757d;
+        font-size: 18px;
+        margin-right: 10px;
+    }
+    
+    .drag-handle:active {
+        cursor: grabbing;
+    }
+    
+    .sortable-ghost {
+        opacity: 0.4;
+        background: #f0f0f0;
+    }
+    
+    .sortable-drag {
+        opacity: 0.8;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+    }
+    
+    .sortable-chosen {
+        background: #e3f2fd;
     }
 
     .category-tree {
@@ -472,9 +501,10 @@
                     <!-- Category Tree -->
                     <ul class="category-tree" id="categoryTreeList">
                         @forelse($categories as $category)
-                        <li class="category-item" data-category-id="{{ $category->id }}" data-status="{{ $category->status }}" data-featured="{{ $category->is_featured }}">
+                        <li class="category-item" data-category-id="{{ $category->id }}" data-type="category" data-status="{{ $category->status }}" data-featured="{{ $category->is_featured }}">
                             <div class="category-header {{ $category->subs->count() > 0 ? 'has-children' : 'no-children' }}" data-category-toggle="{{ $category->id }}" data-has-subs="{{ $category->subs->count() > 0 ? '1' : '0' }}">
                                 <div class="category-info">
+                                    <i class="fas fa-grip-vertical drag-handle"></i>
                                     @if($category->subs->count() > 0)
                                     <i class="fas fa-chevron-right toggle-icon" id="toggle-{{ $category->id }}"></i>
                                     @else
@@ -490,7 +520,7 @@
                                             <span><i class="fas fa-language"></i> AR: {{ $category->name_ar ?? '-' }}</span>
                                             <span><i class="fas fa-language"></i> EN: {{ $category->name_en ?? '-' }}</span>
                                             <span class="product-count">
-                                                <i class="fas fa-box"></i> {{ $category->products->count() }} {{ __('products') }}
+                                                <i class="fas fa-box"></i> {{ $category->total_products_count }} {{ __('products') }}
                                             </span>
                                             @if($category->subs->count() > 0)
                                             <span class="product-count">
@@ -516,7 +546,7 @@
                                     <button class="action-btn btn-add-sub" data-action="add-subcategory" data-id="{{ $category->id }}" title="{{ __('Add Subcategory') }}">
                                         <i class="fas fa-plus"></i> Sub
                                     </button>
-                                    @if($category->products->count() == 0 && $category->subs->count() == 0)
+                                    @if($category->canBeDeleted() && $category->subs->count() == 0)
                                     <button class="action-btn btn-delete" data-action="delete-category" data-id="{{ $category->id }}" title="{{ __('Delete') }}">
                                         <i class="fas fa-trash"></i>
                                     </button>
@@ -527,9 +557,10 @@
                             @if($category->subs->count() > 0)
                             <div class="subcategory-list" id="subcategory-{{ $category->id }}">
                                 @foreach($category->subs as $subcategory)
-                                <div class="subcategory-item">
+                                <div class="subcategory-item" data-subcategory-id="{{ $subcategory->id }}" data-type="subcategory" data-category-id="{{ $category->id }}">
                                     <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
                                         <div class="category-info" style="flex: 1;">
+                                            <i class="fas fa-grip-vertical drag-handle"></i>
                                             @if($subcategory->childs->count() > 0)
                                             <i class="fas fa-chevron-right toggle-icon" id="toggle-sub-{{ $subcategory->id }}" data-subcategory-toggle="{{ $subcategory->id }}"></i>
                                             @else
@@ -545,7 +576,7 @@
                                                     <span><i class="fas fa-language"></i> AR: {{ $subcategory->name_ar ?? '-' }}</span>
                                                     <span><i class="fas fa-language"></i> EN: {{ $subcategory->name_en ?? '-' }}</span>
                                                     <span class="product-count">
-                                                        <i class="fas fa-box"></i> {{ $subcategory->products->count() }} {{ __('products') }}
+                                                        <i class="fas fa-box"></i> {{ $subcategory->total_products_count }} {{ __('products') }}
                                                     </span>
                                                     @if($subcategory->childs->count() > 0)
                                                     <span class="product-count">
@@ -566,7 +597,7 @@
                                             <button class="action-btn btn-add-sub" data-action="add-child" data-id="{{ $subcategory->id }}" data-category-id="{{ $category->id }}" title="{{ __('Add Child') }}">
                                                 <i class="fas fa-plus"></i> Child
                                             </button>
-                                            @if($subcategory->products->count() == 0 && $subcategory->childs->count() == 0)
+                                            @if($subcategory->canBeDeleted() && $subcategory->childs->count() == 0)
                                             <button class="action-btn btn-delete" data-action="delete-subcategory" data-id="{{ $subcategory->id }}" title="{{ __('Delete') }}">
                                                 <i class="fas fa-trash"></i>
                                             </button>
@@ -578,8 +609,9 @@
                                 @if($subcategory->childs->count() > 0)
                                 <div class="child-list" id="child-{{ $subcategory->id }}" style="display: none;">
                                     @foreach($subcategory->childs as $child)
-                                    <div class="child-item">
+                                    <div class="child-item" data-child-id="{{ $child->id }}" data-type="childcategory" data-subcategory-id="{{ $subcategory->id }}">
                                         <div class="category-info">
+                                            <i class="fas fa-grip-vertical drag-handle"></i>
                                             <div class="category-details">
                                                 <div class="category-name">
                                                     <span class="level-indicator level-child"></span>
@@ -602,7 +634,7 @@
                                             <button class="action-btn btn-edit" data-action="edit-child" data-id="{{ $child->id }}" title="{{ __('Edit') }}">
                                                 <i class="fas fa-edit"></i>
                                             </button>
-                                            @if($child->products->count() == 0)
+                                            @if($child->getProductsCount() == 0)
                                             <button class="action-btn btn-delete" data-action="delete-child" data-id="{{ $child->id }}" title="{{ __('Delete') }}">
                                                 <i class="fas fa-trash"></i>
                                             </button>
@@ -1367,6 +1399,145 @@ $('.delete-form').on('submit', function(e) {
             toastr.error(xhr.responseJSON);
         }
     });
+});
+
+// ========================================
+// Drag and Drop Functionality with SortableJS
+// ========================================
+</script>
+
+<!-- SortableJS Library -->
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+
+<script>
+$(document).ready(function() {
+    console.log('Initializing drag-drop for categories...');
+    
+    // Initialize sortable for main categories
+    var mainCategoryList = document.getElementById('categoryTreeList');
+    if (mainCategoryList) {
+        Sortable.create(mainCategoryList, {
+            animation: 150,
+            handle: '.drag-handle',
+            ghostClass: 'sortable-ghost',
+            chosenClass: 'sortable-chosen',
+            dragClass: 'sortable-drag',
+            onEnd: function(evt) {
+                updateCategoryOrder('category', mainCategoryList);
+            }
+        });
+        console.log('Main category drag-drop initialized');
+    }
+    
+    // Initialize sortable for subcategories
+    function initSubcategorySortable() {
+        $('.subcategory-list').each(function() {
+            var subcatList = this;
+            var categoryId = $(this).attr('id').replace('subcategory-', '');
+            
+            if (!$(this).data('sortable-init')) {
+                Sortable.create(subcatList, {
+                    animation: 150,
+                    handle: '.drag-handle',
+                    ghostClass: 'sortable-ghost',
+                    chosenClass: 'sortable-chosen',
+                    dragClass: 'sortable-drag',
+                    onEnd: function(evt) {
+                        updateCategoryOrder('subcategory', subcatList, categoryId);
+                    }
+                });
+                $(this).data('sortable-init', true);
+                console.log('Subcategory drag-drop initialized for category:', categoryId);
+            }
+        });
+    }
+    
+    // Initialize sortable for child categories
+    function initChildSortable() {
+        $('.child-list').each(function() {
+            var childList = this;
+            var subcategoryId = $(this).attr('id').replace('child-', '');
+            
+            if (!$(this).data('sortable-init')) {
+                Sortable.create(childList, {
+                    animation: 150,
+                    handle: '.drag-handle',
+                    ghostClass: 'sortable-ghost',
+                    chosenClass: 'sortable-chosen',
+                    dragClass: 'sortable-drag',
+                    onEnd: function(evt) {
+                        updateCategoryOrder('childcategory', childList, subcategoryId);
+                    }
+                });
+                $(this).data('sortable-init', true);
+                console.log('Child category drag-drop initialized for subcategory:', subcategoryId);
+            }
+        });
+    }
+    
+    // Call initialization
+    initSubcategorySortable();
+    initChildSortable();
+    
+    // Re-initialize when categories are expanded
+    $(document).on('click', '[data-category-toggle]', function() {
+        setTimeout(function() {
+            initSubcategorySortable();
+        }, 100);
+    });
+    
+    $(document).on('click', '[data-subcategory-toggle]', function() {
+        setTimeout(function() {
+            initChildSortable();
+        }, 100);
+    });
+    
+    // Update category order via AJAX
+    function updateCategoryOrder(type, listElement, parentId) {
+        var orders = [];
+        var items = $(listElement).children();
+        
+        items.each(function(index) {
+            var itemData = {
+                order: index,
+                type: type
+            };
+            
+            if (type === 'category') {
+                itemData.id = $(this).data('category-id');
+            } else if (type === 'subcategory') {
+                itemData.id = $(this).data('subcategory-id');
+                itemData.parent_id = parentId;
+            } else if (type === 'childcategory') {
+                itemData.id = $(this).data('child-id');
+                itemData.parent_id = parentId;
+            }
+            
+            orders.push(itemData);
+        });
+        
+        console.log('Sending order update:', orders);
+        
+        $.ajax({
+            url: '{{ route("admin-cat-reorder") }}',
+            method: 'POST',
+            data: {
+                _token: '{{ csrf_token() }}',
+                orders: orders
+            },
+            success: function(response) {
+                if (response.success) {
+                    toastr.success(response.message || '{{ __("Order updated successfully") }}');
+                } else {
+                    toastr.error(response.message || '{{ __("Failed to update order") }}');
+                }
+            },
+            error: function(xhr) {
+                console.error('Order update error:', xhr);
+                toastr.error('{{ __("Error updating order") }}');
+            }
+        });
+    }
 });
 </script>
 @endsection

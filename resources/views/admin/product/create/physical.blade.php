@@ -283,7 +283,7 @@
 											<div class="row">
 												<div class="col-lg-12 mb-3 mt-4">
 													<h4 class="heading" style="color: #2d3748; font-size: 16px; border-bottom: 2px solid #ed8936; padding-bottom: 8px; margin-bottom: 15px;">
-														<i class="fas fa-folder-tree"></i> {{ __('Product Categories') }}
+														<i class="fas fa-folder-tree"></i> {{ __('Featured Categories') }}
 													</h4>
 												</div>
 												<div class="col-lg-12">

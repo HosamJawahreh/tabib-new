@@ -217,7 +217,18 @@ class ProductController extends AdminBaseController
     //*** GET Request
     public function create($slug)
     {
-        $cats = Category::all();
+        // Get only featured categories (no subs/childs)
+        $cats = Category::where('is_featured', 1)
+                        ->where('status', 1)
+                        ->with(['subs' => function($query) {
+                            $query->where('status', 1)->orderBy('sort_order', 'desc')->with(['childs' => function($q) {
+                                $q->where('status', 1)->orderBy('sort_order', 'desc');
+                            }]);
+                        }])
+                        ->orderBy('sort_order', 'desc')
+                        ->limit(10)
+                        ->get();
+        
         $sign = $this->curr;
         // Get English language (is_default = 1) for translations
         $languages = \App\Models\AdminLanguage::where('is_default', 1)->get();
@@ -732,8 +743,18 @@ class ProductController extends AdminBaseController
     //*** GET Request
     public function import()
     {
-
-        $cats = Category::all();
+        // Get only featured categories (no subs/childs)
+        $cats = Category::where('is_featured', 1)
+                        ->where('status', 1)
+                        ->with(['subs' => function($query) {
+                            $query->where('status', 1)->orderBy('sort_order', 'desc')->with(['childs' => function($q) {
+                                $q->where('status', 1)->orderBy('sort_order', 'desc');
+                            }]);
+                        }])
+                        ->orderBy('sort_order', 'desc')
+                        ->limit(10)
+                        ->get();
+        
         $sign = $this->curr;
         return view('admin.product.productcsv', compact('cats', 'sign'));
     }
@@ -992,7 +1013,18 @@ class ProductController extends AdminBaseController
     //*** GET Request
     public function edit($id)
     {
-        $cats = Category::all();
+        // Get only featured categories (no subs/childs)
+        $cats = Category::where('is_featured', 1)
+                        ->where('status', 1)
+                        ->with(['subs' => function($query) {
+                            $query->where('status', 1)->orderBy('sort_order', 'desc')->with(['childs' => function($q) {
+                                $q->where('status', 1)->orderBy('sort_order', 'desc');
+                            }]);
+                        }])
+                        ->orderBy('sort_order', 'desc')
+                        ->limit(10)
+                        ->get();
+        
         $data = Product::with('translations', 'galleries', 'categories')->findOrFail($id);
         $sign = $this->curr;
         // Get English language (is_default = 1) for translations, not Arabic

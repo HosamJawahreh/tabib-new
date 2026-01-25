@@ -175,6 +175,7 @@ Route::prefix('admin')->group(function () {
         Route::delete('/category/delete/{id}', 'Admin\CategoryController@destroy')->name('admin-cat-delete');
         Route::get('/category/featured/{id1}/{id2}', 'Admin\CategoryController@featured')->name('admin-cat-featured');
         Route::get('/category/status/{id1}/{id2}', 'Admin\CategoryController@status')->name('admin-cat-status');
+        Route::post('/category/reorder', 'Admin\CategoryController@reorder')->name('admin-cat-reorder');
 
         //------------ ADMIN ATTRIBUTE SECTION ------------
 

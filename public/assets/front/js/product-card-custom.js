@@ -88,11 +88,11 @@
                 $("#cart-count1").html(data[0]);
                 // Show badge when items added
                 if (data[0] > 0) {
-                    $("#cart-count").show();
-                    $("#cart-count1").show();
+                    $("#cart-count").css('display', 'flex');
+                    $("#cart-count1").css('display', 'flex');
                 } else {
-                    $("#cart-count").hide();
-                    $("#cart-count1").hide();
+                    $("#cart-count").css('display', 'none');
+                    $("#cart-count1").css('display', 'none');
                 }
                 $("#total-cost").html(data[1]);
                 $(".cart-popup").load(mainurl + "/carts/view");

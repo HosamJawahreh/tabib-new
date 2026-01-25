@@ -12,7 +12,7 @@ class Subcategory extends Model
 
     public function childs()
     {
-    	return $this->hasMany('App\Models\Childcategory')->where('status','=',1);
+    	return $this->hasMany('App\Models\Childcategory')->where('status','=',1)->orderBy('sort_order', 'desc');
     }
 
     public function category()
@@ -22,19 +22,15 @@ class Subcategory extends Model
 
     public function products()
     {
-        // Use the multi-category system by finding the corresponding main category
-        // Subcategories are now mapped as main categories in the categories table
-        $mainCategory = \App\Models\Category::where('name', $this->name)
-            ->where('status', 1)
-            ->first();
+        // Subcategories are used directly in category_product table
+        // The category_id in the pivot table can be a subcategory ID
+        return $this->belongsToMany('App\Models\Product', 'category_product', 'category_id', 'product_id');
+    }
 
-        if ($mainCategory) {
-            // Return products through the category_product pivot table
-            return $mainCategory->products();
-        }
-
-        // Fallback to empty relationship if no mapping found
-        return $this->hasMany('App\Models\Product')->whereRaw('0=1');
+    // Get products count - query directly from pivot table
+    public function getProductsCount()
+    {
+        return $this->products()->count();
     }
 
     public function setSlugAttribute($value)
@@ -102,6 +98,37 @@ class Subcategory extends Model
                 );
             }
         }
+    }
+
+    // Get total products count including all child categories
+    public function getTotalProductsCountAttribute()
+    {
+        $count = $this->getProductsCount();
+        
+        // Add products from child categories
+        foreach ($this->childs as $child) {
+            $count += $child->getProductsCount();
+        }
+        
+        return $count;
+    }
+
+    // Check if subcategory can be deleted (no products in this subcategory or any child categories)
+    public function canBeDeleted()
+    {
+        // Check if this subcategory has products
+        if ($this->getProductsCount() > 0) {
+            return false;
+        }
+        
+        // Check if any child categories have products
+        foreach ($this->childs as $child) {
+            if ($child->getProductsCount() > 0) {
+                return false;
+            }
+        }
+        
+        return true;
     }
 
 }

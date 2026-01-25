@@ -705,9 +705,9 @@
                         $("#cart-count").html(data[0]);
                         // Show badge when items added
                         if (data[0] > 0) {
-                            $("#cart-count").show();
+                            $("#cart-count").css('display', 'flex');
                         } else {
-                            $("#cart-count").hide();
+                            $("#cart-count").css('display', 'none');
                         }
                         $("#total-cost").html(data[1]);
                         $("#cart-items").load(mainurl+'/carts/view');

@@ -304,11 +304,11 @@
           $("#cart-count1").html(data[0]);
           // Show/hide badge based on count
           if (data[0] > 0) {
-            $("#cart-count").show();
-            $("#cart-count1").show();
+            $("#cart-count").css('display', 'flex');
+            $("#cart-count1").css('display', 'flex');
           } else {
-            $("#cart-count").hide();
-            $("#cart-count1").hide();
+            $("#cart-count").css('display', 'none');
+            $("#cart-count1").css('display', 'none');
           }
           $("#total-cost").html(data[1]);
           $(".cart-popup").load(mainurl + "/carts/view");
@@ -379,8 +379,8 @@
           $("#cart-count").html(data[0]);
           $("#cart-count1").html(data[0]);
           // Hide badge when cart is empty
-          $("#cart-count").hide();
-          $("#cart-count1").hide();
+          $("#cart-count").css('display', 'none');
+          $("#cart-count1").css('display', 'none');
           $(".cart-table").html(
             '<h3 class="mt-1 pl-3 text-center">' + lang.cart_empty + "</h3>"
           );
@@ -659,8 +659,8 @@
           $("#cart-count1").html(data[0]);
           // Show badge when items added
           if (data[0] > 0) {
-            $("#cart-count").show();
-            $("#cart-count1").show();
+            $("#cart-count").css('display', 'flex');
+            $("#cart-count1").css('display', 'flex');
           }
           $(".cart-popup").load(mainurl + "/carts/view");
           $("#cart-items").load(mainurl + "/carts/view");

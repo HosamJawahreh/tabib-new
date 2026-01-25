@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Log;
 use Yajra\DataTables\Facades\DataTables;
 use App\Helpers\PriceHelper;
 
@@ -53,6 +54,7 @@ class CategoryController extends AdminBaseController
     {
         $categories = Category::where('is_featured', 1)
                              ->with(['subs.childs'])
+                             ->orderBy('sort_order', 'asc')
                              ->orderBy('id', 'desc')
                              ->get();
         return view('admin.category.tree', compact('categories'));
@@ -151,8 +153,8 @@ class CategoryController extends AdminBaseController
             
         } catch (\Exception $e) {
             // Log the error for debugging
-            \Log::error('Category Store Error: ' . $e->getMessage());
-            \Log::error('Stack trace: ' . $e->getTraceAsString());
+            Log::error('Category Store Error: ' . $e->getMessage());
+            Log::error('Stack trace: ' . $e->getTraceAsString());
             
             return response()->json([
                 'errors' => ['error' => [$e->getMessage()]],
@@ -298,6 +300,63 @@ class CategoryController extends AdminBaseController
         $msg = __('Data Deleted Successfully.');
         return response()->json($msg);
         //--- Redirect Section Ends
+    }
+    
+    /**
+     * Update category order via drag and drop
+     */
+    public function reorder(Request $request)
+    {
+        try {
+            $orders = $request->input('orders', []);
+            
+            foreach ($orders as $order) {
+                $type = $order['type'] ?? 'category';
+                $id = $order['id'] ?? null;
+                $sortOrder = $order['order'] ?? 0;
+                $parentId = $order['parent_id'] ?? null;
+                
+                if (!$id) continue;
+                
+                if ($type === 'category') {
+                    $item = Category::find($id);
+                    if ($item) {
+                        $item->sort_order = $sortOrder;
+                        $item->save();
+                    }
+                } elseif ($type === 'subcategory') {
+                    $item = \App\Models\Subcategory::find($id);
+                    if ($item) {
+                        $item->sort_order = $sortOrder;
+                        if ($parentId !== null) {
+                            $item->category_id = $parentId;
+                        }
+                        $item->save();
+                    }
+                } elseif ($type === 'childcategory') {
+                    $item = \App\Models\Childcategory::find($id);
+                    if ($item) {
+                        $item->sort_order = $sortOrder;
+                        if ($parentId !== null) {
+                            $item->subcategory_id = $parentId;
+                        }
+                        $item->save();
+                    }
+                }
+            }
+            
+            return response()->json([
+                'success' => true,
+                'message' => __('Order updated successfully.')
+            ]);
+            
+        } catch (\Exception $e) {
+            Log::error('Category Reorder Error: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => __('Error updating order: ') . $e->getMessage()
+            ], 500);
+        }
     }
     
     /**

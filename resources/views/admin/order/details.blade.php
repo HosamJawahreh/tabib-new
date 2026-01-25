@@ -299,6 +299,12 @@
                                                                 @if(isset($product['item']['name']))
                                                                     @php
                                                                         $productId = $product['product_id'] ?? (isset($product['item']['id']) ? $product['item']['id'] : null);
+                                                                        // Fetch SKU from database
+                                                                        $sku = null;
+                                                                        if($productId) {
+                                                                            $productModel = \App\Models\Product::find($productId);
+                                                                            $sku = $productModel ? $productModel->sku : null;
+                                                                        }
                                                                     @endphp
                                                                     @if($productId)
                                                                         <a href="{{ route('admin-prod-edit', $productId) }}" target="_blank" style="color: #007bff; font-weight: 600; text-decoration: none;">
@@ -306,6 +312,9 @@
                                                                         </a>
                                                                     @else
                                                                         <strong>{{ $product['item']['name'] }}</strong>
+                                                                    @endif
+                                                                    @if($sku)
+                                                                        <br><small class="text-muted" style="color: #6c757d;">SKU: {{ $sku }}</small>
                                                                     @endif
                                                                     @if(isset($product['item']['photo']))
                                                                         <br><img src="{{ asset('assets/images/products/'.$product['item']['photo']) }}" alt="" style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px; margin-top: 5px;">
@@ -454,6 +463,15 @@
                                             <td>
                                                 <input type="hidden" value="{{ $product['license'] }}">
 
+                                                @php
+                                                // Fetch SKU from database
+                                                $sku = null;
+                                                if(isset($product['item']['id'])) {
+                                                    $productModel = \App\Models\Product::find($product['item']['id']);
+                                                    $sku = $productModel ? $productModel->sku : null;
+                                                }
+                                                @endphp
+
                                                 @if($product['item']['user_id'] != 0)
                                                 @php
                                                 $user = App\Models\User::find($product['item']['user_id']);
@@ -467,6 +485,10 @@
 
                                                 <a target="_blank" href="{{ route('front.product', $product['item']['slug']) }}">{{mb_strlen($product['item']['name'],'utf-8') > 30 ? mb_substr($product['item']['name'],0,30,'utf-8').'...' : $product['item']['name']}}</a>
 
+                                                @endif
+                                                
+                                                @if($sku)
+                                                    <br><small class="text-muted" style="color: #6c757d;">SKU: {{ $sku }}</small>
                                                 @endif
 
 

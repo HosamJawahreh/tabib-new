@@ -116,10 +116,33 @@ html {
                                         @php
                                         $subtotal = 0;
                                         $tax = 0;
+                                        
+                                        // Handle different cart structures
+                                        $products = [];
+                                        if(isset($cart['items']) && is_array($cart['items'])) {
+                                            // Old structure with 'items' key
+                                            $products = $cart['items'];
+                                        } elseif(is_array($cart)) {
+                                            // New structure: product ID as key
+                                            foreach($cart as $productId => $productData) {
+                                                if(is_numeric($productId)) {
+                                                    $products[] = $productData;
+                                                }
+                                            }
+                                        }
                                         @endphp
-                                        @foreach($cart['items'] as $product)
+                                        @foreach($products as $product)
                                         <tr>
                                             <td width="50%">
+                                                @php
+                                                // Fetch SKU from database
+                                                $sku = null;
+                                                if(isset($product['item']['id'])) {
+                                                    $productModel = \App\Models\Product::find($product['item']['id']);
+                                                    $sku = $productModel ? $productModel->sku : null;
+                                                }
+                                                @endphp
+
                                                 @if($product['item']['user_id'] != 0)
                                                 @php
                                                 $user = App\Models\User::find($product['item']['user_id']);
@@ -132,6 +155,10 @@ html {
 
                                                 @else
                                                 {{ $product['item']['name']}}
+                                                @endif
+                                                
+                                                @if($sku)
+                                                    <br><small style="color: #666;">SKU: {{ $sku }}</small>
                                                 @endif
                                             </td>
 

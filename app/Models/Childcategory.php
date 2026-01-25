@@ -17,19 +17,15 @@ class Childcategory extends Model
 
     public function products()
     {
-        // Use the multi-category system by finding the corresponding main category
-        // Childcategories are now mapped as main categories in the categories table
-        $mainCategory = \App\Models\Category::where('name', $this->name)
-            ->where('status', 1)
-            ->first();
+        // Childcategories are used directly in category_product table
+        // The category_id in the pivot table can be a childcategory ID
+        return $this->belongsToMany('App\Models\Product', 'category_product', 'category_id', 'product_id');
+    }
 
-        if ($mainCategory) {
-            // Return products through the category_product pivot table
-            return $mainCategory->products();
-        }
-
-        // Fallback to empty relationship if no mapping found
-        return $this->hasMany('App\Models\Product')->whereRaw('0=1');
+    // Get products count - query directly from pivot table
+    public function getProductsCount()
+    {
+        return $this->products()->count();
     }
 
 
@@ -98,5 +94,11 @@ class Childcategory extends Model
                 );
             }
         }
+    }
+
+    // Get total products count (child categories don't have descendants)
+    public function getTotalProductsCountAttribute()
+    {
+        return $this->getProductsCount();
     }
 }

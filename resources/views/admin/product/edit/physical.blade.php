@@ -263,6 +263,7 @@
 														<i class="fas fa-folder-tree"></i> {{ __('Product Categories') }}
 													</h4>
 												</div>
+
 												<div class="col-lg-12">
 													<label style="font-weight: 600; color: #2d3748; font-size: 14px; margin-bottom: 10px; display: block;">
 														{{ __('Select Categories') }} * <small style="color: #718096;">({{ __('Select one or more') }})</small>
