@@ -260,10 +260,9 @@
 											<div class="row">
 												<div class="col-lg-12 mb-3 mt-4">
 													<h4 class="heading" style="color: #2d3748; font-size: 16px; border-bottom: 2px solid #ed8936; padding-bottom: 8px; margin-bottom: 15px;">
-														<i class="fas fa-folder-tree"></i> {{ __('Product Categories') }}
+														<i class="fas fa-folder-tree"></i> {{ __('Featured Categories') }}
 													</h4>
 												</div>
-
 												<div class="col-lg-12">
 													<label style="font-weight: 600; color: #2d3748; font-size: 14px; margin-bottom: 10px; display: block;">
 														{{ __('Select Categories') }} * <small style="color: #718096;">({{ __('Select one or more') }})</small>
@@ -272,7 +271,9 @@
 														@foreach($cats as $cat)
 															<div class="category-item parent-category" style="margin-bottom: 10px;">
 																<label style="display: flex; align-items: center; cursor: pointer; padding: 10px; background: white; border-radius: 6px; margin-bottom: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); transition: all 0.2s;">
-																	<input type="checkbox" name="categories[]" value="{{ $cat->id }}" class="category-checkbox parent-checkbox" data-category-id="{{ $cat->id }}" style="margin-right: 12px; width: 18px; height: 18px; cursor: pointer;">
+																	<input type="checkbox" name="categories[]" value="{{ $cat->id }}" class="category-checkbox parent-checkbox" data-category-id="{{ $cat->id }}" 
+																		{{ in_array($cat->id, $data->categories->pluck('id')->toArray()) ? 'checked' : '' }}
+																		style="margin-right: 12px; width: 18px; height: 18px; cursor: pointer;">
 																	<i class="fas fa-folder" style="margin-right: 10px; color: #ed8936; font-size: 16px;"></i>
 																	<span style="font-weight: 600; font-size: 14px; color: #2d3748;">{{ $cat->name }}</span>
 																	@if($cat->subs->count() > 0)
@@ -285,7 +286,9 @@
 																		@foreach($cat->subs as $sub)
 																			<div class="category-item sub-category" style="margin-bottom: 8px;">
 																				<label style="display: flex; align-items: center; cursor: pointer; padding: 6px 10px; background: #f7fafc; border-radius: 4px; margin-bottom: 4px;">
-																					<input type="checkbox" name="categories[]" value="{{ $sub->id }}" class="category-checkbox sub-checkbox" data-parent-id="{{ $cat->id }}" data-category-id="{{ $sub->id }}" style="margin-right: 10px; width: 16px; height: 16px; cursor: pointer;">
+																					<input type="checkbox" name="categories[]" value="{{ $sub->id }}" class="category-checkbox sub-checkbox" data-parent-id="{{ $cat->id }}" data-category-id="{{ $sub->id }}" 
+																						{{ in_array($sub->id, $data->categories->pluck('id')->toArray()) ? 'checked' : '' }}
+																						style="margin-right: 10px; width: 16px; height: 16px; cursor: pointer;">
 																					<i class="fas fa-folder-open" style="margin-right: 8px; color: #3182ce; font-size: 13px;"></i>
 																					<span style="font-weight: 500; font-size: 13px; color: #4a5568;">{{ $sub->name }}</span>
 																					@if($sub->childs->count() > 0)
@@ -298,7 +301,9 @@
 																						@foreach($sub->childs as $child)
 																							<div class="category-item child-category" style="margin-bottom: 5px;">
 																								<label style="display: flex; align-items: center; cursor: pointer; padding: 5px 10px; background: #edf2f7; border-radius: 4px;">
-																									<input type="checkbox" name="categories[]" value="{{ $child->id }}" class="category-checkbox child-checkbox" data-parent-id="{{ $sub->id }}" data-category-id="{{ $child->id }}" style="margin-right: 10px; width: 14px; height: 14px; cursor: pointer;">
+																									<input type="checkbox" name="categories[]" value="{{ $child->id }}" class="category-checkbox child-checkbox" data-parent-id="{{ $sub->id }}" data-category-id="{{ $child->id }}" 
+																										{{ in_array($child->id, $data->categories->pluck('id')->toArray()) ? 'checked' : '' }}
+																										style="margin-right: 10px; width: 14px; height: 14px; cursor: pointer;">
 																									<i class="fas fa-tag" style="margin-right: 8px; color: #2b6cb0; font-size: 12px;"></i>
 																									<span style="font-weight: 400; font-size: 12px; color: #4a5568;">{{ $child->name }}</span>
 																								</label>
