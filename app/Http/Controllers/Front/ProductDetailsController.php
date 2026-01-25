@@ -82,8 +82,7 @@ class ProductDetailsController extends FrontBaseController
             ->withCount('ratings')
             ->withAvg('ratings', 'rating')
             ->inRandomOrder()
-            ->take(12)
-            ->get();
+            ->get(); // Get ALL featured products
 
         return view('frontend.product', compact('productt', 'curr', 'affilate_user', 'vendor_products', 'footer_blogs', 'featured_products'));
     }
