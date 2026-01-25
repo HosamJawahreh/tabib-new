@@ -9,6 +9,13 @@
 @endsection
 @section('content')
 
+@php
+// Safety check: Ensure $data is a valid Product object
+if (!isset($data) || !is_object($data)) {
+    abort(404, 'Product not found or invalid data');
+}
+@endphp
+
 		<div class="content-area">
 			<div class="mr-breadcrumb">
 				<div class="row">
@@ -260,8 +267,9 @@
 											<div class="row">
 												<div class="col-lg-12 mb-3 mt-4">
 													<h4 class="heading" style="color: #2d3748; font-size: 16px; border-bottom: 2px solid #ed8936; padding-bottom: 8px; margin-bottom: 15px;">
-														<i class="fas fa-folder-tree"></i> {{ __('Featured Categories') }}
+														<i class="fas fa-folder-tree"></i> {{ __('Product Categories') }}
 													</h4>
+													<small style="color: #718096; display: block; margin-bottom: 10px;">{{ __('Select from main categories and their subcategories') }}</small>
 												</div>
 												<div class="col-lg-12">
 													<label style="font-weight: 600; color: #2d3748; font-size: 14px; margin-bottom: 10px; display: block;">
@@ -272,37 +280,37 @@
 															<div class="category-item parent-category" style="margin-bottom: 10px;">
 																<label style="display: flex; align-items: center; cursor: pointer; padding: 10px; background: white; border-radius: 6px; margin-bottom: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); transition: all 0.2s;">
 																	<input type="checkbox" name="categories[]" value="{{ $cat->id }}" class="category-checkbox parent-checkbox" data-category-id="{{ $cat->id }}" 
-																		{{ in_array($cat->id, $data->categories->pluck('id')->toArray()) ? 'checked' : '' }}
+																		{{ in_array($cat->id, $selectedCategoryIds) ? 'checked' : '' }}
 																		style="margin-right: 12px; width: 18px; height: 18px; cursor: pointer;">
 																	<i class="fas fa-folder" style="margin-right: 10px; color: #ed8936; font-size: 16px;"></i>
 																	<span style="font-weight: 600; font-size: 14px; color: #2d3748;">{{ $cat->name }}</span>
-																	@if($cat->subs->count() > 0)
+																	@if($cat->children->count() > 0)
 																		<i class="fas fa-chevron-down toggle-icon" style="margin-left: auto; color: #718096; font-size: 12px;"></i>
 																	@endif
 																</label>
 
-																@if($cat->subs->count() > 0)
+																@if($cat->children->count() > 0)
 																	<div class="subcategories" style="margin-left: 25px; display: none;">
-																		@foreach($cat->subs as $sub)
+																		@foreach($cat->children as $sub)
 																			<div class="category-item sub-category" style="margin-bottom: 8px;">
 																				<label style="display: flex; align-items: center; cursor: pointer; padding: 6px 10px; background: #f7fafc; border-radius: 4px; margin-bottom: 4px;">
 																					<input type="checkbox" name="categories[]" value="{{ $sub->id }}" class="category-checkbox sub-checkbox" data-parent-id="{{ $cat->id }}" data-category-id="{{ $sub->id }}" 
-																						{{ in_array($sub->id, $data->categories->pluck('id')->toArray()) ? 'checked' : '' }}
+																						{{ in_array($sub->id, $selectedCategoryIds) ? 'checked' : '' }}
 																						style="margin-right: 10px; width: 16px; height: 16px; cursor: pointer;">
 																					<i class="fas fa-folder-open" style="margin-right: 8px; color: #3182ce; font-size: 13px;"></i>
 																					<span style="font-weight: 500; font-size: 13px; color: #4a5568;">{{ $sub->name }}</span>
-																					@if($sub->childs->count() > 0)
+																					@if($sub->children->count() > 0)
 																						<i class="fas fa-chevron-down toggle-icon" style="margin-left: auto; color: #718096; font-size: 11px;"></i>
 																					@endif
 																				</label>
 
-																				@if($sub->childs->count() > 0)
+																				@if($sub->children->count() > 0)
 																					<div class="childcategories" style="margin-left: 20px; display: none;">
-																						@foreach($sub->childs as $child)
+																						@foreach($sub->children as $child)
 																							<div class="category-item child-category" style="margin-bottom: 5px;">
 																								<label style="display: flex; align-items: center; cursor: pointer; padding: 5px 10px; background: #edf2f7; border-radius: 4px;">
 																									<input type="checkbox" name="categories[]" value="{{ $child->id }}" class="category-checkbox child-checkbox" data-parent-id="{{ $sub->id }}" data-category-id="{{ $child->id }}" 
-																										{{ in_array($child->id, $data->categories->pluck('id')->toArray()) ? 'checked' : '' }}
+																										{{ in_array($child->id, $selectedCategoryIds) ? 'checked' : '' }}
 																										style="margin-right: 10px; width: 14px; height: 14px; cursor: pointer;">
 																									<i class="fas fa-tag" style="margin-right: 8px; color: #2b6cb0; font-size: 12px;"></i>
 																									<span style="font-weight: 400; font-size: 12px; color: #4a5568;">{{ $child->name }}</span>
@@ -1249,28 +1257,28 @@ $(document).ready(function() {
 
 	// Pre-select existing categories
 	var selectedCategories = [
-		@if($data->category_id)
-			{{ $data->category_id }},
-		@endif
-		@if($data->subcategory_id)
-			{{ $data->subcategory_id }},
-		@endif
-		@if($data->childcategory_id)
-			{{ $data->childcategory_id }},
-		@endif
-		@if($data->categories && $data->categories->count() > 0)
-			@foreach($data->categories as $category)
-				{{ $category->id }},
+		@if(isset($selectedCategoryIds) && is_array($selectedCategoryIds))
+			@foreach($selectedCategoryIds as $catId)
+				{{ $catId }},
 			@endforeach
 		@endif
 	];
 
-	// Check the categories
+	// Check the categories and expand their parent containers
 	selectedCategories.forEach(function(catId) {
 		if (catId) {
-			$('.category-checkbox[value="' + catId + '"]').prop('checked', true);
-			// Expand parent categories
-			$('.category-checkbox[value="' + catId + '"]').closest('.subcategories, .childcategories').show();
+			var $checkbox = $('.category-checkbox[value="' + catId + '"]');
+			$checkbox.prop('checked', true);
+			
+			// Expand ALL parent containers (subcategories and childcategories)
+			$checkbox.parents('.subcategories, .childcategories').show();
+			
+			// Also expand the subcategories/childcategories of this category if it has any
+			$checkbox.closest('label').next('.subcategories, .childcategories').show();
+			
+			// Update toggle icons
+			$checkbox.closest('label').find('.toggle-icon').removeClass('fa-chevron-down').addClass('fa-chevron-up');
+			$checkbox.parents('.subcategories, .childcategories').prev('label').find('.toggle-icon').removeClass('fa-chevron-down').addClass('fa-chevron-up');
 		}
 	});
 

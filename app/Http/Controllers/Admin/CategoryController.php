@@ -52,17 +52,26 @@ class CategoryController extends AdminBaseController
 
     public function tree()
     {
-        $categories = Category::where('is_featured', 1)
-                             ->with(['subs.childs'])
+        // Get top-level categories (parent_id = 0 and is_featured = 1)
+        // Load all children recursively via parent_id relationship
+        $categories = Category::where('parent_id', 0)
+                             ->where('is_featured', 1)
+                             ->with(['children' => function($query) {
+                                 $query->orderBy('sort_order', 'asc')
+                                       ->with(['children' => function($q) {
+                                           $q->orderBy('sort_order', 'asc');
+                                       }]);
+                             }])
                              ->orderBy('sort_order', 'asc')
                              ->orderBy('id', 'desc')
                              ->get();
         return view('admin.category.tree', compact('categories'));
     }
 
-    public function create()
+    public function create(Request $request)
     {
-        return view('admin.category.create');
+        $parent_id = $request->get('parent_id', 0);
+        return view('admin.category.create', compact('parent_id'));
     }
     //*** POST Request
     public function store(Request $request)

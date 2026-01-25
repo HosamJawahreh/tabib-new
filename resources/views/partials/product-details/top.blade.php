@@ -955,6 +955,218 @@ textarea {
         scroll-behavior: smooth !important;
         -webkit-overflow-scrolling: touch !important;
     }
+
+    /* ===== MOBILE OPTIMIZATION - REDUCE SPACING & FONT SIZES ===== */
+    
+    /* Reduce top margin/padding between breadcrumb and product */
+    .single-product-wrapper {
+        padding-top: 10px !important;
+        margin-top: 0 !important;
+    }
+
+    .container > .row {
+        margin-top: 0 !important;
+    }
+
+    /* Reduce spacing in product info section */
+    .summary.entry-summary {
+        padding: 12px !important;
+    }
+
+    /* Smaller product title */
+    .summary.entry-summary h1,
+    .summary.entry-summary .product-title,
+    .summary.entry-summary .product_title {
+        font-size: 1rem !important;
+        line-height: 1.4 !important;
+        margin-bottom: 10px !important;
+    }
+
+    /* Reduce rating section size */
+    .woocommerce-product-rating {
+        margin-bottom: 8px !important;
+    }
+
+    .fancy-star-rating .rating-wrap {
+        font-size: 0.5rem !important;
+    }
+
+    .fancy-rating {
+        font-size: 0.55rem !important;
+    }
+
+    /* Smaller price section */
+    .price-section {
+        padding: 12px !important;
+        margin-bottom: 12px !important;
+    }
+
+    .price-section .current-price {
+        font-size: 1rem !important;
+    }
+
+    .price-section .old-price {
+        font-size: 0.6rem !important;
+    }
+
+    .price-section .badge {
+        font-size: 0.5rem !important;
+        padding: 0.25rem 0.5rem !important;
+    }
+
+    /* PRODUCT DESCRIPTION - SMALLER FONTS & LESS SPACING */
+    .product-description {
+        padding: 10px !important;
+        margin-bottom: 12px !important;
+        font-size: 0.85rem !important;
+        line-height: 1.5 !important;
+    }
+
+    .product-description p,
+    .product-description div,
+    .product-description span,
+    .product-description li {
+        font-size: 0.85rem !important;
+        line-height: 1.5 !important;
+        margin-bottom: 6px !important;
+    }
+
+    .product-description h1,
+    .product-description h2,
+    .product-description h3,
+    .product-description h4,
+    .product-description h5,
+    .product-description h6 {
+        font-size: 1rem !important;
+        margin-bottom: 8px !important;
+        margin-top: 8px !important;
+    }
+
+    .product-description strong,
+    .product-description b {
+        font-size: 0.85rem !important;
+    }
+
+    .product-description ul,
+    .product-description ol {
+        padding-left: 20px !important;
+        margin-bottom: 8px !important;
+    }
+
+    /* Product Info Section - Smaller */
+    .product-info-section {
+        padding: 10px !important;
+        margin-bottom: 12px !important;
+    }
+
+    .product-info-section h5 {
+        font-size: 1rem !important;
+        margin-bottom: 8px !important;
+    }
+
+    .product-info-section ul li {
+        margin-bottom: 6px !important;
+        font-size: 0.85rem !important;
+    }
+
+    .product-info-section i {
+        font-size: 1rem !important;
+    }
+
+    /* Size/Color Selection - Smaller */
+    .product-size h5,
+    .product-color h5 {
+        font-size: 1rem !important;
+        margin-bottom: 8px !important;
+    }
+
+    .product-size,
+    .product-color {
+        margin-bottom: 12px !important;
+    }
+
+    .siz-list li .box,
+    .color-list li .box {
+        padding: 8px 12px !important;
+        font-size: 0.85rem !important;
+        min-width: 50px !important;
+    }
+
+    /* Reduce gallery spacing */
+    .product-images .bg-light.rounded.shadow-sm {
+        padding: 8px !important;
+        margin-bottom: 8px !important;
+    }
+
+    #gallery_09 {
+        margin-top: 8px !important;
+    }
+
+    /* Reduce button sizes slightly on mobile */
+    .add-to-cart-btn,
+    .buy-now-btn {
+        padding: 12px 20px !important;
+        font-size: 0.95rem !important;
+        min-height: 48px !important;
+    }
+
+    /* Reduce share section spacing */
+    .share-section {
+        margin-top: 12px !important;
+        padding-top: 12px !important;
+    }
+
+    .share-section h5 {
+        font-size: 0.9rem !important;
+        margin-bottom: 8px !important;
+    }
+
+    .social-linkss .social-icons a {
+        width: 38px !important;
+        height: 38px !important;
+        font-size: 15px !important;
+    }
+
+    /* Remove excessive margins between sections */
+    .mb-4 {
+        margin-bottom: 12px !important;
+    }
+
+    .mb-3 {
+        margin-bottom: 8px !important;
+    }
+
+    .mb-2 {
+        margin-bottom: 6px !important;
+    }
+
+    .p-3 {
+        padding: 10px !important;
+    }
+
+    /* Additional spacing reductions */
+    .full-row.pb-0 {
+        padding-top: 5px !important;
+    }
+
+    .container {
+        padding-top: 0 !important;
+    }
+
+    .row.single-product-wrapper {
+        margin-top: 0 !important;
+    }
+
+    .col-md-6.mb-4 {
+        margin-bottom: 15px !important;
+        padding: 0 10px !important;
+    }
+
+    /* Tighten up all vertical spacing on mobile */
+    .product-images {
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+    }
 }
 
 /* Desktop Responsive Styles (768px and up) */
@@ -1444,7 +1656,7 @@ textarea {
               <div class="summary entry-summary">
                   <div class="summary-inner">
 
-                      <h1 class="product_title entry-title mb-3" style="font-size: 2rem; font-weight: 700; color: #2d3748; {{ isset($langg) && $langg->rtl == 1 ? 'direction: rtl; text-align: right;' : '' }}">{{ $productt->translated_name }}</h1>                      {{-- Rating Section - Only show if ratings exist --}}
+                      <h1 class="product_title entry-title mb-3" style="font-size: 1.2rem; font-weight: 700; color: #2d3748; {{ isset($langg) && $langg->rtl == 1 ? 'direction: rtl; text-align: right;' : '' }}">{{ $productt->translated_name }}</h1>                      {{-- Rating Section - Only show if ratings exist --}}
                       @php
                           $ratingCount = App\Models\Rating::ratingCount($productt->id);
                           $ratingValue = App\Models\Rating::ratings($productt->id);
@@ -1454,8 +1666,8 @@ textarea {
                           <div class="woocommerce-product-rating">
                               <div class="fancy-star-rating">
                                   <div class="rating-wrap d-flex align-items-center">
-                                      <span class="fancy-rating good me-2" style="font-size: 1.1rem; color: #f59e0b;">{{ $ratingValue }} ★</span>
-                                      <span class="text-muted" style="font-size: 0.9rem;">({{ $ratingCount }} {{ __('ratings') }})</span>
+                                      <span class="fancy-rating good me-2" style="font-size: 0.66rem; color: #f59e0b;">{{ $ratingValue }} ★</span>
+                                      <span class="text-muted" style="font-size: 0.54rem;">({{ $ratingCount }} {{ __('ratings') }})</span>
                                   </div>
                               </div>
                           </div>
@@ -1464,14 +1676,14 @@ textarea {
 
                       <div class="price-section mb-4 p-3 bg-light rounded shadow-sm">
                           <div class="d-flex align-items-center flex-wrap gap-2">
-                              <span class="current-price" style="font-size: 2rem; font-weight: 700; color: #10b981;">
+                              <span class="current-price" style="font-size: 1.2rem; font-weight: 700; color: #10b981;">
                                   <span id="sizeprice">{{ $productt->showPrice() }}</span>
                               </span>
                               @if($productt->showPreviousPrice())
-                              <del class="old-price" style="font-size: 1.2rem; color: #9ca3af;">{{ $productt->showPreviousPrice() }}</del>
+                              <del class="old-price" style="font-size: 0.72rem; color: #9ca3af;">{{ $productt->showPreviousPrice() }}</del>
                               @endif
                               @if($productt->offPercentage())
-                              <span class="badge bg-danger" style="font-size: 1rem; padding: 0.5rem 1rem;">{{ round((float)$productt->offPercentage() )}}% OFF</span>
+                              <span class="badge bg-danger" style="font-size: 0.6rem; padding: 0.3rem 0.6rem;">{{ round((float)$productt->offPercentage() )}}% OFF</span>
                               @endif
                           </div>
                       </div>

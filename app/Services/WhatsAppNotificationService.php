@@ -4,46 +4,84 @@ namespace App\Services;
 
 use App\Models\Order;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Http;
 
 class WhatsAppNotificationService
 {
     /**
-     * Generate WhatsApp notification link using wa.me
+     * Send WhatsApp notification AUTOMATICALLY using CallMeBot API
      * 
-     * This is 100% FREE - no API, no limits, no registration needed!
-     * Creates a clickable link that opens WhatsApp with pre-filled message.
+     * 100% FREE - Sends automatically without user clicking!
      * 
      * SETUP STEPS:
-     * 1. Add to .env:
-     *    WHATSAPP_PHONE=962791234567 (group admin or your WhatsApp number with country code)
-     *    Or for WhatsApp Group:
-     *    WHATSAPP_GROUP_ID=962XXXXXXXXX-1234567890 (group ID format)
+     * 1. Save CallMeBot number in your phone: +34 644 34 87 67
+     * 2. Send WhatsApp message to that number: "I allow callmebot to send me messages"
+     * 3. You'll receive your API key
+     * 4. Add to .env:
+     *    WHATSAPP_PHONE=962791234567 (your WhatsApp number with country code, no + or spaces)
+     *    WHATSAPP_API_KEY=your_api_key_from_callmebot
      * 
-     * 2. The system will generate a clickable link for each order
-     * 3. Click the link to send notification to WhatsApp
-     * 
-     * How to get Group ID:
-     * 1. Export your WhatsApp group chat
-     * 2. Or use a bot to get the group ID
-     * 3. Format: countrycode+number-timestamp (e.g., 962791234567-1234567890)
+     * Message will be sent AUTOMATICALLY to your WhatsApp!
      */
     public function sendOrderNotification(Order $order)
     {
         try {
-            // Generate WhatsApp link
+            $phone = env('WHATSAPP_PHONE');
+            $apiKey = env('WHATSAPP_API_KEY');
+
+            // If CallMeBot is configured, send automatically
+            if ($phone && $apiKey) {
+                $result = $this->sendViaCallMeBot($order, $phone, $apiKey);
+                if ($result) {
+                    Log::info("Order #{$order->order_number} sent to WhatsApp automatically via CallMeBot");
+                    return true;
+                }
+            }
+
+            // Fallback: Generate wa.me link (requires manual click)
             $link = $this->generateWhatsAppLink($order);
             
             if ($link) {
-                Log::info("Order #{$order->order_number} WhatsApp notification link generated: {$link}");
-                // Return the link so it can be used for auto-redirect or stored
+                Log::info("Order #{$order->order_number} WhatsApp link generated: {$link}");
                 return $link;
             } else {
-                Log::warning("WhatsApp link could not be generated - check WHATSAPP_PHONE or WHATSAPP_GROUP_ID in .env");
+                Log::warning("WhatsApp not configured - check WHATSAPP_PHONE in .env");
                 return false;
             }
 
         } catch (\Exception $e) {
             Log::error("WhatsApp notification error: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Send message automatically via CallMeBot API (FREE)
+     */
+    private function sendViaCallMeBot(Order $order, $phone, $apiKey)
+    {
+        try {
+            $message = $this->formatOrderMessage($order);
+            
+            // CallMeBot API endpoint
+            $url = "https://api.callmebot.com/whatsapp.php";
+            
+            $response = Http::timeout(10)->get($url, [
+                'phone' => $phone,
+                'text' => $message,
+                'apikey' => $apiKey
+            ]);
+
+            if ($response->successful()) {
+                Log::info("WhatsApp message sent successfully via CallMeBot to {$phone}");
+                return true;
+            } else {
+                Log::warning("CallMeBot API failed: " . $response->body());
+                return false;
+            }
+
+        } catch (\Exception $e) {
+            Log::error("CallMeBot error: " . $e->getMessage());
             return false;
         }
     }

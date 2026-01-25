@@ -67,6 +67,19 @@
 
 @endif
 
+@if(Auth::guard('admin')->user()->sectionCheck('categories'))
+
+    <li class="menu-item {{ request()->is('admin/brand*') ? 'active' : '' }}">
+        <a href="{{ route('admin-brand-index') }}" class="menu-link wave-effect">
+            <span class="icon-wrapper">
+                <i class="fas fa-copyright"></i>
+            </span>
+            <span class="menu-text">{{ __('Brands') }}</span>
+        </a>
+    </li>
+
+@endif
+
 @if(Auth::guard('admin')->user()->sectionCheck('products'))
 
     {{-- Products - Direct link to All Products (Add New is inside) --}}

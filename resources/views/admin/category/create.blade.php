@@ -10,8 +10,12 @@
                     <div class="product-description">
                       <div class="body-area">
                         @include('alerts.admin.form-error')
-                        <form id="geniusformdata" action="{{route('admin-cat-create')}}" method="POST" enctype="multipart/form-data">
+                        <form id="geniusformdata" action="{{route('admin-cat-store')}}" method="POST" enctype="multipart/form-data">
                           {{csrf_field()}}
+
+                          {{-- Hidden field for parent_id (0 = main category, >0 = subcategory/child) --}}
+                          <input type="hidden" name="parent_id" value="{{ $parent_id ?? 0 }}">
+                          <input type="hidden" name="is_featured" value="{{ isset($parent_id) && $parent_id > 0 ? '0' : '1' }}">
 
                           <div class="row">
                             <div class="col-lg-4">
@@ -47,7 +51,7 @@
                               </div>
                             </div>
                             <div class="col-lg-7">
-                              <input type="text" class="input-field" name="slug" placeholder="{{ __('Enter Slug') }}" required="" value="">
+                              <input type="text" class="input-field" name="slug" placeholder="{{ __('Enter Slug') }}" value="">
                             </div>
                           </div>
 

@@ -42,12 +42,23 @@
     @media (max-width: 767px) {
         .breadcrumb-categories-wrapper {
             gap: 6px;
-            margin-top: 8px;
+            margin-top: 6px;
         }
 
         .breadcrumb-category-badge {
-            font-size: 12px;
-            padding: 5px 12px;
+            font-size: 11px;
+            padding: 4px 10px;
+        }
+
+        /* Reduce breadcrumb section height on mobile */
+        .full-row.bg-light.overlay-dark.py-5 {
+            padding-top: 10px !important;
+            padding-bottom: 10px !important;
+        }
+
+        .full-row.bg-light.overlay-dark.py-5 h3 {
+            font-size: 1.2rem !important;
+            margin-bottom: 6px !important;
         }
     }
 </style>

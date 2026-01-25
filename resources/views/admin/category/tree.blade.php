@@ -502,10 +502,10 @@
                     <ul class="category-tree" id="categoryTreeList">
                         @forelse($categories as $category)
                         <li class="category-item" data-category-id="{{ $category->id }}" data-type="category" data-status="{{ $category->status }}" data-featured="{{ $category->is_featured }}">
-                            <div class="category-header {{ $category->subs->count() > 0 ? 'has-children' : 'no-children' }}" data-category-toggle="{{ $category->id }}" data-has-subs="{{ $category->subs->count() > 0 ? '1' : '0' }}">
+                            <div class="category-header {{ $category->children->count() > 0 ? 'has-children' : 'no-children' }}" data-category-toggle="{{ $category->id }}" data-has-subs="{{ $category->children->count() > 0 ? '1' : '0' }}">
                                 <div class="category-info">
                                     <i class="fas fa-grip-vertical drag-handle"></i>
-                                    @if($category->subs->count() > 0)
+                                    @if($category->children->count() > 0)
                                     <i class="fas fa-chevron-right toggle-icon" id="toggle-{{ $category->id }}"></i>
                                     @else
                                     <span style="width: 18px;"></span>
@@ -522,9 +522,9 @@
                                             <span class="product-count">
                                                 <i class="fas fa-box"></i> {{ $category->total_products_count }} {{ __('products') }}
                                             </span>
-                                            @if($category->subs->count() > 0)
+                                            @if($category->children->count() > 0)
                                             <span class="product-count">
-                                                <i class="fas fa-layer-group"></i> {{ $category->subs->count() }} {{ __('subcategories') }}
+                                                <i class="fas fa-layer-group"></i> {{ $category->children->count() }} {{ __('subcategories') }}
                                             </span>
                                             @endif
                                         </div>
@@ -546,7 +546,7 @@
                                     <button class="action-btn btn-add-sub" data-action="add-subcategory" data-id="{{ $category->id }}" title="{{ __('Add Subcategory') }}">
                                         <i class="fas fa-plus"></i> Sub
                                     </button>
-                                    @if($category->canBeDeleted() && $category->subs->count() == 0)
+                                    @if($category->canBeDeleted() && $category->children->count() == 0)
                                     <button class="action-btn btn-delete" data-action="delete-category" data-id="{{ $category->id }}" title="{{ __('Delete') }}">
                                         <i class="fas fa-trash"></i>
                                     </button>
@@ -554,14 +554,14 @@
                                 </div>
                             </div>
 
-                            @if($category->subs->count() > 0)
+                            @if($category->children->count() > 0)
                             <div class="subcategory-list" id="subcategory-{{ $category->id }}">
-                                @foreach($category->subs as $subcategory)
+                                @foreach($category->children as $subcategory)
                                 <div class="subcategory-item" data-subcategory-id="{{ $subcategory->id }}" data-type="subcategory" data-category-id="{{ $category->id }}">
                                     <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
                                         <div class="category-info" style="flex: 1;">
                                             <i class="fas fa-grip-vertical drag-handle"></i>
-                                            @if($subcategory->childs->count() > 0)
+                                            @if($subcategory->children->count() > 0)
                                             <i class="fas fa-chevron-right toggle-icon" id="toggle-sub-{{ $subcategory->id }}" data-subcategory-toggle="{{ $subcategory->id }}"></i>
                                             @else
                                             <span style="width: 18px; display: inline-block;"></span>
@@ -578,9 +578,9 @@
                                                     <span class="product-count">
                                                         <i class="fas fa-box"></i> {{ $subcategory->total_products_count }} {{ __('products') }}
                                                     </span>
-                                                    @if($subcategory->childs->count() > 0)
+                                                    @if($subcategory->children->count() > 0)
                                                     <span class="product-count">
-                                                        <i class="fas fa-layer-group"></i> {{ $subcategory->childs->count() }} {{ __('child categories') }}
+                                                        <i class="fas fa-layer-group"></i> {{ $subcategory->children->count() }} {{ __('child categories') }}
                                                     </span>
                                                     @endif
                                                 </div>
@@ -597,7 +597,7 @@
                                             <button class="action-btn btn-add-sub" data-action="add-child" data-id="{{ $subcategory->id }}" data-category-id="{{ $category->id }}" title="{{ __('Add Child') }}">
                                                 <i class="fas fa-plus"></i> Child
                                             </button>
-                                            @if($subcategory->canBeDeleted() && $subcategory->childs->count() == 0)
+                                            @if($subcategory->canBeDeleted() && $subcategory->children->count() == 0)
                                             <button class="action-btn btn-delete" data-action="delete-subcategory" data-id="{{ $subcategory->id }}" title="{{ __('Delete') }}">
                                                 <i class="fas fa-trash"></i>
                                             </button>
@@ -606,9 +606,9 @@
                                     </div>
                                 </div>
 
-                                @if($subcategory->childs->count() > 0)
+                                @if($subcategory->children->count() > 0)
                                 <div class="child-list" id="child-{{ $subcategory->id }}" style="display: none;">
-                                    @foreach($subcategory->childs as $child)
+                                    @foreach($subcategory->children as $child)
                                     <div class="child-item" data-child-id="{{ $child->id }}" data-type="childcategory" data-subcategory-id="{{ $subcategory->id }}">
                                         <div class="category-info">
                                             <i class="fas fa-grip-vertical drag-handle"></i>
@@ -1185,7 +1185,7 @@ function editCategory(id) {
     });
 }
 
-// Edit subcategory
+// Edit subcategory (now using unified categories table)
 function editSubcategory(id) {
     var $modal = $('#editModal');
     
@@ -1202,7 +1202,7 @@ function editSubcategory(id) {
     }, 100);
     
     $.ajax({
-        url: '{{ url("admin/subcategory/edit") }}/' + id,
+        url: '{{ url("admin/category/edit") }}/' + id,
         method: 'GET',
         success: function(response) {
             $modal.find('.modal-body').html(response);
@@ -1214,7 +1214,7 @@ function editSubcategory(id) {
     });
 }
 
-// Edit childcategory
+// Edit childcategory (now using unified categories table)
 function editChildcategory(id) {
     var $modal = $('#editModal');
     
@@ -1231,7 +1231,7 @@ function editChildcategory(id) {
     }, 100);
     
     $.ajax({
-        url: '{{ url("admin/childcategory/edit") }}/' + id,
+        url: '{{ url("admin/category/edit") }}/' + id,
         method: 'GET',
         success: function(response) {
             $modal.find('.modal-body').html(response);
@@ -1260,14 +1260,17 @@ function addSubcategory(categoryId) {
     }, 100);
     
     $.ajax({
-        url: '{{ url("admin/subcategory/create") }}?category_id=' + categoryId,
+        url: '{{ url("admin/category/create") }}?parent_id=' + categoryId,
         method: 'GET',
         success: function(response) {
             $modal.find('.modal-body').html(response);
             
-            // Pre-select the category in the dropdown
+            // Set parent_id in a hidden field
             setTimeout(function() {
-                $modal.find('select[name="category_id"]').val(categoryId);
+                if ($modal.find('input[name="parent_id"]').length === 0) {
+                    $modal.find('form').append('<input type="hidden" name="parent_id" value="' + categoryId + '">');
+                    $modal.find('input[name="is_featured"]').val('0'); // Subcategories are not featured
+                }
             }, 100);
             
             attachFormHandler();
@@ -1278,7 +1281,7 @@ function addSubcategory(categoryId) {
     });
 }
 
-// Add childcategory
+// Add childcategory (using unified categories table with parent_id)
 function addChildcategory(subcategoryId, categoryId) {
     var $modal = $('#editModal');
     
@@ -1295,31 +1298,16 @@ function addChildcategory(subcategoryId, categoryId) {
     }, 100);
     
     $.ajax({
-        url: '{{ url("admin/childcategory/create") }}?subcategory_id=' + subcategoryId,
+        url: '{{ url("admin/category/create") }}?parent_id=' + subcategoryId,
         method: 'GET',
         success: function(response) {
             $modal.find('.modal-body').html(response);
             
-            // Pre-select the category and trigger subcategory load
+            // Set parent_id in a hidden field
             setTimeout(function() {
-                var $catSelect = $modal.find('select#cat');
-                var $subcatSelect = $modal.find('select#subcat');
-                
-                // Set category value
-                $catSelect.val(categoryId);
-                
-                // Trigger change to load subcategories
-                var selectedOption = $catSelect.find('option[value="' + categoryId + '"]');
-                if (selectedOption.length) {
-                    var loadUrl = selectedOption.data('href');
-                    if (loadUrl) {
-                        $.get(loadUrl, function(data) {
-                            $subcatSelect.html(data);
-                            $subcatSelect.prop('disabled', false);
-                            // Set subcategory value after loading
-                            $subcatSelect.val(subcategoryId);
-                        });
-                    }
+                if ($modal.find('input[name="parent_id"]').length === 0) {
+                    $modal.find('form').append('<input type="hidden" name="parent_id" value="' + subcategoryId + '">');
+                    $modal.find('input[name="is_featured"]').val('0'); // Child categories are not featured
                 }
             }, 100);
             
@@ -1347,7 +1335,7 @@ function deleteCategory(id) {
     }, 100);
 }
 
-// Delete subcategory
+// Delete subcategory (now using unified categories table)
 function deleteSubcategory(id) {
     var $modal = $('#confirmDeleteModal');
     
@@ -1355,7 +1343,7 @@ function deleteSubcategory(id) {
     hideModal($modal);
     
     // Set the delete form action
-    $modal.find('.delete-form').attr('action', '{{ url("admin/subcategory/delete") }}/' + id);
+    $modal.find('.delete-form').attr('action', '{{ url("admin/category/delete") }}/' + id);
     
     // Small delay to ensure cleanup is complete
     setTimeout(function() {
@@ -1363,7 +1351,7 @@ function deleteSubcategory(id) {
     }, 100);
 }
 
-// Delete childcategory
+// Delete childcategory (now using unified categories table)
 function deleteChildcategory(id) {
     var $modal = $('#confirmDeleteModal');
     
@@ -1371,7 +1359,7 @@ function deleteChildcategory(id) {
     hideModal($modal);
     
     // Set the delete form action
-    $modal.find('.delete-form').attr('action', '{{ url("admin/childcategory/delete") }}/' + id);
+    $modal.find('.delete-form').attr('action', '{{ url("admin/category/delete") }}/' + id);
     
     // Small delay to ensure cleanup is complete
     setTimeout(function() {

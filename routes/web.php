@@ -177,6 +177,23 @@ Route::prefix('admin')->group(function () {
         Route::get('/category/status/{id1}/{id2}', 'Admin\CategoryController@status')->name('admin-cat-status');
         Route::post('/category/reorder', 'Admin\CategoryController@reorder')->name('admin-cat-reorder');
 
+        //------------ ADMIN BRAND SECTION ------------
+
+        Route::get('/brand', 'Admin\BrandController@index')->name('admin-brand-index');
+        Route::post('/brand/store', 'Admin\BrandController@store')->name('admin-brand-store');
+        Route::post('/brand/update/{id}', 'Admin\BrandController@update')->name('admin-brand-update');
+        Route::delete('/brand/delete/{id}', 'Admin\BrandController@destroy')->name('admin-brand-delete');
+        Route::get('/brand/status/{id}/{status}', 'Admin\BrandController@status')->name('admin-brand-status');
+        Route::post('/brand/update-order', 'Admin\BrandController@updateOrder')->name('admin-brand-update-order');
+
+        // BRAND PRODUCTS SECTION
+        Route::get('/brand/{brand_id}/products', 'Admin\BrandProductController@index')->name('admin-brand-products');
+        Route::post('/brand-product/store', 'Admin\BrandProductController@store')->name('admin-brand-product-store');
+        Route::post('/brand-product/update/{id}', 'Admin\BrandProductController@update')->name('admin-brand-product-update');
+        Route::delete('/brand-product/delete/{id}', 'Admin\BrandProductController@destroy')->name('admin-brand-product-delete');
+        Route::get('/brand-product/status/{id}/{status}', 'Admin\BrandProductController@status')->name('admin-brand-product-status');
+        Route::post('/brand-product/update-order', 'Admin\BrandProductController@updateOrder')->name('admin-brand-product-update-order');
+
         //------------ ADMIN ATTRIBUTE SECTION ------------
 
         Route::get('/attribute/datatables', 'Admin\AttributeController@datatables')->name('admin-attr-datatables'); //JSON REQUEST

@@ -219,17 +219,6 @@
                                         </div>
                                         <div class="footer-area">
                                             <a href="{{ route('admin-order-invoice',$order->id) }}" class="mybtn1"><i class="fas fa-eye"></i> {{ __('View Invoice') }}</a>
-                                            
-                                            @php
-                                                $whatsappService = new \App\Services\WhatsAppNotificationService();
-                                                $whatsappLink = $whatsappService->generateWhatsAppLink($order);
-                                            @endphp
-                                            
-                                            @if($whatsappLink)
-                                                <a href="{{ $whatsappLink }}" target="_blank" class="mybtn1" style="background: #25D366; margin-left: 10px;">
-                                                    <i class="fab fa-whatsapp"></i> {{ __('Send to WhatsApp') }}
-                                                </a>
-                                            @endif
                                         </div>
                                     </div>
                                 </div>

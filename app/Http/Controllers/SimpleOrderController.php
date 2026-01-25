@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Log;
 use App\Models\User;
 use App\Models\Order;
 use Carbon\Carbon;
-use App\Services\WhatsAppNotificationService;
 
 class SimpleOrderController extends FrontBaseController
 {
@@ -172,21 +171,6 @@ class SimpleOrderController extends FrontBaseController
             Log::info('Attempting to save order...');
             $order->save();
             Log::info('Order saved successfully! Order #: ' . $order->order_number);
-
-            // Send WhatsApp notification automatically
-            try {
-                $whatsappService = new WhatsAppNotificationService();
-                $whatsappLink = $whatsappService->sendOrderNotification($order);
-                
-                if ($whatsappLink) {
-                    // Store the WhatsApp link in session for success page
-                    Session::put('whatsapp_notification_link', $whatsappLink);
-                    Log::info('WhatsApp notification link stored in session');
-                }
-            } catch (\Exception $e) {
-                // Don't fail the order if WhatsApp fails
-                Log::warning('WhatsApp notification failed: ' . $e->getMessage());
-            }
 
             // Clear cart
             Session::forget('cart');

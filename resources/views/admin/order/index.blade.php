@@ -397,7 +397,7 @@
                                                         <tr>
                                                             <th>{{ __('Customer Name') }}</th>
                                                             <th>{{ __('Phone Number') }}</th>
-                                                            <th>{{ __('Order Number') }}</th>
+                                                            <th>{{ __('Order Date') }}</th>
                                                             <th>{{ __('Shipping') }}</th>
                                                             <th>{{ __('Shipping Cost') }}</th>
                                                             <th>{{ __('Total Qty') }}</th>
@@ -583,7 +583,7 @@
                columns: [
                         { data: 'customer_name', name: 'customer_name' },
                         { data: 'customer_phone', name: 'customer_phone' },
-                        { data: 'id', name: 'id' },
+                        { data: 'created_at', name: 'created_at' },
                         { data: 'shipping_method', name: 'shipping_method', searchable: false, orderable: false },
                         { data: 'shipping_cost', name: 'shipping_cost', searchable: false, orderable: false },
                         { data: 'totalQty', name: 'totalQty' },

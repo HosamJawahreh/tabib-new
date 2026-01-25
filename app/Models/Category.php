@@ -7,12 +7,31 @@ use Illuminate\Support\Facades\App;
 
 class Category extends Model
 {
-    protected $fillable = ['name','slug','photo','image','is_featured','status'];
+    protected $fillable = ['name','slug','photo','image','is_featured','status','parent_id','sort_order'];
     public $timestamps = false;
 
+    // Legacy method for backward compatibility - now points to children
     public function subs()
     {
-    	return $this->hasMany('App\Models\Subcategory')->where('status','=',1)->orderBy('sort_order', 'desc');
+    	return $this->children();
+    }
+
+    // New parent_id based relationship - children categories
+    public function children()
+    {
+        return $this->hasMany('App\Models\Category', 'parent_id', 'id')->where('status','=',1)->orderBy('sort_order', 'desc');
+    }
+
+    // Legacy typo relationship for backward compatibility (childs -> children)
+    public function childs()
+    {
+        return $this->children();
+    }
+
+    // Get parent category
+    public function parent()
+    {
+        return $this->belongsTo('App\Models\Category', 'parent_id', 'id');
     }
 
     // Multi-category relationship (many-to-many)
@@ -99,14 +118,9 @@ class Category extends Model
     {
         $count = $this->products()->count();
         
-        // Add products from subcategories
-        foreach ($this->subs as $sub) {
-            $count += $sub->getProductsCount();
-            
-            // Add products from child categories
-            foreach ($sub->childs as $child) {
-                $count += $child->getProductsCount();
-            }
+        // Add products from all children recursively (parent_id structure)
+        foreach ($this->children as $child) {
+            $count += $child->getTotalProductsCountAttribute();
         }
         
         return $count;
@@ -120,20 +134,19 @@ class Category extends Model
             return false;
         }
         
-        // Check if any subcategories have products
-        foreach ($this->subs as $sub) {
-            if ($sub->getProductsCount() > 0) {
+        // Check if any children have products (recursive)
+        foreach ($this->children as $child) {
+            if (!$child->canBeDeleted()) {
                 return false;
-            }
-            
-            // Check if any child categories have products
-            foreach ($sub->childs as $child) {
-                if ($child->getProductsCount() > 0) {
-                    return false;
-                }
             }
         }
         
         return true;
+    }
+
+    // Get products count for this category only (used in tree view)
+    public function getProductsCount()
+    {
+        return $this->products()->count();
     }
 }

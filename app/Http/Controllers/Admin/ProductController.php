@@ -221,16 +221,17 @@ class ProductController extends AdminBaseController
     //*** GET Request
     public function create($slug)
     {
-        // Get only featured categories (no subs/childs)
-        $cats = Category::where('is_featured', 1)
+        // Get ONLY featured categories (parent_id = 0 AND is_featured = 1) as main categories
+        // Children will be loaded recursively via parent_id relationship
+        $cats = Category::where('parent_id', 0)
+                        ->where('is_featured', 1)
                         ->where('status', 1)
-                        ->with(['subs' => function($query) {
-                            $query->where('status', 1)->orderBy('sort_order', 'desc')->with(['childs' => function($q) {
+                        ->with(['children' => function($query) {
+                            $query->where('status', 1)->orderBy('sort_order', 'desc')->with(['children' => function($q) {
                                 $q->where('status', 1)->orderBy('sort_order', 'desc');
                             }]);
                         }])
                         ->orderBy('sort_order', 'desc')
-                        ->limit(10)
                         ->get();
         
         $sign = $this->curr;
@@ -1015,31 +1016,38 @@ class ProductController extends AdminBaseController
     //*** GET Request
     public function edit($id)
     {
-        // Get only featured categories (no subs/childs)
-        $cats = Category::where('is_featured', 1)
+        // Get ONLY featured categories (parent_id = 0 AND is_featured = 1) as main categories
+        // Children will be loaded recursively via parent_id relationship
+        $cats = Category::where('parent_id', 0)
+                        ->where('is_featured', 1)
                         ->where('status', 1)
-                        ->with(['subs' => function($query) {
-                            $query->where('status', 1)->orderBy('sort_order', 'desc')->with(['childs' => function($q) {
+                        ->with(['children' => function($query) {
+                            $query->where('status', 1)->orderBy('sort_order', 'desc')->with(['children' => function($q) {
                                 $q->where('status', 1)->orderBy('sort_order', 'desc');
                             }]);
                         }])
                         ->orderBy('sort_order', 'desc')
-                        ->limit(10)
                         ->get();
         
         $data = Product::with('translations', 'galleries', 'categories')->findOrFail($id);
         $sign = $this->curr;
         // Get English language (is_default = 1) for translations, not Arabic
         $languages = \App\Models\AdminLanguage::where('is_default', 1)->get();
+        
+        // Get ALL selected category IDs from pivot table (all levels)
+        $selectedCategoryIds = DB::table('category_product')
+            ->where('product_id', $id)
+            ->pluck('category_id')
+            ->toArray();
 
         if ($data->type == 'Digital') {
-            return view('admin.product.edit.digital', compact('cats', 'data', 'sign', 'languages'));
+            return view('admin.product.edit.digital', compact('cats', 'data', 'sign', 'languages', 'selectedCategoryIds'));
         } elseif ($data->type == 'License') {
-            return view('admin.product.edit.license', compact('cats', 'data', 'sign', 'languages'));
+            return view('admin.product.edit.license', compact('cats', 'data', 'sign', 'languages', 'selectedCategoryIds'));
         } elseif ($data->type == 'Listing') {
-            return view('admin.product.edit.listing', compact('cats', 'data', 'sign', 'languages'));
+            return view('admin.product.edit.listing', compact('cats', 'data', 'sign', 'languages', 'selectedCategoryIds'));
         } else {
-            return view('admin.product.edit.physical', compact('cats', 'data', 'sign', 'languages'));
+            return view('admin.product.edit.physical', compact('cats', 'data', 'sign', 'languages', 'selectedCategoryIds'));
         }
 
     }

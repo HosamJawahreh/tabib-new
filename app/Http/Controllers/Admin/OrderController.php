@@ -77,9 +77,8 @@ class OrderController extends AdminBaseController
                             ->addColumn('customer_phone', function(Order $data) {
                                 return $data->customer_phone;
                             })
-                            ->editColumn('id', function(Order $data) {
-                                $id = '<a href="'.route('admin-order-invoice',$data->id).'">'.$data->order_number.'</a>';
-                                return $id;
+                            ->editColumn('created_at', function(Order $data) {
+                                return $data->created_at->format('Y-m-d H:i');
                             })
                             ->addColumn('shipping_method', function(Order $data) {
                                 // Show Arabic title if available (always in admin dashboard)
@@ -137,27 +136,15 @@ class OrderController extends AdminBaseController
                                 return $dropdown;
                             })
                             ->addColumn('action', function(Order $data) {
-                                // Generate WhatsApp link
-                                $whatsappService = new \App\Services\WhatsAppNotificationService();
-                                $whatsappLink = $whatsappService->generateWhatsAppLink($data);
-                                
-                                $whatsappButton = '';
-                                if ($whatsappLink) {
-                                    $whatsappButton = '<a href="' . $whatsappLink . '" target="_blank" class="btn-action btn-whatsapp" title="'.__('Send to WhatsApp').'" style="background: #25D366; color: white;">
-                                        <i class="fab fa-whatsapp"></i>
-                                    </a>';
-                                }
-                                
                                 $actions = '
                                 <div class="action-btns-inline">
                                     <a href="' . route('admin-order-show',$data->id) . '" class="btn-action btn-view" title="'.__('View Details').'">
                                         <i class="fas fa-eye"></i>
                                     </a>
-                                    ' . $whatsappButton . '
                                 </div>';
                                 return $actions;
                             })
-                            ->rawColumns(['id','shipping_method','shipping_cost','status','action'])
+                            ->rawColumns(['created_at','shipping_method','shipping_cost','status','action'])
                             ->toJson(); //--- Returning Json Data To Client Side
     }
 
