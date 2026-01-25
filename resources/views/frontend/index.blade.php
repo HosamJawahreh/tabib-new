@@ -1140,6 +1140,9 @@
 {{-- Category Filter Script --}}
 <script src="{{ asset('assets/front/js/category-filter.js') }}"></script>
 
+{{-- Category & Scroll Persistence Script --}}
+<script src="{{ asset('assets/front/js/category-scroll-persistence.js') }}?v={{ time() }}"></script>
+
 <script>
 // Wait for both jQuery and DOM to be ready
 (function() {
