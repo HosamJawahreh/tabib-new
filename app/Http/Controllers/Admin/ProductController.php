@@ -92,6 +92,20 @@ class ProductController extends AdminBaseController
                 $price = $data->price * $this->curr->value;
                 return '<div style="text-align: center;"><span style="font-weight: 600; color: #10b981;">' . PriceHelper::showAdminCurrencyPrice($price) . '</span></div>';
             })
+            ->addColumn('category', function (Product $data) {
+                // Get categories from many-to-many relationship (category_product pivot table)
+                $categories = $data->categories()->pluck('name')->toArray();
+
+                if (!empty($categories)) {
+                    $categoryBadges = [];
+                    foreach ($categories as $catName) {
+                        $categoryBadges[] = '<span style="display: inline-block; background: #667eea; color: white; padding: 4px 10px; border-radius: 12px; font-size: 11px; margin: 2px;">' . $catName . '</span>';
+                    }
+                    return '<div style="text-align: center;">' . implode(' ', $categoryBadges) . '</div>';
+                } else {
+                    return '<div style="text-align: center;"><small style="color: #a0aec0;"><i class="fas fa-minus"></i> ' . __('No Category') . '</small></div>';
+                }
+            })
             ->addColumn('order_count', function (Product $data) {
                 // Calculate order count from cart JSON in orders table
                 $orders = DB::table('orders')->select('cart')->get();
@@ -112,22 +126,12 @@ class ProductController extends AdminBaseController
             })
             ->addColumn('status', function (Product $data) {
                 $checked = $data->status == 1 ? 'checked' : '';
-                $category = '';
-
-                // Get categories from many-to-many relationship (category_product pivot table)
-                $categories = $data->categories()->pluck('name')->toArray();
-
-                if (!empty($categories)) {
-                    $categoryNames = implode(', ', $categories);
-                    $category = '<div style="margin-top: 8px;"><small style="color: #718096;"><i class="fas fa-tags"></i> ' . $categoryNames . '</small></div>';
-                }
 
                 return '<div style="text-align: center;">
                             <label class="switch">
                                 <input type="checkbox" class="status-toggle" data-id="'.$data->id.'" '.$checked.'>
                                 <span class="slider round"></span>
                             </label>
-                            '.$category.'
                         </div>';
             })
             ->addColumn('edit', function (Product $data) {
@@ -144,7 +148,7 @@ class ProductController extends AdminBaseController
                     </a>
                 </div>';
             })
-            ->rawColumns(['sku', 'image', 'name', 'price', 'order_count', 'status', 'edit', 'delete'])
+            ->rawColumns(['sku', 'image', 'name', 'category', 'price', 'order_count', 'status', 'edit', 'delete'])
             ->toJson(); //--- Returning Json Data To Client Side
     }
 
@@ -389,10 +393,10 @@ class ProductController extends AdminBaseController
         list(, $image) = explode(',', $image);
         $image = base64_decode($image);
         $image_name = time() . Str::random(8) . '.webp';
-        $path = 'assets/images/products/' . $image_name;
+        $path = public_path('assets/images/products/' . $image_name);
 
         // Create temporary file from base64 to process with Intervention Image
-        $tempPath = 'assets/images/products/temp_' . time() . '.png';
+        $tempPath = public_path('assets/images/products/temp_' . time() . '.png');
         file_put_contents($tempPath, $image);
 
         // Convert to WebP with AGGRESSIVE compression for smallest file size
@@ -676,45 +680,43 @@ class ProductController extends AdminBaseController
         }
 
         // Set Thumbnail - only if photo exists
-        $photoPath = public_path() . '/assets/images/products/' . $prod->photo;
+        $photoPath = public_path('assets/images/products/' . $prod->photo);
         if (file_exists($photoPath)) {
             // Create thumbnail with MAXIMUM compression
             try {
                 // Ensure thumbnails directory exists
-                if (!file_exists(public_path() . '/assets/images/thumbnails/')) {
-                    mkdir(public_path() . '/assets/images/thumbnails/', 0755, true);
+                $thumbnailDir = public_path('assets/images/thumbnails/');
+                if (!file_exists($thumbnailDir)) {
+                    mkdir($thumbnailDir, 0755, true);
                 }
 
-                // Check if photo file exists
-                if (file_exists($photoPath)) {
-                    $img = Image::make($photoPath);
+                $img = Image::make($photoPath);
 
-                    // Ultra-compress thumbnails at 60% quality for smallest file size
-                    // This matches our optimization strategy for fastest homepage loading
-                    $img->resize(285, 285, function ($constraint) {
-                        $constraint->aspectRatio();
-                        $constraint->upsize();
-                    });
+                // Ultra-compress thumbnails at 60% quality for smallest file size
+                // This matches our optimization strategy for fastest homepage loading
+                $img->resize(285, 285, function ($constraint) {
+                    $constraint->aspectRatio();
+                    $constraint->upsize();
+                });
 
-                    $thumbnail = time() . Str::random(8) . '.webp';
-                    $thumbnailPath = public_path() . '/assets/images/thumbnails/' . $thumbnail;
+                $thumbnail = time() . Str::random(8) . '.webp';
+                $thumbnailPath = public_path('assets/images/thumbnails/' . $thumbnail);
 
-                    // Save as WebP with 60% quality for ultra-compression (smallest size)
-                    $img->encode('webp', 60)->save($thumbnailPath);
-                    $prod->thumbnail = $thumbnail;
+                // Save as WebP with 60% quality for ultra-compression (smallest size)
+                $img->encode('webp', 60)->save($thumbnailPath);
+                $prod->thumbnail = $thumbnail;
 
-                    $fileSize = filesize($thumbnailPath);
-                    Log::info('Thumbnail created (WebP): ' . $thumbnail . ' (' . round($fileSize / 1024, 2) . ' KB)');
-                } else {
-                    Log::error('Photo file does not exist for thumbnail creation: ' . $photoPath);
-                    $prod->thumbnail = null;
-                }
+                $fileSize = filesize($thumbnailPath);
+                Log::info('Thumbnail created (WebP): ' . $thumbnail . ' (' . round($fileSize / 1024, 2) . ' KB)');
             } catch (\Exception $e) {
                 // Log the error so we can see what went wrong
                 Log::error('Thumbnail creation failed: ' . $e->getMessage() . ' - Photo path: ' . $photoPath);
                 // Set thumbnail to null if creation fails
                 $prod->thumbnail = null;
             }
+        } else {
+            Log::error('Photo file does not exist for thumbnail creation: ' . $photoPath);
+            $prod->thumbnail = null;
         }
         $prod->update();
 

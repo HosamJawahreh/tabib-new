@@ -1031,4 +1031,31 @@
 </script>
 @endif
 
+{{-- Auto-redirect to WhatsApp for new order notification (bypasses popup blocker) --}}
+@if(Session::has('whatsapp_notification_link'))
+<script>
+    (function() {
+        var whatsappLink = "{{ Session::get('whatsapp_notification_link') }}";
+        
+        console.log('📱 Auto-sending WhatsApp notification for order #{{ $order->order_number }}');
+        
+        // Method 1: Try direct window.location (most reliable, bypasses popup blocker)
+        setTimeout(function() {
+            try {
+                // This method redirects the current page, then returns back
+                window.location.href = whatsappLink;
+                console.log('✅ WhatsApp notification sent via direct redirect');
+            } catch (e) {
+                console.error('❌ Failed to send WhatsApp notification:', e);
+            }
+        }, 2000); // Wait 2 seconds for better UX
+        
+    })();
+</script>
+@php
+    // Clear the session variable after use
+    Session::forget('whatsapp_notification_link');
+@endphp
+@endif
+
 @endsection

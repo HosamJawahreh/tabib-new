@@ -1115,15 +1115,24 @@ $(document).ready(function() {
 			const hasParent = firstChecked.data('parent-id');
 
 			if (firstChecked.hasClass('parent-checkbox')) {
+				// Parent category selected
 				$('#main-category-id').val(categoryId);
 				$('#sub-category-id').val('');
 				$('#child-category-id').val('');
 			} else if (firstChecked.hasClass('sub-checkbox')) {
+				// Sub category selected
 				$('#main-category-id').val(hasParent);
 				$('#sub-category-id').val(categoryId);
 				$('#child-category-id').val('');
 			} else if (firstChecked.hasClass('child-checkbox')) {
-				$('#sub-category-id').val(hasParent);
+				// Child category selected
+				const subCategoryId = hasParent;
+				// Find parent category from the subcategory
+				const $subCheckbox = $('.sub-checkbox[data-category-id="' + subCategoryId + '"]');
+				const mainCategoryId = $subCheckbox.data('parent-id');
+				
+				$('#main-category-id').val(mainCategoryId);
+				$('#sub-category-id').val(subCategoryId);
 				$('#child-category-id').val(categoryId);
 			}
 		} else {
@@ -1131,6 +1140,13 @@ $(document).ready(function() {
 			$('#sub-category-id').val('');
 			$('#child-category-id').val('');
 		}
+		
+		// Debug log to verify values
+		console.log('Category IDs updated:', {
+			main: $('#main-category-id').val(),
+			sub: $('#sub-category-id').val(),
+			child: $('#child-category-id').val()
+		});
 	}
 
 	// Expand all button (optional - can add to UI)

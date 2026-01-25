@@ -137,11 +137,23 @@ class OrderController extends AdminBaseController
                                 return $dropdown;
                             })
                             ->addColumn('action', function(Order $data) {
+                                // Generate WhatsApp link
+                                $whatsappService = new \App\Services\WhatsAppNotificationService();
+                                $whatsappLink = $whatsappService->generateWhatsAppLink($data);
+                                
+                                $whatsappButton = '';
+                                if ($whatsappLink) {
+                                    $whatsappButton = '<a href="' . $whatsappLink . '" target="_blank" class="btn-action btn-whatsapp" title="'.__('Send to WhatsApp').'" style="background: #25D366; color: white;">
+                                        <i class="fab fa-whatsapp"></i>
+                                    </a>';
+                                }
+                                
                                 $actions = '
                                 <div class="action-btns-inline">
                                     <a href="' . route('admin-order-show',$data->id) . '" class="btn-action btn-view" title="'.__('View Details').'">
                                         <i class="fas fa-eye"></i>
                                     </a>
+                                    ' . $whatsappButton . '
                                 </div>';
                                 return $actions;
                             })

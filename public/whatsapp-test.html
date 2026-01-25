@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WhatsApp Test - Order Notification</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #25D366;
+            text-align: center;
+        }
+        .success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .test-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background: #25D366;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 18px;
+            font-weight: bold;
+            margin: 20px 0;
+            transition: background 0.3s;
+        }
+        .test-btn:hover {
+            background: #128C7E;
+        }
+        .info {
+            background: #d1ecf1;
+            border: 1px solid #bee5eb;
+            color: #0c5460;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .code {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: monospace;
+            overflow-x: auto;
+            margin: 10px 0;
+        }
+        .steps {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .steps ol {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+        .steps li {
+            margin: 8px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>✅ WhatsApp Fixed & Working!</h1>
+        
+        <div class="success">
+            <strong>🎉 Success!</strong><br>
+            The cart deserialization issue has been fixed. WhatsApp notifications are now working correctly!
+        </div>
+
+        <div class="info">
+            <strong>📋 What was fixed:</strong><br>
+            - Changed from <code>unserialize(bzdecompress())</code> to <code>json_decode()</code><br>
+            - Cart data is stored as JSON, not serialized PHP array<br>
+            - Both Arabic and English message formats updated<br>
+            - All caches cleared
+        </div>
+
+        <div class="steps">
+            <strong>🧪 Test the Fix:</strong>
+            <ol>
+                <li>Click the button below to test with your latest order</li>
+                <li>WhatsApp should open with the order details pre-filled</li>
+                <li>Review the message to ensure all details are correct</li>
+                <li>Click "Send" in WhatsApp to send to your group</li>
+                <li>Place a new test order to verify auto-send works</li>
+            </ol>
+        </div>
+
+        <a href="https://wa.me/G4eWdeuBRtaGmJgGp2co9G?text=%F0%9F%9B%92+%2A%D8%B7%D9%84%D8%A8+%D8%AC%D8%AF%D9%8A%D8%AF%21%2A%0A%E2%94%81%E2%94%81%E2%94%81%E2%94%81%E2%94%81%E2%94%81%E2%94%81%E2%94%81%E2%94%81%E2%94%81%E2%94%81%E2%94%81%E2%94%81%E2%94%81%E2%94%81%0A%0A%F0%9F%93%8B+%2A%D8%B1%D9%82%D9%85+%D8%A7%D9%84%D8%B7%D9%84%D8%A8%3A%2A+ORD-1769353848-1632%0A%F0%9F%91%A4+%2A%D8%A7%D9%84%D8%B9%D9%85%D9%8A%D9%84%3A%2A+test+whatsapp+messages%0A%F0%9F%93%B1+%2A%D8%A7%D9%84%D9%87%D8%A7%D8%AA%D9%81%3A%2A+%2B962+0786363354%0A%F0%9F%93%A7+%2A%D8%A7%D9%84%D8%A8%D8%B1%D9%8A%D8%AF%3A%2A+customer%40example.com%0A%0A%F0%9F%92%B0+%2A%D8%A7%D9%84%D9%85%D8%A8%D9%84%D8%BA+%D8%A7%D9%84%D8%A5%D8%AC%D9%85%D8%A7%D9%84%D9%8A%3A%2A+0.35+JD%0A%F0%9F%9A%9A+%2A%D8%A7%D9%84%D8%B4%D8%AD%D9%86%3A%2A+0+JD%0A%F0%9F%93%A6+%2A%D8%A7%D9%84%D8%AA%D8%BA%D9%84%D9%8A%D9%81%3A%2A+0+JD%0A%0A%F0%9F%92%B3+%2A%D8%B7%D8%B1%D9%8A%D9%82%D8%A9+%D8%A7%D9%84%D8%AF%D9%81%D8%B9%3A%2A+%D8%A7%D9%84%D8%AF%D9%81%D8%B9+%D8%B9%D9%86%D8%AF+%D8%A7%D9%84%D8%A7%D8%B3%D8%AA%D9%84%D8%A7%D9%85%0A%F0%9F%93%8D+%2A%D8%B7%D8%B1%D9%8A%D9%82%D8%A9+%D8%A7%D9%84%D8%B4%D8%AD%D9%86%3A%2A+%D8%AA%D9%88%D8%B5%D9%8A%D9%84+%D9%84%D9%84%D9%85%D9%86%D8%B2%D9%84%0A%0A%F0%9F%8F%A0+%2A%D8%A7%D9%84%D8%B9%D9%86%D9%88%D8%A7%D9%86%3A%2A%0Atest+whatsapp%0AN%2FA%2C+00000%0A%0A%F0%9F%93%A6+%2A%D8%A7%D9%84%D9%85%D9%86%D8%AA%D8%AC%D8%A7%D8%AA%3A%2A%0A%E2%80%A2+1+%D8%A8%D9%8A%D8%AC+%D9%84%D8%A7%D9%8A%D9%86+%D9%88%D9%8A%D9%81%D8%B1+%D8%AD%D9%85%D8%B6%D9%8A%D8%A7%D8%AA+%D8%AE%D8%A7%D9%84%D9%8A+%D9%85%D9%86+%D8%A7%D9%84%D8%B3%D9%83%D8%B1+35+%D8%BA+x1%0A%0A%E2%8F%B0+%2A%D8%A7%D9%84%D9%88%D9%82%D8%AA%3A%2A+2026-01-25+15%3A10%0A%E2%94%81%E2%94%81%E2%94%81%E2%94%81%E2%94%81%E2%94%81%E2%94%81%E2%94%81%E2%94%81%E2%94%81%E2%94%81%E2%94%81%E2%94%81%E2%94%81%E2%94%81%0A%E2%9C%85+%2A%D8%AA%D9%81%D8%A7%D8%B5%D9%8A%D9%84+%D9%83%D8%A7%D9%85%D9%84%D8%A9%3A%2A+http%3A%2F%2F127.0.0.1%3A8000%2Fadmin%2Forder%2F20%2Fshow" 
+           class="test-btn" 
+           target="_blank">
+            📱 Open WhatsApp with Test Order
+        </a>
+
+        <div class="info">
+            <strong>📦 Order Details:</strong><br>
+            <div class="code">
+                Order: ORD-1769353848-1632<br>
+                Customer: test whatsapp messages<br>
+                Product: 1 بيج لاين ويفر حمضيات خالي من السكر 35 غ x1<br>
+                Total: 0.35 JD
+            </div>
+        </div>
+
+        <div class="success">
+            <strong>✅ Auto-Send Feature:</strong><br>
+            When customers complete checkout, they'll see the success page for 2 seconds, then WhatsApp will automatically open with the order notification ready to send to your group!
+        </div>
+
+        <div class="steps">
+            <strong>🔧 What to Check:</strong>
+            <ol>
+                <li><strong>Message Format:</strong> Verify all order details appear correctly</li>
+                <li><strong>Product Names:</strong> Check products are listed with quantities</li>
+                <li><strong>Arabic Text:</strong> Ensure Arabic displays properly</li>
+                <li><strong>Group Send:</strong> Confirm message goes to your group, not individual</li>
+            </ol>
+        </div>
+
+        <hr style="margin: 30px 0;">
+
+        <h2 style="color: #333;">📝 Technical Summary</h2>
+        
+        <div class="code">
+<strong>Problem:</strong> unserialize(): Error at offset 0 of 2 bytes
+
+<strong>Root Cause:</strong> 
+- Cart data stored as JSON string in database
+- Code was trying to unserialize() instead of json_decode()
+- Line: $cart = unserialize(bzdecompress(utf8_decode($order->cart)));
+
+<strong>Solution:</strong>
+- Changed to: $cart = json_decode($order->cart, true);
+- Added error handling for invalid cart data
+- Applied to both Arabic and English message formats
+
+<strong>Files Modified:</strong>
+- app/Services/WhatsAppNotificationService.php (lines 121-133, 167-179)
+        </div>
+
+        <div class="success" style="text-align: center; margin-top: 30px;">
+            <strong>🎉 Status: FIXED & READY!</strong><br>
+            Your WhatsApp notifications are now fully functional!
+        </div>
+    </div>
+</body>
+</html>

@@ -94,6 +94,7 @@
 									                        <th style="text-align: center;">{{ __("SKU") }}</th>
 									                        <th style="text-align: center;">{{ __("Image") }}</th>
 									                        <th style="text-align: center;">{{ __("Name") }}</th>
+									                        <th style="text-align: center;">{{ __("Category") }}</th>
 									                        <th style="text-align: center;">{{ __("Price") }}</th>
 									                        <th style="text-align: center;">{{ __("Order Count") }}</th>
 									                        <th style="text-align: center;">{{ __("Status") }}</th>
@@ -277,6 +278,7 @@
                         { data: 'sku', name: 'sku' },
                         { data: 'image', name: 'photo', searchable: false, orderable: false },
                         { data: 'name', name: 'name' },
+                        { data: 'category', name: 'category', searchable: false, orderable: false },
                         { data: 'price', name: 'price' },
                         { data: 'order_count', name: 'order_count', searchable: false, orderable: false },
                         { data: 'status', searchable: false, orderable: false},

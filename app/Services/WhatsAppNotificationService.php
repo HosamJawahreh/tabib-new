@@ -4,50 +4,41 @@ namespace App\Services;
 
 use App\Models\Order;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Http;
 
 class WhatsAppNotificationService
 {
     /**
-     * Send order notification to WhatsApp using CallMeBot API
+     * Generate WhatsApp notification link using wa.me
      * 
-     * CallMeBot is completely FREE and simple to use.
-     * Setup instructions: https://www.callmebot.com/blog/free-api-whatsapp-messages/
+     * This is 100% FREE - no API, no limits, no registration needed!
+     * Creates a clickable link that opens WhatsApp with pre-filled message.
      * 
      * SETUP STEPS:
-     * 1. Save +34 644 44 84 40 in your phone contacts as "CallMeBot"
-     * 2. Send this message to CallMeBot: "I allow callmebot to send me messages"
-     * 3. You'll receive your API key
-     * 4. Add to .env: WHATSAPP_PHONE=962XXXXXXXXX and WHATSAPP_API_KEY=your_key
+     * 1. Add to .env:
+     *    WHATSAPP_PHONE=962791234567 (group admin or your WhatsApp number with country code)
+     *    Or for WhatsApp Group:
+     *    WHATSAPP_GROUP_ID=962XXXXXXXXX-1234567890 (group ID format)
+     * 
+     * 2. The system will generate a clickable link for each order
+     * 3. Click the link to send notification to WhatsApp
+     * 
+     * How to get Group ID:
+     * 1. Export your WhatsApp group chat
+     * 2. Or use a bot to get the group ID
+     * 3. Format: countrycode+number-timestamp (e.g., 962791234567-1234567890)
      */
     public function sendOrderNotification(Order $order)
     {
         try {
-            $phone = env('WHATSAPP_PHONE');
-            $apiKey = env('WHATSAPP_API_KEY');
-
-            // Check if WhatsApp is configured
-            if (!$phone || !$apiKey) {
-                Log::info('WhatsApp not configured. Skipping notification.');
-                return false;
-            }
-
-            $message = $this->formatOrderMessage($order);
+            // Generate WhatsApp link
+            $link = $this->generateWhatsAppLink($order);
             
-            // CallMeBot API endpoint
-            $url = "https://api.callmebot.com/whatsapp.php";
-            
-            $response = Http::get($url, [
-                'phone' => $phone,
-                'text' => $message,
-                'apikey' => $apiKey
-            ]);
-
-            if ($response->successful()) {
-                Log::info("WhatsApp notification sent successfully for Order #{$order->order_number}");
-                return true;
+            if ($link) {
+                Log::info("Order #{$order->order_number} WhatsApp notification link generated: {$link}");
+                // Return the link so it can be used for auto-redirect or stored
+                return $link;
             } else {
-                Log::error("WhatsApp notification failed: " . $response->body());
+                Log::warning("WhatsApp link could not be generated - check WHATSAPP_PHONE or WHATSAPP_GROUP_ID in .env");
                 return false;
             }
 
@@ -55,6 +46,31 @@ class WhatsAppNotificationService
             Log::error("WhatsApp notification error: " . $e->getMessage());
             return false;
         }
+    }
+
+    /**
+     * Generate WhatsApp wa.me link for an order
+     * This can be used in admin panel or emails
+     */
+    public function generateWhatsAppLink(Order $order)
+    {
+        $phone = env('WHATSAPP_PHONE');
+        $groupId = env('WHATSAPP_GROUP_ID');
+
+        // Use group ID if available, otherwise use phone number
+        $recipient = $groupId ?: $phone;
+
+        if (!$recipient) {
+            return null;
+        }
+
+        $message = $this->formatOrderMessage($order);
+        $encodedMessage = urlencode($message);
+
+        // Generate wa.me link
+        // For individual: https://wa.me/962791234567?text=message
+        // For group: https://wa.me/962791234567-1234567890?text=message
+        return "https://wa.me/{$recipient}?text={$encodedMessage}";
     }
 
     /**
@@ -99,16 +115,37 @@ class WhatsAppNotificationService
         }
         
         $message .= "📦 *المنتجات:*\n";
-        $cart = unserialize(bzdecompress(utf8_decode($order->cart)));
-        foreach ($cart as $key => $item) {
-            $message .= "• {$item['item']['name']} x{$item['qty']}\n";
+        
+        // Cart is stored as JSON string
+        $cart = json_decode($order->cart, true);
+        
+        if (is_array($cart)) {
+            $totalItems = 0;
+            foreach ($cart as $key => $item) {
+                $itemName = $item['item']['name'] ?? 'Unknown Product';
+                $itemQty = $item['qty'] ?? 1;
+                $itemPrice = isset($item['price']) ? $item['price'] : 0;
+                $itemTotal = $itemPrice * $itemQty;
+                
+                $message .= "━━━━━━━━━━━━━━━\n";
+                $message .= "*{$itemName}*\n";
+                $message .= "   الكمية: {$itemQty} قطعة\n";
+                $message .= "   السعر: {$itemPrice} {$order->currency_sign}\n";
+                $message .= "   المجموع: {$itemTotal} {$order->currency_sign}\n";
+                
+                $totalItems += $itemQty;
+            }
+            $message .= "━━━━━━━━━━━━━━━\n";
+            $message .= "📊 *إجمالي القطع:* {$totalItems}\n";
+        } else {
+            $message .= "• [Error loading products]\n";
         }
         
-        $message .= "\n⏰ *الوقت:* " . $order->created_at->format('Y-m-d H:i') . "\n";
-        $message .= "━━━━━━━━━━━━━━━\n";
-        $message .= "✅ *تفاصيل كاملة:* " . route('admin-order-show', $order->id);
+        $message .= "\n⏰ *وقت الطلب:* " . $order->created_at->format('Y-m-d H:i') . "\n";
+        $message .= "\n━━━━━━━━━━━━━━━\n";
+        $message .= "🔗 *رابط مباشر للطلب:*\n" . route('admin-order-show', $order->id);
         
-        return urlencode($message);
+        return $message; // Return plain message, will be encoded in generateWhatsAppLink
     }
 
     /**
@@ -138,16 +175,37 @@ class WhatsAppNotificationService
         }
         
         $message .= "📦 *Products:*\n";
-        $cart = unserialize(bzdecompress(utf8_decode($order->cart)));
-        foreach ($cart as $key => $item) {
-            $message .= "• {$item['item']['name']} x{$item['qty']}\n";
+        
+        // Cart is stored as JSON string
+        $cart = json_decode($order->cart, true);
+        
+        if (is_array($cart)) {
+            $totalItems = 0;
+            foreach ($cart as $key => $item) {
+                $itemName = $item['item']['name'] ?? 'Unknown Product';
+                $itemQty = $item['qty'] ?? 1;
+                $itemPrice = isset($item['price']) ? $item['price'] : 0;
+                $itemTotal = $itemPrice * $itemQty;
+                
+                $message .= "━━━━━━━━━━━━━━━\n";
+                $message .= "*{$itemName}*\n";
+                $message .= "   Quantity: {$itemQty} pcs\n";
+                $message .= "   Price: {$itemPrice} {$order->currency_sign}\n";
+                $message .= "   Subtotal: {$itemTotal} {$order->currency_sign}\n";
+                
+                $totalItems += $itemQty;
+            }
+            $message .= "━━━━━━━━━━━━━━━\n";
+            $message .= "📊 *Total Items:* {$totalItems}\n";
+        } else {
+            $message .= "• [Error loading products]\n";
         }
         
-        $message .= "\n⏰ *Time:* " . $order->created_at->format('Y-m-d H:i') . "\n";
-        $message .= "━━━━━━━━━━━━━━━\n";
-        $message .= "✅ *Full Details:* " . route('admin-order-show', $order->id);
+        $message .= "\n⏰ *Order Time:* " . $order->created_at->format('Y-m-d H:i') . "\n";
+        $message .= "\n━━━━━━━━━━━━━━━\n";
+        $message .= "🔗 *Direct Order Link:*\n" . route('admin-order-show', $order->id);
         
-        return urlencode($message);
+        return $message; // Return plain message, will be encoded in generateWhatsAppLink
     }
 
     /**
