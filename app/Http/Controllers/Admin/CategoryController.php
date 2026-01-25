@@ -49,6 +49,15 @@ class CategoryController extends AdminBaseController
         return view('admin.category.index');
     }
 
+    public function tree()
+    {
+        $categories = Category::where('is_featured', 1)
+                             ->with(['subs.childs'])
+                             ->orderBy('id', 'desc')
+                             ->get();
+        return view('admin.category.tree', compact('categories'));
+    }
+
     public function create()
     {
         return view('admin.category.create');
@@ -58,16 +67,15 @@ class CategoryController extends AdminBaseController
     {
         //--- Validation Section
         $rules = [
-            
-            'slug' => 'unique:categories|regex:/^[a-zA-Z0-9\s-]+$/',
-            'image' => 'required|mimes:jpeg,jpg,png,svg'
+            'name_ar' => 'required',
+            'name_en' => 'required',
+            'slug' => 'nullable|unique:categories|regex:/^[a-zA-Z0-9\s-]+$/'
         ];
         $customs = [
-            
+            'name_ar.required' => __('Arabic name is required.'),
+            'name_en.required' => __('English name is required.'),
             'slug.unique' => __('This slug has already been taken.'),
-            'slug.regex' => __('Slug Must Not Have Any Special Characters.'),
-            'image.required' => __('Banner Image is required.'),
-            'image.mimes' => __('Banner Image Type is Invalid.')
+            'slug.regex' => __('Slug Must Not Have Any Special Characters.')
         ];
         $validator = Validator::make($request->all(), $rules, $customs);
 
@@ -76,45 +84,81 @@ class CategoryController extends AdminBaseController
         }
         //--- Validation Section Ends
 
-        //--- Logic Section
-        $input = $request->all();
-        $data = new Category();
-        if ($file = $request->file('photo')) {
-            $name = PriceHelper::ImageCreateName($file);
-            $file->move('assets/images/categories', $name);
-            $input['photo'] = $name;
-        }
-        if ($file = $request->file('image')) {
-            $name = PriceHelper::ImageCreateName($file);
-            $file->move('assets/images/categories', $name);
-            $input['image'] = $name;
-        }
-
-        $data->fill($input)->save();
-
-        // Save translations
-        if ($request->has('name_ar') || $request->has('name_en')) {
-            $translations = [];
-            if ($request->has('name_ar') && !empty($request->name_ar)) {
-                $translations['ar'] = $request->name_ar;
-                // Also set as main name for backward compatibility
-                $data->name = $request->name_ar;
+        try {
+            //--- Logic Section
+            $input = $request->all();
+            
+            // Auto-generate slug if not provided
+            if (empty($input['slug'])) {
+                $slugSource = !empty($input['name_en']) ? $input['name_en'] : $input['name_ar'];
+                $input['slug'] = $this->generateUniqueSlug($slugSource);
             }
-            if ($request->has('name_en') && !empty($request->name_en)) {
-                $translations['en'] = $request->name_en;
+            
+            // Set the main 'name' field for backward compatibility (required by database)
+            // Use English name if available, otherwise use Arabic name
+            $input['name'] = !empty($request->name_en) ? $request->name_en : $request->name_ar;
+            
+            // Set default values if not provided
+            if (!isset($input['status'])) {
+                $input['status'] = 1; // Active by default
             }
-            if (!empty($translations)) {
-                $data->save(); // Save main name
-                $data->saveTranslations($translations);
+            if (!isset($input['is_featured'])) {
+                $input['is_featured'] = 1; // Featured by default for main categories
             }
+            
+            $data = new Category();
+            
+            // Handle optional photo upload
+            if ($file = $request->file('photo')) {
+                $name = PriceHelper::ImageCreateName($file);
+                $file->move('assets/images/categories', $name);
+                $input['photo'] = $name;
+            } else {
+                $input['photo'] = null;
+            }
+            
+            // Handle optional image upload
+            if ($file = $request->file('image')) {
+                $name = PriceHelper::ImageCreateName($file);
+                $file->move('assets/images/categories', $name);
+                $input['image'] = $name;
+            } else {
+                $input['image'] = null;
+            }
+
+            $data->fill($input)->save();
+
+            // Save translations
+            if ($request->has('name_ar') || $request->has('name_en')) {
+                $translations = [];
+                if ($request->has('name_ar') && !empty($request->name_ar)) {
+                    $translations['ar'] = $request->name_ar;
+                }
+                if ($request->has('name_en') && !empty($request->name_en)) {
+                    $translations['en'] = $request->name_en;
+                }
+                if (!empty($translations)) {
+                    $data->saveTranslations($translations);
+                }
+            }
+
+            //--- Logic Section Ends
+
+            //--- Redirect Section
+            $msg = __('New Data Added Successfully.');
+            return response()->json(['msg' => $msg, 'success' => true]);
+            //--- Redirect Section Ends
+            
+        } catch (\Exception $e) {
+            // Log the error for debugging
+            \Log::error('Category Store Error: ' . $e->getMessage());
+            \Log::error('Stack trace: ' . $e->getTraceAsString());
+            
+            return response()->json([
+                'errors' => ['error' => [$e->getMessage()]],
+                'message' => 'Error creating category: ' . $e->getMessage()
+            ], 500);
         }
-
-        //--- Logic Section Ends
-
-        //--- Redirect Section
-        $msg = __('New Data Added Successfully.');
-        return response()->json($msg);
-        //--- Redirect Section Ends
     }
 
     //*** GET Request
@@ -165,6 +209,11 @@ class CategoryController extends AdminBaseController
             $input['image'] = $name;
         }
 
+        // Update the main 'name' field for backward compatibility (required by database)
+        // Use English name if available, otherwise use Arabic name
+        if ($request->has('name_ar') || $request->has('name_en')) {
+            $input['name'] = !empty($request->name_en) ? $request->name_en : $request->name_ar;
+        }
 
         $data->update($input);
 
@@ -173,14 +222,11 @@ class CategoryController extends AdminBaseController
             $translations = [];
             if ($request->has('name_ar') && !empty($request->name_ar)) {
                 $translations['ar'] = $request->name_ar;
-                // Also set as main name for backward compatibility
-                $data->name = $request->name_ar;
             }
             if ($request->has('name_en') && !empty($request->name_en)) {
                 $translations['en'] = $request->name_en;
             }
             if (!empty($translations)) {
-                $data->save(); // Save main name
                 $data->saveTranslations($translations);
             }
         }
@@ -252,5 +298,36 @@ class CategoryController extends AdminBaseController
         $msg = __('Data Deleted Successfully.');
         return response()->json($msg);
         //--- Redirect Section Ends
+    }
+    
+    /**
+     * Generate a unique slug from the given text
+     */
+    private function generateUniqueSlug($text, $id = null)
+    {
+        // Generate base slug
+        $slug = strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $text)));
+        $slug = preg_replace('/-+/', '-', $slug); // Replace multiple dashes with single dash
+        $slug = trim($slug, '-'); // Remove dashes from start and end
+        
+        // Check if slug exists
+        $originalSlug = $slug;
+        $counter = 1;
+        
+        while (true) {
+            $query = Category::where('slug', $slug);
+            if ($id) {
+                $query->where('id', '!=', $id);
+            }
+            
+            if (!$query->exists()) {
+                break;
+            }
+            
+            $slug = $originalSlug . '-' . $counter;
+            $counter++;
+        }
+        
+        return $slug;
     }
 }

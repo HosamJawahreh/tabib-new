@@ -59,12 +59,14 @@ class SubCategoryController extends AdminBaseController
     {
         //--- Validation Section
         $rules = [
-            'slug' => 'unique:subcategories|regex:/^[a-zA-Z0-9\s-]+$/'
-                 ];
+            'name_ar' => 'required',
+            'slug' => 'nullable|unique:subcategories|regex:/^[a-zA-Z0-9\s-]+$/'
+        ];
         $customs = [
+            'name_ar.required' => __('Arabic name is required.'),
             'slug.unique' => __('This slug has already been taken.'),
             'slug.regex' => __('Slug Must Not Have Any Special Characters.')
-                   ];
+        ];
         $validator = Validator::make($request->all(), $rules, $customs);
 
         if ($validator->fails()) {
@@ -75,7 +77,32 @@ class SubCategoryController extends AdminBaseController
         //--- Logic Section
         $data = new Subcategory();
         $input = $request->all();
+        
+        // Auto-generate slug if not provided
+        if (empty($input['slug'])) {
+            $slugSource = !empty($input['name_en']) ? $input['name_en'] : $input['name_ar'];
+            $input['slug'] = $this->generateUniqueSlug($slugSource);
+        }
+        
+        // Set the main 'name' field for backward compatibility (required by database)
+        // Use English name if available, otherwise use Arabic name
+        $input['name'] = !empty($request->name_en) ? $request->name_en : $request->name_ar;
+        
         $data->fill($input)->save();
+        
+        // Save translations
+        if ($request->has('name_ar') || $request->has('name_en')) {
+            $translations = [];
+            if ($request->has('name_ar') && !empty($request->name_ar)) {
+                $translations['ar'] = $request->name_ar;
+            }
+            if ($request->has('name_en') && !empty($request->name_en)) {
+                $translations['en'] = $request->name_en;
+            }
+            if (!empty($translations)) {
+                $data->saveTranslations($translations);
+            }
+        }
         //--- Logic Section Ends
 
         //--- Redirect Section
@@ -97,12 +124,14 @@ class SubCategoryController extends AdminBaseController
     {
         //--- Validation Section
         $rules = [
+            'name_ar' => 'required',
             'slug' => 'unique:subcategories,slug,'.$id.'|regex:/^[a-zA-Z0-9\s-]+$/'
-                 ];
+        ];
         $customs = [
+            'name_ar.required' => __('Arabic name is required.'),
             'slug.unique' => __('This slug has already been taken.'),
             'slug.regex' => __('Slug Must Not Have Any Special Characters.')
-                   ];
+        ];
         $validator = Validator::make($request->all(), $rules, $customs);
 
         if ($validator->fails()) {
@@ -113,7 +142,28 @@ class SubCategoryController extends AdminBaseController
         //--- Logic Section
         $data = Subcategory::findOrFail($id);
         $input = $request->all();
+        
+        // Update the main 'name' field for backward compatibility (required by database)
+        // Use English name if available, otherwise use Arabic name
+        if ($request->has('name_ar') || $request->has('name_en')) {
+            $input['name'] = !empty($request->name_en) ? $request->name_en : $request->name_ar;
+        }
+        
         $data->update($input);
+        
+        // Save translations
+        if ($request->has('name_ar') || $request->has('name_en')) {
+            $translations = [];
+            if ($request->has('name_ar') && !empty($request->name_ar)) {
+                $translations['ar'] = $request->name_ar;
+            }
+            if ($request->has('name_en') && !empty($request->name_en)) {
+                $translations['en'] = $request->name_en;
+            }
+            if (!empty($translations)) {
+                $data->saveTranslations($translations);
+            }
+        }
         //--- Logic Section Ends
 
         //--- Redirect Section
@@ -175,5 +225,36 @@ class SubCategoryController extends AdminBaseController
         $msg = __('Data Deleted Successfully.');
         return response()->json($msg);
         //--- Redirect Section Ends
+    }
+    
+    /**
+     * Generate a unique slug from the given text
+     */
+    private function generateUniqueSlug($text, $id = null)
+    {
+        // Generate base slug
+        $slug = strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $text)));
+        $slug = preg_replace('/-+/', '-', $slug); // Replace multiple dashes with single dash
+        $slug = trim($slug, '-'); // Remove dashes from start and end
+        
+        // Check if slug exists
+        $originalSlug = $slug;
+        $counter = 1;
+        
+        while (true) {
+            $query = Subcategory::where('slug', $slug);
+            if ($id) {
+                $query->where('id', '!=', $id);
+            }
+            
+            if (!$query->exists()) {
+                break;
+            }
+            
+            $slug = $originalSlug . '-' . $counter;
+            $counter++;
+        }
+        
+        return $slug;
     }
 }

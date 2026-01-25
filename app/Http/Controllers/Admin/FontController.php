@@ -11,13 +11,42 @@ use Datatables;
 class FontController extends AdminBaseController
 {
     public function datatables(){
-        $datas = Font::orderBy('id','desc')->get();
+        $datas = Font::orderBy('is_default', 'desc')
+                    ->orderBy('language', 'asc')
+                    ->orderBy('font_family', 'asc')
+                    ->get();
         return Datatables::of($datas)
+                            ->addColumn('font_name', function(Font $data){
+                                $star = $data->is_default == 1 ? '<i class="fas fa-star" style="color: #ffc107; margin-right: 5px;"></i>' : '';
+                                return $star . '<strong>' . $data->font_family . '</strong>';
+                            })
+                            ->addColumn('language_badge', function(Font $data){
+                                $badges = [
+                                    'ar' => '<span class="badge badge-info">Arabic</span>',
+                                    'en' => '<span class="badge badge-success">English</span>',
+                                    'both' => '<span class="badge badge-primary">Both</span>'
+                                ];
+                                return $badges[$data->language] ?? '<span class="badge badge-secondary">N/A</span>';
+                            })
+                            ->addColumn('preview', function(Font $data){
+                                $text = $data->language == 'ar' ? 'مرحبا بك' : ($data->language == 'en' ? 'Welcome' : 'Hello مرحبا');
+                                return '<span style="font-family: \'' . $data->font_family . '\', sans-serif; font-size: 18px;">' . $text . '</span>';
+                            })
                             ->addColumn('action',function(Font $data){
-                                $default = $data->is_default == 1 ? '<a><i class="fa fa-check"></i> Default</a>' : '<a class="status" data-href="'.route('admin.fonts.status',$data->id).'">Set Default</a>';
+                                $languageLabel = [
+                                    'ar' => 'Arabic',
+                                    'en' => 'English', 
+                                    'both' => 'Both Languages'
+                                ];
+                                $langText = $languageLabel[$data->language] ?? 'N/A';
+                                
+                                $default = $data->is_default == 1 
+                                    ? '<a style="color: #28a745;"><i class="fa fa-check"></i> Default for ' . $langText . '</a>' 
+                                    : '<a class="status" data-href="'.route('admin.fonts.status',$data->id).'">Set as Default</a>';
+                                    
                                 return '<div class="action-list"><a data-href="' . route('admin.fonts.edit',$data->id) . '" class="edit" data-toggle="modal" data-target="#modal1"> <i class="fas fa-edit"></i>'.__("Edit").'</a><a href="javascript:;" data-href="' . route('admin.fonts.delete',['id' => $data->id]) . '" data-toggle="modal" data-target="#confirm-delete" class="delete"><i class="fas fa-trash-alt"></i></a>'.$default.'</div>';
                             })
-                            ->rawColumns(['action'])
+                            ->rawColumns(['font_name', 'language_badge', 'preview', 'action'])
                             ->toJson();
     }
 
@@ -33,6 +62,7 @@ class FontController extends AdminBaseController
         //--- Validation Section
         $rules = [
             'font_family' => 'required',
+            'language' => 'required|in:en,ar,both'
                 ];
         $validator = Validator::make($request->all(), $rules);
 
@@ -46,6 +76,13 @@ class FontController extends AdminBaseController
         $input['font_value'] = preg_replace('/\s+/', '+',$request->font_family);
         $input['is_default'] = 0;
         $data->fill($input)->save();
+        
+        // Clear font cache
+        cache()->forget('default_font');
+        cache()->forget('bilingual_fonts');
+        cache()->forget('default_font_en');
+        cache()->forget('default_font_ar');
+        cache()->forget('default_font_both');
 
         //--- Redirect Section     
         $msg = __('Data Added Successfully.');
@@ -57,6 +94,7 @@ class FontController extends AdminBaseController
         //--- Validation Section
         $rules = [
             'font_family' => 'required',
+            'language' => 'required|in:en,ar,both'
                 ];
         $validator = Validator::make($request->all(), $rules);
 
@@ -70,6 +108,13 @@ class FontController extends AdminBaseController
         $input['font_value'] = preg_replace('/\s+/', '+',$request->font_family);
         $input['is_default'] = 0;
         $data->update($input);
+        
+        // Clear font cache
+        cache()->forget('default_font');
+        cache()->forget('bilingual_fonts');
+        cache()->forget('default_font_en');
+        cache()->forget('default_font_ar');
+        cache()->forget('default_font_both');
 
         //--- Redirect Section     
         $msg = __('Data Updated Successfully.');
@@ -83,19 +128,30 @@ class FontController extends AdminBaseController
     }
 
     public function status($id){
-        $font_update =  Font::find($id);
+        $font_update = Font::find($id);
         $font_update->is_default = 1;
         $font_update->update();
 
-        $previous_fonts = Font::where('id','!=',$id)->get();
+        // Only reset fonts of the SAME language
+        // This allows one default per language (ar, en, both)
+        $previous_fonts = Font::where('id', '!=', $id)
+            ->where('language', $font_update->language)
+            ->get();
 
         foreach($previous_fonts as $previous_font){
             $previous_font->is_default = 0;
             $previous_font->update();
         }
+        
+        // Clear all font caches
         cache()->forget('default_font');
+        cache()->forget('bilingual_fonts');
+        cache()->forget('default_font_en');
+        cache()->forget('default_font_ar');
+        cache()->forget('default_font_both');
+        
         //--- Redirect Section     
-        $msg = __('Data Updated Successfully.');
+        $msg = __('Data Updated Successfully. You can now set default for other languages.');
         return response()->json($msg);      
         //--- Redirect Section Ends  
    }

@@ -167,6 +167,7 @@ Route::prefix('admin')->group(function () {
 
         Route::get('/category/datatables', 'Admin\CategoryController@datatables')->name('admin-cat-datatables'); //JSON REQUEST
         Route::get('/category', 'Admin\CategoryController@index')->name('admin-cat-index');
+        Route::get('/category/tree', 'Admin\CategoryController@tree')->name('admin-cat-tree');
         Route::get('/category/create', 'Admin\CategoryController@create')->name('admin-cat-create');
         Route::post('/category/create', 'Admin\CategoryController@store')->name('admin-cat-store');
         Route::get('/category/edit/{id}', 'Admin\CategoryController@edit')->name('admin-cat-edit');

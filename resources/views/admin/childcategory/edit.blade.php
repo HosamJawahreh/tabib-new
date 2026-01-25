@@ -48,24 +48,39 @@
                         <div class="row">
                           <div class="col-lg-4">
                             <div class="left-area">
-                                <h4 class="heading">{{ __('Name') }} *</h4>
-                                <p class="sub-heading">{{ __('(In Any Language)') }}</p>
+                                <h4 class="heading">{{ __('Name') }} (Arabic) *</h4>
+                                <p class="sub-heading">{{ __('Arabic Name') }}</p>
                             </div>
                           </div>
                           <div class="col-lg-7">
-                            <input type="text" class="input-field" name="name" placeholder="{{ __('Enter Name') }}" required="" value="{{$data->name}}">
+                            <input type="text" class="input-field" id="childcategory_edit_name_ar" name="name_ar" placeholder="{{ __('Enter Arabic Name') }}" required="" value="{{$data->name_ar}}" dir="rtl">
                           </div>
                         </div>
 
                         <div class="row">
                           <div class="col-lg-4">
                             <div class="left-area">
-                                <h4 class="heading">{{ __('Slug') }} *</h4>
-                                <p class="sub-heading">{{ __('(In English)') }}</p>
+                                <h4 class="heading">{{ __('Name') }} (English)</h4>
+                                <p class="sub-heading">{{ __('English Name') }}</p>
                             </div>
                           </div>
                           <div class="col-lg-7">
-                            <input type="text" class="input-field" name="slug" placeholder="{{ __('Enter Slug') }}" required="" value="{{$data->slug}}">
+                            <input type="text" class="input-field" id="childcategory_edit_name_en" name="name_en" placeholder="{{ __('Enter English Name') }}" value="{{$data->name_en}}">
+                          </div>
+                        </div>
+
+                        <input type="hidden" name="name" id="hidden_name" value="{{$data->name}}">
+
+                        <div class="row">
+                          <div class="col-lg-4">
+                            <div class="left-area">
+                                <h4 class="heading">{{ __('Slug') }}</h4>
+                                <p class="sub-heading">{{ __('(Auto-generated, optional)') }}</p>
+                            </div>
+                          </div>
+                          <div class="col-lg-7">
+                            <input type="text" class="input-field" id="childcategory_edit_slug" name="slug" placeholder="{{ __('Auto-generated from name') }}" value="{{$data->slug}}">
+                            <small class="text-muted">{{ __('Leave empty for automatic generation from English or Arabic name') }}</small>
                           </div>
                         </div>
 
@@ -88,4 +103,34 @@
               </div>
             </div>
 
+@endsection
+
+@section('scripts')
+<script>
+$(document).ready(function() {
+    // Auto-generate slug from name
+    function generateSlug(text) {
+        return text
+            .toString()
+            .toLowerCase()
+            .trim()
+            .replace(/\s+/g, '-')
+            .replace(/[^\w\-]+/g, '')
+            .replace(/\-\-+/g, '-')
+            .replace(/^-+/, '')
+            .replace(/-+$/, '');
+    }
+    
+    // Auto-generate slug when typing in name fields
+    $('#childcategory_edit_name_en, #childcategory_edit_name_ar').on('keyup', function() {
+        var enName = $('#childcategory_edit_name_en').val();
+        var arName = $('#childcategory_edit_name_ar').val();
+        var nameForSlug = enName.trim() !== '' ? enName : arName;
+        
+        if (nameForSlug.trim() !== '') {
+            $('#childcategory_edit_slug').val(generateSlug(nameForSlug));
+        }
+    });
+});
+</script>
 @endsection

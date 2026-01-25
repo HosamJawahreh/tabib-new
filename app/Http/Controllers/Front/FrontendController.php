@@ -86,10 +86,10 @@ class FrontendController extends FrontBaseController
 
         $data['featured_categories'] = Category::withCount('products')->where('is_featured', 1)->get();
 
-        // Get only ROOT/MAIN categories with subcategories and child categories for navigation
-        // Only show the 10 main categories (IDs: 84-96) - exclude imported subcategories
+        // Get only FEATURED main categories with subcategories and child categories for navigation
+        // Only show categories marked as featured (is_featured = 1) and active (status = 1)
         $data['categories'] = Category::where('status', 1)
-            ->whereIn('id', [84, 85, 86, 87, 88, 89, 90, 91, 95, 96]) // Only root categories
+            ->where('is_featured', 1) // Only featured categories
             ->with(['subs' => function($query) {
                 $query->where('status', 1)->with(['childs' => function($q) {
                     $q->where('status', 1);

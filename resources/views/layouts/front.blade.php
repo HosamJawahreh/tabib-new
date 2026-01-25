@@ -39,14 +39,26 @@
     @endif
 
     <link rel="icon" type="image/x-icon" href="{{ asset('assets/images/' . $gs->favicon) }}" />
-    <!-- Google Font -->
-    @if ($default_font->font_value)
-        <link
-            href="https://fonts.googleapis.com/css?family={{ $default_font->font_value }}:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
-            rel="stylesheet">
-    @else
-        <link href="https://fonts.googleapis.com/css2?family=Jost:wght@100;200;300;400;500;600;700;800;900&display=swap"
-            rel="stylesheet">
+    
+    <!-- Professional Bilingual Font System -->
+    @php
+        $bilingualFonts = \App\Models\Font::getBilingualFonts();
+        $arabicFont = $bilingualFonts['arabic'];
+        $englishFont = $bilingualFonts['english'];
+    @endphp
+    
+    <!-- Google Fonts - Arabic Font -->
+    @if ($arabicFont && $arabicFont->font_value)
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family={{ $arabicFont->font_value }}:wght@200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    @endif
+    
+    <!-- Google Fonts - English Font -->
+    @if ($englishFont && $englishFont->font_value)
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family={{ $englishFont->font_value }}:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     @endif
 
     <link rel="stylesheet"href="{{ asset('assets/front/css/styles.php?color=' . str_replace('#', '', $gs->colors) . '&header_color=' . $gs->header_color) }}">
@@ -71,12 +83,46 @@
 
     <!-- Global Arabic RTL Support for All Pages -->
     <link rel="stylesheet" href="{{ asset('assets/front/css/arabic-rtl-global.css') }}?v={{ time() }}">
+    
+    <!-- Professional Bilingual Font System -->
+    <link rel="stylesheet" href="{{ asset('assets/front/css/bilingual-fonts.css') }}?v={{ time() }}">
 
     <!-- Product Image & Scrollbar Fixes -->
     <link rel="stylesheet" href="{{ asset('assets/front/css/product-image-scrollbar-fix.css') }}?v={{ time() }}">
 
     <link rel="stylesheet" href="{{ asset('assets/front/css/category/default.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/front/css/toastr.min.css') }}">
+    
+    <!-- Dynamic Font Variables -->
+    <style>
+        :root {
+            --arabic-font-family: '{{ $arabicFont->font_family ?? "Cairo" }}', sans-serif;
+            --english-font-family: '{{ $englishFont->font_family ?? "Poppins" }}', sans-serif;
+            --arabic-font-weight: 400;
+            --english-font-weight: 400;
+        }
+        
+        /* Apply fonts based on language */
+        html[lang="ar"] body,
+        html[lang="ar"] * {
+            font-family: var(--arabic-font-family) !important;
+        }
+        
+        html[lang="en"] body,
+        html[lang="en"] * {
+            font-family: var(--english-font-family) !important;
+        }
+        
+        /* Mixed content - detect language per element */
+        *[lang="ar"] {
+            font-family: var(--arabic-font-family) !important;
+        }
+        
+        *[lang="en"] {
+            font-family: var(--english-font-family) !important;
+        }
+    </style>
+    
     @if ($default_font->font_family)
         <link rel="stylesheet" id="colorr"
             href="{{ asset('assets/front/css/font.php?font_familly=' . $default_font->font_family) }}">
@@ -224,6 +270,9 @@
     <script src="{{ asset('assets/front/js/product-card-custom.js') }}"></script>
     <script src="{{ asset('assets/front/js/cart-sidebar-responsive.js') }}"></script>
     <script src="{{ asset('assets/front/js/header-responsive.js') }}?v={{ time() }}"></script>
+    
+    <!-- Professional Bilingual Font System -->
+    <script src="{{ asset('assets/front/js/bilingual-fonts.js') }}?v={{ time() }}"></script>
 
     <script>
         lazy();

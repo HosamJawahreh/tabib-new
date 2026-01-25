@@ -11,9 +11,6 @@
                         <form id="geniusformdata" action="{{route('admin.fonts.create')}}" method="POST" enctype="multipart/form-data">
                           {{csrf_field()}}
 
-
-                          $2y$12$seZkxzNoF8pPzZ5TAel1MOdqlWxRoPSyB.2CthLfTXtSxXbuX5kiu
-
                           <div class="row">
                             <div class="col-lg-4">
                               <div class="left-area">
@@ -22,7 +19,29 @@
                               </div>
                             </div>
                             <div class="col-lg-7">
-                              <input type="text" class="input-field" name="font_family" placeholder="{{ __('Font Family') }}" required="" value="">
+                              <input type="text" class="input-field" name="font_family" placeholder="{{ __('e.g., Cairo, Poppins, Roboto') }}" required="" value="">
+                              <small class="form-text text-muted">{{ __('Enter the Google Font name exactly as it appears on Google Fonts') }}</small>
+                            </div>
+                          </div>
+
+                          <div class="row">
+                            <div class="col-lg-4">
+                              <div class="left-area">
+                                  <h4 class="heading">{{ __('Language') }} *</h4>
+                                  <p class="sub-heading">{{ __('(Select Font Language)') }}</p>
+                              </div>
+                            </div>
+                            <div class="col-lg-7">
+                              <select class="input-field" name="language" required="">
+                                <option value="">{{ __('Select Language') }}</option>
+                                <option value="ar">{{ __('Arabic Only') }}</option>
+                                <option value="en">{{ __('English Only') }}</option>
+                                <option value="both">{{ __('Both Languages') }}</option>
+                              </select>
+                              <small class="form-text text-muted">
+                                <strong>{{ __('Recommended Arabic Fonts:') }}</strong> Cairo, Tajawal, Almarai, Changa, Amiri<br>
+                                <strong>{{ __('Recommended English Fonts:') }}</strong> Poppins, Roboto, Inter, Montserrat, Open Sans
+                              </small>
                             </div>
                           </div>
 

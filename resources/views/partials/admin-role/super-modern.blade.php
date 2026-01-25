@@ -43,31 +43,44 @@
         </a>
     </li>
 
+    <!-- General Settings - Main Menu (moved everything here, removed Site Settings wrapper) -->
     <li class="menu-item">
-        <a href="#siteSettings" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
+        <a href="#general" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
             <span class="icon-wrapper">
-                <i class="fas fa-cog"></i>
+                <i class="fas fa-cogs"></i>
             </span>
-            <span class="menu-text">{{ __('Site Settings') }}</span>
+            <span class="menu-text">{{ __('General Settings') }}</span>
         </a>
-        <ul class="collapse list-unstyled" id="siteSettings" data-parent="#accordion">
-
+        <ul class="collapse list-unstyled" id="general" data-parent="#accordion">
+            
             <!-- Sliders -->
             <li>
                 <a href="{{ route('admin-sl-index') }}"><i class="fas fa-sliders-h"></i> {{ __('Sliders') }}</a>
             </li>
 
-            <!-- Total Earning -->
+            <!-- Logo -->
             <li>
-                <a href="#income" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
-                    <i class="fas fa-hand-holding-usd"></i> {{ __('Total Earning') }}
-                </a>
-                <ul class="collapse list-unstyled" id="income" data-parent="#siteSettings">
-                    <li><a href="{{route('admin-tax-calculate-income')}}"><span>{{ __('Tax Calculate') }}</span></a></li>
-                    <li><a href="{{route('admin-subscription-income')}}"><span>{{ __('Subscription Earning') }}</span></a></li>
-                    <li><a href="{{route('admin-withdraw-income')}}"><span>{{ __('Withdraw Earning') }}</span></a></li>
-                    <li><a href="{{route('admin-commission-income')}}"><span>{{ __('Commission Earning') }}</span></a></li>
-                </ul>
+                <a href="{{ route('admin-gs-logo') }}"><i class="fas fa-image"></i> {{ __('Logo') }}</a>
+            </li>
+
+            <!-- Shipping Methods -->
+            <li>
+                <a href="{{ route('admin-shipping-index') }}"><i class="fas fa-shipping-fast"></i> {{ __('Shipping Methods') }}</a>
+            </li>
+
+            <!-- Website Contents -->
+            <li>
+                <a href="{{ route('admin-gs-contents') }}"><i class="fas fa-file-alt"></i> {{ __('Website Contents') }}</a>
+            </li>
+
+            <!-- Breadcrumb Banner -->
+            <li>
+                <a href="{{ route('admin-gs-bread') }}"><i class="fas fa-stream"></i> {{ __('Breadcrumb Banner') }}</a>
+            </li>
+
+            <!-- Error Banner -->
+            <li>
+                <a href="{{ route('admin-gs-error-banner') }}"><i class="fas fa-exclamation-triangle"></i> {{ __('Error Banner') }}</a>
             </li>
 
             <!-- Customers -->
@@ -75,61 +88,19 @@
                 <a href="#customers" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
                     <i class="icofont-user"></i> {{ __('Customers') }}
                 </a>
-                <ul class="collapse list-unstyled" id="customers" data-parent="#siteSettings">
+                <ul class="collapse list-unstyled" id="customers" data-parent="#general">
                     <li><a href="{{ route('admin-user-index') }}"><span>{{ __('Customers List') }}</span></a></li>
                     <li><a href="{{ route('admin-withdraw-index') }}"><span>{{ __('Withdraws') }}</span></a></li>
                     <li><a href="{{ route('admin-user-image') }}"><span>{{ __('Customer Default Image') }}</span></a></li>
                 </ul>
             </li>
 
-            <!-- Messages -->
-            <li>
-                <a href="#messages" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
-                    <i class="fas fa-envelope"></i> {{ __('Messages') }}
-                </a>
-                <ul class="collapse list-unstyled" id="messages" data-parent="#siteSettings">
-                    <li><a href="{{ route('admin-message-index') }}"><span>{{ __('Tickets') }}</span></a></li>
-                    <li><a href="{{ route('admin-message-dispute') }}"><span>{{ __('Disputes') }}</span></a></li>
-                </ul>
-            </li>
-
-            <!-- Blog -->
-            <li>
-                <a href="#blog" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
-                    <i class="fas fa-fw fa-newspaper"></i> {{ __('Blog') }}
-                </a>
-                <ul class="collapse list-unstyled" id="blog" data-parent="#siteSettings">
-                    <li><a href="{{ route('admin-cblog-index') }}"><span>{{ __('Categories') }}</span></a></li>
-                    <li><a href="{{ route('admin-blog-index') }}"><span>{{ __('Posts') }}</span></a></li>
-                    <li><a href="{{ route('admin-gs-blog-settings') }}"><span>{{ __('Blog Settings') }}</span></a></li>
-                </ul>
-            </li>
-
-            <!-- General Settings -->
-            <li>
-                <a href="#general" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
-                    <i class="fas fa-cogs"></i> {{ __('General Settings') }}
-                </a>
-                <ul class="collapse list-unstyled" id="general" data-parent="#siteSettings">
-                    <li><a href="{{ route('admin-gs-logo') }}"><span>{{ __('Logo') }}</span></a></li>
-                    <li><a href="{{ route('admin-gs-fav') }}"><span>{{ __('Favicon') }}</span></a></li>
-                    <li><a href="{{ route('admin-gs-load') }}"><span>{{ __('Loader') }}</span></a></li>
-                    <li><a href="{{ route('admin-shipping-index') }}"><span>{{ __('Shipping Methods') }}</span></a></li>
-                    <li><a href="{{ route('admin-package-index') }}"><span>{{ __('Packagings') }}</span></a></li>
-                    <li><a href="{{ route('admin-pick-index') }}"><span>{{ __('Pickup Locations') }}</span></a></li>
-                    <li><a href="{{ route('admin-gs-contents') }}"><span>{{ __('Website Contents') }}</span></a></li>
-                    <li><a href="{{ route('admin-gs-affilate') }}"><span>{{__('Affiliate Program')}}</span></a></li>
-                    <li><a href="{{ route('admin-gs-popup') }}"><span>{{ __('Popup Banner') }}</span></a></li>
-                    <li><a href="{{ route('admin-gs-bread') }}"><span>{{ __('Breadcrumb Banner') }}</span></a></li>
-                    <li><a href="{{ route('admin-gs-error-banner') }}"><span>{{ __('Error Banner') }}</span></a></li>
-                    <li><a href="{{ route('admin-gs-maintenance') }}"><span>{{ __('Website Maintenance') }}</span></a></li>
-                </ul>
-            </li>
-
-            <!-- Staff & Roles -->
+            <!-- Manage Staffs -->
             <li>
                 <a href="{{ route('admin-staff-index') }}"><i class="fas fa-user-secret"></i> {{ __('Manage Staffs') }}</a>
             </li>
+
+            <!-- Manage Roles -->
             <li>
                 <a href="{{ route('admin-role-index') }}"><i class="fas fa-user-tag"></i> {{ __('Manage Roles') }}</a>
             </li>
@@ -144,7 +115,7 @@
                 <a href="#emails" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
                     <i class="fas fa-at"></i> {{ __('Email Settings') }}
                 </a>
-                <ul class="collapse list-unstyled" id="emails" data-parent="#siteSettings">
+                <ul class="collapse list-unstyled" id="emails" data-parent="#general">
                     <li><a href="{{route('admin-mail-index')}}"><span>{{ __('Email Template') }}</span></a></li>
                     <li><a href="{{route('admin-mail-config')}}"><span>{{ __('Email Configurations') }}</span></a></li>
                     <li><a href="{{route('admin-group-show')}}"><span>{{ __('Group Email') }}</span></a></li>
@@ -156,7 +127,7 @@
                 <a href="#socials" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
                     <i class="fas fa-paper-plane"></i> {{ __('Social Settings') }}
                 </a>
-                <ul class="collapse list-unstyled" id="socials" data-parent="#siteSettings">
+                <ul class="collapse list-unstyled" id="socials" data-parent="#general">
                     <li><a href="{{route('admin-sociallink-index')}}"><span>{{ __('Social Links') }}</span></a></li>
                     <li><a href="{{route('admin-social-facebook')}}"><span>{{ __('Facebook Login') }}</span></a></li>
                     <li><a href="{{route('admin-social-google')}}"><span>{{ __('Google Login') }}</span></a></li>
@@ -168,7 +139,7 @@
                 <a href="#langs" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
                     <i class="fas fa-language"></i> {{ __('Language Settings') }}
                 </a>
-                <ul class="collapse list-unstyled" id="langs" data-parent="#siteSettings">
+                <ul class="collapse list-unstyled" id="langs" data-parent="#general">
                     <li><a href="{{route('admin-lang-index')}}"><span>{{ __('Website Language') }}</span></a></li>
                     <li><a href="{{route('admin-tlang-index')}}"><span>{{ __('Admin Panel Language') }}</span></a></li>
                 </ul>
@@ -177,7 +148,15 @@
             <!-- SEO Tools -->
             <li>
                 <a href="#seoTools" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
-                    <i class="fas fa-wrench"></i> {{ __('SEO Tools') }}
+                    <i class="fas fa-wrench"></i> {{ __('SEO Tools') }}</a>
+                <ul class="collapse list-unstyled" id="seoTools" data-parent="#general">
+                    <li><a href="{{route('admin-prod-popular',['id'=>'views'])}}"><span>{{ __('Popular Products') }}</span></a></li>
+                    <li><a href="{{route('admin-seotool-analytics')}}"><span>{{ __('Google Analytics') }}</span></a></li>
+                    <li><a href="{{route('admin-seotool-keywords')}}"><span>{{ __('Website Meta Keywords') }}</span></a></li>
+                </ul>
+            </li>
+        </ul>
+    </li>
                 </a>
                 <ul class="collapse list-unstyled" id="seoTools" data-parent="#siteSettings">
                     <li><a href="{{ route('admin-prod-popular',30) }}"><span>{{ __('Popular Products') }}</span></a></li>

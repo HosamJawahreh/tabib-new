@@ -30,7 +30,9 @@
                                             <table id="geniustable" class="table table-hover dt-responsive" cellspacing="0" width="100%">
                                                 <thead>
                                                     <tr>
-                                                        <th>{{ __('Fonts') }}</th>
+                                                        <th>{{ __('Font Family') }}</th>
+                                                        <th>{{ __('Language') }}</th>
+                                                        <th>{{ __('Preview') }}</th>
                                                         <th>{{ __('Options') }}</th>
                                                     </tr>
                                                 </thead>
@@ -149,9 +151,10 @@
                serverSide: true,
                ajax: '{{ route('admin.fonts.datatables') }}',
                 columns: [
-                    {data: 'font_family',name: 'font_family'},
-                    {data: 'action',searchable: false,orderable: false}
-
+                    {data: 'font_name', name: 'font_family'},
+                    {data: 'language_badge', name: 'language', searchable: false},
+                    {data: 'preview', name: 'preview', searchable: false, orderable: false},
+                    {data: 'action', searchable: false, orderable: false}
                 ],
                 language : {
                 	processing: '<img src="{{asset('assets/images/'.$gs->admin_loader)}}">'

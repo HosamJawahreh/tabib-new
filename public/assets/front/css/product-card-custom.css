@@ -120,10 +120,14 @@
 .product-content {
     background: white;
     border-radius: 0 0 8px 8px;
+    margin-top: 0 !important;
+    padding-top: 0.35rem !important;
 }
 
 .product-title a {
     transition: color 0.3s ease;
+    display: block;
+    margin-top: 0 !important;
 }
 
 .product-title a:hover {

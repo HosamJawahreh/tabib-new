@@ -30,7 +30,7 @@
 
 @if(Auth::guard('admin')->user()->sectionCheck('earning'))
 
-<li>
+{{-- <li>
     <a href="#income" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false"><i class="fas fa-hand-holding-usd"></i>{{ __('Total Earning') }}</a>
     <ul class="collapse list-unstyled" id="income" data-parent="#accordion" >
         <li>
@@ -49,33 +49,20 @@
         </li>
 
     </ul>
-</li>
+</li> --}}
 @endif
 
 @endif
 
 @if(Auth::guard('admin')->user()->sectionCheck('categories'))
 
-    <li>
-        <a href="#menu5" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false"><i class="fas fa-sitemap"></i>{{ __('Manage Categories') }}</a>
-        <ul class="collapse list-unstyled
-        @if(request()->is('admin/attribute/*/manage') && request()->input('type')=='category')
-          show
-        @elseif(request()->is('admin/attribute/*/manage') && request()->input('type')=='subcategory')
-          show
-        @elseif(request()->is('admin/attribute/*/manage') && request()->input('type')=='childcategory')
-          show
-        @endif" id="menu5" data-parent="#accordion" >
-                <li class="@if(request()->is('admin/attribute/*/manage') && request()->input('type')=='category') active @endif">
-                    <a href="{{ route('admin-cat-index') }}"><span>{{ __('Main Category') }}</span></a>
-                </li>
-                <li class="@if(request()->is('admin/attribute/*/manage') && request()->input('type')=='subcategory') active @endif">
-                    <a href="{{ route('admin-subcat-index') }}"><span>{{ __('Sub Category') }}</span></a>
-                </li>
-                <li class="@if(request()->is('admin/attribute/*/manage') && request()->input('type')=='childcategory') active @endif">
-                    <a href="{{ route('admin-childcat-index') }}"><span>{{ __('Child Category') }}</span></a>
-                </li>
-        </ul>
+    <li class="menu-item {{ request()->is('admin/category/tree') ? 'active' : '' }}">
+        <a href="{{ route('admin-cat-tree') }}" class="menu-link wave-effect">
+            <span class="icon-wrapper">
+                <i class="fas fa-sitemap"></i>
+            </span>
+            <span class="menu-text">{{ __('Categories') }}</span>
+        </a>
     </li>
 
 @endif
@@ -165,9 +152,9 @@
             <li>
                 <a href="{{ route('admin-user-index') }}"><span>{{ __('Customers List') }}</span></a>
             </li>
-            <li>
+            {{-- <li>
                 <a href="{{ route('admin-withdraw-index') }}"><span>{{ __('Withdraws') }}</span></a>
-            </li>
+            </li> --}}
             <li>
                 <a href="{{ route('admin-user-image') }}"><span>{{ __('Customer Default Image') }}</span></a>
             </li>
@@ -214,9 +201,9 @@
             <li>
                 <a href="{{ route('admin-vendor-index') }}"><span>{{ __('Vendors List') }}</span></a>
             </li>
-            <li>
+            {{-- <li>
                 <a href="{{ route('admin-vendor-withdraw-index') }}"><span>{{ __('Withdraws') }}</span></a>
-            </li>
+            </li> --}}
             <li>
                 <a href="{{ route('admin-vendor-color') }}"><span>{{ __('Default Background') }}</span></a>
             </li>
@@ -276,7 +263,7 @@
 
 @if(Auth::guard('admin')->user()->sectionCheck('messages'))
 
-    <li>
+    {{-- <li>
         <a href="#msg" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
             <i class="fas fa-fw fa-newspaper"></i>{{ __('Messages') }}
         </a>
@@ -288,13 +275,13 @@
                 <a href="{{ route('admin-message-dispute') }}"><span>{{ __('Disputes') }}</span></a>
             </li>
         </ul>
-    </li>
+    </li> --}}
 
 @endif
 
 @if(Auth::guard('admin')->user()->sectionCheck('blog'))
 
-    <li>
+    {{-- <li>
         <a href="#blog" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
             <i class="fas fa-fw fa-newspaper"></i>{{ __('Blog') }}
         </a>
@@ -309,7 +296,7 @@
                 <a href="{{ route('admin-gs-blog-settings') }}"><span>{{ __('Blog Settings') }}</span></a>
             </li>
         </ul>
-    </li>
+    </li> --}}
 
 @endif
 
@@ -323,27 +310,27 @@
             <li>
                 <a href="{{ route('admin-gs-logo') }}"><span>{{ __('Logo') }}</span></a>
             </li>
-            <li>
+            {{-- <li>
                 <a href="{{ route('admin-gs-fav') }}"><span>{{ __('Favicon') }}</span></a>
-            </li>
-            <li>
+            </li> --}}
+            {{-- <li>
                 <a href="{{ route('admin-gs-load') }}"><span>{{ __('Loader') }}</span></a>
-            </li>
+            </li> --}}
             <li>
                 <a href="{{ route('admin-shipping-index') }}"><span>{{ __('Shipping Methods') }}</span></a>
             </li>
-            <li>
+            {{-- <li>
                 <a href="{{ route('admin-package-index') }}"><span>{{ __('Packagings') }}</span></a>
-            </li>
-            <li>
+            </li> --}}
+            {{-- <li>
                 <a href="{{ route('admin-pick-index') }}"><span>{{ __('Pickup Locations') }}</span></a>
-            </li>
+            </li> --}}
             <li>
             <a href="{{ route('admin-gs-contents') }}"><span>{{ __('Website Contents') }}</span></a>
             </li>
-            <li>
+            {{-- <li>
                 <a href="{{ route('admin-gs-affilate') }}"><span>{{__('Affiliate Program')}}</span></a>
-            </li>
+            </li> --}}
             <li>
                 <a href="{{ route('admin-gs-popup') }}"><span>{{ __('Popup Banner') }}</span></a>
             </li>
@@ -354,9 +341,9 @@
             <li>
                 <a href="{{ route('admin-gs-error-banner') }}"><span>{{ __('Error Banner') }}</span></a>
             </li>
-            <li>
+            {{-- <li>
                 <a href="{{ route('admin-gs-maintenance') }}"><span>{{ __('Website Maintenance') }}</span></a>
-            </li>
+            </li> --}}
 
         </ul>
     </li>
