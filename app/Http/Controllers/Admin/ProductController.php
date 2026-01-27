@@ -733,8 +733,20 @@ class ProductController extends AdminBaseController
             foreach ($files as $key => $file) {
                 if (in_array($key, $request->galval)) {
                     $gallery = new Gallery;
-                    $name = time() . Str::random(8) . str_replace(' ', '', $file->getClientOriginalExtension());
-                    $file->move('assets/images/galleries', $name);
+                    
+                    // Convert gallery images to WebP with 75% quality for product details
+                    $img = Image::make($file->getRealPath());
+                    
+                    // Resize to max 1200px for product detail view
+                    $img->resize(1200, 1200, function ($constraint) {
+                        $constraint->aspectRatio();
+                        $constraint->upsize();
+                    });
+                    
+                    // Save as WebP with 75% quality (matches product main photo quality)
+                    $name = time() . Str::random(8) . '.webp';
+                    $img->encode('webp', 75)->save('assets/images/galleries/' . $name);
+                    
                     $gallery['photo'] = $name;
                     $gallery['product_id'] = $lastid;
                     $gallery->save();

@@ -34,14 +34,22 @@ class GalleryController extends Controller
         if ($files = $request->file('gallery')){
             foreach ($files as  $key => $file){
                 $val = $file->getClientOriginalExtension();
-                if($val == 'jpeg'|| $val == 'jpg'|| $val == 'png'|| $val == 'svg')
+                if($val == 'jpeg'|| $val == 'jpg'|| $val == 'png'|| $val == 'svg' || $val == 'webp')
                   {
                     $gallery = new Gallery;
 
-
-        $img = Image::make($file->getRealPath())->resize(800, 800);
-        $thumbnail = time().Str::random(8).'.jpg';
-        $img->save(public_path().'/assets/images/galleries/'.$thumbnail);
+                    // Convert gallery images to WebP with 75% quality for product details
+                    $img = Image::make($file->getRealPath());
+                    
+                    // Resize to max 1200px for product detail view
+                    $img->resize(1200, 1200, function ($constraint) {
+                        $constraint->aspectRatio();
+                        $constraint->upsize();
+                    });
+                    
+                    // Save as WebP with 75% quality (matches product main photo quality)
+                    $thumbnail = time() . Str::random(8) . '.webp';
+                    $img->encode('webp', 75)->save(public_path() . '/assets/images/galleries/' . $thumbnail);
 
                     $gallery['photo'] = $thumbnail;
                     $gallery['product_id'] = $lastid;
