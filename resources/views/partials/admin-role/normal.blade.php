@@ -270,7 +270,7 @@
     </li>
 
 @endif
-END VENDOR SECTIONS --}}
+
 
 @if(Auth::guard('admin')->user()->sectionCheck('messages'))
 
