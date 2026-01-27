@@ -202,8 +202,7 @@
 @endif
 --}}
 
-{{-- VENDOR SECTIONS HIDDEN
-@if(Auth::guard('admin')->user()->sectionCheck('vendors'))
+@if(Auth::guard('admin')->user()->sectionCheck('vendors') && Auth::guard('admin')->user()->email != 'orders@tabib-jo.com')
 
     <li>
         <a href="#vendor" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
