@@ -271,7 +271,7 @@
 
 @endif
 --}}
-{{-- END VENDOR SECTIONS --}}
+END VENDOR SECTIONS --}}
 
 @if(Auth::guard('admin')->user()->sectionCheck('messages'))
 
@@ -394,7 +394,7 @@
 @endif
 
 
-{{-- MENU PAGE SETTINGS SECTION HIDDEN --}}
+{{-- MENU PAGE SETTINGS SECTION HIDDEN
 @if(Auth::guard('admin')->user()->sectionCheck('menu_page_settings'))
 
     <li>
@@ -457,8 +457,7 @@
     </ul>
 </li>
 
-{{-- PAYMENT SETTINGS HIDDEN --}}
-{{--
+{{-- PAYMENT SETTINGS HIDDEN
 @if(Auth::guard('admin')->user()->sectionCheck('payment_settings'))
 
     <li>
