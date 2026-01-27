@@ -22,7 +22,10 @@ class DashboardController extends AdminBaseController
 
     public function index()
     {
-
+        // Redirect orders@tabib-jo.com user directly to orders page
+        if (Auth::guard('admin')->check() && Auth::guard('admin')->user()->email === 'orders@tabib-jo.com') {
+            return redirect()->route('admin-orders-all');
+        }
 
         $data['pending'] = Order::where('status', '=', 'pending')->get();
         $data['processing'] = Order::where('status', '=', 'processing')->get();
