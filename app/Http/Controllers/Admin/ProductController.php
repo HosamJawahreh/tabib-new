@@ -239,7 +239,7 @@ class ProductController extends AdminBaseController
                         }])
                         ->orderBy('sort_order', 'desc')
                         ->get();
-        
+
         $sign = $this->curr;
         // Get English language (is_default = 1) for translations
         $languages = \App\Models\AdminLanguage::where('is_default', 1)->get();
@@ -649,17 +649,17 @@ class ProductController extends AdminBaseController
                 $translationName = isset($translation['name']) ? trim($translation['name']) : '';
                 $translationDesc = isset($translation['description']) ? trim($translation['description']) : '';
                 $langCode = $translation['lang_code'] ?? '';
-                
+
                 // Skip if lang_code is missing
                 if (empty($langCode)) {
                     continue;
                 }
-                
+
                 // **FIX: Prevent "test" or invalid placeholder values**
                 $invalidValues = ['test', 'testing', 'تجربة', 'اختبار'];
-                $isInvalidName = empty($translationName) || 
+                $isInvalidName = empty($translationName) ||
                                 in_array(strtolower($translationName), $invalidValues);
-                
+
                 // Only save if we have valid content (valid name OR description)
                 if (!$isInvalidName || !empty($translationDesc)) {
                     // Use updateOrCreate to prevent duplicates
@@ -763,7 +763,7 @@ class ProductController extends AdminBaseController
                         ->orderBy('sort_order', 'desc')
                         ->limit(10)
                         ->get();
-        
+
         $sign = $this->curr;
         return view('admin.product.productcsv', compact('cats', 'sign'));
     }
@@ -1034,12 +1034,12 @@ class ProductController extends AdminBaseController
                         }])
                         ->orderBy('sort_order', 'desc')
                         ->get();
-        
+
         $data = Product::with('translations', 'galleries', 'categories')->findOrFail($id);
         $sign = $this->curr;
         // Get English language (is_default = 1) for translations, not Arabic
         $languages = \App\Models\AdminLanguage::where('is_default', 1)->get();
-        
+
         // Get ALL selected category IDs from pivot table (all levels)
         $selectedCategoryIds = DB::table('category_product')
             ->where('product_id', $id)
@@ -1337,17 +1337,17 @@ class ProductController extends AdminBaseController
                 $translationName = isset($translation['name']) ? trim($translation['name']) : '';
                 $translationDesc = isset($translation['description']) ? trim($translation['description']) : '';
                 $langCode = $translation['lang_code'] ?? '';
-                
+
                 // Skip if lang_code is missing
                 if (empty($langCode)) {
                     continue;
                 }
-                
+
                 // **FIX: Prevent "test" or invalid placeholder values**
                 $invalidValues = ['test', 'testing', 'تجربة', 'اختبار'];
-                $isInvalidName = empty($translationName) || 
+                $isInvalidName = empty($translationName) ||
                                 in_array(strtolower($translationName), $invalidValues);
-                
+
                 // Only save if we have valid content (valid name OR description)
                 if (!$isInvalidName || !empty($translationDesc)) {
                     // Use updateOrCreate for composite key tables
