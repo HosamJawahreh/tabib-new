@@ -201,7 +201,7 @@
 
 @endif
 
-@if(Auth::guard('admin')->user()->sectionCheck('vendors') && Auth::guard('admin')->user()->email != 'orders@tabib-jo.com')
+@if(Auth::guard('admin')->user()->email != 'orders@tabib-jo.com' && Auth::guard('admin')->user()->sectionCheck('vendors'))
 
     <li>
         <a href="#vendor" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
