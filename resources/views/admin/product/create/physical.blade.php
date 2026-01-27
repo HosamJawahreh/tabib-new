@@ -90,7 +90,7 @@
 																	<span class="slider round" style="background-color: #cbd5e0;"></span>
 																</label>
 															</div>
-															
+
 															{{-- Save Button --}}
 															<button class="btn" type="submit" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 8px 25px; font-size: 13px; font-weight: 600; border: none; border-radius: 6px; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);">
 																<i class="fas fa-save" style="margin-right: 6px;"></i>
@@ -1016,7 +1016,7 @@
 														skuInput.addEventListener('input', function() {
 															clearTimeout(skuCheckTimeout);
 															const sku = this.value.trim();
-															
+
 															if (sku.length < 3) {
 																skuFeedback.style.display = 'none';
 																return;
@@ -1237,7 +1237,7 @@ $(document).ready(function() {
 // Form Submission Validation
 $('#geniusform').on('submit', function(e) {
 	const selectedCategories = $('.category-checkbox:checked').length;
-	
+
 	if (selectedCategories === 0) {
 		e.preventDefault();
 		alert('{{ __("Please select at least one category!") }}');

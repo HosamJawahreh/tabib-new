@@ -89,6 +89,7 @@
                                                 <button class="btn btn-primary edit-brand" 
                                                         data-id="{{ $brand->id }}"
                                                         data-name="{{ $brand->name }}"
+                                                        data-name-en="{{ $brand->name_en }}"
                                                         data-status="{{ $brand->status }}"
                                                         data-sort="{{ $brand->sort_order }}"
                                                         data-image="{{ $brand->image }}"
@@ -146,8 +147,14 @@
                 @csrf
                 <div class="modal-body">
                     <div class="form-group">
-                        <label>{{ __('Brand Name') }} *</label>
+                        <label>{{ __('Brand Name (Arabic)') }} *</label>
                         <input type="text" class="form-control" name="name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>{{ __('Brand Name (English)') }}</label>
+                        <input type="text" class="form-control" name="name_en">
+                        <small class="form-text text-muted">{{ __('Optional English name for bilingual support') }}</small>
                     </div>
 
                     <div class="form-group">
@@ -193,8 +200,14 @@
                 <input type="hidden" name="brand_id" id="edit_brand_id">
                 <div class="modal-body">
                     <div class="form-group">
-                        <label>{{ __('Brand Name') }} *</label>
+                        <label>{{ __('Brand Name (Arabic)') }} *</label>
                         <input type="text" class="form-control" name="name" id="edit_name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>{{ __('Brand Name (English)') }}</label>
+                        <input type="text" class="form-control" name="name_en" id="edit_name_en">
+                        <small class="form-text text-muted">{{ __('Optional English name for bilingual support') }}</small>
                     </div>
 
                     <div class="form-group">
@@ -343,12 +356,14 @@ $(document).ready(function() {
     $(document).on('click', '.edit-brand', function() {
         var id = $(this).data('id');
         var name = $(this).data('name');
+        var nameEn = $(this).data('name-en');
         var status = $(this).data('status');
         var sort = $(this).data('sort');
         var image = $(this).data('image');
 
         $('#edit_brand_id').val(id);
         $('#edit_name').val(name);
+        $('#edit_name_en').val(nameEn);
         $('#edit_status').val(status);
         $('#edit_sort_order').val(sort);
 

@@ -21,6 +21,7 @@ class BrandController extends Controller
     {
         $rules = [
             'name' => 'required|max:255',
+            'name_en' => 'nullable|max:255',
             'image' => 'nullable|image|mimes:jpeg,jpg,png,webp|max:2048',
             'status' => 'required|in:0,1',
         ];
@@ -34,6 +35,7 @@ class BrandController extends Controller
         try {
             $brand = new Brand();
             $brand->name = $request->name;
+            $brand->name_en = $request->name_en;
             $brand->status = $request->status;
             $brand->sort_order = $request->sort_order ?? 0;
 
@@ -86,6 +88,7 @@ class BrandController extends Controller
     {
         $rules = [
             'name' => 'required|max:255',
+            'name_en' => 'nullable|max:255',
             'image' => 'nullable|image|mimes:jpeg,jpg,png,webp|max:2048',
             'status' => 'required|in:0,1',
         ];
@@ -99,6 +102,7 @@ class BrandController extends Controller
         try {
             $brand = Brand::findOrFail($id);
             $brand->name = $request->name;
+            $brand->name_en = $request->name_en;
             $brand->status = $request->status;
             $brand->sort_order = $request->sort_order ?? 0;
 

@@ -81,6 +81,7 @@
                                             <button class="btn btn-sm btn-primary edit-product flex-fill mr-1" 
                                                     data-id="{{ $product->id }}"
                                                     data-name="{{ $product->name }}"
+                                                    data-name-en="{{ $product->name_en }}"
                                                     data-price="{{ $product->price }}"
                                                     data-status="{{ $product->status }}"
                                                     data-sort="{{ $product->sort_order }}"
@@ -137,8 +138,14 @@
                 <input type="hidden" name="brand_id" value="{{ $brand->id }}">
                 <div class="modal-body">
                     <div class="form-group">
-                        <label>{{ __('Product Name') }} *</label>
+                        <label>{{ __('Product Name (Arabic)') }} *</label>
                         <input type="text" class="form-control" name="name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>{{ __('Product Name (English)') }}</label>
+                        <input type="text" class="form-control" name="name_en">
+                        <small class="form-text text-muted">{{ __('Optional English name for bilingual support') }}</small>
                     </div>
 
                     <div class="form-group">
@@ -189,8 +196,14 @@
                 <input type="hidden" name="product_id" id="edit_product_id">
                 <div class="modal-body">
                     <div class="form-group">
-                        <label>{{ __('Product Name') }} *</label>
+                        <label>{{ __('Product Name (Arabic)') }} *</label>
                         <input type="text" class="form-control" name="name" id="edit_name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>{{ __('Product Name (English)') }}</label>
+                        <input type="text" class="form-control" name="name_en" id="edit_name_en">
+                        <small class="form-text text-muted">{{ __('Optional English name for bilingual support') }}</small>
                     </div>
 
                     <div class="form-group">
@@ -334,6 +347,7 @@ $(document).ready(function() {
     $(document).on('click', '.edit-product', function() {
         var id = $(this).data('id');
         var name = $(this).data('name');
+        var nameEn = $(this).data('name-en');
         var price = $(this).data('price');
         var status = $(this).data('status');
         var sort = $(this).data('sort');
@@ -341,6 +355,7 @@ $(document).ready(function() {
 
         $('#edit_product_id').val(id);
         $('#edit_name').val(name);
+        $('#edit_name_en').val(nameEn);
         $('#edit_price').val(price);
         $('#edit_status').val(status);
         $('#edit_sort_order').val(sort);

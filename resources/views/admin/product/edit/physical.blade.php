@@ -41,7 +41,7 @@ if (!isset($data) || !is_object($data)) {
 			<form id="geniusform" action="{{route('admin-prod-update', $data->id)}}" method="POST" enctype="multipart/form-data">
 				{{csrf_field()}}
 				@include('alerts.admin.form-both')
-				
+
 				{{-- STICKY TOP ACTION BAR --}}
 				<div style="position: sticky; top: 0; z-index: 1000; background: white; border-bottom: 2px solid #e2e8f0; padding: 15px 30px; margin: -15px -15px 20px -15px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
 					<div class="row align-items-center">
@@ -86,7 +86,7 @@ if (!isset($data) || !is_object($data)) {
 										<span class="slider round" style="background-color: {{ $data->hot == 1 ? '#3b82f6' : '#cbd5e0' }};"></span>
 									</label>
 								</div>
-								
+
 								{{-- Save Button --}}
 								<button class="btn" type="submit" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 8px 25px; font-size: 13px; font-weight: 600; border: none; border-radius: 6px; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);">
 									<i class="fas fa-save" style="margin-right: 6px;"></i>
@@ -279,7 +279,7 @@ if (!isset($data) || !is_object($data)) {
 														@foreach($cats as $cat)
 															<div class="category-item parent-category" style="margin-bottom: 10px;">
 																<label style="display: flex; align-items: center; cursor: pointer; padding: 10px; background: white; border-radius: 6px; margin-bottom: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); transition: all 0.2s;">
-																	<input type="checkbox" name="categories[]" value="{{ $cat->id }}" class="category-checkbox parent-checkbox" data-category-id="{{ $cat->id }}" 
+																	<input type="checkbox" name="categories[]" value="{{ $cat->id }}" class="category-checkbox parent-checkbox" data-category-id="{{ $cat->id }}"
 																		{{ in_array($cat->id, $selectedCategoryIds) ? 'checked' : '' }}
 																		style="margin-right: 12px; width: 18px; height: 18px; cursor: pointer;">
 																	<i class="fas fa-folder" style="margin-right: 10px; color: #ed8936; font-size: 16px;"></i>
@@ -294,7 +294,7 @@ if (!isset($data) || !is_object($data)) {
 																		@foreach($cat->children as $sub)
 																			<div class="category-item sub-category" style="margin-bottom: 8px;">
 																				<label style="display: flex; align-items: center; cursor: pointer; padding: 6px 10px; background: #f7fafc; border-radius: 4px; margin-bottom: 4px;">
-																					<input type="checkbox" name="categories[]" value="{{ $sub->id }}" class="category-checkbox sub-checkbox" data-parent-id="{{ $cat->id }}" data-category-id="{{ $sub->id }}" 
+																					<input type="checkbox" name="categories[]" value="{{ $sub->id }}" class="category-checkbox sub-checkbox" data-parent-id="{{ $cat->id }}" data-category-id="{{ $sub->id }}"
 																						{{ in_array($sub->id, $selectedCategoryIds) ? 'checked' : '' }}
 																						style="margin-right: 10px; width: 16px; height: 16px; cursor: pointer;">
 																					<i class="fas fa-folder-open" style="margin-right: 8px; color: #3182ce; font-size: 13px;"></i>
@@ -309,7 +309,7 @@ if (!isset($data) || !is_object($data)) {
 																						@foreach($sub->children as $child)
 																							<div class="category-item child-category" style="margin-bottom: 5px;">
 																								<label style="display: flex; align-items: center; cursor: pointer; padding: 5px 10px; background: #edf2f7; border-radius: 4px;">
-																									<input type="checkbox" name="categories[]" value="{{ $child->id }}" class="category-checkbox child-checkbox" data-parent-id="{{ $sub->id }}" data-category-id="{{ $child->id }}" 
+																									<input type="checkbox" name="categories[]" value="{{ $child->id }}" class="category-checkbox child-checkbox" data-parent-id="{{ $sub->id }}" data-category-id="{{ $child->id }}"
 																										{{ in_array($child->id, $selectedCategoryIds) ? 'checked' : '' }}
 																										style="margin-right: 10px; width: 14px; height: 14px; cursor: pointer;">
 																									<i class="fas fa-tag" style="margin-right: 8px; color: #2b6cb0; font-size: 12px;"></i>
@@ -1138,7 +1138,7 @@ $(document).ready(function() {
 				// Find parent category from the subcategory
 				const $subCheckbox = $('.sub-checkbox[data-category-id="' + subCategoryId + '"]');
 				const mainCategoryId = $subCheckbox.data('parent-id');
-				
+
 				$('#main-category-id').val(mainCategoryId);
 				$('#sub-category-id').val(subCategoryId);
 				$('#child-category-id').val(categoryId);
@@ -1148,7 +1148,7 @@ $(document).ready(function() {
 			$('#sub-category-id').val('');
 			$('#child-category-id').val('');
 		}
-		
+
 		// Debug log to verify values
 		console.log('Category IDs updated:', {
 			main: $('#main-category-id').val(),
@@ -1225,7 +1225,7 @@ $(document).ready(function() {
 // Form Submission Validation
 $('#geniusform').on('submit', function(e) {
 	const selectedCategories = $('.category-checkbox:checked').length;
-	
+
 	if (selectedCategories === 0) {
 		e.preventDefault();
 		alert('{{ __("Please select at least one category!") }}');
@@ -1284,13 +1284,13 @@ $(document).ready(function() {
 		if (catId) {
 			var $checkbox = $('.category-checkbox[value="' + catId + '"]');
 			$checkbox.prop('checked', true);
-			
+
 			// Expand ALL parent containers (subcategories and childcategories)
 			$checkbox.parents('.subcategories, .childcategories').show();
-			
+
 			// Also expand the subcategories/childcategories of this category if it has any
 			$checkbox.closest('label').next('.subcategories, .childcategories').show();
-			
+
 			// Update toggle icons
 			$checkbox.closest('label').find('.toggle-icon').removeClass('fa-chevron-down').addClass('fa-chevron-up');
 			$checkbox.parents('.subcategories, .childcategories').prev('label').find('.toggle-icon').removeClass('fa-chevron-down').addClass('fa-chevron-up');
