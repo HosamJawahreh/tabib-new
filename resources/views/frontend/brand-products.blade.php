@@ -155,11 +155,11 @@
             @if($brand->image)
             <div class="mb-3">
                 <img src="{{ asset('assets/images/brands/' . $brand->image) }}"
-                     alt="{{ app()->getLocale() == 'en' && $brand->name_en ? $brand->name_en : $brand->name }}"
+                     alt="{{ $langg->rtl == 0 && $brand->name_en ? $brand->name_en : $brand->name }}"
                      class="brand-logo-header">
             </div>
             @endif
-            <h1>{{ app()->getLocale() == 'en' && $brand->name_en ? $brand->name_en : $brand->name }}</h1>
+            <h1>{{ $langg->rtl == 0 && $brand->name_en ? $brand->name_en : $brand->name }}</h1>
             <div class="title-underline"></div>
         </div>
     </div>
@@ -176,7 +176,7 @@
                         <a href="javascript:void(0)" class="d-block">
                             @if($product->image)
                                 <img src="{{ asset('assets/images/brand-products/' . $product->image) }}"
-                                     alt="{{ app()->getLocale() == 'en' && $product->name_en ? $product->name_en : $product->name }}"
+                                     alt="{{ $langg->rtl == 0 && $product->name_en ? $product->name_en : $product->name }}"
                                      class="img-fluid product-image"
                                      loading="lazy">
                             @else
@@ -189,7 +189,7 @@
 
                     <div class="product-content text-center">
                         <h6 class="product-title mb-2 text-center">
-                            <a href="javascript:void(0)">{{ app()->getLocale() == 'en' && $product->name_en ? $product->name_en : $product->name }}</a>
+                            <a href="javascript:void(0)">{{ $langg->rtl == 0 && $product->name_en ? $product->name_en : $product->name }}</a>
                         </h6>
 
                         <div class="product-price text-center">

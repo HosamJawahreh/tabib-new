@@ -135,7 +135,7 @@
                         <div class="product-thumb position-relative">
                             @if($brand->image)
                                 <img src="{{ asset('assets/images/brands/' . $brand->image) }}"
-                                     alt="{{ app()->getLocale() == 'en' && $brand->name_en ? $brand->name_en : $brand->name }}"
+                                     alt="{{ $langg->rtl == 0 && $brand->name_en ? $brand->name_en : $brand->name }}"
                                      class="img-fluid product-image">
                             @else
                                 <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: #f8f9fa;">
@@ -146,7 +146,7 @@
 
                         <div class="product-content text-center">
                             <h6 class="product-title text-center">
-                                <span>{{ app()->getLocale() == 'en' && $brand->name_en ? $brand->name_en : $brand->name }}</span>
+                                <span>{{ $langg->rtl == 0 && $brand->name_en ? $brand->name_en : $brand->name }}</span>
                             </h6>
                         </div>
                     </div>

@@ -81,7 +81,13 @@ class ProductController extends AdminBaseController
                 return '<div style="text-align: center;"><span style="color: #a0aec0;">-</span></div>';
             })
             ->addColumn('image', function (Product $data) {
-                $photo = $data->thumbnail ? asset('assets/images/thumbnails/' . $data->thumbnail) : asset('assets/images/noimage.png');
+                // Use same logic as homepage: thumbnail first, then photo, then noimage
+                $photo = asset('assets/images/noimage.png');
+                if($data->thumbnail) {
+                    $photo = asset('assets/images/thumbnails/' . $data->thumbnail);
+                } elseif($data->photo) {
+                    $photo = asset('assets/images/products/' . $data->photo);
+                }
                 return '<div style="text-align: center;"><img src="' . $photo . '" alt="Product" style="width: 60px; height: 60px; object-fit: cover; border-radius: 4px;"></div>';
             })
             ->editColumn('name', function (Product $data) {
@@ -394,10 +400,10 @@ class ProductController extends AdminBaseController
         list(, $image) = explode(',', $image);
         $image = base64_decode($image);
         $image_name = time() . Str::random(8) . '.webp';
-        $path = public_path('assets/images/products/' . $image_name);
+        $path = 'assets/images/products/' . $image_name;
 
         // Create temporary file from base64 to process with Intervention Image
-        $tempPath = public_path('assets/images/products/temp_' . time() . '.png');
+        $tempPath = 'assets/images/products/temp_' . time() . '.png';
         file_put_contents($tempPath, $image);
 
         // Convert to WebP with AGGRESSIVE compression for smallest file size
