@@ -24,7 +24,10 @@ class DashboardController extends AdminBaseController
     {
         // Redirect orders@tabib-jo.com user directly to orders page
         if (Auth::guard('admin')->check() && Auth::guard('admin')->user()->email === 'orders@tabib-jo.com') {
-            return redirect()->route('admin-orders-all');
+            // If coming from dashboard link, redirect to orders
+            if(request()->is('admin') || request()->is('admin/dashboard')) {
+                return redirect()->route('admin-orders-all');
+            }
         }
 
         $data['pending'] = Order::where('status', '=', 'pending')->get();

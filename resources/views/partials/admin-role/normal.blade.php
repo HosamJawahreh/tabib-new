@@ -422,6 +422,7 @@
 @endif
 --}}
 
+@if(Auth::guard('admin')->user()->role_id == 0)
 <li>
     <a href="#siteSettings" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
         <i class="fas fa-cog"></i>{{ __('Site Settings') }}
@@ -455,6 +456,7 @@
         @endif
     </ul>
 </li>
+@endif
 
 {{-- PAYMENT SETTINGS HIDDEN
 @if(Auth::guard('admin')->user()->sectionCheck('payment_settings'))
