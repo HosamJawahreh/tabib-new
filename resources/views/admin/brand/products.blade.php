@@ -82,6 +82,8 @@
                                                     data-id="{{ $product->id }}"
                                                     data-name="{{ $product->name }}"
                                                     data-name-en="{{ $product->name_en }}"
+                                                    data-description="{{ $product->description }}"
+                                                    data-description-en="{{ $product->description_en }}"
                                                     data-price="{{ $product->price }}"
                                                     data-status="{{ $product->status }}"
                                                     data-sort="{{ $product->sort_order }}"
@@ -149,6 +151,18 @@
                     </div>
 
                     <div class="form-group">
+                        <label>{{ __('Description (Arabic)') }}</label>
+                        <input type="text" class="form-control" name="description" maxlength="255">
+                        <small class="form-text text-muted">{{ __('Short description (max 255 characters)') }}</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label>{{ __('Description (English)') }}</label>
+                        <input type="text" class="form-control" name="description_en" maxlength="255">
+                        <small class="form-text text-muted">{{ __('Short description in English (max 255 characters)') }}</small>
+                    </div>
+
+                    <div class="form-group">
                         <label>{{ __('Price') }} *</label>
                         <input type="number" class="form-control" name="price" step="0.01" min="0" required>
                     </div>
@@ -204,6 +218,18 @@
                         <label>{{ __('Product Name (English)') }}</label>
                         <input type="text" class="form-control" name="name_en" id="edit_name_en">
                         <small class="form-text text-muted">{{ __('Optional English name for bilingual support') }}</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label>{{ __('Description (Arabic)') }}</label>
+                        <input type="text" class="form-control" name="description" id="edit_description" maxlength="255">
+                        <small class="form-text text-muted">{{ __('Short description (max 255 characters)') }}</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label>{{ __('Description (English)') }}</label>
+                        <input type="text" class="form-control" name="description_en" id="edit_description_en" maxlength="255">
+                        <small class="form-text text-muted">{{ __('Short description in English (max 255 characters)') }}</small>
                     </div>
 
                     <div class="form-group">
@@ -348,6 +374,8 @@ $(document).ready(function() {
         var id = $(this).data('id');
         var name = $(this).data('name');
         var nameEn = $(this).data('name-en');
+        var description = $(this).data('description');
+        var descriptionEn = $(this).data('description-en');
         var price = $(this).data('price');
         var status = $(this).data('status');
         var sort = $(this).data('sort');
@@ -356,6 +384,8 @@ $(document).ready(function() {
         $('#edit_product_id').val(id);
         $('#edit_name').val(name);
         $('#edit_name_en').val(nameEn);
+        $('#edit_description').val(description);
+        $('#edit_description_en').val(descriptionEn);
         $('#edit_price').val(price);
         $('#edit_status').val(status);
         $('#edit_sort_order').val(sort);

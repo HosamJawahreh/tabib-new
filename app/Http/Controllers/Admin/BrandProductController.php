@@ -29,6 +29,8 @@ class BrandProductController extends Controller
             'brand_id' => 'required|exists:brands,id',
             'name' => 'required|max:255',
             'name_en' => 'nullable|max:255',
+            'description' => 'nullable|max:255',
+            'description_en' => 'nullable|max:255',
             'price' => 'required|numeric|min:0',
             'image' => 'nullable|image|mimes:jpeg,jpg,png,webp|max:2048',
             'status' => 'required|in:0,1',
@@ -45,6 +47,8 @@ class BrandProductController extends Controller
             $product->brand_id = $request->brand_id;
             $product->name = $request->name;
             $product->name_en = $request->name_en;
+            $product->description = $request->description;
+            $product->description_en = $request->description_en;
             $product->price = $request->price;
             $product->status = $request->status;
             $product->sort_order = $request->sort_order ?? 0;
@@ -94,6 +98,8 @@ class BrandProductController extends Controller
         $rules = [
             'name' => 'required|max:255',
             'name_en' => 'nullable|max:255',
+            'description' => 'nullable|max:255',
+            'description_en' => 'nullable|max:255',
             'price' => 'required|numeric|min:0',
             'image' => 'nullable|image|mimes:jpeg,jpg,png,webp|max:2048',
             'status' => 'required|in:0,1',
@@ -109,6 +115,8 @@ class BrandProductController extends Controller
             $product = BrandProduct::findOrFail($id);
             $product->name = $request->name;
             $product->name_en = $request->name_en;
+            $product->description = $request->description;
+            $product->description_en = $request->description_en;
             $product->price = $request->price;
             $product->status = $request->status;
             $product->sort_order = $request->sort_order ?? 0;
