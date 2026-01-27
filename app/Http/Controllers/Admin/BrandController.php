@@ -43,24 +43,24 @@ class BrandController extends Controller
                 try {
                     $image = $request->file('image');
                     $imageName = time() . '_' . uniqid() . '.webp';
-                    
+
                     // Create directory if it doesn't exist - use base_path instead of public_path
                     $directory = base_path('public/assets/images/brands');
                     if (!file_exists($directory)) {
                         mkdir($directory, 0777, true);
                     }
-                    
+
                     // Convert to WebP with error handling
                     $img = Image::make($image->getRealPath());
                     $img->encode('webp', 90);
                     $savePath = $directory . '/' . $imageName;
                     $img->save($savePath);
-                    
+
                     // Verify file was created
                     if (!file_exists($savePath)) {
                         throw new \Exception('Image file was not created at: ' . $savePath);
                     }
-                    
+
                     $brand->image = $imageName;
                 } catch (\Exception $e) {
                     Log::error('Image processing error: ' . $e->getMessage());
@@ -115,24 +115,24 @@ class BrandController extends Controller
 
                     $image = $request->file('image');
                     $imageName = time() . '_' . uniqid() . '.webp';
-                    
+
                     // Create directory if it doesn't exist
                     $directory = base_path('public/assets/images/brands');
                     if (!file_exists($directory)) {
                         mkdir($directory, 0777, true);
                     }
-                    
+
                     // Convert to WebP
                     $img = Image::make($image->getRealPath());
                     $img->encode('webp', 90);
                     $savePath = $directory . '/' . $imageName;
                     $img->save($savePath);
-                    
+
                     // Verify file was created
                     if (!file_exists($savePath)) {
                         throw new \Exception('Image file was not created at: ' . $savePath);
                     }
-                    
+
                     $brand->image = $imageName;
                 } catch (\Exception $e) {
                     Log::error('Image update error: ' . $e->getMessage());

@@ -19,7 +19,7 @@ class BrandProductController extends Controller
             ->orderBy('sort_order', 'asc')
             ->orderBy('id', 'desc')
             ->get();
-        
+
         return view('admin.brand.products', compact('brand', 'products'));
     }
 
@@ -53,24 +53,24 @@ class BrandProductController extends Controller
                 try {
                     $image = $request->file('image');
                     $imageName = time() . '_' . uniqid() . '.webp';
-                    
+
                     // Create directory if it doesn't exist
                     $directory = base_path('public/assets/images/brand-products');
                     if (!file_exists($directory)) {
                         mkdir($directory, 0777, true);
                     }
-                    
+
                     // Convert to WebP
                     $img = Image::make($image->getRealPath());
                     $img->encode('webp', 90);
                     $savePath = $directory . '/' . $imageName;
                     $img->save($savePath);
-                    
+
                     // Verify file was created
                     if (!file_exists($savePath)) {
                         throw new \Exception('Image file was not created at: ' . $savePath);
                     }
-                    
+
                     $product->image = $imageName;
                 } catch (\Exception $e) {
                     Log::error('Brand Product image processing error: ' . $e->getMessage());
@@ -122,24 +122,24 @@ class BrandProductController extends Controller
 
                     $image = $request->file('image');
                     $imageName = time() . '_' . uniqid() . '.webp';
-                    
+
                     // Create directory if it doesn't exist
                     $directory = base_path('public/assets/images/brand-products');
                     if (!file_exists($directory)) {
                         mkdir($directory, 0777, true);
                     }
-                    
+
                     // Convert to WebP
                     $img = Image::make($image->getRealPath());
                     $img->encode('webp', 90);
                     $savePath = $directory . '/' . $imageName;
                     $img->save($savePath);
-                    
+
                     // Verify file was created
                     if (!file_exists($savePath)) {
                         throw new \Exception('Image file was not created at: ' . $savePath);
                     }
-                    
+
                     $product->image = $imageName;
                 } catch (\Exception $e) {
                     Log::error('Brand Product image update error: ' . $e->getMessage());

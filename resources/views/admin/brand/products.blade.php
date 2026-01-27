@@ -23,7 +23,7 @@
             <div class="col-lg-12">
                 <div class="product-description">
                     <div class="body-area">
-                        
+
                         <div class="d-flex justify-content-between align-items-center mb-4">
                             <a href="{{ route('admin-brand-index') }}" class="btn btn-secondary">
                                 <i class="fas fa-arrow-left"></i> {{ __('Back to Brands') }}
@@ -34,7 +34,7 @@
                         </div>
 
                         <div class="gocover" style="background: url({{ asset('assets/images/xloading.gif') }}) no-repeat scroll center center rgba(45, 45, 45, 0.5);"></div>
-                        
+
                         @if($products->count() > 0)
                         <div class="row" id="product-sortable">
                             @foreach($products as $product)
@@ -44,12 +44,12 @@
                                     <div class="drag-handle text-center py-2" style="cursor: move; background: #f8f9fa; border-top-left-radius: 12px; border-top-right-radius: 12px;">
                                         <i class="fas fa-grip-horizontal text-muted"></i>
                                     </div>
-                                    
+
                                     {{-- Product Image --}}
                                     <div class="card-img-top d-flex align-items-center justify-content-center" style="height: 200px; background: #ffffff; padding: 15px;">
                                         @if($product->image)
-                                        <img src="{{ asset('assets/images/brand-products/' . $product->image) }}" 
-                                             alt="{{ $product->name }}" 
+                                        <img src="{{ asset('assets/images/brand-products/' . $product->image) }}"
+                                             alt="{{ $product->name }}"
                                              style="max-width: 100%; max-height: 100%; object-fit: contain;">
                                         @else
                                         <div class="text-center">
@@ -58,11 +58,11 @@
                                         </div>
                                         @endif
                                     </div>
-                                    
+
                                     {{-- Card Body --}}
                                     <div class="card-body">
                                         <h5 class="card-title mb-2" style="font-weight: 600; font-size: 1rem;">{{ $product->name }}</h5>
-                                        
+
                                         <div class="d-flex justify-content-between align-items-center mb-3">
                                             <span class="badge badge-success" style="font-size: 0.9rem; padding: 6px 12px;">
                                                 ${{ number_format($product->price, 2) }}
@@ -71,14 +71,14 @@
                                                 {{ $product->status == 1 ? __('Active') : __('Inactive') }}
                                             </span>
                                         </div>
-                                        
+
                                         <div class="mb-3">
                                             <small class="text-muted">{{ __('Sort Order') }}: <strong>{{ $product->sort_order }}</strong></small>
                                         </div>
-                                        
+
                                         {{-- Action Buttons --}}
                                         <div class="d-flex justify-content-between">
-                                            <button class="btn btn-sm btn-primary edit-product flex-fill mr-1" 
+                                            <button class="btn btn-sm btn-primary edit-product flex-fill mr-1"
                                                     data-id="{{ $product->id }}"
                                                     data-name="{{ $product->name }}"
                                                     data-name-en="{{ $product->name_en }}"
@@ -89,15 +89,15 @@
                                                     title="{{ __('Edit') }}">
                                                 <i class="fas fa-edit"></i> {{ __('Edit') }}
                                             </button>
-                                            
-                                            <button class="btn btn-sm btn-{{ $product->status == 1 ? 'warning' : 'success' }} toggle-status mr-1" 
+
+                                            <button class="btn btn-sm btn-{{ $product->status == 1 ? 'warning' : 'success' }} toggle-status mr-1"
                                                     data-id="{{ $product->id }}"
                                                     data-status="{{ $product->status == 1 ? 0 : 1 }}"
                                                     title="{{ $product->status == 1 ? __('Deactivate') : __('Activate') }}">
                                                 <i class="fas fa-{{ $product->status == 1 ? 'eye-slash' : 'eye' }}"></i>
                                             </button>
-                                            
-                                            <button class="btn btn-sm btn-danger delete-product" 
+
+                                            <button class="btn btn-sm btn-danger delete-product"
                                                     data-id="{{ $product->id }}"
                                                     title="{{ __('Delete') }}">
                                                 <i class="fas fa-trash"></i>
@@ -248,7 +248,7 @@
 
 <script>
 $(document).ready(function() {
-    
+
     // Initialize Sortable for drag and drop
     var el = document.getElementById('product-sortable');
     if (el) {

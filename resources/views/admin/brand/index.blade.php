@@ -22,7 +22,7 @@
             <div class="col-lg-12">
                 <div class="product-description">
                     <div class="body-area">
-                        
+
                         {{-- Add Brand Button --}}
                         <div class="mb-4">
                             <button class="addProductSubmit-btn" data-toggle="modal" data-target="#addBrandModal">
@@ -32,7 +32,7 @@
 
                         {{-- Brands List --}}
                         <div class="gocover" style="background: url({{ asset('assets/images/xloading.gif') }}) no-repeat scroll center center rgba(45, 45, 45, 0.5);"></div>
-                        
+
                         <div id="brand-list-container">
                             @if($brands->count() > 0)
                             <div class="row" id="brand-sortable">
@@ -42,15 +42,15 @@
                                         {{-- Brand Image --}}
                                         <div class="brand-image-wrapper" style="height: 200px; background: #f8f9fa; position: relative; overflow: hidden;">
                                             @if($brand->image)
-                                            <img src="{{ asset('assets/images/brands/' . $brand->image) }}" 
-                                                 alt="{{ $brand->name }}" 
+                                            <img src="{{ asset('assets/images/brands/' . $brand->image) }}"
+                                                 alt="{{ $brand->name }}"
                                                  style="width: 100%; height: 100%; object-fit: contain; padding: 20px;">
                                             @else
                                             <div class="d-flex align-items-center justify-content-center h-100">
                                                 <i class="fas fa-image" style="font-size: 50px; color: #dee2e6;"></i>
                                             </div>
                                             @endif
-                                            
+
                                             {{-- Drag Handle --}}
                                             <div class="drag-handle" style="position: absolute; top: 10px; left: 10px; cursor: move; background: rgba(0,0,0,0.5); color: white; padding: 5px 10px; border-radius: 5px;">
                                                 <i class="fas fa-grip-vertical"></i>
@@ -69,7 +69,7 @@
                                             <h5 class="card-title mb-3" style="font-weight: 600; color: #2d3748;">
                                                 {{ $brand->name }}
                                             </h5>
-                                            
+
                                             <div class="d-flex justify-content-between align-items-center mb-3">
                                                 <small class="text-muted">
                                                     <i class="fas fa-box"></i> {{ $brand->products->count() }} {{ __('Products') }}
@@ -81,12 +81,12 @@
 
                                             {{-- Action Buttons --}}
                                             <div class="btn-group btn-group-sm w-100" role="group">
-                                                <a href="{{ route('admin-brand-products', $brand->id) }}" 
+                                                <a href="{{ route('admin-brand-products', $brand->id) }}"
                                                    class="btn btn-info" title="{{ __('Manage Products') }}">
                                                     <i class="fas fa-boxes"></i> {{ __('Products') }}
                                                 </a>
-                                                
-                                                <button class="btn btn-primary edit-brand" 
+
+                                                <button class="btn btn-primary edit-brand"
                                                         data-id="{{ $brand->id }}"
                                                         data-name="{{ $brand->name }}"
                                                         data-name-en="{{ $brand->name_en }}"
@@ -96,16 +96,16 @@
                                                         title="{{ __('Edit') }}">
                                                     <i class="fas fa-edit"></i>
                                                 </button>
-                                                
-                                                <button class="btn btn-{{ $brand->status == 1 ? 'warning' : 'success' }} toggle-status" 
+
+                                                <button class="btn btn-{{ $brand->status == 1 ? 'warning' : 'success' }} toggle-status"
                                                         data-id="{{ $brand->id }}"
                                                         data-status="{{ $brand->status == 1 ? 0 : 1 }}"
                                                         title="{{ $brand->status == 1 ? __('Deactivate') : __('Activate') }}">
                                                     <i class="fas fa-{{ $brand->status == 1 ? 'eye-slash' : 'eye' }}"></i>
                                                 </button>
-                                                
+
                                                 @if($brand->products->count() == 0)
-                                                <button class="btn btn-danger delete-brand" 
+                                                <button class="btn btn-danger delete-brand"
                                                         data-id="{{ $brand->id }}"
                                                         title="{{ __('Delete') }}">
                                                     <i class="fas fa-trash"></i>
@@ -247,7 +247,7 @@
 
 <script>
 $(document).ready(function() {
-    
+
     // Initialize Sortable for drag and drop
     var el = document.getElementById('brand-sortable');
     if (el) {
@@ -300,7 +300,7 @@ $(document).ready(function() {
         $('.gocover').show();
 
         var formData = new FormData(this);
-        
+
         // Debug: Log form data
         console.log('Submitting brand form...');
         for (var pair of formData.entries()) {
