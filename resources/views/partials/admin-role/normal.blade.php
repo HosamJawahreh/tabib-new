@@ -200,7 +200,6 @@
     </li>
 
 @endif
---}}
 
 @if(Auth::guard('admin')->user()->sectionCheck('vendors') && Auth::guard('admin')->user()->email != 'orders@tabib-jo.com')
 
