@@ -24,11 +24,11 @@ class GalleryController extends Controller
             $data[0] = 1;
             $data[1] = $prod->galleries;
         }
-        return response()->json($data);              
-    }  
+        return response()->json($data);
+    }
 
     public function store(Request $request)
-    { 
+    {
         $data = null;
         $lastid = $request->product_id;
         if ($files = $request->file('gallery')){
@@ -40,13 +40,13 @@ class GalleryController extends Controller
 
                     // Convert gallery images to WebP with 75% quality for product details
                     $img = Image::make($file->getRealPath());
-                    
+
                     // Resize to max 1200px for product detail view
                     $img->resize(1200, 1200, function ($constraint) {
                         $constraint->aspectRatio();
                         $constraint->upsize();
                     });
-                    
+
                     // Save as WebP with 75% quality (matches product main photo quality)
                     $thumbnail = time() . Str::random(8) . '.webp';
                     $img->encode('webp', 75)->save(public_path() . '/assets/images/galleries/' . $thumbnail);
@@ -54,12 +54,12 @@ class GalleryController extends Controller
                     $gallery['photo'] = $thumbnail;
                     $gallery['product_id'] = $lastid;
                     $gallery->save();
-                    $data[] = $gallery;                        
+                    $data[] = $gallery;
                   }
             }
         }
-        return response()->json($data);      
-    } 
+        return response()->json($data);
+    }
 
     public function destroy()
     {
@@ -70,7 +70,7 @@ class GalleryController extends Controller
                 unlink(public_path().'/assets/images/galleries/'.$gal->photo);
             }
         $gal->delete();
-            
-    } 
+
+    }
 
 }
