@@ -1,7 +1,7 @@
 <?php
 /**
  * Restore ec_products_translations table from backup
- * 
+ *
  * This script helps restore the translations table from a backup file
  * Run: php restore-translations-from-backup.php
  */
@@ -51,20 +51,20 @@ if (!$backupFile) {
     }
     echo "\nPlease place your backup SQL file in the project root directory.\n";
     echo "Or provide the path when prompted below.\n\n";
-    
+
     echo "Enter the full path to your backup file (or press Enter to exit): ";
     $customPath = trim(fgets(STDIN));
-    
+
     if (empty($customPath)) {
         echo "Exiting...\n";
         exit(1);
     }
-    
+
     if (!File::exists($customPath)) {
         echo "❌ File not found: $customPath\n";
         exit(1);
     }
-    
+
     $backupFile = $customPath;
 }
 
@@ -105,30 +105,30 @@ echo "=== RESTORING FROM BACKUP ===\n";
 try {
     // Read the backup file
     $sql = File::get($backupFile);
-    
+
     // Drop and recreate the table
     echo "Dropping existing table...\n";
     DB::statement('SET FOREIGN_KEY_CHECKS=0');
     DB::statement('DROP TABLE IF EXISTS ec_products_translations');
-    
+
     // Execute the backup SQL
     echo "Restoring from backup...\n";
     DB::unprepared($sql);
-    
+
     DB::statement('SET FOREIGN_KEY_CHECKS=1');
-    
+
     echo "✓ Restoration complete!\n\n";
-    
+
     // Show restored data stats
     echo "=== RESTORED DATA STATS ===\n";
     $totalTranslations = DB::table('ec_products_translations')->count();
     $enTranslations = DB::table('ec_products_translations')->where('lang_code', 'en_US')->count();
     $arTranslations = DB::table('ec_products_translations')->where('lang_code', 'ar_SA')->count();
-    
+
     echo "Total translations: $totalTranslations\n";
     echo "English (en_US): $enTranslations\n";
     echo "Arabic (ar_SA): $arTranslations\n\n";
-    
+
     // Verify some random products
     echo "=== VERIFICATION (Random Products) ===\n";
     $randomProducts = DB::table('ec_products_translations')
@@ -136,17 +136,17 @@ try {
         ->inRandomOrder()
         ->limit(3)
         ->get(['ec_products_id', 'name', 'description']);
-    
+
     foreach ($randomProducts as $product) {
         $desc = substr($product->description ?? 'No description', 0, 50);
         echo "Product ID {$product->ec_products_id}: {$product->name}\n";
         echo "  Description: {$desc}...\n\n";
     }
-    
+
     echo "✅ SUCCESS! Translations have been restored.\n";
     echo "\nThe ProductTranslation model has been fixed to properly handle\n";
     echo "composite primary keys, so this issue should not happen again.\n";
-    
+
 } catch (\Exception $e) {
     echo "❌ ERROR during restoration: " . $e->getMessage() . "\n";
     echo "\nYou can manually restore using:\n";
