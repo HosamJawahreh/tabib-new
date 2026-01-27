@@ -529,7 +529,7 @@
 
 @endif
 
-{{-- ADDON MANAGER SECTION HIDDEN --}}
+{{-- ADDON MANAGER SECTION HIDDEN
 @if(Auth::guard('admin')->user()->sectionCheck('addons'))
     <li>
         <a href="{{ route('admin-addon-index') }}" class=" wave-effect"><i class="fas fa-list-alt"></i>{{ __('Addon Manager') }}</a>
@@ -537,7 +537,7 @@
 @endif
 --}}
 
-{{-- SUBSCRIBERS SECTION HIDDEN --}}
+{{-- SUBSCRIBERS SECTION HIDDEN
 @if(Auth::guard('admin')->user()->sectionCheck('subscribers'))
 
     <li>
@@ -546,5 +546,3 @@
 
 @endif
 --}}
-
-@endif
