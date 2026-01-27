@@ -36,7 +36,7 @@
         overflow: hidden;
         padding: 15px;
     }
-    
+
     /* Mobile adjustments */
     @media (max-width: 768px) {
         .product-thumb {
@@ -154,8 +154,8 @@
         <div class="text-center">
             @if($brand->image)
             <div class="mb-3">
-                <img src="{{ asset('assets/images/brands/' . $brand->image) }}" 
-                     alt="{{ app()->getLocale() == 'en' && $brand->name_en ? $brand->name_en : $brand->name }}" 
+                <img src="{{ asset('assets/images/brands/' . $brand->image) }}"
+                     alt="{{ app()->getLocale() == 'en' && $brand->name_en ? $brand->name_en : $brand->name }}"
                      class="brand-logo-header">
             </div>
             @endif
@@ -175,7 +175,7 @@
                     <div class="product-thumb position-relative">
                         <a href="javascript:void(0)" class="d-block">
                             @if($product->image)
-                                <img src="{{ asset('assets/images/brand-products/' . $product->image) }}" 
+                                <img src="{{ asset('assets/images/brand-products/' . $product->image) }}"
                                      alt="{{ app()->getLocale() == 'en' && $product->name_en ? $product->name_en : $product->name }}"
                                      class="img-fluid product-image"
                                      loading="lazy">
@@ -186,7 +186,7 @@
                             @endif
                         </a>
                     </div>
-                    
+
                     <div class="product-content text-center">
                         <h6 class="product-title mb-2 text-center">
                             <a href="javascript:void(0)">{{ app()->getLocale() == 'en' && $product->name_en ? $product->name_en : $product->name }}</a>
@@ -211,8 +211,8 @@
             <p style="color: #b2bec3; margin-bottom: 30px;">
                 {{ __('This brand currently has no products') }}
             </p>
-            <a href="{{ route('front.brands') }}" 
-               class="btn btn-success" 
+            <a href="{{ route('front.brands') }}"
+               class="btn btn-success"
                style="padding: 12px 30px; border-radius: 4px; font-weight: 500;">
                 <i class="fas fa-arrow-left"></i> {{ __('Back to Brands') }}
             </a>

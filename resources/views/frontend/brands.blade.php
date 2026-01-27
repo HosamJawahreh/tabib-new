@@ -49,7 +49,7 @@
         overflow: hidden;
         padding: 15px;
     }
-    
+
     /* Mobile adjustments */
     @media (max-width: 768px) {
         .product-thumb {
@@ -134,7 +134,7 @@
                     <div class="product-card h-100 shadow-sm">
                         <div class="product-thumb position-relative">
                             @if($brand->image)
-                                <img src="{{ asset('assets/images/brands/' . $brand->image) }}" 
+                                <img src="{{ asset('assets/images/brands/' . $brand->image) }}"
                                      alt="{{ app()->getLocale() == 'en' && $brand->name_en ? $brand->name_en : $brand->name }}"
                                      class="img-fluid product-image">
                             @else
@@ -143,7 +143,7 @@
                                 </div>
                             @endif
                         </div>
-                        
+
                         <div class="product-content text-center">
                             <h6 class="product-title text-center">
                                 <span>{{ app()->getLocale() == 'en' && $brand->name_en ? $brand->name_en : $brand->name }}</span>
