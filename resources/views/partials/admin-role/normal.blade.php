@@ -91,7 +91,7 @@
 
 @endif
 
-{{-- AFFILIATE PRODUCTS SECTION HIDDEN --}}
+{{-- AFFILIATE PRODUCTS SECTION HIDDEN
 @if(Auth::guard('admin')->user()->sectionCheck('affilate_products'))
 
     <li>
@@ -111,7 +111,7 @@
 @endif
 --}}
 
-{{-- BULK PRODUCT UPLOAD SECTION HIDDEN --}}
+{{-- BULK PRODUCT UPLOAD SECTION HIDDEN
 @if(Auth::guard('admin')->user()->sectionCheck('bulk_product_upload'))
 
     <li>
@@ -121,7 +121,7 @@
 @endif
 --}}
 
-{{-- PRODUCT DISCUSSION SECTION HIDDEN --}}
+{{-- PRODUCT DISCUSSION SECTION HIDDEN
 @if(Auth::guard('admin')->user()->sectionCheck('product_discussion'))
 
     <li>
@@ -144,7 +144,7 @@
 @endif
 --}}
 
-{{-- SET COUPONS SECTION HIDDEN --}}
+{{-- SET COUPONS SECTION HIDDEN
 @if(Auth::guard('admin')->user()->sectionCheck('set_coupons'))
 
     <li>
@@ -177,7 +177,7 @@
 
 @endif
 
-{{-- CUSTOMER DEPOSITS SECTION HIDDEN --}}
+{{-- CUSTOMER DEPOSITS SECTION HIDDEN
 @if(Auth::guard('admin')->user()->sectionCheck('customer_deposits'))
 
     <li>
@@ -202,8 +202,7 @@
 @endif
 --}}
 
-{{-- VENDOR SECTIONS HIDDEN --}}
-{{--
+{{-- VENDOR SECTIONS HIDDEN
 @if(Auth::guard('admin')->user()->sectionCheck('vendors'))
 
     <li>
