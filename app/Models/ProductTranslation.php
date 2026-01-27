@@ -12,11 +12,28 @@ class ProductTranslation extends Model
 
     public $timestamps = false;
 
+    // Composite primary key
+    protected $primaryKey = ['lang_code', 'ec_products_id'];
+
     // This table doesn't have an auto-incrementing id
     public $incrementing = false;
 
-    // Disable primary key (composite keys)
-    protected $primaryKey = null;
+    // Set key type as string for composite keys
+    protected $keyType = 'string';
+
+    /**
+     * Override the setKeysForSaveQuery method to handle composite keys
+     */
+    protected function setKeysForSaveQuery($query)
+    {
+        if (is_array($this->primaryKey)) {
+            foreach ($this->primaryKey as $key) {
+                $query->where($key, '=', $this->getAttribute($key));
+            }
+            return $query;
+        }
+        return parent::setKeysForSaveQuery($query);
+    }
 
     public function product()
     {
