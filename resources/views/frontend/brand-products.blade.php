@@ -193,7 +193,7 @@
                         </h6>
 
                         @if(($langg->rtl == 0 && $product->description_en) || ($langg->rtl == 1 && $product->description))
-                        <p class="product-description text-center" style="font-size: 11px; color: #7f8c8d; margin-bottom: 8px; line-height: 1.4;">
+                        <p class="product-description text-center" style="font-size: 13px; color: #7f8c8d; margin-bottom: 8px; line-height: 1.4;">
                             {{ $langg->rtl == 0 && $product->description_en ? $product->description_en : $product->description }}
                         </p>
                         @endif
