@@ -470,7 +470,7 @@
 
     @php
         use Carbon\Carbon;
-        
+
         // Today - hourly data
         $todayLabels = [];
         $todayRevenue = [];
@@ -485,7 +485,7 @@
                 ->whereRaw('HOUR(created_at) = ?', [$i])
                 ->count();
         }
-        
+
         // This Week - daily data
         $weekLabels = [];
         $weekRevenue = [];
@@ -498,7 +498,7 @@
                 ->sum('pay_amount'), 2);
             $weekOrders[] = App\Models\Order::whereDate('created_at', $date)->count();
         }
-        
+
         // Last 30 Days
         $last30Labels = [];
         $last30Revenue = [];
@@ -528,20 +528,20 @@
             $yearlyRevenue[] = round(App\Models\Order::where('status', 'completed')->whereYear('created_at', $year)->sum('pay_amount'), 2);
             $yearlyOrders[] = App\Models\Order::whereYear('created_at', $year)->count();
         }
-        
+
         // Calculate totals for each period
         $todayTotalRevenue = array_sum($todayRevenue);
         $todayTotalOrders = array_sum($todayOrders);
-        
+
         $weekTotalRevenue = array_sum($weekRevenue);
         $weekTotalOrders = array_sum($weekOrders);
-        
+
         $last30TotalRevenue = array_sum($last30Revenue);
         $last30TotalOrders = array_sum($last30Orders);
-        
+
         $monthlyTotalRevenue = array_sum($monthlyRevenue);
         $monthlyTotalOrders = array_sum($monthlyOrders);
-        
+
         $yearlyTotalRevenue = array_sum($yearlyRevenue);
         $yearlyTotalOrders = array_sum($yearlyOrders);
     @endphp
@@ -608,18 +608,18 @@
 
     function updateStatBoxes(filter) {
         const totals = periodTotals[filter];
-        
+
         // Format revenue with currency
         const formattedRevenue = '$' + totals.revenue.toLocaleString('en-US', {
             minimumFractionDigits: 2,
             maximumFractionDigits: 2
         });
-        
+
         // Update the stat boxes with animation
         $('#totalRevenue').fadeOut(200, function() {
             $(this).html(formattedRevenue).fadeIn(200);
         });
-        
+
         $('#totalOrders').fadeOut(200, function() {
             $(this).html(totals.orders.toLocaleString('en-US')).fadeIn(200);
         });

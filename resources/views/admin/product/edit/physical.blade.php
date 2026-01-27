@@ -1222,6 +1222,21 @@ $(document).ready(function() {
 
 // Gallery Section Insert Ends
 
+// Form Submission Validation
+$('#geniusform').on('submit', function(e) {
+	const selectedCategories = $('.category-checkbox:checked').length;
+	
+	if (selectedCategories === 0) {
+		e.preventDefault();
+		alert('{{ __("Please select at least one category!") }}');
+		$('html, body').animate({
+			scrollTop: $('.category-tree-container').offset().top - 100
+		}, 500);
+		return false;
+	}
+	return true;
+});
+
 })(jQuery);
 
 </script>
