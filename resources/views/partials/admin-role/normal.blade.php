@@ -214,9 +214,9 @@
             {{-- <li>
                 <a href="{{ route('admin-vendor-withdraw-index') }}"><span>{{ __('Withdraws') }}</span></a>
             </li> --}}
-            <li>
+            {{-- <li>
                 <a href="{{ route('admin-vendor-color') }}"><span>{{ __('Default Background') }}</span></a>
-            </li>
+            </li> --}}
 
         </ul>
     </li>
