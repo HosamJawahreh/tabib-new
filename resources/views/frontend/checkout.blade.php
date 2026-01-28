@@ -1578,18 +1578,18 @@
       var $item = $button.closest('.cart-product-item');
       var $input = $button.siblings('.qttotal-checkout');
       var currentVal = parseInt($input.val());
-      
+
       // Get cart item data
       var itemId = $item.data('item-id');
       var itemKey = $item.data('item-key');
       var sizeQty = $item.data('size-qty') || '';
       var sizePrice = $item.data('size-price') || '';
-      
+
       console.log('Updating cart - itemId:', itemId, 'itemKey:', itemKey);
-      
+
       // Disable button during update
       $button.prop('disabled', true);
-      
+
       // Update session cart via AJAX
       $.ajax({
          url: mainurl + '/addbyone',
@@ -1624,19 +1624,19 @@
       var $item = $button.closest('.cart-product-item');
       var $input = $button.siblings('.qttotal-checkout');
       var currentVal = parseInt($input.val());
-      
+
       if (currentVal > 1) {
          // Get cart item data
          var itemId = $item.data('item-id');
          var itemKey = $item.data('item-key');
          var sizeQty = $item.data('size-qty') || '';
          var sizePrice = $item.data('size-price') || '';
-         
+
          console.log('Updating cart - itemId:', itemId, 'itemKey:', itemKey);
-         
+
          // Disable button during update
          $button.prop('disabled', true);
-         
+
          // Update session cart via AJAX
          $.ajax({
             url: mainurl + '/reducebyone',
@@ -1986,7 +1986,7 @@ body {
         if (typeof FacebookPixelTracker !== 'undefined') {
             const cartProducts = [];
             let totalValue = 0;
-            
+
             // Collect cart products
             @foreach(Session::get('cart')->items as $product)
                 cartProducts.push({
@@ -1997,7 +1997,7 @@ body {
                 });
                 totalValue += ({{ $product['price'] }} * {{ $product['qty'] }});
             @endforeach
-            
+
             // Track InitiateCheckout
             FacebookPixelTracker.trackInitiateCheckout(cartProducts, totalValue);
         }

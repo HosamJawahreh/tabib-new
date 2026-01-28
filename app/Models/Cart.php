@@ -31,7 +31,7 @@ class Cart extends Model
                 if (array_key_exists($id.$size.$color.str_replace(str_split(' ,'),'',$values), $this->items)) {
                     $storedItem = $this->items[$id.$size.$color.str_replace(str_split(' ,'),'',$values)];
                 }
-            }            
+            }
         }
         else {
             if ($this->items) {
@@ -45,43 +45,43 @@ class Cart extends Model
         $stck = (string)$item->stock;
         if($stck != null){
                 $storedItem['stock']--;
-        }            
-        if(!empty($item->size)){ 
+        }
+        if(!empty($item->size)){
         $storedItem['size'] = $item->size[0];
-        }  
+        }
         if(!empty($size)){
-        $storedItem['size'] = $size;    
-        } 
-        if(!empty($item->size_qty)){ 
+        $storedItem['size'] = $size;
+        }
+        if(!empty($item->size_qty)){
         $storedItem['size_qty'] = $item->size_qty[0];
-        }  
-        if($item->size_price != null){ 
+        }
+        if($item->size_price != null){
         $storedItem['size_price'] = $item->size_price[0];
         $size_cost = $item->size_price[0];
-        } 
+        }
         if(!empty($color)){
-        $storedItem['color'] = $color;    
-        } 
+        $storedItem['color'] = $color;
+        }
 
         if(!empty($keys)){
-        $storedItem['keys'] = $keys;    
+        $storedItem['keys'] = $keys;
         }
         if(!empty($values)){
-        $storedItem['values'] = $values;    
+        $storedItem['values'] = $values;
         }
         $item->price += $size_cost;
-        $storedItem['item_price'] = $item->price;  
+        $storedItem['item_price'] = $item->price;
         if(!empty($item->whole_sell_qty))
         {
             foreach(array_combine($item->whole_sell_qty,$item->whole_sell_discount) as $whole_sell_qty => $whole_sell_discount)
             {
                 if($storedItem['qty'] == $whole_sell_qty)
-                {   
+                {
                     $whole_discount[$id.$size.$color.str_replace(str_split(' ,'),'',$values)] = $whole_sell_discount;
                     Session::put('current_discount',$whole_discount);
                     $storedItem['discount'] = $whole_sell_discount;
                     break;
-                }                  
+                }
             }
             if(Session::has('current_discount')) {
                     $data = Session::get('current_discount');
@@ -103,7 +103,7 @@ class Cart extends Model
 
     public function addnum($item, $id, $qty, $size, $color, $size_qty, $size_price, $size_key, $keys, $values, $affilate_user) {
         $size_cost = 0;
-        
+
         $storedItem = ['qty' => 0,'size_key' => 0, 'size_qty' =>  $item->size_qty,'size_price' => $item->size_price, 'size' => $item->size, 'color' => $item->color, 'stock' => $item->stock, 'price' => $item->price, 'item' => $item, 'license' => '', 'dp' => '0','keys' => $keys, 'values' => $values,'item_price' => $item->price,'discount' => 0,'affilate_user' => 0];
         if($item->type == 'Physical')
         {
@@ -111,7 +111,7 @@ class Cart extends Model
                 if (array_key_exists($id.$size.$color.str_replace(str_split(' ,'),'',$values), $this->items)) {
                     $storedItem = $this->items[$id.$size.$color.str_replace(str_split(' ,'),'',$values)];
                 }
-            }            
+            }
         }
         else {
             if ($this->items) {
@@ -126,45 +126,45 @@ class Cart extends Model
         $stck = (string)$item->stock;
         if($stck != null){
             $storedItem['stock'] = $storedItem['stock'] - $qty;
-        }              
-        if(!empty($item->size)){ 
+        }
+        if(!empty($item->size)){
         $storedItem['size'] = $item->size[0];
-        }  
+        }
         if(!empty($size)){
-        $storedItem['size'] = $size;    
+        $storedItem['size'] = $size;
         }
         if(!empty($size_key)){
-        $storedItem['size_key'] = $size_key;    
+        $storedItem['size_key'] = $size_key;
         }
-        if(!empty($item->size_qty)){ 
+        if(!empty($item->size_qty)){
         $storedItem['size_qty'] = $item->size_qty [0];
-        }  
-        if(!empty($size_qty)){
-        $storedItem['size_qty'] = $size_qty;    
         }
-        if(!empty($item->size_price)){ 
+        if(!empty($size_qty)){
+        $storedItem['size_qty'] = $size_qty;
+        }
+        if(!empty($item->size_price)){
         $storedItem['size_price'] = $item->size_price[0];
         $size_cost = $item->size_price[0];
-        }  
+        }
         if(!empty($size_price)){
-        $storedItem['size_price'] = $size_price;    
+        $storedItem['size_price'] = $size_price;
         $size_cost = $size_price;
         }
-        if(!empty($item->color)){ 
+        if(!empty($item->color)){
         $storedItem['color'] = $item->color[0];
-        }  
+        }
         if(!empty($color)){
-        $storedItem['color'] = $color;    
+        $storedItem['color'] = $color;
         }
         if(!empty($keys)){
-        $storedItem['keys'] = $keys;    
+        $storedItem['keys'] = $keys;
         }
         if(!empty($values)){
-        $storedItem['values'] = $values;    
+        $storedItem['values'] = $values;
         }
 
         $item->price += $size_cost;
-        $storedItem['item_price'] = $item->price;  
+        $storedItem['item_price'] = $item->price;
         if(!empty($item->whole_sell_qty))
         {
             foreach($item->whole_sell_qty as $key => $data){
@@ -194,7 +194,7 @@ class Cart extends Model
                 }
             }
         }
-       
+
         $storedItem['price'] = $item->price * $storedItem['qty'];
         $this->items[$id.$size.$color.str_replace(str_split(' ,'),'',$values)] = $storedItem;
         $this->totalQty += $storedItem['qty'];
@@ -216,23 +216,23 @@ class Cart extends Model
 
             if($item->stock != null){
                 $storedItem['stock']--;
-            }   
+            }
 
         // CURRENCY ISSUE CHECK IT CAREFULLY
 
-        $item->price += (double)$size_price;   
+        $item->price += (double)$size_price;
 
         if(!empty($item->whole_sell_qty))
         {
             foreach(array_combine($item->whole_sell_qty,$item->whole_sell_discount) as $whole_sell_qty => $whole_sell_discount)
             {
                 if($storedItem['qty'] == $whole_sell_qty)
-                {   
+                {
                     $whole_discount[$id] = $whole_sell_discount;
                     Session::put('current_discount',$whole_discount);
                     $storedItem['discount'] = $whole_sell_discount;
                     break;
-                }                  
+                }
             }
             if(Session::has('current_discount')) {
                     $data = Session::get('current_discount');
@@ -262,30 +262,30 @@ class Cart extends Model
         $storedItem['qty']--;
             if($item->stock != null){
                 $storedItem['stock']++;
-            }    
+            }
 
         // CURRENCY ISSUE CHECK IT CAREFULLY
 
-        $item->price += (double)$size_price;   
+        $item->price += (double)$size_price;
         if(!empty($item->whole_sell_qty))
         {
             $len = count($item->whole_sell_qty);
             foreach($item->whole_sell_qty as $key => $data1)
             {
                 if($storedItem['qty'] < $item->whole_sell_qty[$key])
-                {   
+                {
                     if($storedItem['qty'] < $item->whole_sell_qty[0])
-                    {   
+                    {
                         Session::forget('current_discount');
                         $storedItem['discount'] = 0;
                         break;
-                    }  
+                    }
 
                     $whole_discount[$id] = $item->whole_sell_discount[$key-1];
                     Session::put('current_discount',$whole_discount);
                     $storedItem['discount'] = $item->whole_sell_discount[$key-1];
                     break;
-                }      
+                }
 
             }
             if(Session::has('current_discount')) {
