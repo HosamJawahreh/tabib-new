@@ -581,7 +581,13 @@
                      <div class="cart-product-item d-flex align-items-center mb-1 pb-1" style="border-bottom: 1px solid #eee; position: relative; {{ $langg->rtl == 1 ? 'direction: rtl;' : '' }}"
                           data-product-index="{{ $index }}"
                           data-item-id="{{ $product['item']['id'] }}"
-                          data-unit-price="{{ $product['item_price'] }}">
+                          data-item-key="{{ $index }}"
+                          data-size="{{ $product['size'] ?? '' }}"
+                          data-color="{{ $product['color'] ?? '' }}"
+                          data-size-qty="{{ $product['size_qty'] ?? '' }}"
+                          data-size-price="{{ $product['size_price'] ?? '' }}"
+                          data-unit-price="{{ $product['item_price'] }}"
+                          data-values="{{ $product['values'] ?? '' }}">
                         <img src="{{ $product['item']['thumbnail'] ? asset('assets/images/thumbnails/'.$product['item']['thumbnail']) : asset('assets/images/products/'.$product['item']['photo']) }}"
                              alt="{{ $product['item']['name'] }}"
                              style="width: 45px; height: 45px; object-fit: cover; border-radius: 4px;"
@@ -1568,19 +1574,95 @@
 
    $(document).on('click', '.qtplus-checkout', function() {
       console.log('Plus button clicked');
-      var $input = $(this).siblings('.qttotal-checkout');
+      var $button = $(this);
+      var $item = $button.closest('.cart-product-item');
+      var $input = $button.siblings('.qttotal-checkout');
       var currentVal = parseInt($input.val());
-      $input.val(currentVal + 1);
-      updateCheckoutPrices();
+      
+      // Get cart item data
+      var itemId = $item.data('item-id');
+      var itemKey = $item.data('item-key');
+      var sizeQty = $item.data('size-qty') || '';
+      var sizePrice = $item.data('size-price') || '';
+      
+      console.log('Updating cart - itemId:', itemId, 'itemKey:', itemKey);
+      
+      // Disable button during update
+      $button.prop('disabled', true);
+      
+      // Update session cart via AJAX
+      $.ajax({
+         url: mainurl + '/addbyone',
+         type: 'GET',
+         data: {
+            id: itemId,
+            itemid: itemKey,
+            size_qty: sizeQty,
+            size_price: sizePrice
+         },
+         success: function(response) {
+            console.log('Cart updated successfully:', response);
+            // Update the input value
+            $input.val(currentVal + 1);
+            // Update prices on the page
+            updateCheckoutPrices();
+            // Re-enable button
+            $button.prop('disabled', false);
+         },
+         error: function(xhr, status, error) {
+            console.error('Error updating cart:', error);
+            alert('{{ __("Error updating quantity. Please refresh the page.") }}');
+            // Re-enable button
+            $button.prop('disabled', false);
+         }
+      });
    });
 
    $(document).on('click', '.qtminus-checkout', function() {
       console.log('Minus button clicked');
-      var $input = $(this).siblings('.qttotal-checkout');
+      var $button = $(this);
+      var $item = $button.closest('.cart-product-item');
+      var $input = $button.siblings('.qttotal-checkout');
       var currentVal = parseInt($input.val());
+      
       if (currentVal > 1) {
-         $input.val(currentVal - 1);
-         updateCheckoutPrices();
+         // Get cart item data
+         var itemId = $item.data('item-id');
+         var itemKey = $item.data('item-key');
+         var sizeQty = $item.data('size-qty') || '';
+         var sizePrice = $item.data('size-price') || '';
+         
+         console.log('Updating cart - itemId:', itemId, 'itemKey:', itemKey);
+         
+         // Disable button during update
+         $button.prop('disabled', true);
+         
+         // Update session cart via AJAX
+         $.ajax({
+            url: mainurl + '/reducebyone',
+            type: 'GET',
+            data: {
+               id: itemId,
+               itemid: itemKey,
+               size_qty: sizeQty,
+               size_price: sizePrice
+            },
+            success: function(response) {
+               console.log('Cart updated successfully:', response);
+               // Update the input value
+               $input.val(currentVal - 1);
+               // Update prices on the page
+               updateCheckoutPrices();
+               // Re-enable button
+               $button.prop('disabled', false);
+            },
+            error: function(xhr, status, error) {
+               console.error('Error updating cart:', error);
+               alert('{{ __("Error updating quantity. Please refresh the page.") }}');
+               // Re-enable button
+               $button.prop('disabled', false);
+            }
+         });
       }
    });
 
