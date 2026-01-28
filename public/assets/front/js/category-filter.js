@@ -27,6 +27,95 @@
         };
 
         // ==========================================
+        // Check URL Parameters on Page Load
+        // ==========================================
+        function applyFiltersFromURL() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const categoryId = urlParams.get('category');
+            const subcategoryId = urlParams.get('subcategory');
+            const childcategoryId = urlParams.get('childcategory');
+
+            console.log('🔗 Checking URL parameters:', { categoryId, subcategoryId, childcategoryId });
+
+            if (categoryId) {
+                // Apply category filter
+                const $categoryBtn = $(`.main-category-item[data-category-id="${categoryId}"]`);
+                
+                if ($categoryBtn.length) {
+                    console.log('✅ Found category in URL, applying filter:', categoryId);
+                    
+                    // Activate category button
+                    $('.main-category-item').removeClass('active');
+                    $categoryBtn.addClass('active');
+                    
+                    // Show subcategories if exists
+                    const hasSubs = $categoryBtn.data('has-subs') === 1;
+                    if (hasSubs) {
+                        const $subRow = $(`.subcategories-row[data-parent-category="${categoryId}"]`);
+                        if ($subRow.length) {
+                            $('.subcategories-container').show();
+                            $subRow.show();
+                        }
+                    }
+                    
+                    if (subcategoryId) {
+                        // Apply subcategory filter
+                        const $subcategoryBtn = $(`.subcategory-item[data-subcategory-id="${subcategoryId}"]`);
+                        
+                        if ($subcategoryBtn.length) {
+                            console.log('✅ Found subcategory in URL, applying filter:', subcategoryId);
+                            
+                            $('.subcategory-item').removeClass('active');
+                            $subcategoryBtn.addClass('active');
+                            
+                            // Show child categories if exists
+                            const hasChilds = $subcategoryBtn.data('has-childs') === 1;
+                            if (hasChilds) {
+                                const $childRow = $(`.childcategories-row[data-parent-subcategory="${subcategoryId}"]`);
+                                if ($childRow.length) {
+                                    $('.childcategories-container').show();
+                                    $childRow.show();
+                                }
+                            }
+                            
+                            if (childcategoryId) {
+                                // Apply child category filter
+                                const $childcategoryBtn = $(`.childcategory-item[data-childcategory-id="${childcategoryId}"]`);
+                                
+                                if ($childcategoryBtn.length) {
+                                    console.log('✅ Found child category in URL, applying filter:', childcategoryId);
+                                    
+                                    $('.childcategory-item').removeClass('active');
+                                    $childcategoryBtn.addClass('active');
+                                    
+                                    // Filter by child category
+                                    console.log('🎯 Calling filterByChildcategory with:', {categoryId, subcategoryId, childcategoryId});
+                                    filterByChildcategory(categoryId, subcategoryId, childcategoryId);
+                                } else {
+                                    console.warn('⚠️ Child category button not found for ID:', childcategoryId);
+                                }
+                            } else {
+                                // Filter by subcategory only
+                                console.log('🎯 Calling filterBySubcategory with:', {categoryId, subcategoryId});
+                                filterBySubcategory(categoryId, subcategoryId);
+                            }
+                        } else {
+                            console.warn('⚠️ Subcategory button not found for ID:', subcategoryId);
+                        }
+                    } else {
+                        // Filter by main category only
+                        console.log('🎯 Calling filterByCategory with ID:', categoryId);
+                        filterByCategory(categoryId);
+                    }
+                } else {
+                    console.warn('⚠️ Category button not found for ID:', categoryId);
+                }
+            } else {
+                console.log('ℹ️ No category parameter in URL');
+            }
+        }
+
+        // ==========================================
         // DOM Elements
         // ==========================================
         const $productsGrid = $('#products-grid');
@@ -38,6 +127,7 @@
         // Category Click Handler (Main Categories)
         // ==========================================
         $('.main-category-item').on('click', function(e) {
+            e.preventDefault();
             e.stopPropagation();
 
             const $this = $(this);
@@ -46,25 +136,33 @@
 
             console.log('📁 Main category clicked:', { categoryId, hasSubs });
 
-            // Remove active from all main categories
+            // Update URL silently without page reload (stay on homepage)
+            const newUrl = `/?category=${categoryId}`;
+            window.history.pushState({ category: categoryId }, '', newUrl);
+
+            // Remove active class from all categories
             $('.main-category-item').removeClass('active');
             $this.addClass('active');
 
-            // Remove active from all subcategories and child categories
-            $('.subcategory-item, .childcategory-item').removeClass('active');
+            // Hide all subcategory rows first
+            $('.subcategories-row').slideUp(200);
+            $('.childcategories-row').slideUp(200);
 
-            // Hide all subcategory and child category rows
-            $('.subcategories-row, .childcategories-row').slideUp(200);
-
-            // Show subcategories if this category has them
+            // Show subcategories container and the specific row if exists
             if (hasSubs) {
-                $('.subcategories-container').slideDown(200);
-                $(`.subcategories-row[data-parent-category="${categoryId}"]`).slideDown(300);
+                const $subRow = $(`.subcategories-row[data-parent-category="${categoryId}"]`);
+                console.log('📂 Found subcategory row:', $subRow.length);
+                
+                if ($subRow.length) {
+                    $('.subcategories-container').slideDown(300);
+                    $subRow.slideDown(300);
+                }
             } else {
+                // Hide container if no subs
                 $('.subcategories-container').slideUp(200);
             }
 
-            // Filter by category
+            // Filter products via AJAX
             filterByCategory(categoryId);
         });
 
@@ -72,6 +170,7 @@
         // Subcategory Click Handler
         // ==========================================
         $(document).on('click', '.subcategory-item', function(e) {
+            e.preventDefault();
             e.stopPropagation();
 
             const $this = $(this);
@@ -81,31 +180,35 @@
 
             console.log('📂 Subcategory clicked:', { subcategoryId, parentCategory, hasChilds });
 
-            // Remove active from all subcategories
+            // Update URL silently without page reload (stay on homepage)
+            const newUrl = `/?category=${parentCategory}&subcategory=${subcategoryId}`;
+            window.history.pushState({ 
+                category: parentCategory, 
+                subcategory: subcategoryId 
+            }, '', newUrl);
+
+            // Remove active class from all subcategories
             $('.subcategory-item').removeClass('active');
             $this.addClass('active');
 
-            // Remove active from all child categories
-            $('.childcategory-item').removeClass('active');
+            // Hide all child category rows first
+            $('.childcategories-row').slideUp(200);
 
-            // Remove active from main categories
-            $('.main-category-item').removeClass('active');
-
-            // Show/hide child categories if this subcategory has them
+            // Show child categories container and the specific row if exists
             if (hasChilds) {
-                // Hide all child category rows
-                $('.childcategories-row').slideUp(200);
-
-                // Show the child categories container and this subcategory's children
-                $('.childcategories-container').slideDown(200);
-                $(`.childcategories-row[data-parent-subcategory="${subcategoryId}"]`).slideDown(300);
+                const $childRow = $(`.childcategories-row[data-parent-subcategory="${subcategoryId}"]`);
+                console.log('📄 Found child category row:', $childRow.length);
+                
+                if ($childRow.length) {
+                    $('.childcategories-container').slideDown(300);
+                    $childRow.slideDown(300);
+                }
             } else {
-                // Hide all child category rows and container
-                $('.childcategories-row').slideUp(200);
+                // Hide container if no children
                 $('.childcategories-container').slideUp(200);
             }
 
-            // Filter by subcategory
+            // Filter products via AJAX
             filterBySubcategory(parentCategory, subcategoryId);
         });
 
@@ -113,6 +216,7 @@
         // Child Category Click Handler
         // ==========================================
         $(document).on('click', '.childcategory-item', function(e) {
+            e.preventDefault();
             e.stopPropagation();
 
             const $this = $(this);
@@ -122,19 +226,24 @@
 
             console.log('📄 Child category clicked:', { childcategoryId, parentSubcategory, parentCategory });
 
-            // Remove active from all child categories
+            // Update URL silently without page reload (stay on homepage)
+            const newUrl = `/?category=${parentCategory}&subcategory=${parentSubcategory}&childcategory=${childcategoryId}`;
+            window.history.pushState({ 
+                category: parentCategory, 
+                subcategory: parentSubcategory,
+                childcategory: childcategoryId 
+            }, '', newUrl);
+
+            // Remove active class from all child categories
             $('.childcategory-item').removeClass('active');
             $this.addClass('active');
 
-            // Remove active from main categories
-            $('.main-category-item').removeClass('active');
-
-            // Filter by child category
+            // Filter products via AJAX
             filterByChildcategory(parentCategory, parentSubcategory, childcategoryId);
         });
 
         // ==========================================
-        // Filter Functions
+        // Filter Functions (Legacy - keeping for backwards compatibility)
         // ==========================================
 
         function filterByCategory(categoryId) {
@@ -156,6 +265,7 @@
 
         function filterBySubcategory(categoryId, subcategoryId) {
             console.log('🔍 Filtering by subcategory:', subcategoryId, 'in category:', categoryId);
+            console.log('📊 Filter data:', { category_id: categoryId, subcategory_id: subcategoryId });
 
             // Update state
             FilterState.currentCategory = categoryId;
@@ -174,6 +284,7 @@
 
         function filterByChildcategory(categoryId, subcategoryId, childcategoryId) {
             console.log('🔍 Filtering by child category:', childcategoryId);
+            console.log('📊 Filter data:', { category_id: categoryId, subcategory_id: subcategoryId, childcategory_id: childcategoryId });
 
             // Update state
             FilterState.currentCategory = categoryId;
@@ -223,7 +334,7 @@
             // Check cache
             const cacheKey = JSON.stringify(filters);
             if (FilterState.cache.has(cacheKey)) {
-                console.log('💾 Loading from cache');
+                console.log('💾 Loading from cache for:', filters);
                 const cachedData = FilterState.cache.get(cacheKey);
                 displayProducts(cachedData);
                 return;
@@ -238,6 +349,7 @@
             $productsEndMessage.addClass('d-none').hide();
 
             console.log('📡 Loading products with filters:', filters);
+            console.log('📡 AJAX URL:', window.filterProductsUrl || '/products/filter');
 
             $.ajax({
                 url: window.filterProductsUrl || '/products/filter',
@@ -251,7 +363,8 @@
                     console.log('✅ Products loaded successfully:', {
                         count: response.products_count,
                         total: response.total_count,
-                        hasMore: response.has_more
+                        hasMore: response.has_more,
+                        filters: filters
                     });
 
                     // Cache the result
@@ -357,5 +470,13 @@
         };
 
         console.log('✅ Category Filter System Ready!');
+        
+        // ==========================================
+        // Apply URL Filters on Page Load (must be last)
+        // ==========================================
+        // Small delay to ensure DOM is fully ready
+        setTimeout(function() {
+            applyFiltersFromURL();
+        }, 100);
     });
 })();

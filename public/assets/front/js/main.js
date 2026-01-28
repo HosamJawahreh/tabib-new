@@ -741,16 +741,16 @@
       $("#addcrt").trigger('click');
     });
 
-    // Product Details - Buy Now (Clear cart, add item, redirect to checkout)
+    // Product Details - Buy Now (Add product only if not in cart, then redirect)
     $(document).on("click", "#qaddcrt", function (e) {
       e.preventDefault();
-      e.stopPropagation(); // Prevent event bubbling
-      e.stopImmediatePropagation(); // Prevent other handlers on same element
+      e.stopPropagation();
+      e.stopImmediatePropagation();
 
       var $btn = $(this);
       var pid = $("#product_id").val();
 
-      try { console.log('[main.js] #qaddcrt clicked. pid=', pid); } catch (e) {}
+      try { console.log('[main.js] #qaddcrt Buy Now clicked. pid=', pid); } catch (e) {}
 
       // Prevent multiple clicks
       if ($btn.hasClass('loading')) {
@@ -765,119 +765,82 @@
       // Get quantity from input field
       var quantity = parseInt($(".qttotal").val()) || 1;
 
-      try { console.log('[main.js] Buy Now with quantity:', quantity, '- Clearing cart first'); } catch (e) {}
+      try { console.log('[main.js] Buy Now - Checking if product in cart, qty:', quantity); } catch (e) {}
 
-      // STEP 1: Clear the cart first (using removecart with special parameter)
-      // We'll use a direct cart clear approach
-      $.ajax({
-        url: mainurl + "/cart/clear-for-buynow",
-        type: 'GET',
-        success: function() {
-          try { console.log('[main.js] Cart cleared, now adding product'); } catch (e) {}
+      // Prepare data for buy now check
+      var keysVal = $("#keys").val() || '';
+      var valuesVal = $("#values").val() || '';
+      var pricesVal = $("#prices").val() || '';
 
-          // STEP 2: Add the selected product with quantity
-          var cartUrl = mainurl + "/addcart/" + pid;
-          var cartData = {};
+      var buyNowData = {
+        id: pid,
+        qty: quantity,
+        size: $("#size").val() || '',
+        color: $("#color").val() || '',
+        size_qty: $("#size_qty").val() || '',
+        size_price: $("#size_price").val() || '0',
+        size_key: $("#size_key").val() || '0',
+        keys: keysVal ? keysVal.split(',') : [''],
+        values: valuesVal ? valuesVal.split(',') : [''],
+        prices: pricesVal ? pricesVal.split(',') : [''],
+        affilate_user: $("#affilate_user").val() || '0'
+      };
 
-          if (quantity > 1) {
-            // Use the addnumcart route with quantity parameter
-            cartUrl = mainurl + "/addnumcart";
-
-            // Prepare keys, values, and prices arrays
-            var keysVal = $("#keys").val() || '';
-            var valuesVal = $("#values").val() || '';
-            var pricesVal = $("#prices").val() || '';
-
-            cartData = {
-              id: pid,
-              qty: quantity,
-              size: $("#size").val() || '',
-              color: $("#color").val() || '',
-              size_qty: $("#size_qty").val() || '',
-              size_price: $("#size_price").val() || '0',
-              size_key: $("#size_key").val() || '0',
-              keys: keysVal ? keysVal.split(',') : [''],
-              values: valuesVal ? valuesVal.split(',') : [''],
-              prices: pricesVal ? pricesVal.split(',') : [''],
-              affilate_user: $("#affilate_user").val() || '0'
-            };
-          }
-
-          // Add to cart and redirect
-          $.get(cartUrl, cartData, function (data) {
-            try { console.log('[main.js] Product added, response:', data); } catch (e) {}
-            if (data == "digital") {
-              $btn.removeClass('loading');
-              $btn.find('span:not(.btn-loader)').show();
-              $btn.find('.btn-loader').hide();
-              toastr.error(lang.cart_already || "Already Added To Cart");
-            } else if (Array.isArray(data) && data[0] == 0) {
-              $btn.removeClass('loading');
-              $btn.find('span:not(.btn-loader)').show();
-              $btn.find('.btn-loader').hide();
-              toastr.error(lang.cart_out || "Out Of Stock");
+      // Call buyNow route - it checks if product in cart and adds only if needed
+      $.get(mainurl + "/buynow", buyNowData, function (data) {
+        try { console.log('[main.js] Buy Now response:', data); } catch (e) {}
+        
+        if (data == "digital") {
+          $btn.removeClass('loading');
+          $btn.find('span:not(.btn-loader)').show();
+          $btn.find('.btn-loader').hide();
+          toastr.error(lang.cart_already || "Already Added To Cart");
+        } else if (Array.isArray(data) && data[0] == 0) {
+          $btn.removeClass('loading');
+          $btn.find('span:not(.btn-loader)').show();
+          $btn.find('.btn-loader').hide();
+          toastr.error(lang.cart_out || "Out Of Stock");
+        } else {
+          // Success - Product added or already in cart
+          try { 
+            if (data.in_cart) {
+              console.log('[main.js] Product already in cart, redirecting to checkout'); 
             } else {
-              // Success! Redirect to checkout
-              try { console.log('[main.js] #qaddcrt success -> redirecting to checkout'); } catch (e) {}
-              window.location.href = mainurl + "/checkout";
+              console.log('[main.js] Product added to cart, redirecting to checkout'); 
             }
-          }).fail(function(xhr, status, error) {
-            try { console.error('[main.js] Product add failed', status, error); } catch (e) {}
-            $btn.removeClass('loading');
-            $btn.find('span:not(.btn-loader)').show();
-            $btn.find('.btn-loader').hide();
-            toastr.error("Error. Please try again.");
-          });
-        },
-        error: function() {
-          // If cart clear fails, just proceed with adding (fallback)
-          try { console.log('[main.js] Cart clear failed, proceeding anyway'); } catch (e) {}
-
-          var cartUrl = mainurl + "/addcart/" + pid;
-          var cartData = {};
-
-          if (quantity > 1) {
-            cartUrl = mainurl + "/addnumcart";
-            var keysVal = $("#keys").val() || '';
-            var valuesVal = $("#values").val() || '';
-            var pricesVal = $("#prices").val() || '';
-
-            cartData = {
-              id: pid,
-              qty: quantity,
-              size: $("#size").val() || '',
-              color: $("#color").val() || '',
-              size_qty: $("#size_qty").val() || '',
-              size_price: $("#size_price").val() || '0',
-              size_key: $("#size_key").val() || '0',
-              keys: keysVal ? keysVal.split(',') : [''],
-              values: valuesVal ? valuesVal.split(',') : [''],
-              prices: pricesVal ? pricesVal.split(',') : [''],
-              affilate_user: $("#affilate_user").val() || '0'
-            };
+          } catch (e) {}
+          
+          // Update cart badge count
+          if (Array.isArray(data) && data[0]) {
+            $("#cart-count").html(data[0]);
+            $("#cart-count1").html(data[0]);
+            if (data[0] > 0) {
+              $("#cart-count").css('display', 'flex');
+              $("#cart-count1").css('display', 'flex');
+            }
+          } else if (data.cart_count) {
+            $("#cart-count").html(data.cart_count);
+            $("#cart-count1").html(data.cart_count);
+            if (data.cart_count > 0) {
+              $("#cart-count").css('display', 'flex');
+              $("#cart-count1").css('display', 'flex');
+            }
           }
-
-          $.get(cartUrl, cartData, function (data) {
-            if (data == "digital") {
-              $btn.removeClass('loading');
-              $btn.find('span:not(.btn-loader)').show();
-              $btn.find('.btn-loader').hide();
-              toastr.error(lang.cart_already || "Already Added To Cart");
-            } else if (Array.isArray(data) && data[0] == 0) {
-              $btn.removeClass('loading');
-              $btn.find('span:not(.btn-loader)').show();
-              $btn.find('.btn-loader').hide();
-              toastr.error(lang.cart_out || "Out Of Stock");
-            } else {
-              window.location.href = mainurl + "/checkout";
-            }
-          }).fail(function() {
-            $btn.removeClass('loading');
-            $btn.find('span:not(.btn-loader)').show();
-            $btn.find('.btn-loader').hide();
-            toastr.error("Error. Please try again.");
-          });
+          
+          // Show appropriate message
+          if (data.in_cart === false) {
+            toastr.success(lang.cart_success || "Added to cart!");
+          }
+          
+          // Redirect to checkout
+          window.location.href = mainurl + "/checkout";
         }
+      }).fail(function(xhr, status, error) {
+        try { console.error('[main.js] Buy Now failed:', status, error); } catch (e) {}
+        $btn.removeClass('loading');
+        $btn.find('span:not(.btn-loader)').show();
+        $btn.find('.btn-loader').hide();
+        toastr.error("Error processing Buy Now. Please try again.");
       });
 
       return false;

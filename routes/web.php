@@ -1516,6 +1516,7 @@ Route::group(['middleware' => 'maintenance'], function () {
     Route::get('/addcart/{id}', 'Front\CartController@addcart')->name('product.cart.add');
     Route::get('/addtocart/{id}', 'Front\CartController@addtocart')->name('product.cart.quickadd');
     Route::get('/addnumcart', 'Front\CartController@addnumcart')->name('details.cart');
+    Route::get('/buynow', 'Front\CartController@buyNow')->name('product.buynow');
     Route::get('/addtonumcart', 'Front\CartController@addtonumcart');
     Route::get('/addbyone', 'Front\CartController@addbyone');
     Route::get('/reducebyone', 'Front\CartController@reducebyone');
