@@ -625,7 +625,7 @@
       e.preventDefault();
       e.stopPropagation(); // Prevent event bubbling
       e.stopImmediatePropagation(); // Prevent other handlers on same element
-      
+
       var $btn = $(this);
       var pid = $("#product_id").val();
 
@@ -645,25 +645,25 @@
       var productId = $btn.data('product-id') || pid;
       var productName = $btn.data('product-name');
       var productPrice = $btn.data('product-price');
-      
+
       // Get quantity from input field
       var quantity = parseInt($(".qttotal").val()) || 1;
-      
+
       try { console.log('[main.js] Adding to cart with quantity:', quantity); } catch (e) {}
 
       // Use addnumcart if quantity > 1, otherwise use simple addcart route
       var cartUrl = mainurl + "/addcart/" + pid;
       var cartData = {};
-      
+
       if (quantity > 1) {
         // Use the addnumcart route with quantity parameter
         cartUrl = mainurl + "/addnumcart";
-        
+
         // Prepare keys, values, and prices arrays
         var keysVal = $("#keys").val() || '';
         var valuesVal = $("#values").val() || '';
         var pricesVal = $("#prices").val() || '';
-        
+
         cartData = {
           id: pid,
           qty: quantity,
@@ -746,7 +746,7 @@
       e.preventDefault();
       e.stopPropagation(); // Prevent event bubbling
       e.stopImmediatePropagation(); // Prevent other handlers on same element
-      
+
       var $btn = $(this);
       var pid = $("#product_id").val();
 
@@ -764,7 +764,7 @@
 
       // Get quantity from input field
       var quantity = parseInt($(".qttotal").val()) || 1;
-      
+
       try { console.log('[main.js] Buy Now with quantity:', quantity, '- Clearing cart first'); } catch (e) {}
 
       // STEP 1: Clear the cart first (using removecart with special parameter)
@@ -774,20 +774,20 @@
         type: 'GET',
         success: function() {
           try { console.log('[main.js] Cart cleared, now adding product'); } catch (e) {}
-          
+
           // STEP 2: Add the selected product with quantity
           var cartUrl = mainurl + "/addcart/" + pid;
           var cartData = {};
-          
+
           if (quantity > 1) {
             // Use the addnumcart route with quantity parameter
             cartUrl = mainurl + "/addnumcart";
-            
+
             // Prepare keys, values, and prices arrays
             var keysVal = $("#keys").val() || '';
             var valuesVal = $("#values").val() || '';
             var pricesVal = $("#prices").val() || '';
-            
+
             cartData = {
               id: pid,
               qty: quantity,
@@ -832,16 +832,16 @@
         error: function() {
           // If cart clear fails, just proceed with adding (fallback)
           try { console.log('[main.js] Cart clear failed, proceeding anyway'); } catch (e) {}
-          
+
           var cartUrl = mainurl + "/addcart/" + pid;
           var cartData = {};
-          
+
           if (quantity > 1) {
             cartUrl = mainurl + "/addnumcart";
             var keysVal = $("#keys").val() || '';
             var valuesVal = $("#values").val() || '';
             var pricesVal = $("#prices").val() || '';
-            
+
             cartData = {
               id: pid,
               qty: quantity,
