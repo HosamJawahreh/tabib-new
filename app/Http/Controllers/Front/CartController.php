@@ -951,54 +951,54 @@ class CartController extends FrontBaseController
     {
         $id = $request->id;
         $qty = $request->qty ?? 1;
-        
+
         // Get current cart
         $oldCart = Session::has('cart') ? Session::get('cart') : null;
         $cart = new Cart($oldCart);
-        
+
         // Get product details
         $prod = Product::where('id', '=', $id)->first(['id', 'user_id', 'slug', 'name', 'photo', 'size', 'size_qty', 'size_price', 'color', 'price', 'stock', 'type', 'file', 'link', 'license', 'license_qty', 'measure', 'whole_sell_qty', 'whole_sell_discount', 'attributes', 'size_all', 'color_all']);
-        
+
         if (!$prod) {
             return response()->json(['error' => 'Product not found'], 404);
         }
-        
+
         // Prepare product key
         $size = $request->size ?? '';
         $color = $request->color ?? '';
         $values = $request->values ?? '';
-        
+
         if (is_array($values)) {
             $values = implode(',', array_filter($values));
         }
-        
+
         // Clean size
         if (empty($size) && !empty($prod->size)) {
             $size = trim($prod->size[0]);
         }
         $size = str_replace(' ', '-', $size);
-        
+
         // Clean color
         if (empty($color) && !empty($prod->color)) {
             $color = str_replace('#', '', $prod->color[0]);
         }
-        
+
         // Generate cart item key
         $itemKey = $id . $size . $color . str_replace(str_split(' ,'), '', $values);
-        
+
         // Check if product already in cart
         $productInCart = false;
         if ($cart->items && array_key_exists($itemKey, $cart->items)) {
             $productInCart = true;
         }
-        
+
         // Response data
         $response = [
             'in_cart' => $productInCart,
             'cart_count' => $cart->items ? count($cart->items) : 0,
             'redirect' => url('/checkout')
         ];
-        
+
         // If not in cart, add it
         if (!$productInCart) {
             // Use existing addcart logic based on quantity
@@ -1010,7 +1010,7 @@ class CartController extends FrontBaseController
                 return $this->addcart($id);
             }
         }
-        
+
         // Already in cart, just return success
         return response()->json($response);
     }

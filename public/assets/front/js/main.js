@@ -297,8 +297,6 @@
         try { console.log('[main.js] .add-cart response', data); } catch (e) {}
         if (data == "digital") {
           toastr.error(lang.cart_already);
-        } else if (data[0] == 0) {
-          toastr.error(lang.cart_out);
         } else {
           $("#cart-count").html(data[0]);
           $("#cart-count1").html(data[0]);
@@ -688,8 +686,6 @@
 
         if (data == "digital") {
           toastr.error(lang.cart_already || "Already Added To Cart");
-        } else if (data[0] == 0) {
-          toastr.error(lang.cart_out || "Out Of Stock");
         } else {
           $("#cart-count").html(data[0]);
           $("#cart-count1").html(data[0]);
@@ -789,27 +785,22 @@
       // Call buyNow route - it checks if product in cart and adds only if needed
       $.get(mainurl + "/buynow", buyNowData, function (data) {
         try { console.log('[main.js] Buy Now response:', data); } catch (e) {}
-        
+
         if (data == "digital") {
           $btn.removeClass('loading');
           $btn.find('span:not(.btn-loader)').show();
           $btn.find('.btn-loader').hide();
           toastr.error(lang.cart_already || "Already Added To Cart");
-        } else if (Array.isArray(data) && data[0] == 0) {
-          $btn.removeClass('loading');
-          $btn.find('span:not(.btn-loader)').show();
-          $btn.find('.btn-loader').hide();
-          toastr.error(lang.cart_out || "Out Of Stock");
         } else {
           // Success - Product added or already in cart
-          try { 
+          try {
             if (data.in_cart) {
-              console.log('[main.js] Product already in cart, redirecting to checkout'); 
+              console.log('[main.js] Product already in cart, redirecting to checkout');
             } else {
-              console.log('[main.js] Product added to cart, redirecting to checkout'); 
+              console.log('[main.js] Product added to cart, redirecting to checkout');
             }
           } catch (e) {}
-          
+
           // Update cart badge count
           if (Array.isArray(data) && data[0]) {
             $("#cart-count").html(data[0]);
@@ -826,12 +817,12 @@
               $("#cart-count1").css('display', 'flex');
             }
           }
-          
+
           // Show appropriate message
           if (data.in_cart === false) {
             toastr.success(lang.cart_success || "Added to cart!");
           }
-          
+
           // Redirect to checkout
           window.location.href = mainurl + "/checkout";
         }
@@ -913,16 +904,7 @@
       var el = $(this);
       var $tselector = el.parent().parent().find(".qttotal");
       total = $($tselector).val();
-      if (stock != "") {
-        var stk = parseInt(stock);
-        if (total < stk) {
-          total++;
-          $($tselector).val(total);
-        }
-      } else {
-        total++;
-      }
-
+      total++;
       $($tselector).val(total);
     });
 

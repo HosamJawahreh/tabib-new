@@ -40,14 +40,14 @@
             if (categoryId) {
                 // Apply category filter
                 const $categoryBtn = $(`.main-category-item[data-category-id="${categoryId}"]`);
-                
+
                 if ($categoryBtn.length) {
                     console.log('✅ Found category in URL, applying filter:', categoryId);
-                    
+
                     // Activate category button
                     $('.main-category-item').removeClass('active');
                     $categoryBtn.addClass('active');
-                    
+
                     // Show subcategories if exists
                     const hasSubs = $categoryBtn.data('has-subs') === 1;
                     if (hasSubs) {
@@ -57,17 +57,17 @@
                             $subRow.show();
                         }
                     }
-                    
+
                     if (subcategoryId) {
                         // Apply subcategory filter
                         const $subcategoryBtn = $(`.subcategory-item[data-subcategory-id="${subcategoryId}"]`);
-                        
+
                         if ($subcategoryBtn.length) {
                             console.log('✅ Found subcategory in URL, applying filter:', subcategoryId);
-                            
+
                             $('.subcategory-item').removeClass('active');
                             $subcategoryBtn.addClass('active');
-                            
+
                             // Show child categories if exists
                             const hasChilds = $subcategoryBtn.data('has-childs') === 1;
                             if (hasChilds) {
@@ -77,17 +77,17 @@
                                     $childRow.show();
                                 }
                             }
-                            
+
                             if (childcategoryId) {
                                 // Apply child category filter
                                 const $childcategoryBtn = $(`.childcategory-item[data-childcategory-id="${childcategoryId}"]`);
-                                
+
                                 if ($childcategoryBtn.length) {
                                     console.log('✅ Found child category in URL, applying filter:', childcategoryId);
-                                    
+
                                     $('.childcategory-item').removeClass('active');
                                     $childcategoryBtn.addClass('active');
-                                    
+
                                     // Filter by child category
                                     console.log('🎯 Calling filterByChildcategory with:', {categoryId, subcategoryId, childcategoryId});
                                     filterByChildcategory(categoryId, subcategoryId, childcategoryId);
@@ -152,7 +152,7 @@
             if (hasSubs) {
                 const $subRow = $(`.subcategories-row[data-parent-category="${categoryId}"]`);
                 console.log('📂 Found subcategory row:', $subRow.length);
-                
+
                 if ($subRow.length) {
                     $('.subcategories-container').slideDown(300);
                     $subRow.slideDown(300);
@@ -182,9 +182,9 @@
 
             // Update URL silently without page reload (stay on homepage)
             const newUrl = `/?category=${parentCategory}&subcategory=${subcategoryId}`;
-            window.history.pushState({ 
-                category: parentCategory, 
-                subcategory: subcategoryId 
+            window.history.pushState({
+                category: parentCategory,
+                subcategory: subcategoryId
             }, '', newUrl);
 
             // Remove active class from all subcategories
@@ -198,7 +198,7 @@
             if (hasChilds) {
                 const $childRow = $(`.childcategories-row[data-parent-subcategory="${subcategoryId}"]`);
                 console.log('📄 Found child category row:', $childRow.length);
-                
+
                 if ($childRow.length) {
                     $('.childcategories-container').slideDown(300);
                     $childRow.slideDown(300);
@@ -228,10 +228,10 @@
 
             // Update URL silently without page reload (stay on homepage)
             const newUrl = `/?category=${parentCategory}&subcategory=${parentSubcategory}&childcategory=${childcategoryId}`;
-            window.history.pushState({ 
-                category: parentCategory, 
+            window.history.pushState({
+                category: parentCategory,
                 subcategory: parentSubcategory,
-                childcategory: childcategoryId 
+                childcategory: childcategoryId
             }, '', newUrl);
 
             // Remove active class from all child categories
@@ -470,7 +470,7 @@
         };
 
         console.log('✅ Category Filter System Ready!');
-        
+
         // ==========================================
         // Apply URL Filters on Page Load (must be last)
         // ==========================================
