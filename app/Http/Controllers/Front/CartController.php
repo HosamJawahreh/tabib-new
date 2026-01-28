@@ -362,8 +362,20 @@ class CartController extends FrontBaseController
         $values = $_GET['values'];
         $prices = $_GET['prices'];
         $affilate_user = isset($_GET['affilate_user']) ? $_GET['affilate_user'] : '0';
-        $keys = $keys == "" ? '' : implode(',', $keys);
-        $values = $values == "" ? '' : implode(',', $values);
+        
+        // Filter out empty values from arrays
+        if (is_array($keys)) {
+            $keys = array_filter($keys, function($val) { return $val !== '' && $val !== null; });
+        }
+        if (is_array($values)) {
+            $values = array_filter($values, function($val) { return $val !== '' && $val !== null; });
+        }
+        if (is_array($prices)) {
+            $prices = array_filter($prices, function($val) { return $val !== '' && $val !== null; });
+        }
+        
+        $keys = (is_array($keys) && !empty($keys)) ? implode(',', $keys) : '';
+        $values = (is_array($values) && !empty($values)) ? implode(',', $values) : '';
         $curr = $this->curr;
 
         $size_price = ($size_price / $curr->value);
@@ -378,9 +390,11 @@ class CartController extends FrontBaseController
             $prc = $prod->price + $this->gs->fixed_commission + ($prod->price / 100) * $this->gs->percentage_commission;
             $prod->price = $prc;
         }
-        if (!empty($prices)) {
+        if (!empty($prices) && is_array($prices)) {
             foreach ($prices as $data) {
-                $prod->price += ($data / $curr->value);
+                if ($data !== '' && is_numeric($data)) {
+                    $prod->price += ($data / $curr->value);
+                }
             }
         }
 
@@ -896,5 +910,36 @@ class CartController extends FrontBaseController
         }
 
         return response()->json($data);
+    }
+
+    // Clear cart for Buy Now functionality
+    public function clearCartForBuyNow()
+    {
+        // Clear cart session
+        Session::forget('cart');
+        Session::forget('cart_total');
+        Session::forget('cart_count');
+        
+        // Clear coupon sessions
+        if (Session::has('coupon')) {
+            Session::forget('coupon');
+        }
+        if (Session::has('coupon_total')) {
+            Session::forget('coupon_total');
+        }
+        if (Session::has('coupon_total1')) {
+            Session::forget('coupon_total1');
+        }
+        if (Session::has('coupon_percentage')) {
+            Session::forget('coupon_percentage');
+        }
+        if (Session::has('coupon_code')) {
+            Session::forget('coupon_code');
+        }
+        if (Session::has('coupon_id')) {
+            Session::forget('coupon_id');
+        }
+        
+        return response()->json(['success' => true, 'message' => 'Cart cleared for Buy Now']);
     }
 }

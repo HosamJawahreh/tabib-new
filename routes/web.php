@@ -1521,6 +1521,7 @@ Route::group(['middleware' => 'maintenance'], function () {
     Route::get('/reducebyone', 'Front\CartController@reducebyone');
     Route::get('/upcolor', 'Front\CartController@upcolor');
     Route::get('/removecart/{id}', 'Front\CartController@removecart')->name('product.cart.remove');
+    Route::get('/cart/clear-for-buynow', 'Front\CartController@clearCartForBuyNow')->name('cart.clear.buynow');
     Route::get('/carts/coupon', 'Front\CouponController@coupon');
     // CART SECTION ENDS
 
